@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6BAF090D-CC59-40A6-A45A-BD4FC1A8283A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YoctoProxyAPI</RootNamespace>
+    <AssemblyName>DotNetProxyLibrary</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="proxy_management.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="API\yocto_api.cs" />
+    <Compile Include="yocto_module_proxy.cs" />
+    <Compile Include="yocto_sensor_proxy.cs" />
+        <Compile Include="API\yocto_accelerometer.cs"/>
+    <Compile Include="API\yocto_altitude.cs"/>
+    <Compile Include="API\yocto_anbutton.cs"/>
+    <Compile Include="API\yocto_arithmeticsensor.cs"/>
+    <Compile Include="API\yocto_audioin.cs"/>
+    <Compile Include="API\yocto_audioout.cs"/>
+    <Compile Include="API\yocto_bluetoothlink.cs"/>
+    <Compile Include="API\yocto_buzzer.cs"/>
+    <Compile Include="API\yocto_carbondioxide.cs"/>
+    <Compile Include="API\yocto_cellular.cs"/>
+    <Compile Include="API\yocto_colorled.cs"/>
+    <Compile Include="API\yocto_colorledcluster.cs"/>
+    <Compile Include="API\yocto_compass.cs"/>
+    <Compile Include="API\yocto_current.cs"/>
+    <Compile Include="API\yocto_currentloopoutput.cs"/>
+    <Compile Include="API\yocto_daisychain.cs"/>
+    <Compile Include="API\yocto_digitalio.cs"/>
+    <Compile Include="API\yocto_display.cs"/>
+    <Compile Include="API\yocto_dualpower.cs"/>
+    <Compile Include="API\yocto_files.cs"/>
+    <Compile Include="API\yocto_genericsensor.cs"/>
+    <Compile Include="API\yocto_gps.cs"/>
+    <Compile Include="API\yocto_groundspeed.cs"/>
+    <Compile Include="API\yocto_gyro.cs"/>
+    <Compile Include="API\yocto_hubport.cs"/>
+    <Compile Include="API\yocto_humidity.cs"/>
+    <Compile Include="API\yocto_i2cport.cs"/>
+    <Compile Include="API\yocto_latitude.cs"/>
+    <Compile Include="API\yocto_led.cs"/>
+    <Compile Include="API\yocto_lightsensor.cs"/>
+    <Compile Include="API\yocto_longitude.cs"/>
+    <Compile Include="API\yocto_magnetometer.cs"/>
+    <Compile Include="API\yocto_messagebox.cs"/>
+    <Compile Include="API\yocto_motor.cs"/>
+    <Compile Include="API\yocto_multiaxiscontroller.cs"/>
+    <Compile Include="API\yocto_multicellweighscale.cs"/>
+    <Compile Include="API\yocto_multisenscontroller.cs"/>
+    <Compile Include="API\yocto_network.cs"/>
+    <Compile Include="API\yocto_oscontrol.cs"/>
+    <Compile Include="API\yocto_power.cs"/>
+    <Compile Include="API\yocto_poweroutput.cs"/>
+    <Compile Include="API\yocto_powersupply.cs"/>
+    <Compile Include="API\yocto_pressure.cs"/>
+    <Compile Include="API\yocto_proximity.cs"/>
+    <Compile Include="API\yocto_pwminput.cs"/>
+    <Compile Include="API\yocto_pwmoutput.cs"/>
+    <Compile Include="API\yocto_pwmpowersource.cs"/>
+    <Compile Include="API\yocto_quadraturedecoder.cs"/>
+    <Compile Include="API\yocto_rangefinder.cs"/>
+    <Compile Include="API\yocto_realtimeclock.cs"/>
+    <Compile Include="API\yocto_refframe.cs"/>
+    <Compile Include="API\yocto_relay.cs"/>
+    <Compile Include="API\yocto_segmenteddisplay.cs"/>
+    <Compile Include="API\yocto_serialport.cs"/>
+    <Compile Include="API\yocto_servo.cs"/>
+    <Compile Include="API\yocto_spiport.cs"/>
+    <Compile Include="API\yocto_steppermotor.cs"/>
+    <Compile Include="API\yocto_temperature.cs"/>
+    <Compile Include="API\yocto_tilt.cs"/>
+    <Compile Include="API\yocto_tvoc.cs"/>
+    <Compile Include="API\yocto_voc.cs"/>
+    <Compile Include="API\yocto_voltage.cs"/>
+    <Compile Include="API\yocto_voltageoutput.cs"/>
+    <Compile Include="API\yocto_wakeupmonitor.cs"/>
+    <Compile Include="API\yocto_wakeupschedule.cs"/>
+    <Compile Include="API\yocto_watchdog.cs"/>
+    <Compile Include="API\yocto_weighscale.cs"/>
+    <Compile Include="API\yocto_wireless.cs"/>
+    <Compile Include="yocto_accelerometer_proxy.cs"/>
+    <Compile Include="yocto_altitude_proxy.cs"/>
+    <Compile Include="yocto_anbutton_proxy.cs"/>
+    <Compile Include="yocto_arithmeticsensor_proxy.cs"/>
+    <Compile Include="yocto_audioin_proxy.cs"/>
+    <Compile Include="yocto_audioout_proxy.cs"/>
+    <Compile Include="yocto_bluetoothlink_proxy.cs"/>
+    <Compile Include="yocto_buzzer_proxy.cs"/>
+    <Compile Include="yocto_carbondioxide_proxy.cs"/>
+    <Compile Include="yocto_cellular_proxy.cs"/>
+    <Compile Include="yocto_colorled_proxy.cs"/>
+    <Compile Include="yocto_colorledcluster_proxy.cs"/>
+    <Compile Include="yocto_compass_proxy.cs"/>
+    <Compile Include="yocto_current_proxy.cs"/>
+    <Compile Include="yocto_currentloopoutput_proxy.cs"/>
+    <Compile Include="yocto_daisychain_proxy.cs"/>
+    <Compile Include="yocto_datalogger_proxy.cs"/>
+    <Compile Include="yocto_digitalio_proxy.cs"/>
+    <Compile Include="yocto_display_proxy.cs"/>
+    <Compile Include="yocto_dualpower_proxy.cs"/>
+    <Compile Include="yocto_files_proxy.cs"/>
+    <Compile Include="yocto_genericsensor_proxy.cs"/>
+    <Compile Include="yocto_gps_proxy.cs"/>
+    <Compile Include="yocto_groundspeed_proxy.cs"/>
+    <Compile Include="yocto_gyro_proxy.cs"/>
+    <Compile Include="yocto_hubport_proxy.cs"/>
+    <Compile Include="yocto_humidity_proxy.cs"/>
+    <Compile Include="yocto_i2cport_proxy.cs"/>
+    <Compile Include="yocto_latitude_proxy.cs"/>
+    <Compile Include="yocto_led_proxy.cs"/>
+    <Compile Include="yocto_lightsensor_proxy.cs"/>
+    <Compile Include="yocto_longitude_proxy.cs"/>
+    <Compile Include="yocto_magnetometer_proxy.cs"/>
+    <Compile Include="yocto_messagebox_proxy.cs"/>
+    <Compile Include="yocto_motor_proxy.cs"/>
+    <Compile Include="yocto_multiaxiscontroller_proxy.cs"/>
+    <Compile Include="yocto_multicellweighscale_proxy.cs"/>
+    <Compile Include="yocto_multisenscontroller_proxy.cs"/>
+    <Compile Include="yocto_network_proxy.cs"/>
+    <Compile Include="yocto_oscontrol_proxy.cs"/>
+    <Compile Include="yocto_power_proxy.cs"/>
+    <Compile Include="yocto_poweroutput_proxy.cs"/>
+    <Compile Include="yocto_powersupply_proxy.cs"/>
+    <Compile Include="yocto_pressure_proxy.cs"/>
+    <Compile Include="yocto_proximity_proxy.cs"/>
+    <Compile Include="yocto_pwminput_proxy.cs"/>
+    <Compile Include="yocto_pwmoutput_proxy.cs"/>
+    <Compile Include="yocto_pwmpowersource_proxy.cs"/>
+    <Compile Include="yocto_qt_proxy.cs"/>
+    <Compile Include="yocto_quadraturedecoder_proxy.cs"/>
+    <Compile Include="yocto_rangefinder_proxy.cs"/>
+    <Compile Include="yocto_realtimeclock_proxy.cs"/>
+    <Compile Include="yocto_refframe_proxy.cs"/>
+    <Compile Include="yocto_relay_proxy.cs"/>
+    <Compile Include="yocto_segmenteddisplay_proxy.cs"/>
+    <Compile Include="yocto_serialport_proxy.cs"/>
+    <Compile Include="yocto_servo_proxy.cs"/>
+    <Compile Include="yocto_spiport_proxy.cs"/>
+    <Compile Include="yocto_steppermotor_proxy.cs"/>
+    <Compile Include="yocto_temperature_proxy.cs"/>
+    <Compile Include="yocto_tilt_proxy.cs"/>
+    <Compile Include="yocto_tvoc_proxy.cs"/>
+    <Compile Include="yocto_voc_proxy.cs"/>
+    <Compile Include="yocto_voltage_proxy.cs"/>
+    <Compile Include="yocto_voltageoutput_proxy.cs"/>
+    <Compile Include="yocto_wakeupmonitor_proxy.cs"/>
+    <Compile Include="yocto_wakeupschedule_proxy.cs"/>
+    <Compile Include="yocto_watchdog_proxy.cs"/>
+    <Compile Include="yocto_weighscale_proxy.cs"/>
+    <Compile Include="yocto_wireless_proxy.cs"/>
+    <Compile Include="yocto_firmwareupdate_proxy.cs"/>
+    <Compile Include="yocto_displaylayer_proxy.cs"/>
+    <Compile Include="yocto_filerecord_proxy.cs"/>
+    <Compile Include="yocto_wlanrecord_proxy.cs"/>
+    <Compile Include="yocto_cellrecord_proxy.cs"/>
+    <Compile Include="yocto_sms_proxy.cs"/>
+    <Compile Include="yocto_snoopingrecord_proxy.cs"/>
+
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="yapi.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="amd64\yapi.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

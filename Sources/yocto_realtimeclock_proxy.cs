@@ -1,0 +1,388 @@
+/*********************************************************************
+ *
+ *  $Id: yocto_realtimeclock_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *
+ *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
+ *
+ *  - - - - - - - - - License information: - - - - - - - - -
+ *
+ *  Copyright (C) 2011 and beyond by Yoctopuce Sarl, Switzerland.
+ *
+ *  Yoctopuce Sarl (hereafter Licensor) grants to you a perpetual
+ *  non-exclusive license to use, modify, copy and integrate this
+ *  file into your software for the sole purpose of interfacing
+ *  with Yoctopuce products.
+ *
+ *  You may reproduce and distribute copies of this file in
+ *  source or object form, as long as the sole purpose of this
+ *  code is to interface with Yoctopuce products. You must retain
+ *  this notice in the distributed source file.
+ *
+ *  You should refer to Yoctopuce General Terms and Conditions
+ *  for additional information regarding your rights and
+ *  obligations.
+ *
+ *  THE SOFTWARE AND DOCUMENTATION ARE PROVIDED 'AS IS' WITHOUT
+ *  WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING
+ *  WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, FITNESS
+ *  FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO
+ *  EVENT SHALL LICENSOR BE LIABLE FOR ANY INCIDENTAL, SPECIAL,
+ *  INDIRECT OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA,
+ *  COST OF PROCUREMENT OF SUBSTITUTE GOODS, TECHNOLOGY OR
+ *  SERVICES, ANY CLAIMS BY THIRD PARTIES (INCLUDING BUT NOT
+ *  LIMITED TO ANY DEFENSE THEREOF), ANY CLAIMS FOR INDEMNITY OR
+ *  CONTRIBUTION, OR OTHER SIMILAR COSTS, WHETHER ASSERTED ON THE
+ *  BASIS OF CONTRACT, TORT (INCLUDING NEGLIGENCE), BREACH OF
+ *  WARRANTY, OR OTHERWISE.
+ *
+ *********************************************************************/
+
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
+
+namespace YoctoProxyAPI
+{
+    //--- (YRealTimeClock class start)
+    static public partial class YoctoProxyManager
+    {
+        public static YRealTimeClockProxy FindRealTimeClock(string name)
+        {
+            // cases to handle:
+            // name =""  no matching unknwn
+            // name =""  unknown exists
+            // name != "" no  matching unknown
+            // name !="" unknown exists
+            YRealTimeClock func = null;
+            YRealTimeClockProxy res = (YRealTimeClockProxy)YFunctionProxy.FindSimilarUnknownFunction("YRealTimeClockProxy");
+
+            if (name == "") {
+                if (res != null) return res;
+                res = (YRealTimeClockProxy)YFunctionProxy.FindSimilarKnownFunction("YRealTimeClockProxy");
+                if (res != null) return res;
+                func = YRealTimeClock.FirstRealTimeClock();
+                if (func != null) {
+                    name = func.get_hardwareId();
+                    if (func.get_userData() != null) {
+                        return (YRealTimeClockProxy)func.get_userData();
+                    }
+                }
+            } else {
+                func = YRealTimeClock.FindRealTimeClock(name);
+                if (func.get_userData() != null) {
+                    return (YRealTimeClockProxy)func.get_userData();
+                }
+            }
+            if (res == null) {
+                res = new YRealTimeClockProxy(func, name);
+            }
+            if (func != null) {
+                res.linkToHardware(name);
+                if(func.isOnline()) res.arrival();
+            }
+            return res;
+        }
+    }
+
+/**
+ * <summary>
+ *   The YRealTimeClock class provide access to the embedded real-time clock available on some Yoctopuce
+ *   devices, for instance using a YoctoHub-Wireless-g, a YoctoHub-GSM-3G-NA, a YoctoHub-GSM-3G-EU or a YoctoHub-Wireless-SR.
+ * <para>
+ *   It can provide current date and time, even after a power outage
+ *   lasting several days. It is the base for automated wake-up functions provided by the WakeUpScheduler.
+ *   The current time may represent a local time as well as an UTC time, but no automatic time change
+ *   will occur to account for daylight saving time.
+ * </para>
+ * <para>
+ * </para>
+ * </summary>
+ */
+    public class YRealTimeClockProxy : YFunctionProxy
+    {
+        //--- (end of YRealTimeClock class start)
+        //--- (YRealTimeClock definitions)
+        public const long _UnixTime_INVALID = YAPI.INVALID_LONG;
+        public const string _DateTime_INVALID = YAPI.INVALID_STRING;
+        public const int _UtcOffset_INVALID = YAPI.INVALID_INT;
+        public const int _TimeSet_INVALID = 0;
+        public const int _TimeSet_FALSE = 1;
+        public const int _TimeSet_TRUE = 2;
+
+        // reference to real YoctoAPI object
+        protected new YRealTimeClock _func;
+        // property cache
+        protected int _utcOffset = _UtcOffset_INVALID;
+        //--- (end of YRealTimeClock definitions)
+
+        //--- (YRealTimeClock implementation)
+        internal YRealTimeClockProxy(YRealTimeClock hwd, string instantiationName) : base(hwd, instantiationName)
+        {
+            InternalStuff.log("RealTimeClock " + instantiationName + " instantiation");
+            base_init(hwd, instantiationName);
+        }
+
+        // perform the initial setup that may be done without a YoctoAPI object (hwd can be null)
+        internal override void base_init(YFunction hwd, string instantiationName)
+        {
+            _func = (YRealTimeClock) hwd;
+           	base.base_init(hwd, instantiationName);
+        }
+
+        // link the instance to a real YoctoAPI object
+        internal override void linkToHardware(string hwdName)
+        {
+            YRealTimeClock hwd = YRealTimeClock.FindRealTimeClock(hwdName);
+            // first redo base_init to update all _func pointers
+            base_init(hwd, hwdName);
+            // then setup Yocto-API pointers and callbacks
+            init(hwd);
+        }
+
+        // perform the 2nd stage setup that requires YoctoAPI object
+        protected void init(YRealTimeClock hwd)
+        {
+            if (hwd == null) return;
+            base.init(hwd);
+            InternalStuff.log("registering RealTimeClock callback");
+            _func.registerValueCallback(valueChangeCallback);
+        }
+
+        public override string[] GetSimilarFunctions()
+        {
+            List<string> res = new List<string>();
+            YRealTimeClock it = YRealTimeClock.FirstRealTimeClock();
+            while (it != null)
+            {
+                res.Add(it.get_hardwareId());
+                it = it.nextRealTimeClock();
+            }
+            return res.ToArray();
+        }
+
+        protected override void functionArrival()
+        {
+            base.functionArrival();
+        }
+
+        protected override void moduleConfigHasChanged()
+       	{
+            base.moduleConfigHasChanged();
+            _utcOffset = _func.get_utcOffset();
+        }
+
+        // property with cached value for instant access (derived from advertisedValue)
+        public string Clock
+        {
+            get
+            {
+                if (_func == null) return _AdvertisedValue_INVALID;
+                return (_online ? _advertisedValue : _AdvertisedValue_INVALID);
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the current time in Unix format (number of elapsed seconds since Jan 1st, 1970).
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the current time in Unix format (number of elapsed seconds since Jan 1st, 1970)
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YRealTimeClock.UNIXTIME_INVALID</c>.
+         * </para>
+         */
+        public long get_unixTime()
+        {
+            if (_func == null)
+            {
+                string msg = "No RealTimeClock connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            long res = _func.get_unixTime();
+            if (res == YAPI.INVALID_INT) res = _UnixTime_INVALID;
+            return res;
+        }
+
+        /**
+         * <summary>
+         *   Changes the current time.
+         * <para>
+         *   Time is specifid in Unix format (number of elapsed seconds since Jan 1st, 1970).
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   an integer corresponding to the current time
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_unixTime(long newval)
+        {
+            if (_func == null)
+            {
+                string msg = "No RealTimeClock connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            if (newval == _UnixTime_INVALID) return YAPI.SUCCESS;
+            return _func.set_unixTime(newval);
+        }
+
+
+        /**
+         * <summary>
+         *   Returns the current time in the form "YYYY/MM/DD hh:mm:ss".
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a string corresponding to the current time in the form "YYYY/MM/DD hh:mm:ss"
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YRealTimeClock.DATETIME_INVALID</c>.
+         * </para>
+         */
+        public string get_dateTime()
+        {
+            if (_func == null)
+            {
+                string msg = "No RealTimeClock connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            return _func.get_dateTime();
+        }
+
+        /**
+         * <summary>
+         *   Returns the number of seconds between current time and UTC time (time zone).
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the number of seconds between current time and UTC time (time zone)
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YRealTimeClock.UTCOFFSET_INVALID</c>.
+         * </para>
+         */
+        public int get_utcOffset()
+        {
+            if (_func == null)
+            {
+                string msg = "No RealTimeClock connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            return _func.get_utcOffset();
+        }
+
+        /**
+         * <summary>
+         *   Changes the number of seconds between current time and UTC time (time zone).
+         * <para>
+         *   The timezone is automatically rounded to the nearest multiple of 15 minutes.
+         *   Remember to call the <c>saveToFlash()</c> method of the module if the
+         *   modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   an integer corresponding to the number of seconds between current time and UTC time (time zone)
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_utcOffset(int newval)
+        {
+            if (_func == null)
+            {
+                string msg = "No RealTimeClock connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            if (newval == _UtcOffset_INVALID) return YAPI.SUCCESS;
+            return _func.set_utcOffset(newval);
+        }
+
+
+        // property with cached value for instant access (configuration)
+        public int UtcOffset
+        {
+            get
+            {
+                if (_func == null) return _UtcOffset_INVALID;
+                return (_online ? _utcOffset : _UtcOffset_INVALID);
+            }
+            set
+            {
+                setprop_utcOffset(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_utcOffset(int newval)
+        {
+            if (_func == null) return;
+            if (!_online) return;
+            if (newval == _UtcOffset_INVALID) return;
+            if (newval == _utcOffset) return;
+            _func.set_utcOffset(newval);
+            _utcOffset = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns true if the clock has been set, and false otherwise.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>YRealTimeClock.TIMESET_FALSE</c> or <c>YRealTimeClock.TIMESET_TRUE</c>, according to true
+         *   if the clock has been set, and false otherwise
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YRealTimeClock.TIMESET_INVALID</c>.
+         * </para>
+         */
+        public int get_timeSet()
+        {
+            if (_func == null)
+            {
+                string msg = "No RealTimeClock connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_timeSet()+1;
+        }
+    }
+    //--- (end of YRealTimeClock implementation)
+}
+

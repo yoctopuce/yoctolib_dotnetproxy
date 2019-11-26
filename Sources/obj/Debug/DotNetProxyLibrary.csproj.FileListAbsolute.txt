@@ -1,0 +1,8 @@
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Binaries\yapi.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Binaries\amd64\yapi.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Binaries\DotNetProxyLibrary.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Binaries\DotNetProxyLibrary.pdb
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Sources\obj\Debug\DotNetProxyLibrary.csprojAssemblyReference.cache
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Sources\obj\Debug\DotNetProxyLibrary.csproj.CoreCompileInputs.cache
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Sources\obj\Debug\DotNetProxyLibrary.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\Sources\obj\Debug\DotNetProxyLibrary.pdb
