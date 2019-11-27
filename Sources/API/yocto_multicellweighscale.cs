@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_multicellweighscale.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_multicellweighscale.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindMultiCellWeighScale(), the high-level API for MultiCellWeighScale functions
  *
@@ -891,3 +892,5 @@ public class YMultiCellWeighScale : YSensor
     //--- (end of YMultiCellWeighScale functions)
 }
 #pragma warning restore 1591
+
+}

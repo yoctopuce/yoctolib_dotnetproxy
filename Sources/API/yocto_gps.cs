@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_gps.cs 38462 2019-11-25 17:14:30Z seb $
+ *  $Id: yocto_gps.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindGps(), the high-level API for Gps functions
  *
@@ -968,3 +969,5 @@ public class YGps : YFunction
     //--- (end of YGps functions)
 }
 #pragma warning restore 1591
+
+}

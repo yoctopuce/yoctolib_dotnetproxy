@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_lightsensor_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_lightsensor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YLightSensorProxy, the Proxy API for LightSensor
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YLightSensor class allows you to read and configure Yoctopuce light
- *   sensors, for instance using a Yocto-Light-V3, a Yocto-RangeFinder or a Yocto-Proximity.
+ *   sensors, for instance using a Yocto-Light-V3, a Yocto-Proximity or a Yocto-RangeFinder.
  * <para>
  *   It inherits from YSensor class the core functions to read measurements,
  *   to register callback functions, to access the autonomous datalogger.

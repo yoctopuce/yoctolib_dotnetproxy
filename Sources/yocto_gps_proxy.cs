@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gps_proxy.cs 38462 2019-11-25 17:14:30Z seb $
+ *  $Id: yocto_gps_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YGpsProxy, the Proxy API for Gps
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellular_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_cellular_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YCellularProxy, the Proxy API for Cellular
  *
@@ -43,6 +43,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -90,7 +91,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YCellular class provides control over cellular network parameters
- *   and status for devices that are GSM-enabled, for instance using a YoctoHub-GSM-3G-NA, a YoctoHub-GSM-3G-EU or a YoctoHub-GSM-2G.
+ *   and status for devices that are GSM-enabled, for instance using a YoctoHub-GSM-2G, a YoctoHub-GSM-3G-EU or a YoctoHub-GSM-3G-NA.
  * <para>
  * </para>
  * <para>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_digitalio_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_digitalio_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YDigitalIOProxy, the Proxy API for DigitalIO
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -91,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YDigitalIO class allows you drive a Yoctopuce digital input/output port, for instance using a Yocto-Maxi-IO-V2 or a Yocto-IO.
+ *   The YDigitalIO class allows you drive a Yoctopuce digital input/output port, for instance using a Yocto-IO or a Yocto-Maxi-IO-V2.
  * <para>
  *   It can be used to setup the direction of each channel, to read the state of each channel
  *   and to switch the state of each channel configures as an output.

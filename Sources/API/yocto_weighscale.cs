@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_weighscale.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_weighscale.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindWeighScale(), the high-level API for WeighScale functions
  *
@@ -1142,3 +1143,5 @@ public class YWeighScale : YSensor
     //--- (end of YWeighScale functions)
 }
 #pragma warning restore 1591
+
+}

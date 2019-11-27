@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_display_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_display_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YDisplayProxy, the Proxy API for Display
  *
@@ -43,6 +43,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -89,7 +90,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YDisplay class allows to drive Yoctopuce displays, for instance using a Yocto-MaxiDisplay, a Yocto-MiniDisplay, a Yocto-MaxiDisplay-G or a Yocto-Display.
+ *   The YDisplay class allows to drive Yoctopuce displays, for instance using a Yocto-Display, a Yocto-MaxiDisplay, a Yocto-MaxiDisplay-G or a Yocto-MiniDisplay.
  * <para>
  *   Yoctopuce display interface has been designed to easily
  *   show information and images. The device provides built-in

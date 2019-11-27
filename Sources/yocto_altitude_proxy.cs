@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_altitude_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_altitude_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YAltitudeProxy, the Proxy API for Altitude
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YAltitude class allows you to read and configure Yoctopuce altitude
- *   sensors, for instance using a Yocto-GPS or a Yocto-Altimeter-V2.
+ *   sensors, for instance using a Yocto-Altimeter-V2 or a Yocto-GPS.
  * <para>
  *   It inherits from the YSensor class the core functions to read measurements,
  *   to register callback functions, to access the autonomous datalogger.

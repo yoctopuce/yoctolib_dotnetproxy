@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- * $Id: yocto_api.cs 38137 2019-11-14 10:23:36Z seb $
+ * $Id: yocto_api.cs 38514 2019-11-26 16:54:39Z seb $
  *
  * High-level programming interface, common to all modules
  *
@@ -2771,7 +2772,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "38478";
+    public const string YOCTO_API_BUILD_NO = "38532";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -13564,7 +13565,7 @@ public class YSensor : YFunction
 /**
  * <summary>
  *   A non-volatile memory for storing ongoing measured data is available on most Yoctopuce
- *   sensors, for instance using a Yocto-Light-V3, a Yocto-Meteo-V2, a Yocto-Watt or a Yocto-3D-V2.
+ *   sensors, for instance using a Yocto-3D-V2, a Yocto-Light-V3, a Yocto-Meteo-V2 or a Yocto-Watt.
  * <para>
  *   Recording can happen automatically, without requiring a permanent
  *   connection to a computer.
@@ -14027,7 +14028,7 @@ public class YDataLogger : YFunction
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the data logger, for instance
-     *   <c>LIGHTMK3.dataLogger</c>.
+     *   <c>Y3DMK002.dataLogger</c>.
      * </param>
      * <returns>
      *   a <c>YDataLogger</c> object allowing you to drive the data logger.
@@ -14299,3 +14300,4 @@ public class YDataLogger : YFunction
 }
 
 #pragma warning restore 1591
+}

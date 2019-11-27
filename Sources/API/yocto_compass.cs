@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_compass.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ *  $Id: yocto_compass.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindCompass(), the high-level API for Compass functions
  *
@@ -446,3 +447,5 @@ public class YCompass : YSensor
     //--- (end of YCompass functions)
 }
 #pragma warning restore 1591
+
+}

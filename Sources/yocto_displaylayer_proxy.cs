@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_displaylayer_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_displaylayer_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YDisplayLayerProxy, the Proxy API for DisplayLayer
  *
@@ -44,6 +44,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {

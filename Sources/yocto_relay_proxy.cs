@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_relay_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_relay_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YRelayProxy, the Proxy API for Relay
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -91,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YRelay class allows you to drive a Yoctopuce Relay, for instance using a Yocto-PowerRelay-V3, a Yocto-Relay, a Yocto-MaxiPowerRelay or a Yocto-MaxiCoupler-V2.
+ *   The YRelay class allows you to drive a Yoctopuce Relay, for instance using a Yocto-MaxiCoupler-V2, a Yocto-MaxiPowerRelay, a Yocto-PowerRelay-V3 or a Yocto-Relay.
  * <para>
  *   It can be used to simply switch the relay, but also to automatically generate short pulses of
  *   determined duration.

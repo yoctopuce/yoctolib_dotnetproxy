@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_anbutton_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_anbutton_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YAnButtonProxy, the Proxy API for AnButton
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YAnButton class allows you to access simple resistive inputs on Yoctopuce
- *   devices, for instance using a Yocto-Knob, a Yocto-MaxiDisplay, a Yocto-Buzzer or a Yocto-MaxiDisplay-G.
+ *   devices, for instance using a Yocto-Buzzer, a Yocto-Display, a Yocto-Knob or a Yocto-MaxiDisplay.
  * <para>
  *   Such inputs can be used to measure the state
  *   of a simple button as well as to read an analog potentiometer (variable resistance).

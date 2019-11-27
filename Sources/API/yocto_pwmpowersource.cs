@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_pwmpowersource.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_pwmpowersource.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindPwmPowerSource(), the high-level API for PwmPowerSource functions
  *
@@ -355,3 +356,5 @@ public class YPwmPowerSource : YFunction
     //--- (end of YPwmPowerSource functions)
 }
 #pragma warning restore 1591
+
+}

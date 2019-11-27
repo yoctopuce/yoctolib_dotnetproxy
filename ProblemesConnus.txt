@@ -1,4 +1,0 @@
-- Yocto-Display:   get_display_layer marche et le layer est utilisable, par
-   contre, c'est moche que ce ne soit pas un displayLayer_proxy, on devrait
-   peut etre juste renvoyer une classe directmeent dérivée de displayLayer, et
-   ca permettra peutre etre de rajouter des truc plus part si besoin.   

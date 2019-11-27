@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_temperature_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_temperature_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YTemperatureProxy, the Proxy API for Temperature
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YTemperature class allows you to read and configure Yoctopuce temperature
- *   sensors, for instance using a Yocto-Meteo-V2, a Yocto-Thermocouple, a Yocto-PT100 or a Yocto-Temperature.
+ *   sensors, for instance using a Yocto-Meteo-V2, a Yocto-PT100, a Yocto-Temperature or a Yocto-Thermocouple.
  * <para>
  *   It inherits from YSensor class the core functions to read measurements, to
  *   register callback functions, to access the autonomous datalogger.

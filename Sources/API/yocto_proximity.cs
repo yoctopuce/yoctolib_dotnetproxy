@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_proximity.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_proximity.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindProximity(), the high-level API for Proximity functions
  *
@@ -926,3 +927,5 @@ public class YProximity : YSensor
     //--- (end of YProximity functions)
 }
 #pragma warning restore 1591
+
+}

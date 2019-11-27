@@ -1,6 +1,7 @@
-/********************************************************************
+namespace YoctoLib 
+{/********************************************************************
  *
- * $Id: yocto_datalogger.cs 36829 2019-08-12 06:45:48Z seb $
+ * $Id: yocto_datalogger.cs 38514 2019-11-26 16:54:39Z seb $
  *
  * High-level programming interface, common to all modules
  *
@@ -42,3 +43,5 @@ using System;
 
 // DataLogger class has been moved to yocto_api.cs
 
+
+}

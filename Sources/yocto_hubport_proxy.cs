@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_hubport_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_hubport_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YHubPortProxy, the Proxy API for HubPort
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YHubPort class provides control over the power supply for every port
- *   on a YoctoHub, for instance using a YoctoHub-Ethernet, a YoctoHub-Wireless-g, a YoctoHub-Shield or a YoctoHub-GSM-3G-NA.
+ *   on a YoctoHub, for instance using a YoctoHub-Ethernet, a YoctoHub-GSM-3G-NA, a YoctoHub-Shield or a YoctoHub-Wireless-g.
  * <para>
  *   It provide information about the device connected to it.
  *   The logical name of a YHubPort is always automatically set to the

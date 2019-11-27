@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_accelerometer.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ *  $Id: yocto_accelerometer.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindAccelerometer(), the high-level API for Accelerometer functions
  *
@@ -524,3 +525,5 @@ public class YAccelerometer : YSensor
     //--- (end of YAccelerometer functions)
 }
 #pragma warning restore 1591
+
+}

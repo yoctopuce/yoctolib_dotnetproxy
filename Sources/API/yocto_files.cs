@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- * $Id: yocto_files.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ * $Id: yocto_files.cs 38514 2019-11-26 16:54:39Z seb $
  *
  * Implements yFindFiles(), the high-level API for Files functions
  *
@@ -138,7 +139,7 @@ public class YFileRecord
 /**
  * <summary>
  *   The YFiles class is used to access the filesystem embedded on
- *   some Yoctopuce devices, for instance using a YoctoHub-Ethernet, a Yocto-Color-V2, a YoctoHub-Wireless-g or a Yocto-RS232.
+ *   some Yoctopuce devices, for instance using a Yocto-Color-V2, a Yocto-RS232, a YoctoHub-Ethernet or a YoctoHub-Wireless-g.
  * <para>
  *   This filesystem makes it
  *   possible for instance to design a custom web UI
@@ -288,7 +289,7 @@ public class YFiles : YFunction
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the filesystem, for instance
-     *   <c>YHUBETH1.files</c>.
+     *   <c>YRGBLED2.files</c>.
      * </param>
      * <returns>
      *   a <c>YFiles</c> object allowing you to drive the filesystem.
@@ -605,3 +606,4 @@ public class YFiles : YFunction
 
 }
 #pragma warning restore 1591
+}

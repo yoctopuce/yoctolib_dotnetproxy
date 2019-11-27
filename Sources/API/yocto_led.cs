@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_led.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_led.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindLed(), the high-level API for Led functions
  *
@@ -483,3 +484,5 @@ public class YLed : YFunction
     //--- (end of YLed functions)
 }
 #pragma warning restore 1591
+
+}

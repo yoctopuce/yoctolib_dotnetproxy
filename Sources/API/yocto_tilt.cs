@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_tilt.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ *  $Id: yocto_tilt.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindTilt(), the high-level API for Tilt functions
  *
@@ -417,3 +418,5 @@ public class YTilt : YSensor
     //--- (end of YTilt functions)
 }
 #pragma warning restore 1591
+
+}

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_humidity_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_humidity_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YHumidityProxy, the Proxy API for Humidity
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YHumidity class allows you to read and configure Yoctopuce humidity
- *   sensors, for instance using a Yocto-Meteo-V2, a Yocto-VOC-V3 or a Yocto-CO2-V2.
+ *   sensors, for instance using a Yocto-CO2-V2, a Yocto-Meteo-V2 or a Yocto-VOC-V3.
  * <para>
  *   It inherits from YSensor class the core functions to read measurements,
  *   to register callback functions, to access the autonomous datalogger.

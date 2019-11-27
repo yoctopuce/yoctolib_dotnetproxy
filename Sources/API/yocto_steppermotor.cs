@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_steppermotor.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_steppermotor.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindStepperMotor(), the high-level API for StepperMotor functions
  *
@@ -1327,3 +1328,5 @@ public class YStepperMotor : YFunction
     //--- (end of YStepperMotor functions)
 }
 #pragma warning restore 1591
+
+}

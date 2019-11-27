@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_serialport_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_serialport_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YSerialPortProxy, the Proxy API for SerialPort
  *
@@ -43,6 +43,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -89,7 +90,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YSerialPort class allows you to fully drive a Yoctopuce serial port, for instance using a Yocto-RS232, a Yocto-RS485 or a Yocto-Serial.
+ *   The YSerialPort class allows you to fully drive a Yoctopuce serial port, for instance using a Yocto-RS232, a Yocto-RS485-V2 or a Yocto-Serial.
  * <para>
  *   It can be used to send and receive data, and to configure communication
  *   parameters (baud rate, bit count, parity, flow control and protocol).

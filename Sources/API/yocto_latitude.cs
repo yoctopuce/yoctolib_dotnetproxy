@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_latitude.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_latitude.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindLatitude(), the high-level API for Latitude functions
  *
@@ -321,3 +322,5 @@ public class YLatitude : YSensor
     //--- (end of YLatitude functions)
 }
 #pragma warning restore 1591
+
+}

@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ *  $Id: yocto_wakeupmonitor.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindWakeUpMonitor(), the high-level API for WakeUpMonitor functions
  *
@@ -58,7 +59,7 @@ using YFUN_DESCR = System.Int32;
 /**
  * <summary>
  *   The YWakeUpMonitor class handles globally all wake-up sources, as well
- *   as automated sleep mode, for instance using a YoctoHub-Wireless-g, a YoctoHub-GSM-3G-NA, a YoctoHub-GSM-3G-EU or a YoctoHub-Wireless-SR.
+ *   as automated sleep mode, for instance using a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
  * <para>
  * </para>
  * <para>
@@ -440,7 +441,7 @@ public class YWakeUpMonitor : YFunction
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the monitor, for instance
-     *   <c>YHUBWLN3.wakeUpMonitor</c>.
+     *   <c>YHUBGSM3.wakeUpMonitor</c>.
      * </param>
      * <returns>
      *   a <c>YWakeUpMonitor</c> object allowing you to drive the monitor.
@@ -703,3 +704,5 @@ public class YWakeUpMonitor : YFunction
     //--- (end of YWakeUpMonitor functions)
 }
 #pragma warning restore 1591
+
+}

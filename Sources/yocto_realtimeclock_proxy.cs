@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_realtimeclock_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YRealTimeClock class provide access to the embedded real-time clock available on some Yoctopuce
- *   devices, for instance using a YoctoHub-Wireless-g, a YoctoHub-GSM-3G-NA, a YoctoHub-GSM-3G-EU or a YoctoHub-Wireless-SR.
+ *   devices, for instance using a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
  * <para>
  *   It can provide current date and time, even after a power outage
  *   lasting several days. It is the base for automated wake-up functions provided by the WakeUpScheduler.

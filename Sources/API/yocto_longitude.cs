@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_longitude.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_longitude.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindLongitude(), the high-level API for Longitude functions
  *
@@ -321,3 +322,5 @@ public class YLongitude : YSensor
     //--- (end of YLongitude functions)
 }
 #pragma warning restore 1591
+
+}

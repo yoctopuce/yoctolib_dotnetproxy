@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_tvoc.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_tvoc.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindTvoc(), the high-level API for Tvoc functions
  *
@@ -320,3 +321,5 @@ public class YTvoc : YSensor
     //--- (end of YTvoc functions)
 }
 #pragma warning restore 1591
+
+}

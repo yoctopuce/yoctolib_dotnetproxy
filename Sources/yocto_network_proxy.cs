@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_network_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_network_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YNetworkProxy, the Proxy API for Network
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   YNetwork objects provide access to TCP/IP parameters of Yoctopuce
- *   devices that include a built-in network interface, for instance using a YoctoHub-Ethernet, a YoctoHub-Wireless-g, a YoctoHub-GSM-3G-NA or a YoctoHub-GSM-3G-EU.
+ *   devices that include a built-in network interface, for instance using a YoctoHub-Ethernet, a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA or a YoctoHub-Wireless-g.
  * <para>
  * </para>
  * <para>

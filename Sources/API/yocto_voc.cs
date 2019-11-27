@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_voc.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_voc.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindVoc(), the high-level API for Voc functions
  *
@@ -320,3 +321,5 @@ public class YVoc : YSensor
     //--- (end of YVoc functions)
 }
 #pragma warning restore 1591
+
+}

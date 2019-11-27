@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- * $Id: yocto_gyro.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ * $Id: yocto_gyro.cs 38514 2019-11-26 16:54:39Z seb $
  *
  * Implements yFindGyro(), the high-level API for Gyro functions
  *
@@ -1171,3 +1172,4 @@ public class YGyro : YSensor
     //--- (end of generated code: YGyro functions)
 }
 #pragma warning restore 1591
+}

@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_colorledcluster.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_colorledcluster.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindColorLedCluster(), the high-level API for ColorLedCluster functions
  *
@@ -1854,3 +1855,5 @@ public class YColorLedCluster : YFunction
     //--- (end of YColorLedCluster functions)
 }
 #pragma warning restore 1591
+
+}

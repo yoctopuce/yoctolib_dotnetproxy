@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_buzzer.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_buzzer.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindBuzzer(), the high-level API for Buzzer functions
  *
@@ -1000,3 +1001,5 @@ public class YBuzzer : YFunction
     //--- (end of YBuzzer functions)
 }
 #pragma warning restore 1591
+
+}

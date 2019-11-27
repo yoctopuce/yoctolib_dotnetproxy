@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gyro_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_gyro_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YGyroProxy, the Proxy API for Gyro
  *
@@ -43,6 +43,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {

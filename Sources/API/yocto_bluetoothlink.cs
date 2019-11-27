@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_bluetoothlink.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_bluetoothlink.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindBluetoothLink(), the high-level API for BluetoothLink functions
  *
@@ -832,3 +833,5 @@ public class YBluetoothLink : YFunction
     //--- (end of YBluetoothLink functions)
 }
 #pragma warning restore 1591
+
+}

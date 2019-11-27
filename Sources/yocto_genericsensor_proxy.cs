@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_genericsensor_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_genericsensor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YGenericSensorProxy, the Proxy API for GenericSensor
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YGenericSensor class allows you to read and configure Yoctopuce signal
- *   transducers, for instance using a Yocto-4-20mA-Rx, a Yocto-0-10V-Rx, a Yocto-milliVolt-Rx or a Yocto-RS232.
+ *   transducers, for instance using a Yocto-0-10V-Rx, a Yocto-4-20mA-Rx, a Yocto-RS232 or a Yocto-milliVolt-Rx.
  * <para>
  *   It inherits from YSensor class the core functions to read measurements,
  *   to register callback functions, to access the autonomous datalogger.

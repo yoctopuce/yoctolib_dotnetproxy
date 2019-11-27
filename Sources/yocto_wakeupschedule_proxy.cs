@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupschedule_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_wakeupschedule_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YWakeUpScheduleProxy, the Proxy API for WakeUpSchedule
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -91,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YWakeUpSchedule class implements a wake up condition, for instance using a YoctoHub-Wireless-g, a YoctoHub-GSM-3G-NA, a YoctoHub-GSM-3G-EU or a YoctoHub-Wireless-SR.
+ *   The YWakeUpSchedule class implements a wake up condition, for instance using a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
  * <para>
  *   The wake up time is
  *   specified as a set of months and/or days and/or hours and/or minutes when the

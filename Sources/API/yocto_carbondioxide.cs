@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_carbondioxide.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ *  $Id: yocto_carbondioxide.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindCarbonDioxide(), the high-level API for CarbonDioxide functions
  *
@@ -487,3 +488,5 @@ public class YCarbonDioxide : YSensor
     //--- (end of YCarbonDioxide functions)
 }
 #pragma warning restore 1591
+
+}

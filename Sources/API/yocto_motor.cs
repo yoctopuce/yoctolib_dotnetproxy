@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_motor.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ *  $Id: yocto_motor.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindMotor(), the high-level API for Motor functions
  *
@@ -957,3 +958,5 @@ public class YMotor : YFunction
     //--- (end of YMotor functions)
 }
 #pragma warning restore 1591
+
+}

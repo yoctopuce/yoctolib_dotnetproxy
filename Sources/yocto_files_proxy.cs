@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_files_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_files_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YFilesProxy, the Proxy API for Files
  *
@@ -44,6 +44,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -91,7 +92,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YFiles class is used to access the filesystem embedded on
- *   some Yoctopuce devices, for instance using a YoctoHub-Ethernet, a Yocto-Color-V2, a YoctoHub-Wireless-g or a Yocto-RS232.
+ *   some Yoctopuce devices, for instance using a Yocto-Color-V2, a Yocto-RS232, a YoctoHub-Ethernet or a YoctoHub-Wireless-g.
  * <para>
  *   This filesystem makes it
  *   possible for instance to design a custom web UI

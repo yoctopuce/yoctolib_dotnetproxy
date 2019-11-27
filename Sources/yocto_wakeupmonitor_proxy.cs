@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_wakeupmonitor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YWakeUpMonitorProxy, the Proxy API for WakeUpMonitor
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YWakeUpMonitor class handles globally all wake-up sources, as well
- *   as automated sleep mode, for instance using a YoctoHub-Wireless-g, a YoctoHub-GSM-3G-NA, a YoctoHub-GSM-3G-EU or a YoctoHub-Wireless-SR.
+ *   as automated sleep mode, for instance using a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
  * <para>
  * </para>
  * <para>

@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_oscontrol.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_oscontrol.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindOsControl(), the high-level API for OsControl functions
  *
@@ -344,3 +345,5 @@ public class YOsControl : YFunction
     //--- (end of YOsControl functions)
 }
 #pragma warning restore 1591
+
+}

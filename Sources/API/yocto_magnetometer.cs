@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_magnetometer.cs 38030 2019-11-04 17:56:01Z mvuilleu $
+ *  $Id: yocto_magnetometer.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindMagnetometer(), the high-level API for Magnetometer functions
  *
@@ -499,3 +500,5 @@ public class YMagnetometer : YSensor
     //--- (end of YMagnetometer functions)
 }
 #pragma warning restore 1591
+
+}

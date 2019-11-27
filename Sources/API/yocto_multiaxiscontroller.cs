@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_multiaxiscontroller.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_multiaxiscontroller.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindMultiAxisController(), the high-level API for MultiAxisController functions
  *
@@ -606,3 +607,5 @@ public class YMultiAxisController : YFunction
     //--- (end of YMultiAxisController functions)
 }
 #pragma warning restore 1591
+
+}

@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- * $Id: yocto_serialport.cs 38238 2019-11-20 11:35:32Z seb $
+ * $Id: yocto_serialport.cs 38514 2019-11-26 16:54:39Z seb $
  *
  * Implements yFindSerialPort(), the high-level API for SerialPort functions
  *
@@ -132,7 +133,7 @@ public class YSnoopingRecord
 //--- (generated code: YSerialPort class start)
 /**
  * <summary>
- *   The YSerialPort class allows you to fully drive a Yoctopuce serial port, for instance using a Yocto-RS232, a Yocto-RS485 or a Yocto-Serial.
+ *   The YSerialPort class allows you to fully drive a Yoctopuce serial port, for instance using a Yocto-RS232, a Yocto-RS485-V2 or a Yocto-Serial.
  * <para>
  *   It can be used to send and receive data, and to configure communication
  *   parameters (baud rate, bit count, parity, flow control and protocol).
@@ -2505,3 +2506,5 @@ public class YSerialPort : YFunction
     //--- (end of generated code: YSerialPort functions)
 }
 #pragma warning restore 1591
+
+}

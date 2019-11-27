@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_temperature.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_temperature.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindTemperature(), the high-level API for Temperature functions
  *
@@ -58,7 +59,7 @@ using YFUN_DESCR = System.Int32;
 /**
  * <summary>
  *   The YTemperature class allows you to read and configure Yoctopuce temperature
- *   sensors, for instance using a Yocto-Meteo-V2, a Yocto-Thermocouple, a Yocto-PT100 or a Yocto-Temperature.
+ *   sensors, for instance using a Yocto-Meteo-V2, a Yocto-PT100, a Yocto-Temperature or a Yocto-Thermocouple.
  * <para>
  *   It inherits from YSensor class the core functions to read measurements, to
  *   register callback functions, to access the autonomous datalogger.
@@ -763,3 +764,5 @@ public class YTemperature : YSensor
     //--- (end of YTemperature functions)
 }
 #pragma warning restore 1591
+
+}

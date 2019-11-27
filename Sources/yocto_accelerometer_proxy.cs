@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_accelerometer_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_accelerometer_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YAccelerometerProxy, the Proxy API for Accelerometer
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {

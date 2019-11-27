@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_pwmoutput.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_pwmoutput.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindPwmOutput(), the high-level API for PwmOutput functions
  *
@@ -1009,3 +1010,5 @@ public class YPwmOutput : YFunction
     //--- (end of YPwmOutput functions)
 }
 #pragma warning restore 1591
+
+}

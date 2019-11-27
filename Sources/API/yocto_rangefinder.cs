@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_rangefinder.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_rangefinder.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindRangeFinder(), the high-level API for RangeFinder functions
  *
@@ -772,3 +773,5 @@ public class YRangeFinder : YSensor
     //--- (end of YRangeFinder functions)
 }
 #pragma warning restore 1591
+
+}

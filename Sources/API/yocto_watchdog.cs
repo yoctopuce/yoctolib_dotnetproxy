@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_watchdog.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_watchdog.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindWatchdog(), the high-level API for Watchdog functions
  *
@@ -1164,3 +1165,5 @@ public class YWatchdog : YFunction
     //--- (end of YWatchdog functions)
 }
 #pragma warning restore 1591
+
+}

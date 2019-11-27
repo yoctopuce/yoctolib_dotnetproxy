@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- *  $Id: yocto_audioin.cs 37827 2019-10-25 13:07:48Z mvuilleu $
+ *  $Id: yocto_audioin.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements yFindAudioIn(), the high-level API for AudioIn functions
  *
@@ -518,3 +519,5 @@ public class YAudioIn : YFunction
     //--- (end of YAudioIn functions)
 }
 #pragma warning restore 1591
+
+}

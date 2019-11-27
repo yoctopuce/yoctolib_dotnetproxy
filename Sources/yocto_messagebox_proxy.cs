@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_messagebox_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_messagebox_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YMessageBoxProxy, the Proxy API for MessageBox
  *
@@ -44,6 +44,8 @@ using System.IO;
 using System.Threading;
 using System.Timers;
 using System.Globalization;
+using YoctoLib;
+
 
 namespace YoctoProxyAPI
 {
@@ -91,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YMessageBox class provides SMS sending and receiving capability to
- *   GSM-enabled Yoctopuce devices, for instance using a YoctoHub-GSM-3G-NA, a YoctoHub-GSM-3G-EU or a YoctoHub-GSM-2G.
+ *   GSM-enabled Yoctopuce devices, for instance using a YoctoHub-GSM-2G, a YoctoHub-GSM-3G-EU or a YoctoHub-GSM-3G-NA.
  * <para>
  * </para>
  * <para>

@@ -1,6 +1,7 @@
-/*********************************************************************
+namespace YoctoLib 
+{/*********************************************************************
  *
- * $Id: yocto_wireless.cs 38478 2019-11-26 08:01:52Z seb $
+ * $Id: yocto_wireless.cs 38514 2019-11-26 16:54:39Z seb $
  *
  * Implements yFindWireless(), the high-level API for Wireless functions
  *
@@ -156,7 +157,7 @@ public class YWlanRecord
 /**
  * <summary>
  *   The YWireless class provides control over wireless network parameters
- *   and status for devices that are wireless-enabled, for instance using a YoctoHub-Wireless-g, a YoctoHub-Wireless-SR or a YoctoHub-Wireless.
+ *   and status for devices that are wireless-enabled, for instance using a YoctoHub-Wireless, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
  * <para>
  * </para>
  * <para>
@@ -497,7 +498,7 @@ public class YWireless : YFunction
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the wireless lan interface, for instance
-     *   <c>YHUBWLN3.wireless</c>.
+     *   <c>YHUBWLN1.wireless</c>.
      * </param>
      * <returns>
      *   a <c>YWireless</c> object allowing you to drive the wireless lan interface.
@@ -801,3 +802,5 @@ public class YWireless : YFunction
     //--- (end of generated code: YWireless functions)
 }
 #pragma warning restore 1591
+
+}

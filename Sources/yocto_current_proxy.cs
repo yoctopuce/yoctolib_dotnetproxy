@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_current_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_current_proxy.cs 38514 2019-11-26 16:54:39Z seb $
  *
  *  Implements YCurrentProxy, the Proxy API for Current
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -92,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YCurrent class allows you to read and configure Yoctopuce current
- *   sensors, for instance using a Yocto-Watt, a Yocto-Amp or a Yocto-Motor-DC.
+ *   sensors, for instance using a Yocto-Amp, a Yocto-Motor-DC or a Yocto-Watt.
  * <para>
  *   It inherits from YSensor class the core functions to read measurements,
  *   to register callback functions, to access the autonomous datalogger.
