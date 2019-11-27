@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_displaylayer_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_displaylayer_proxy.cs 38545 2019-11-27 12:07:18Z mvuilleu $
  *
  *  Implements YDisplayLayerProxy, the Proxy API for DisplayLayer
  *
@@ -58,37 +58,6 @@ namespace YoctoProxyAPI
         }
         //--- (end of generated code: YDisplayLayer class start)
         //--- (generated code: YDisplayLayer definitions)
-        public const int _CurrentRunIndex_INVALID = -1;
-        public const long _TimeUTC_INVALID = YAPI.INVALID_LONG;
-        public const int _Recording_INVALID = 0;
-        public const int _Recording_OFF = 1;
-        public const int _Recording_ON = 2;
-        public const int _Recording_PENDING = 3;
-        public const int _AutoStart_INVALID = 0;
-        public const int _AutoStart_OFF = 1;
-        public const int _AutoStart_ON = 2;
-        public const int _BeaconDriven_INVALID = 0;
-        public const int _BeaconDriven_OFF = 1;
-        public const int _BeaconDriven_ON = 2;
-        public const int _Usage_INVALID = -1;
-        public const int _ClearHistory_INVALID = 0;
-        public const int _ClearHistory_FALSE = 1;
-        public const int _ClearHistory_TRUE = 2;
-        public const string _Unit_INVALID = YAPI.INVALID_STRING;
-        public const double _CurrentValue_INVALID = Double.NaN;
-        public const double _LowestValue_INVALID = Double.NaN;
-        public const double _HighestValue_INVALID = Double.NaN;
-        public const double _CurrentRawValue_INVALID = Double.NaN;
-        public const string _LogFrequency_INVALID = YAPI.INVALID_STRING;
-        public const string _ReportFrequency_INVALID = YAPI.INVALID_STRING;
-        public const int _AdvMode_INVALID = 0;
-        public const int _AdvMode_IMMEDIATE = 1;
-        public const int _AdvMode_PERIOD_AVG = 2;
-        public const int _AdvMode_PERIOD_MIN = 3;
-        public const int _AdvMode_PERIOD_MAX = 4;
-        public const string _CalibrationParam_INVALID = YAPI.INVALID_STRING;
-        public const double _Resolution_INVALID = Double.NaN;
-        public const int _SensorState_INVALID = YAPI.INVALID_INT;
         public const int _ALIGN_INVALID = 0;
         public const int _ALIGN_TOP_LEFT = 1;
         public const int _ALIGN_CENTER_LEFT = 2;
@@ -184,14 +153,6 @@ namespace YoctoProxyAPI
                     return YDisplayLayer.ALIGN.BOTTOM_RIGHT;
             }
         }
-        protected int _recording = _Recording_INVALID;
-        protected int _autoStart = _AutoStart_INVALID;
-        protected int _beaconDriven = _BeaconDriven_INVALID;
-        protected double _currentValue = _CurrentValue_INVALID;
-        protected string _logFrequency = _LogFrequency_INVALID;
-        protected string _reportFrequency = _ReportFrequency_INVALID;
-        protected int _advMode = _AdvMode_INVALID;
-        protected double _resolution = _Resolution_INVALID;
         //--- (end of generated code: YDisplayLayer definitions)
 
         public int DisplayHeight {

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wireless_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_wireless_proxy.cs 38545 2019-11-27 12:07:18Z mvuilleu $
  *
  *  Implements YWirelessProxy, the Proxy API for Wireless
  *
@@ -93,7 +93,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YWireless class provides control over wireless network parameters
- *   and status for devices that are wireless-enabled, for instance using a YoctoHub-Wireless, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
+ *   and status for devices that are wireless-enabled, for instance using a YoctoHub-Wireless, a YoctoHub-Wireless-SR, a YoctoHub-Wireless-g or a YoctoHub-Wireless-n.
  * <para>
  * </para>
  * <para>

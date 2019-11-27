@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_datalogger_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_datalogger_proxy.cs 38545 2019-11-27 12:07:18Z mvuilleu $
  *
  *  Implements YDataLoggerProxy, the Proxy API for DataLogger
  *
@@ -95,7 +95,7 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   A non-volatile memory for storing ongoing measured data is available on most Yoctopuce
- *   sensors, for instance using a Yocto-Light-V3, a Yocto-Meteo-V2, a Yocto-Watt or a Yocto-3D-V2.
+ *   sensors, for instance using a Yocto-3D-V2, a Yocto-Light-V3, a Yocto-Meteo-V2 or a Yocto-Watt.
  * <para>
  *   Recording can happen automatically, without requiring a permanent
  *   connection to a computer.
