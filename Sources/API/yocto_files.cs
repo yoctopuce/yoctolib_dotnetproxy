@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_files.cs 38514 2019-11-26 16:54:39Z seb $
+ * $Id: yocto_files.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  * Implements yFindFiles(), the high-level API for Files functions
  *
@@ -52,14 +52,10 @@ using YFUN_DESCR = System.Int32;
 
 //--- (generated code: YFileRecord class start)
 /**
- * <summary>
- *   YFileRecord objects are used to describe a file that is stored on a Yoctopuce device.
- * <para>
- *   These objects are used in particular in conjunction with the YFiles class.
- * </para>
+ * <c>YFileRecord</c> objects are used to describe a file that is stored on a Yoctopuce device.
+ * These objects are used in particular in conjunction with the <c>YFiles</c> class.
  * <para>
  * </para>
- * </summary>
  */
 public class YFileRecord
 {
@@ -85,6 +81,7 @@ public class YFileRecord
     //--- (generated code: YFileRecord implementation)
 
 
+
     /**
      * <summary>
      *   Returns the name of the file.
@@ -100,6 +97,7 @@ public class YFileRecord
         return this._name;
     }
 
+
     /**
      * <summary>
      *   Returns the size of the file in bytes.
@@ -114,6 +112,7 @@ public class YFileRecord
     {
         return this._size;
     }
+
 
     /**
      * <summary>
@@ -139,7 +138,7 @@ public class YFileRecord
 /**
  * <summary>
  *   The YFiles class is used to access the filesystem embedded on
- *   some Yoctopuce devices, for instance using a Yocto-Color-V2, a Yocto-RS232, a YoctoHub-Ethernet or a YoctoHub-Wireless-g.
+ *   some Yoctopuce devices.
  * <para>
  *   This filesystem makes it
  *   possible for instance to design a custom web UI
@@ -187,6 +186,7 @@ public class YFiles : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the number of files currently loaded in the filesystem.
@@ -216,6 +216,7 @@ public class YFiles : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the free space for uploading new files to the filesystem, in bytes.
@@ -244,6 +245,7 @@ public class YFiles : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -308,6 +310,7 @@ public class YFiles : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -345,6 +348,7 @@ public class YFiles : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackFiles != null) {
@@ -355,6 +359,7 @@ public class YFiles : YFunction
         return 0;
     }
 
+
     public virtual byte[] sendCommand(string command)
     {
         string url;
@@ -362,6 +367,7 @@ public class YFiles : YFunction
 
         return this._download(url);
     }
+
 
     /**
      * <summary>
@@ -386,6 +392,7 @@ public class YFiles : YFunction
         if (!(res == "ok")) { this._throw( YAPI.IO_ERROR, "format failed"); return YAPI.IO_ERROR; }
         return YAPI.SUCCESS;
     }
+
 
     /**
      * <summary>
@@ -421,6 +428,7 @@ public class YFiles : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Test if a file exist on the filesystem of the module.
@@ -452,6 +460,7 @@ public class YFiles : YFunction
         return false;
     }
 
+
     /**
      * <summary>
      *   Downloads the requested file and returns a binary buffer with its content.
@@ -472,6 +481,7 @@ public class YFiles : YFunction
     {
         return this._download(pathname);
     }
+
 
     /**
      * <summary>
@@ -497,6 +507,7 @@ public class YFiles : YFunction
     {
         return this._upload(pathname, content);
     }
+
 
     /**
      * <summary>

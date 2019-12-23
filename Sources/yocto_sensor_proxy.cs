@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sensor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_sensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YSensorProxy, the Proxy API for Sensor
  *
@@ -40,10 +40,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
 
 namespace YoctoProxyAPI
@@ -91,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YSensor class is the parent class for all Yoctopuce sensor types.
+ *   The <c>YSensor</c> class is the parent class for all Yoctopuce sensor types.
  * <para>
  *   It can be
  *   used to read the current value and unit of any sensor, read the min/max
@@ -100,8 +101,8 @@ namespace YoctoProxyAPI
  *   observed value changes, or at a predefined interval. Using this class rather
  *   than a specific subclass makes it possible to create generic applications
  *   that work with any Yoctopuce sensor, even those that do not yet exist.
- *   Note: The YAnButton class is the only analog input which does not inherit
- *   from YSensor.
+ *   Note: The <c>YAnButton</c> class is the only analog input which does not inherit
+ *   from <c>YSensor</c>.
  * </para>
  * <para>
  * </para>
@@ -109,6 +110,60 @@ namespace YoctoProxyAPI
  */
     public class YSensorProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YSensor.isOnline()</c> to test if the sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the sensor, for instance
+         *   <c>MyDevice.</c>.
+         * </param>
+         * <returns>
+         *   a <c>YSensor</c> object allowing you to drive the sensor.
+         * </returns>
+         */
+        public static YSensorProxy FindSensor(string func)
+        {
+            return YoctoProxyManager.FindSensor(func);
+        }
         //--- (end of generated code: YSensor class start)
         //--- (generated code: YSensor definitions)
         public const string _Unit_INVALID = YAPI.INVALID_STRING;
@@ -258,7 +313,22 @@ namespace YoctoProxyAPI
             _func.registerTimedReportCallback(timedReportCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Sensor available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YSensor.FindSensor</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YSensor it = YSensor.FirstSensor();
@@ -302,7 +372,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the measuring unit for the measure
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.UNIT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Unit_INVALID</c>.
          * </para>
          */
         public string get_unit()
@@ -336,7 +406,7 @@ namespace YoctoProxyAPI
          *   as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.CURRENTVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Currentvalue_INVALID</c>.
          * </para>
          */
         public double get_currentValue()
@@ -398,7 +468,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the minimal value observed for the measure since the device was started
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.LOWESTVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Lowestvalue_INVALID</c>.
          * </para>
          */
         public double get_lowestValue()
@@ -460,7 +530,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the maximal value observed for the measure since the device was started
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.HIGHESTVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Highestvalue_INVALID</c>.
          * </para>
          */
         public double get_highestValue()
@@ -489,7 +559,7 @@ namespace YoctoProxyAPI
          *   sensor, in the specified unit, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.CURRENTRAWVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Currentrawvalue_INVALID</c>.
          * </para>
          */
         public double get_currentRawValue()
@@ -518,7 +588,7 @@ namespace YoctoProxyAPI
          *   when measures are not stored in the data logger flash memory
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.LOGFREQUENCY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Logfrequency_INVALID</c>.
          * </para>
          */
         public string get_logFrequency()
@@ -609,7 +679,7 @@ namespace YoctoProxyAPI
          *   value notifications are disabled for this function
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.REPORTFREQUENCY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Reportfrequency_INVALID</c>.
          * </para>
          */
         public string get_reportFrequency()
@@ -696,12 +766,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YSensor.ADVMODE_IMMEDIATE</c>, <c>YSensor.ADVMODE_PERIOD_AVG</c>,
-         *   <c>YSensor.ADVMODE_PERIOD_MIN</c> and <c>YSensor.ADVMODE_PERIOD_MAX</c> corresponding to the
+         *   a value among <c>sensor._Advmode_IMMEDIATE</c>, <c>sensor._Advmode_PERIOD_AVG</c>,
+         *   <c>sensor._Advmode_PERIOD_MIN</c> and <c>sensor._Advmode_PERIOD_MAX</c> corresponding to the
          *   measuring mode used for the advertised value pushed to the parent hub
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.ADVMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Advmode_INVALID</c>.
          * </para>
          */
         public int get_advMode()
@@ -725,8 +795,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YSensor.ADVMODE_IMMEDIATE</c>, <c>YSensor.ADVMODE_PERIOD_AVG</c>,
-         *   <c>YSensor.ADVMODE_PERIOD_MIN</c> and <c>YSensor.ADVMODE_PERIOD_MAX</c> corresponding to the
+         *   a value among <c>sensor._Advmode_IMMEDIATE</c>, <c>sensor._Advmode_PERIOD_AVG</c>,
+         *   <c>sensor._Advmode_PERIOD_MIN</c> and <c>sensor._Advmode_PERIOD_MAX</c> corresponding to the
          *   measuring mode used for the advertised value pushed to the parent hub
          * </param>
          * <para>
@@ -852,7 +922,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the resolution of the measured values
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.RESOLUTION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Resolution_INVALID</c>.
          * </para>
          */
         public double get_resolution()
@@ -881,7 +951,7 @@ namespace YoctoProxyAPI
          *   available or a positive code if the sensor is not able to provide a measure right now
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSensor.SENSORSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>sensor._Sensorstate_INVALID</c>.
          * </para>
          */
         public int get_sensorState()
@@ -921,27 +991,27 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the YDatalogger object of the device hosting the sensor.
+         *   Returns the <c>YDatalogger</c> object of the device hosting the sensor.
          * <para>
-         *   This method returns an object of
-         *   class YDatalogger that can control global parameters of the data logger. The returned object
+         *   This method returns an object
+         *   that can control global parameters of the data logger. The returned object
          *   should not be freed.
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   an YDataLogger object or null on error.
+         *   an <c>YDatalogger</c> object, or null on error.
          * </returns>
          */
-        public virtual YDataLogger get_dataLogger()
+        public virtual YDataLoggerProxy get_dataLogger()
         {
             if (_func == null)
             {
                 string msg = "No Sensor connected";
                 throw new YoctoApiProxyException(msg);
             }
-            return _func.get_dataLogger();
+            return YoctoProxyManager.FindDataLogger(_func.get_dataLogger().get_serialNumber());
         }
 
         /**
@@ -989,19 +1059,19 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Retrieves a DataSet object holding historical data for this
+         *   Retrieves a <c>YDataSet</c> object holding historical data for this
          *   sensor, for a specified time interval.
          * <para>
          *   The measures will be
          *   retrieved from the data logger, which must have been turned
-         *   on at the desired time. See the documentation of the DataSet
+         *   on at the desired time. See the documentation of the <c>YDataSet</c>
          *   class for information on how to get an overview of the
          *   recorded data, and how to load progressively a large set
          *   of measures from the data logger.
          * </para>
          * <para>
          *   This function only works if the device uses a recent firmware,
-         *   as DataSet objects are not supported by firmwares older than
+         *   as <c>YDataSet</c> objects are not supported by firmwares older than
          *   version 13000.
          * </para>
          * <para>
@@ -1020,19 +1090,19 @@ namespace YoctoProxyAPI
          *   to include any measure, without ending limit.
          * </param>
          * <returns>
-         *   an instance of YDataSet, providing access to historical
+         *   an instance of <c>YDataSet</c>, providing access to historical
          *   data. Past measures can be loaded progressively
-         *   using methods from the YDataSet object.
+         *   using methods from the <c>YDataSet</c> object.
          * </returns>
          */
-        public virtual YDataSet get_recordedData(double startTime, double endTime)
+        public virtual YDataSetProxy get_recordedData(double startTime, double endTime)
         {
             if (_func == null)
             {
                 string msg = "No Sensor connected";
                 throw new YoctoApiProxyException(msg);
             }
-            return _func.get_recordedData(startTime, endTime);
+            return new YDataSetProxy(_func.get_recordedData(startTime, endTime));
         }
 
         /**

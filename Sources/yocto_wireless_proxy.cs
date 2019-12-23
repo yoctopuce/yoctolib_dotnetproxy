@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wireless_proxy.cs 38545 2019-11-27 12:07:18Z mvuilleu $
+ *  $Id: yocto_wireless_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YWirelessProxy, the Proxy API for Wireless
  *
@@ -93,8 +93,9 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   The YWireless class provides control over wireless network parameters
- *   and status for devices that are wireless-enabled, for instance using a YoctoHub-Wireless, a YoctoHub-Wireless-SR, a YoctoHub-Wireless-g or a YoctoHub-Wireless-n.
+ *   and status for devices that are wireless-enabled.
  * <para>
+ *   Note that TCP/IP parameters are configured separately, using class <c>YNetwork</c>.
  * </para>
  * <para>
  * </para>
@@ -102,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YWirelessProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a wireless LAN interface for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the wireless LAN interface is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YWireless.isOnline()</c> to test if the wireless LAN interface is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a wireless LAN interface by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the wireless LAN interface, for instance
+         *   <c>YHUBWLN1.wireless</c>.
+         * </param>
+         * <returns>
+         *   a <c>YWireless</c> object allowing you to drive the wireless LAN interface.
+         * </returns>
+         */
+        public static YWirelessProxy FindWireless(string func)
+        {
+            return YoctoProxyManager.FindWireless(func);
+        }
         //--- (end of generated code: YWireless class start)
         //--- (generated code: YWireless definitions)
         public const int _LinkQuality_INVALID = -1;
@@ -161,7 +216,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Wireless available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YWireless.FindWireless</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YWireless it = YWireless.FirstWireless();
@@ -224,7 +294,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the link quality, expressed in percent
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWireless.LINKQUALITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wireless._Linkquality_INVALID</c>.
          * </para>
          */
         public int get_linkQuality()
@@ -251,7 +321,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the wireless network name (SSID)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWireless.SSID_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wireless._Ssid_INVALID</c>.
          * </para>
          */
         public string get_ssid()
@@ -276,7 +346,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the 802.11 channel currently used, or 0 when the selected network has not been found
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWireless.CHANNEL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wireless._Channel_INVALID</c>.
          * </para>
          */
         public int get_channel()
@@ -300,12 +370,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YWireless.SECURITY_UNKNOWN</c>, <c>YWireless.SECURITY_OPEN</c>,
-         *   <c>YWireless.SECURITY_WEP</c>, <c>YWireless.SECURITY_WPA</c> and <c>YWireless.SECURITY_WPA2</c>
+         *   a value among <c>wireless._Security_UNKNOWN</c>, <c>wireless._Security_OPEN</c>,
+         *   <c>wireless._Security_WEP</c>, <c>wireless._Security_WPA</c> and <c>wireless._Security_WPA2</c>
          *   corresponding to the security algorithm used by the selected wireless network
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWireless.SECURITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wireless._Security_INVALID</c>.
          * </para>
          */
         public int get_security()
@@ -331,7 +401,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest status message from the wireless interface
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWireless.MESSAGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wireless._Message_INVALID</c>.
          * </para>
          */
         public string get_message()
@@ -348,16 +418,16 @@ namespace YoctoProxyAPI
          * <summary>
          *   Returns the current state of the wireless interface.
          * <para>
-         *   The state <c>YWireless.WLANSTATE_DOWN</c> means that the network interface is
-         *   not connected to a network. The state <c>YWireless.WLANSTATE_SCANNING</c> means that the network
+         *   The state <c>wireless._Wlanstate_DOWN</c> means that the network interface is
+         *   not connected to a network. The state <c>wireless._Wlanstate_SCANNING</c> means that the network
          *   interface is scanning available
          *   frequencies. During this stage, the device is not reachable, and the network settings are not yet
          *   applied. The state
-         *   <c>YWireless.WLANSTATE_CONNECTED</c> means that the network settings have been successfully applied
+         *   <c>wireless._Wlanstate_CONNECTED</c> means that the network settings have been successfully applied
          *   ant that the device is reachable
          *   from the wireless network. If the device is configured to use ad-hoc or Soft AP mode, it means that
          *   the wireless network
-         *   is up and that other devices can join the network. The state <c>YWireless.WLANSTATE_REJECTED</c>
+         *   is up and that other devices can join the network. The state <c>wireless._Wlanstate_REJECTED</c>
          *   means that the network interface has
          *   not been able to join the requested network. The description of the error can be obtain with the
          *   <c>get_message()</c> method.
@@ -366,12 +436,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YWireless.WLANSTATE_DOWN</c>, <c>YWireless.WLANSTATE_SCANNING</c>,
-         *   <c>YWireless.WLANSTATE_CONNECTED</c> and <c>YWireless.WLANSTATE_REJECTED</c> corresponding to the
+         *   a value among <c>wireless._Wlanstate_DOWN</c>, <c>wireless._Wlanstate_SCANNING</c>,
+         *   <c>wireless._Wlanstate_CONNECTED</c> and <c>wireless._Wlanstate_REJECTED</c> corresponding to the
          *   current state of the wireless interface
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWireless.WLANSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wireless._Wlanstate_INVALID</c>.
          * </para>
          */
         public int get_wlanState()
@@ -391,10 +461,10 @@ namespace YoctoProxyAPI
          * <para>
          *   The scan forces a disconnection from the current network. At then end of the process, the
          *   the network interface attempts to reconnect to the previous network. During the scan, the <c>wlanState</c>
-         *   switches to <c>YWireless.WLANSTATE_DOWN</c>, then to <c>YWireless.WLANSTATE_SCANNING</c>. When the
+         *   switches to <c>wireless._Wlanstate_DOWN</c>, then to <c>wireless._Wlanstate_SCANNING</c>. When the
          *   scan is completed,
-         *   <c>get_wlanState()</c> returns either <c>YWireless.WLANSTATE_DOWN</c> or
-         *   <c>YWireless.WLANSTATE_SCANNING</c>. At this
+         *   <c>get_wlanState()</c> returns either <c>wireless._Wlanstate_DOWN</c> or
+         *   <c>wireless._Wlanstate_SCANNING</c>. At this
          *   point, the list of detected network can be retrieved with the <c>get_detectedWlans()</c> method.
          * </para>
          * <para>
@@ -532,7 +602,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns a list of YWlanRecord objects that describe detected Wireless networks.
+         *   Returns a list of <c>YWlanRecord</c> objects that describe detected Wireless networks.
          * <para>
          *   This list is not updated when the module is already connected to an access point (infrastructure mode).
          *   To force an update of this list, <c>startWlanScan()</c> must be called.

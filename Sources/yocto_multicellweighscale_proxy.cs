@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multicellweighscale_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_multicellweighscale_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YMultiCellWeighScaleProxy, the Proxy API for MultiCellWeighScale
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YMultiCellWeighScale class provides a weight measurement from a set of ratiometric
- *   sensors, for instance using a Yocto-MaxiBridge.
+ *   The <c>YMultiCellWeighScale</c> class provides a weight measurement from a set of ratiometric
+ *   sensors.
  * <para>
  *   It can be used to control the bridge excitation parameters, in order to avoid
  *   measure shifts caused by temperature variation in the electronics, and can also
@@ -106,6 +106,60 @@ namespace YoctoProxyAPI
  */
     public class YMultiCellWeighScaleProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a multi-cell weighing scale sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the multi-cell weighing scale sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YMultiCellWeighScale.isOnline()</c> to test if the multi-cell weighing scale sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a multi-cell weighing scale sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the multi-cell weighing scale sensor, for instance
+         *   <c>YWMBRDG1.multiCellWeighScale</c>.
+         * </param>
+         * <returns>
+         *   a <c>YMultiCellWeighScale</c> object allowing you to drive the multi-cell weighing scale sensor.
+         * </returns>
+         */
+        public static YMultiCellWeighScaleProxy FindMultiCellWeighScale(string func)
+        {
+            return YoctoProxyManager.FindMultiCellWeighScale(func);
+        }
         //--- (end of YMultiCellWeighScale class start)
         //--- (YMultiCellWeighScale definitions)
         public const int _CellCount_INVALID = -1;
@@ -164,7 +218,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type MultiCellWeighScale available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YMultiCellWeighScale.FindMultiCellWeighScale</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YMultiCellWeighScale it = YMultiCellWeighScale.FirstMultiCellWeighScale();
@@ -238,7 +307,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of load cells in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.CELLCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Cellcount_INVALID</c>.
          * </para>
          */
         public int get_cellCount()
@@ -321,11 +390,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YMultiCellWeighScale.EXCITATION_OFF</c>, <c>YMultiCellWeighScale.EXCITATION_DC</c>
-         *   and <c>YMultiCellWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>multicellweighscale._Excitation_OFF</c>, <c>multicellweighscale._Excitation_DC</c>
+         *   and <c>multicellweighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.EXCITATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Excitation_INVALID</c>.
          * </para>
          */
         public int get_excitation()
@@ -350,8 +419,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YMultiCellWeighScale.EXCITATION_OFF</c>, <c>YMultiCellWeighScale.EXCITATION_DC</c>
-         *   and <c>YMultiCellWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>multicellweighscale._Excitation_OFF</c>, <c>multicellweighscale._Excitation_DC</c>
+         *   and <c>multicellweighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
          * </param>
          * <para>
          * </para>
@@ -480,7 +549,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the averaged temperature update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.TEMPAVGADAPTRATIO_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Tempavgadaptratio_INVALID</c>.
          * </para>
          */
         public double get_tempAvgAdaptRatio()
@@ -572,7 +641,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the temperature change update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.TEMPCHGADAPTRATIO_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Tempchgadaptratio_INVALID</c>.
          * </para>
          */
         public double get_tempChgAdaptRatio()
@@ -599,7 +668,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current averaged temperature, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.COMPTEMPAVG_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Comptempavg_INVALID</c>.
          * </para>
          */
         public double get_compTempAvg()
@@ -626,7 +695,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current temperature variation, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.COMPTEMPCHG_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Comptempchg_INVALID</c>.
          * </para>
          */
         public double get_compTempChg()
@@ -653,7 +722,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current current thermal compensation value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.COMPENSATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Compensation_INVALID</c>.
          * </para>
          */
         public double get_compensation()
@@ -745,7 +814,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the zero tracking threshold value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.ZEROTRACKING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multicellweighscale._Zerotracking_INVALID</c>.
          * </para>
          */
         public double get_zeroTracking()

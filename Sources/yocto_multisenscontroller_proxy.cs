@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multisenscontroller_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_multisenscontroller_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YMultiSensControllerProxy, the Proxy API for MultiSensController
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YMultiSensController class allows you to setup a customized
- *   sensor chain on devices featuring that functionality, for instance using a Yocto-Temperature-IR.
+ *   The <c>YMultiSensController</c> class allows you to setup a customized
+ *   sensor chain on devices featuring that functionality.
  * <para>
  * </para>
  * <para>
@@ -102,6 +102,60 @@ namespace YoctoProxyAPI
  */
     public class YMultiSensControllerProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a multi-sensor controller for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the multi-sensor controller is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YMultiSensController.isOnline()</c> to test if the multi-sensor controller is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a multi-sensor controller by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the multi-sensor controller, for instance
+         *   <c>YTEMPIR1.multiSensController</c>.
+         * </param>
+         * <returns>
+         *   a <c>YMultiSensController</c> object allowing you to drive the multi-sensor controller.
+         * </returns>
+         */
+        public static YMultiSensControllerProxy FindMultiSensController(string func)
+        {
+            return YoctoProxyManager.FindMultiSensController(func);
+        }
         //--- (end of YMultiSensController class start)
         //--- (YMultiSensController definitions)
         public const int _NSensors_INVALID = -1;
@@ -150,7 +204,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type MultiSensController available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YMultiSensController.FindMultiSensController</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YMultiSensController it = YMultiSensController.FirstMultiSensController();
@@ -185,7 +254,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of sensors to poll
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiSensController.NSENSORS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multisenscontroller._Nsensors_INVALID</c>.
          * </para>
          */
         public int get_nSensors()
@@ -274,7 +343,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum configurable sensor count allowed on this device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiSensController.MAXSENSORS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multisenscontroller._Maxsensors_INVALID</c>.
          * </para>
          */
         public int get_maxSensors()
@@ -298,11 +367,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YMultiSensController.MAINTENANCEMODE_FALSE</c> or <c>YMultiSensController.MAINTENANCEMODE_TRUE</c>,
+         *   either <c>multisenscontroller._Maintenancemode_FALSE</c> or <c>multisenscontroller._Maintenancemode_TRUE</c>,
          *   according to true when the device is in maintenance mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiSensController.MAINTENANCEMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multisenscontroller._Maintenancemode_INVALID</c>.
          * </para>
          */
         public int get_maintenanceMode()
@@ -327,7 +396,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YMultiSensController.MAINTENANCEMODE_FALSE</c> or <c>YMultiSensController.MAINTENANCEMODE_TRUE</c>,
+         *   either <c>multisenscontroller._Maintenancemode_FALSE</c> or <c>multisenscontroller._Maintenancemode_TRUE</c>,
          *   according to the device mode to enable maintenance and to stop sensor polling
          * </param>
          * <para>

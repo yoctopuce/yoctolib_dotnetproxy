@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellular_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_cellular_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YCellularProxy, the Proxy API for Cellular
  *
@@ -90,9 +90,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YCellular class provides control over cellular network parameters
- *   and status for devices that are GSM-enabled, for instance using a YoctoHub-GSM-2G, a YoctoHub-GSM-3G-EU or a YoctoHub-GSM-3G-NA.
+ *   The <c>YCellular</c> class provides control over cellular network parameters
+ *   and status for devices that are GSM-enabled.
  * <para>
+ *   Note that TCP/IP parameters are configured separately, using class <c>YNetwork</c>.
  * </para>
  * <para>
  * </para>
@@ -100,6 +101,60 @@ namespace YoctoProxyAPI
  */
     public class YCellularProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a cellular interface for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the cellular interface is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YCellular.isOnline()</c> to test if the cellular interface is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a cellular interface by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the cellular interface, for instance
+         *   <c>YHUBGSM1.cellular</c>.
+         * </param>
+         * <returns>
+         *   a <c>YCellular</c> object allowing you to drive the cellular interface.
+         * </returns>
+         */
+        public static YCellularProxy FindCellular(string func)
+        {
+            return YoctoProxyManager.FindCellular(func);
+        }
         //--- (end of generated code: YCellular class start)
         //--- (generated code: YCellular definitions)
         public const int _LinkQuality_INVALID = -1;
@@ -174,7 +229,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Cellular available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YCellular.FindCellular</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YCellular it = YCellular.FirstCellular();
@@ -214,7 +284,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the link quality, expressed in percent
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.LINKQUALITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Linkquality_INVALID</c>.
          * </para>
          */
         public int get_linkQuality()
@@ -241,7 +311,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the cell operator currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.CELLOPERATOR_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Celloperator_INVALID</c>.
          * </para>
          */
         public string get_cellOperator()
@@ -266,7 +336,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the unique identifier of the cellular antenna in use: MCC, MNC, LAC and Cell ID
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.CELLIDENTIFIER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Cellidentifier_INVALID</c>.
          * </para>
          */
         public string get_cellIdentifier()
@@ -288,12 +358,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YCellular.CELLTYPE_GPRS</c>, <c>YCellular.CELLTYPE_EGPRS</c>,
-         *   <c>YCellular.CELLTYPE_WCDMA</c>, <c>YCellular.CELLTYPE_HSDPA</c>, <c>YCellular.CELLTYPE_NONE</c>
-         *   and <c>YCellular.CELLTYPE_CDMA</c>
+         *   a value among <c>cellular._Celltype_GPRS</c>, <c>cellular._Celltype_EGPRS</c>,
+         *   <c>cellular._Celltype_WCDMA</c>, <c>cellular._Celltype_HSDPA</c>, <c>cellular._Celltype_NONE</c>
+         *   and <c>cellular._Celltype_CDMA</c>
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.CELLTYPE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Celltype_INVALID</c>.
          * </para>
          */
         public int get_cellType()
@@ -323,7 +393,7 @@ namespace YoctoProxyAPI
          *   was rejected by the SIM card
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.IMSI_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Imsi_INVALID</c>.
          * </para>
          */
         public string get_imsi()
@@ -348,7 +418,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest status message from the wireless interface
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.MESSAGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Message_INVALID</c>.
          * </para>
          */
         public string get_message()
@@ -377,7 +447,7 @@ namespace YoctoProxyAPI
          *   was rejected by the SIM card
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.PIN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Pin_INVALID</c>.
          * </para>
          */
         public string get_pin()
@@ -474,7 +544,7 @@ namespace YoctoProxyAPI
          *   cell operators
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.LOCKEDOPERATOR_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Lockedoperator_INVALID</c>.
          * </para>
          */
         public string get_lockedOperator()
@@ -558,11 +628,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YCellular.AIRPLANEMODE_OFF</c> or <c>YCellular.AIRPLANEMODE_ON</c>, according to true if
+         *   either <c>cellular._Airplanemode_OFF</c> or <c>cellular._Airplanemode_ON</c>, according to true if
          *   the airplane mode is active (radio turned off)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.AIRPLANEMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Airplanemode_INVALID</c>.
          * </para>
          */
         public int get_airplaneMode()
@@ -585,7 +655,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YCellular.AIRPLANEMODE_OFF</c> or <c>YCellular.AIRPLANEMODE_ON</c>, according to the
+         *   either <c>cellular._Airplanemode_OFF</c> or <c>cellular._Airplanemode_ON</c>, according to the
          *   activation state of airplane mode (radio turned off)
          * </param>
          * <para>
@@ -620,12 +690,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YCellular.ENABLEDATA_HOMENETWORK</c>, <c>YCellular.ENABLEDATA_ROAMING</c>,
-         *   <c>YCellular.ENABLEDATA_NEVER</c> and <c>YCellular.ENABLEDATA_NEUTRALITY</c> corresponding to the
+         *   a value among <c>cellular._Enabledata_HOMENETWORK</c>, <c>cellular._Enabledata_ROAMING</c>,
+         *   <c>cellular._Enabledata_NEVER</c> and <c>cellular._Enabledata_NEUTRALITY</c> corresponding to the
          *   condition for enabling IP data services (GPRS)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.ENABLEDATA_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Enabledata_INVALID</c>.
          * </para>
          */
         public int get_enableData()
@@ -656,8 +726,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YCellular.ENABLEDATA_HOMENETWORK</c>, <c>YCellular.ENABLEDATA_ROAMING</c>,
-         *   <c>YCellular.ENABLEDATA_NEVER</c> and <c>YCellular.ENABLEDATA_NEUTRALITY</c> corresponding to the
+         *   a value among <c>cellular._Enabledata_HOMENETWORK</c>, <c>cellular._Enabledata_ROAMING</c>,
+         *   <c>cellular._Enabledata_NEVER</c> and <c>cellular._Enabledata_NEUTRALITY</c> corresponding to the
          *   condition for enabling IP data services (GPRS)
          * </param>
          * <para>
@@ -721,7 +791,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the Access Point Name (APN) to be used, if needed
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.APN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Apn_INVALID</c>.
          * </para>
          */
         public string get_apn()
@@ -809,7 +879,7 @@ namespace YoctoProxyAPI
          *   in the device, or an empty string otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.APNSECRET_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Apnsecret_INVALID</c>.
          * </para>
          */
         public string get_apnSecret()
@@ -834,7 +904,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the automated connectivity check interval, in seconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.PINGINTERVAL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Pinginterval_INVALID</c>.
          * </para>
          */
         public int get_pingInterval()
@@ -920,7 +990,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of bytes sent so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.DATASENT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Datasent_INVALID</c>.
          * </para>
          */
         public int get_dataSent()
@@ -979,7 +1049,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of bytes received so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCellular.DATARECEIVED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>cellular._Datareceived_INVALID</c>.
          * </para>
          */
         public int get_dataReceived()
@@ -1182,7 +1252,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a list of YCellRecords.
+         *   a list of <c>YCellRecords</c>.
          * </returns>
          */
         public virtual YCellRecordProxy[] quickCellSurvey()

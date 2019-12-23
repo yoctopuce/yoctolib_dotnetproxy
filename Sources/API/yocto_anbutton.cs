@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_anbutton.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_anbutton.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindAnButton(), the high-level API for AnButton functions
  *
@@ -58,8 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YAnButton class start)
 /**
  * <summary>
- *   The YAnButton class allows you to access simple resistive inputs on Yoctopuce
- *   devices, for instance using a Yocto-Buzzer, a Yocto-Display, a Yocto-Knob or a Yocto-MaxiDisplay.
+ *   The <c>YAnButton</c> class provide access to basic resistive inputs.
  * <para>
  *   Such inputs can be used to measure the state
  *   of a simple button as well as to read an analog potentiometer (variable resistance).
@@ -167,6 +166,7 @@ public class YAnButton : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the current calibrated input value (between 0 and 1000, included).
@@ -196,6 +196,7 @@ public class YAnButton : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the current measured input value as-is (between 0 and 4095, included).
@@ -224,6 +225,7 @@ public class YAnButton : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -284,6 +286,7 @@ public class YAnButton : YFunction
             return _setAttr("analogCalibration", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -348,6 +351,7 @@ public class YAnButton : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the minimal value measured during the calibration (between 0 and 4095, included).
@@ -410,6 +414,7 @@ public class YAnButton : YFunction
             return _setAttr("calibrationMin", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -474,6 +479,7 @@ public class YAnButton : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns true if the input (considered as binary) is active (closed contact), and false otherwise.
@@ -503,6 +509,7 @@ public class YAnButton : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -535,6 +542,7 @@ public class YAnButton : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the number of elapsed milliseconds between the module power on and the last time
@@ -565,6 +573,7 @@ public class YAnButton : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -607,6 +616,7 @@ public class YAnButton : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the timer of the pulses counter (ms).
@@ -635,6 +645,7 @@ public class YAnButton : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -699,6 +710,7 @@ public class YAnButton : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -736,6 +748,7 @@ public class YAnButton : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackAnButton != null) {
@@ -745,6 +758,7 @@ public class YAnButton : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>

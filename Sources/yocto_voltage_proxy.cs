@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_voltage_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_voltage_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YVoltageProxy, the Proxy API for Voltage
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YVoltage class allows you to read and configure Yoctopuce voltage
- *   sensors, for instance using a Yocto-Motor-DC, a Yocto-Volt or a Yocto-Watt.
+ *   The <c>YVoltage</c> class allows you to read and configure Yoctopuce voltage sensors.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  * </para>
  * <para>
  * </para>
@@ -104,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YVoltageProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a voltage sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the voltage sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YVoltage.isOnline()</c> to test if the voltage sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a voltage sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the voltage sensor, for instance
+         *   <c>MOTORCTL.voltage</c>.
+         * </param>
+         * <returns>
+         *   a <c>YVoltage</c> object allowing you to drive the voltage sensor.
+         * </returns>
+         */
+        public static YVoltageProxy FindVoltage(string func)
+        {
+            return YoctoProxyManager.FindVoltage(func);
+        }
         //--- (end of YVoltage class start)
         //--- (YVoltage definitions)
         public const int _Enabled_INVALID = 0;
@@ -149,7 +202,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Voltage available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YVoltage.FindVoltage</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YVoltage it = YVoltage.FirstVoltage();
@@ -182,11 +250,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YVoltage.ENABLED_FALSE</c> or <c>YVoltage.ENABLED_TRUE</c>, according to the activation
+         *   either <c>voltage._Enabled_FALSE</c> or <c>voltage._Enabled_TRUE</c>, according to the activation
          *   state of this input
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YVoltage.ENABLED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>voltage._Enabled_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -215,7 +283,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YVoltage.ENABLED_FALSE</c> or <c>YVoltage.ENABLED_TRUE</c>, according to the activation
+         *   either <c>voltage._Enabled_FALSE</c> or <c>voltage._Enabled_TRUE</c>, according to the activation
          *   state of this voltage input
          * </param>
          * <para>

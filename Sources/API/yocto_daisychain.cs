@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_daisychain.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_daisychain.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindDaisyChain(), the high-level API for DaisyChain functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YDaisyChain class start)
 /**
  * <summary>
- *   The YDaisyChain interface can be used to verify that devices that
+ *   The <c>YDaisyChain</c> class can be used to verify that devices that
  *   are daisy-chained directly from device to device, without a hub,
  *   are detected properly.
  * <para>
@@ -115,6 +115,7 @@ public class YDaisyChain : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the state of the daisy-link between modules.
@@ -146,6 +147,7 @@ public class YDaisyChain : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the number of child nodes currently detected.
@@ -174,6 +176,7 @@ public class YDaisyChain : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -236,6 +239,7 @@ public class YDaisyChain : YFunction
             return _setAttr("requiredChildCount", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -300,6 +304,7 @@ public class YDaisyChain : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -336,6 +341,7 @@ public class YDaisyChain : YFunction
         }
         return 0;
     }
+
 
     public override int _invokeValueCallback(string value)
     {

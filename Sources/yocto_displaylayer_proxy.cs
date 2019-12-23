@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_displaylayer_proxy.cs 38545 2019-11-27 12:07:18Z mvuilleu $
+ *  $Id: yocto_displaylayer_proxy.cs 38676 2019-12-03 15:52:14Z mvuilleu $
  *
  *  Implements YDisplayLayerProxy, the Proxy API for DisplayLayer
  *
@@ -551,15 +551,15 @@ namespace YoctoProxyAPI
          *   the distance from top of layer to the text anchor point, in pixels
          * </param>
          * <param name="anchor">
-         *   the text anchor point, chosen among the <c>YDisplayLayer.ALIGN</c> enumeration:
-         *   <c>YDisplayLayer.ALIGN_TOP_LEFT</c>,    <c>YDisplayLayer.ALIGN_CENTER_LEFT</c>,   
-         *   <c>YDisplayLayer.ALIGN_BASELINE_LEFT</c>,    <c>YDisplayLayer.ALIGN_BOTTOM_LEFT</c>,
-         *   <c>YDisplayLayer.ALIGN_TOP_CENTER</c>,  <c>YDisplayLayer.ALIGN_CENTER</c>,        
-         *   <c>YDisplayLayer.ALIGN_BASELINE_CENTER</c>,  <c>YDisplayLayer.ALIGN_BOTTOM_CENTER</c>,
-         *   <c>YDisplayLayer.ALIGN_TOP_DECIMAL</c>, <c>YDisplayLayer.ALIGN_CENTER_DECIMAL</c>,
-         *   <c>YDisplayLayer.ALIGN_BASELINE_DECIMAL</c>, <c>YDisplayLayer.ALIGN_BOTTOM_DECIMAL</c>,
-         *   <c>YDisplayLayer.ALIGN_TOP_RIGHT</c>,   <c>YDisplayLayer.ALIGN_CENTER_RIGHT</c>,  
-         *   <c>YDisplayLayer.ALIGN_BASELINE_RIGHT</c>,   <c>YDisplayLayer.ALIGN_BOTTOM_RIGHT</c>.
+         *   the text anchor point, chosen among the <c>Y_ALIGN</c> enumeration:
+         *   <c>displaylayer._Align_TOP_LEFT</c>,    <c>displaylayer._Align_CENTER_LEFT</c>,   
+         *   <c>displaylayer._Align_BASELINE_LEFT</c>,    <c>displaylayer._Align_BOTTOM_LEFT</c>,
+         *   <c>displaylayer._Align_TOP_CENTER</c>,  <c>displaylayer._Align_CENTER</c>,        
+         *   <c>displaylayer._Align_BASELINE_CENTER</c>,  <c>displaylayer._Align_BOTTOM_CENTER</c>,
+         *   <c>displaylayer._Align_TOP_DECIMAL</c>, <c>displaylayer._Align_CENTER_DECIMAL</c>,
+         *   <c>displaylayer._Align_BASELINE_DECIMAL</c>, <c>displaylayer._Align_BOTTOM_DECIMAL</c>,
+         *   <c>displaylayer._Align_TOP_RIGHT</c>,   <c>displaylayer._Align_CENTER_RIGHT</c>,  
+         *   <c>displaylayer._Align_BASELINE_RIGHT</c>,   <c>displaylayer._Align_BOTTOM_RIGHT</c>.
          * </param>
          * <param name="text">
          *   the text string to draw
@@ -984,7 +984,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the display width, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns YDisplayLayer.DISPLAYWIDTH_INVALID.
+         *   On failure, throws an exception or returns displaylayer._Displaywidth_INVALID.
          * </para>
          */
         public virtual int get_displayWidth()
@@ -1007,7 +1007,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the display height, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns YDisplayLayer.DISPLAYHEIGHT_INVALID.
+         *   On failure, throws an exception or returns displaylayer._Displayheight_INVALID.
          * </para>
          */
         public virtual int get_displayHeight()
@@ -1030,7 +1030,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the width of the layers to draw on, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns YDisplayLayer.LAYERWIDTH_INVALID.
+         *   On failure, throws an exception or returns displaylayer._Layerwidth_INVALID.
          * </para>
          */
         public virtual int get_layerWidth()
@@ -1053,7 +1053,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the height of the layers to draw on, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns YDisplayLayer.LAYERHEIGHT_INVALID.
+         *   On failure, throws an exception or returns displaylayer._Layerheight_INVALID.
          * </para>
          */
         public virtual int get_layerHeight()

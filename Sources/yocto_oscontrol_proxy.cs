@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_oscontrol_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_oscontrol_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YOsControlProxy, the Proxy API for OsControl
  *
@@ -145,7 +145,7 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        public new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YOsControl it = YOsControl.FirstOsControl();

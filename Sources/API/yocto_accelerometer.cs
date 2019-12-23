@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_accelerometer.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_accelerometer.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindAccelerometer(), the high-level API for Accelerometer functions
  *
@@ -58,11 +58,12 @@ using YFUN_DESCR = System.Int32;
 //--- (YAccelerometer class start)
 /**
  * <summary>
- *   The YAccelerometer class allows you to read and configure Yoctopuce acceleration
- *   sensors, for instance using a Yocto-3D-V2.
+ *   The <c>YAccelerometer</c> class allows you to read and configure Yoctopuce accelerometers.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
+ *   This class adds the possibility to access x, y and z components of the acceleration
+ *   vector separately.
  * </para>
  * <para>
  * </para>
@@ -126,6 +127,7 @@ public class YAccelerometer : YSensor
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
@@ -188,6 +190,7 @@ public class YAccelerometer : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns the X component of the acceleration, as a floating point number.
@@ -216,6 +219,7 @@ public class YAccelerometer : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -246,6 +250,7 @@ public class YAccelerometer : YSensor
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the Z component of the acceleration, as a floating point number.
@@ -275,6 +280,7 @@ public class YAccelerometer : YSensor
         return res;
     }
 
+
     public int get_gravityCancellation()
     {
         int res;
@@ -297,6 +303,7 @@ public class YAccelerometer : YSensor
             return _setAttr("gravityCancellation", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -361,6 +368,7 @@ public class YAccelerometer : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -398,6 +406,7 @@ public class YAccelerometer : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackAccelerometer != null) {
@@ -407,6 +416,7 @@ public class YAccelerometer : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -421,7 +431,7 @@ public class YAccelerometer : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -438,6 +448,7 @@ public class YAccelerometer : YSensor
         this._timedReportCallbackAccelerometer = callback;
         return 0;
     }
+
 
     public override int _invokeTimedReportCallback(YMeasure value)
     {

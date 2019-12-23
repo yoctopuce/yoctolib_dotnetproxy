@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_humidity_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_humidity_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YHumidityProxy, the Proxy API for Humidity
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YHumidity class allows you to read and configure Yoctopuce humidity
- *   sensors, for instance using a Yocto-CO2-V2, a Yocto-Meteo-V2 or a Yocto-VOC-V3.
+ *   The <c>YHumidity</c> class allows you to read and configure Yoctopuce humidity sensors.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  * </para>
  * <para>
  * </para>
@@ -104,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YHumidityProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a humidity sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the humidity sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YHumidity.isOnline()</c> to test if the humidity sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a humidity sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the humidity sensor, for instance
+         *   <c>YCO2MK02.humidity</c>.
+         * </param>
+         * <returns>
+         *   a <c>YHumidity</c> object allowing you to drive the humidity sensor.
+         * </returns>
+         */
+        public static YHumidityProxy FindHumidity(string func)
+        {
+            return YoctoProxyManager.FindHumidity(func);
+        }
         //--- (end of YHumidity class start)
         //--- (YHumidity definitions)
         public const double _RelHum_INVALID = Double.NaN;
@@ -147,7 +200,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Humidity available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YHumidity.FindHumidity</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YHumidity it = YHumidity.FirstHumidity();
@@ -221,7 +289,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current relative humidity, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YHumidity.RELHUM_INVALID</c>.
+         *   On failure, throws an exception or returns <c>humidity._Relhum_INVALID</c>.
          * </para>
          */
         public double get_relHum()
@@ -248,7 +316,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current absolute humidity, in grams per cubic meter of air
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YHumidity.ABSHUM_INVALID</c>.
+         *   On failure, throws an exception or returns <c>humidity._Abshum_INVALID</c>.
          * </para>
          */
         public double get_absHum()

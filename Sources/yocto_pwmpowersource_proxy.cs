@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmpowersource_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_pwmpowersource_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YPwmPowerSourceProxy, the Proxy API for PwmPowerSource
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YPwmPowerSource class allows you to configure
- *   the voltage source used by all PWM outputs on the same device, for instance using a Yocto-PWM-Tx.
+ *   The <c>YPwmPowerSource</c> class allows you to configure
+ *   the voltage source used by all PWM outputs on the same device.
  * <para>
  * </para>
  * <para>
@@ -102,6 +102,60 @@ namespace YoctoProxyAPI
  */
     public class YPwmPowerSourceProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a PWM generator power source for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the PWM generator power source is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YPwmPowerSource.isOnline()</c> to test if the PWM generator power source is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a PWM generator power source by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the PWM generator power source, for instance
+         *   <c>YPWMTX01.pwmPowerSource</c>.
+         * </param>
+         * <returns>
+         *   a <c>YPwmPowerSource</c> object allowing you to drive the PWM generator power source.
+         * </returns>
+         */
+        public static YPwmPowerSourceProxy FindPwmPowerSource(string func)
+        {
+            return YoctoProxyManager.FindPwmPowerSource(func);
+        }
         //--- (end of YPwmPowerSource class start)
         //--- (YPwmPowerSource definitions)
         public const int _PowerMode_INVALID = 0;
@@ -149,7 +203,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type PwmPowerSource available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YPwmPowerSource.FindPwmPowerSource</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YPwmPowerSource it = YPwmPowerSource.FirstPwmPowerSource();
@@ -182,12 +251,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YPwmPowerSource.POWERMODE_USB_5V</c>, <c>YPwmPowerSource.POWERMODE_USB_3V</c>,
-         *   <c>YPwmPowerSource.POWERMODE_EXT_V</c> and <c>YPwmPowerSource.POWERMODE_OPNDRN</c> corresponding to
+         *   a value among <c>pwmpowersource._Powermode_USB_5V</c>, <c>pwmpowersource._Powermode_USB_3V</c>,
+         *   <c>pwmpowersource._Powermode_EXT_V</c> and <c>pwmpowersource._Powermode_OPNDRN</c> corresponding to
          *   the selected power source for the PWM on the same device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmPowerSource.POWERMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmpowersource._Powermode_INVALID</c>.
          * </para>
          */
         public int get_powerMode()
@@ -217,8 +286,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YPwmPowerSource.POWERMODE_USB_5V</c>, <c>YPwmPowerSource.POWERMODE_USB_3V</c>,
-         *   <c>YPwmPowerSource.POWERMODE_EXT_V</c> and <c>YPwmPowerSource.POWERMODE_OPNDRN</c> corresponding to
+         *   a value among <c>pwmpowersource._Powermode_USB_5V</c>, <c>pwmpowersource._Powermode_USB_3V</c>,
+         *   <c>pwmpowersource._Powermode_EXT_V</c> and <c>pwmpowersource._Powermode_OPNDRN</c> corresponding to
          *    the PWM power source
          * </param>
          * <para>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_weighscale_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_weighscale_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YWeighScaleProxy, the Proxy API for WeighScale
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YWeighScale class provides a weight measurement from a ratiometric sensor, for instance using a Yocto-Bridge or a Yocto-MaxiBridge.
+ *   The <c>YWeighScale</c> class provides a weight measurement from a ratiometric sensor.
  * <para>
  *   It can be used to control the bridge excitation parameters, in order to avoid
  *   measure shifts caused by temperature variation in the electronics, and can also
@@ -105,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YWeighScaleProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a weighing scale sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the weighing scale sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YWeighScale.isOnline()</c> to test if the weighing scale sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a weighing scale sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the weighing scale sensor, for instance
+         *   <c>YWBRIDG1.weighScale1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YWeighScale</c> object allowing you to drive the weighing scale sensor.
+         * </returns>
+         */
+        public static YWeighScaleProxy FindWeighScale(string func)
+        {
+            return YoctoProxyManager.FindWeighScale(func);
+        }
         //--- (end of YWeighScale class start)
         //--- (YWeighScale definitions)
         public const int _Excitation_INVALID = 0;
@@ -161,7 +215,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type WeighScale available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YWeighScale.FindWeighScale</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YWeighScale it = YWeighScale.FirstWeighScale();
@@ -231,11 +300,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YWeighScale.EXCITATION_OFF</c>, <c>YWeighScale.EXCITATION_DC</c> and
-         *   <c>YWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>weighscale._Excitation_OFF</c>, <c>weighscale._Excitation_DC</c> and
+         *   <c>weighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWeighScale.EXCITATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>weighscale._Excitation_INVALID</c>.
          * </para>
          */
         public int get_excitation()
@@ -260,8 +329,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YWeighScale.EXCITATION_OFF</c>, <c>YWeighScale.EXCITATION_DC</c> and
-         *   <c>YWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>weighscale._Excitation_OFF</c>, <c>weighscale._Excitation_DC</c> and
+         *   <c>weighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
          * </param>
          * <para>
          * </para>
@@ -390,7 +459,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the averaged temperature update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWeighScale.TEMPAVGADAPTRATIO_INVALID</c>.
+         *   On failure, throws an exception or returns <c>weighscale._Tempavgadaptratio_INVALID</c>.
          * </para>
          */
         public double get_tempAvgAdaptRatio()
@@ -482,7 +551,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the temperature change update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWeighScale.TEMPCHGADAPTRATIO_INVALID</c>.
+         *   On failure, throws an exception or returns <c>weighscale._Tempchgadaptratio_INVALID</c>.
          * </para>
          */
         public double get_tempChgAdaptRatio()
@@ -509,7 +578,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current averaged temperature, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWeighScale.COMPTEMPAVG_INVALID</c>.
+         *   On failure, throws an exception or returns <c>weighscale._Comptempavg_INVALID</c>.
          * </para>
          */
         public double get_compTempAvg()
@@ -536,7 +605,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current temperature variation, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWeighScale.COMPTEMPCHG_INVALID</c>.
+         *   On failure, throws an exception or returns <c>weighscale._Comptempchg_INVALID</c>.
          * </para>
          */
         public double get_compTempChg()
@@ -563,7 +632,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current current thermal compensation value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWeighScale.COMPENSATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>weighscale._Compensation_INVALID</c>.
          * </para>
          */
         public double get_compensation()
@@ -655,7 +724,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the zero tracking threshold value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWeighScale.ZEROTRACKING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>weighscale._Zerotracking_INVALID</c>.
          * </para>
          */
         public double get_zeroTracking()

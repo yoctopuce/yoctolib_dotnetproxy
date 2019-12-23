@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_servo_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_servo_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YServoProxy, the Proxy API for Servo
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YServo class is designed to drive remote-control servo motors
- *   outputs, for instance using a Yocto-Servo.
+ *   The <c>YServo</c> class is designed to drive remote-control servo motors
+ *   outputs.
  * <para>
  *   This class allows you not only to move
  *   a servo to a given position, but also to specify the time interval
@@ -106,6 +106,60 @@ namespace YoctoProxyAPI
  */
     public class YServoProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a RC servo motor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the RC servo motor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YServo.isOnline()</c> to test if the RC servo motor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a RC servo motor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the RC servo motor, for instance
+         *   <c>SERVORC1.servo1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YServo</c> object allowing you to drive the RC servo motor.
+         * </returns>
+         */
+        public static YServoProxy FindServo(string func)
+        {
+            return YoctoProxyManager.FindServo(func);
+        }
         //--- (end of YServo class start)
         //--- (YServo definitions)
         public const int _Position_INVALID = YAPI.INVALID_INT;
@@ -163,7 +217,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Servo available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YServo.FindServo</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YServo it = YServo.FirstServo();
@@ -241,7 +310,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current servo position
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YServo.POSITION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>servo._Position_INVALID</c>.
          * </para>
          */
         public int get_position()
@@ -299,17 +368,17 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the state of the servos.
+         *   Returns the state of the RC servo motors.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YServo.ENABLED_FALSE</c> or <c>YServo.ENABLED_TRUE</c>, according to the state of the servos
+         *   either <c>servo._Enabled_FALSE</c> or <c>servo._Enabled_TRUE</c>, according to the state of the RC servo motors
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YServo.ENABLED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>servo._Enabled_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -325,14 +394,14 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Stops or starts the servo.
+         *   Stops or starts the RC servo motor.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YServo.ENABLED_FALSE</c> or <c>YServo.ENABLED_TRUE</c>
+         *   either <c>servo._Enabled_FALSE</c> or <c>servo._Enabled_TRUE</c>
          * </param>
          * <para>
          * </para>
@@ -380,7 +449,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current range of use of the servo
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YServo.RANGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>servo._Range_INVALID</c>.
          * </para>
          */
         public int get_range()
@@ -470,7 +539,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the duration in microseconds of a neutral pulse for the servo
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YServo.NEUTRAL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>servo._Neutral_INVALID</c>.
          * </para>
          */
         public int get_neutral()
@@ -592,7 +661,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the servo position at device power up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YServo.POSITIONATPOWERON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>servo._Positionatpoweron_INVALID</c>.
          * </para>
          */
         public int get_positionAtPowerOn()
@@ -673,11 +742,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YServo.ENABLEDATPOWERON_FALSE</c> or <c>YServo.ENABLEDATPOWERON_TRUE</c>, according to
+         *   either <c>servo._Enabledatpoweron_FALSE</c> or <c>servo._Enabledatpoweron_TRUE</c>, according to
          *   the servo signal generator state at power up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YServo.ENABLEDATPOWERON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>servo._Enabledatpoweron_INVALID</c>.
          * </para>
          */
         public int get_enabledAtPowerOn()
@@ -702,7 +771,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YServo.ENABLEDATPOWERON_FALSE</c> or <c>YServo.ENABLEDATPOWERON_TRUE</c>
+         *   either <c>servo._Enabledatpoweron_FALSE</c> or <c>servo._Enabledatpoweron_TRUE</c>
          * </param>
          * <para>
          * </para>

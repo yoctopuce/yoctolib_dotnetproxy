@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_consolidateddataset_proxy.cs 38282 2019-11-21 14:50:25Z seb $
+ *  $Id: yocto_consolidateddataset_proxy.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements YConsolidatedDataSetProxy, the Proxy API for ConsolidatedDataSet
  *
@@ -45,6 +45,7 @@ using System.Threading;
 using System.Timers;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YoctoLib;
 
 namespace YoctoProxyAPI
 {
@@ -58,9 +59,9 @@ namespace YoctoProxyAPI
         }
         //--- (end of generated code: YConsolidatedDataSet class start)
         // YConsolidatedDataSet constructor
-        public YConsolidatedDataSetProxy(double startTime, double endTime, List<YSensorProxy> sensorList)
+        public YConsolidatedDataSetProxy(double startTime, double endTime, YSensorProxy[] sensorList)
         {
-            List<YSensor> realsensorlist = new List<YSensor>(sensorList.Count);
+            List<YSensor> realsensorlist = new List<YSensor>(sensorList.Length);
             foreach (YSensorProxy sensorProxy in sensorList) {
                 realsensorlist.Add(sensorProxy.get_ysensor());
             }
@@ -73,7 +74,47 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Extracts the next data record from the dataLogger of all sensors linked to this
+         *   Returns an object holding historical data for multiple
+         *   sensors, for a specified time interval.
+         * <para>
+         *   The measures will be retrieved from the data logger, which must have been turned
+         *   on at the desired time. The resulting object makes it possible to load progressively
+         *   a large set of measures from multiple sensors, consolidating data on the fly
+         *   to align records based on measurement timestamps.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="sensorNames">
+         *   array of logical names or hardware identifiers of the sensors
+         *   for which data must be loaded from their data logger.
+         * </param>
+         * <param name="startTime">
+         *   the start of the desired measure time interval,
+         *   as a Unix timestamp, i.e. the number of seconds since
+         *   January 1, 1970 UTC. The special value 0 can be used
+         *   to include any measure, without initial limit.
+         * </param>
+         * <param name="endTime">
+         *   the end of the desired measure time interval,
+         *   as a Unix timestamp, i.e. the number of seconds since
+         *   January 1, 1970 UTC. The special value 0 can be used
+         *   to include any measure, without ending limit.
+         * </param>
+         * <returns>
+         *   an instance of <c>YConsolidatedDataSet</c>, providing access to
+         *   consolidated historical data. Records can be loaded progressively
+         *   using the <c>YConsolidatedDataSet.nextRecord()</c> method.
+         * </returns>
+         */
+        public static YConsolidatedDataSetProxy Init(string[] sensorNames, double startTime, double endTime)
+        {
+            return new YConsolidatedDataSetProxy(YConsolidatedDataSet.Init(new List<string>(sensorNames), startTime, endTime));
+        }
+
+        /**
+         * <summary>
+         *   Extracts the next data record from the data logger of all sensors linked to this
          *   object.
          * <para>
          * </para>

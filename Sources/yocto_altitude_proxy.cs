@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_altitude_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_altitude_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YAltitudeProxy, the Proxy API for Altitude
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YAltitude class allows you to read and configure Yoctopuce altitude
- *   sensors, for instance using a Yocto-Altimeter-V2 or a Yocto-GPS.
+ *   The <c>YAltitude</c> class allows you to read and configure Yoctopuce altimeters.
  * <para>
- *   It inherits from the YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to configure the barometric pressure adjusted to
  *   sea level (QNH) for barometric sensors.
  * </para>
@@ -106,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YAltitudeProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves an altimeter for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the altimeter is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YAltitude.isOnline()</c> to test if the altimeter is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   an altimeter by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the altimeter, for instance
+         *   <c>YALTIMK2.altitude</c>.
+         * </param>
+         * <returns>
+         *   a <c>YAltitude</c> object allowing you to drive the altimeter.
+         * </returns>
+         */
+        public static YAltitudeProxy FindAltitude(string func)
+        {
+            return YoctoProxyManager.FindAltitude(func);
+        }
         //--- (end of YAltitude class start)
         //--- (YAltitude definitions)
         public const double _Qnh_INVALID = Double.NaN;
@@ -150,7 +203,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Altitude available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YAltitude.FindAltitude</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YAltitude it = YAltitude.FirstAltitude();
@@ -313,7 +381,7 @@ namespace YoctoProxyAPI
          *   the altitude (QNH)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAltitude.QNH_INVALID</c>.
+         *   On failure, throws an exception or returns <c>altitude._Qnh_INVALID</c>.
          * </para>
          */
         public double get_qnh()
@@ -343,7 +411,7 @@ namespace YoctoProxyAPI
          *   altitude
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAltitude.TECHNOLOGY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>altitude._Technology_INVALID</c>.
          * </para>
          */
         public string get_technology()

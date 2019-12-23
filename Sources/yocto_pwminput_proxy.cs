@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwminput_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_pwminput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YPwmInputProxy, the Proxy API for PwmInput
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YPwmInput class allows you to read and configure Yoctopuce PWM
- *   sensors, for instance using a Yocto-PWM-Rx.
+ *   The <c>YPwmInput</c> class allows you to read and configure Yoctopuce PWM inputs.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to configure the signal parameter used to transmit
  *   information: the duty cycle, the frequency or the pulse width.
  * </para>
@@ -106,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YPwmInputProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a PWM input for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the PWM input is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YPwmInput.isOnline()</c> to test if the PWM input is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a PWM input by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the PWM input, for instance
+         *   <c>YPWMRX01.pwmInput1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YPwmInput</c> object allowing you to drive the PWM input.
+         * </returns>
+         */
+        public static YPwmInputProxy FindPwmInput(string func)
+        {
+            return YoctoProxyManager.FindPwmInput(func);
+        }
         //--- (end of YPwmInput class start)
         //--- (YPwmInput definitions)
         public const double _DutyCycle_INVALID = Double.NaN;
@@ -167,7 +220,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type PwmInput available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YPwmInput.FindPwmInput</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YPwmInput it = YPwmInput.FirstPwmInput();
@@ -241,7 +309,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM duty cycle, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.DUTYCYCLE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Dutycycle_INVALID</c>.
          * </para>
          */
         public double get_dutyCycle()
@@ -268,7 +336,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM pulse length in milliseconds, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.PULSEDURATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Pulseduration_INVALID</c>.
          * </para>
          */
         public double get_pulseDuration()
@@ -295,7 +363,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM frequency in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.FREQUENCY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Frequency_INVALID</c>.
          * </para>
          */
         public double get_frequency()
@@ -322,7 +390,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM period in milliseconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.PERIOD_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Period_INVALID</c>.
          * </para>
          */
         public double get_period()
@@ -352,7 +420,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the pulse counter value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.PULSECOUNTER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Pulsecounter_INVALID</c>.
          * </para>
          */
         public long get_pulseCounter()
@@ -379,7 +447,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the timer of the pulses counter (ms)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.PULSETIMER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Pulsetimer_INVALID</c>.
          * </para>
          */
         public long get_pulseTimer()
@@ -402,16 +470,16 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YPwmInput.PWMREPORTMODE_PWM_DUTYCYCLE</c>, <c>YPwmInput.PWMREPORTMODE_PWM_FREQUENCY</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_PULSEDURATION</c>, <c>YPwmInput.PWMREPORTMODE_PWM_EDGECOUNT</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_PULSECOUNT</c>, <c>YPwmInput.PWMREPORTMODE_PWM_CPS</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_CPM</c>, <c>YPwmInput.PWMREPORTMODE_PWM_STATE</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPS</c> and <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPM</c>
+         *   a value among <c>pwminput._Pwmreportmode_PWM_DUTYCYCLE</c>, <c>pwminput._Pwmreportmode_PWM_FREQUENCY</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_PULSEDURATION</c>, <c>pwminput._Pwmreportmode_PWM_EDGECOUNT</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_PULSECOUNT</c>, <c>pwminput._Pwmreportmode_PWM_CPS</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_CPM</c>, <c>pwminput._Pwmreportmode_PWM_STATE</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c> and <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c>
          *   corresponding to the parameter (frequency/duty cycle, pulse width, edges count) returned by the
          *   get_currentValue function and callbacks
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.PWMREPORTMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Pwmreportmode_INVALID</c>.
          * </para>
          */
         public int get_pwmReportMode()
@@ -437,11 +505,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YPwmInput.PWMREPORTMODE_PWM_DUTYCYCLE</c>, <c>YPwmInput.PWMREPORTMODE_PWM_FREQUENCY</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_PULSEDURATION</c>, <c>YPwmInput.PWMREPORTMODE_PWM_EDGECOUNT</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_PULSECOUNT</c>, <c>YPwmInput.PWMREPORTMODE_PWM_CPS</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_CPM</c>, <c>YPwmInput.PWMREPORTMODE_PWM_STATE</c>,
-         *   <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPS</c> and <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPM</c>
+         *   a value among <c>pwminput._Pwmreportmode_PWM_DUTYCYCLE</c>, <c>pwminput._Pwmreportmode_PWM_FREQUENCY</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_PULSEDURATION</c>, <c>pwminput._Pwmreportmode_PWM_EDGECOUNT</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_PULSECOUNT</c>, <c>pwminput._Pwmreportmode_PWM_CPS</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_CPM</c>, <c>pwminput._Pwmreportmode_PWM_STATE</c>,
+         *   <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c> and <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c>
          *   corresponding to the  parameter  type (frequency/duty cycle, pulse width, or edge count) returned
          *   by the get_currentValue function and callbacks
          * </param>
@@ -506,7 +574,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the shortest expected pulse duration, in ms
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmInput.DEBOUNCEPERIOD_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwminput._Debounceperiod_INVALID</c>.
          * </para>
          */
         public int get_debouncePeriod()

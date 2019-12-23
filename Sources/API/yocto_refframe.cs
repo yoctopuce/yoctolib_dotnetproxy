@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_refframe.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_refframe.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindRefFrame(), the high-level API for RefFrame functions
  *
@@ -58,8 +58,8 @@ using YFUN_DESCR = System.Int32;
 //--- (YRefFrame class start)
 /**
  * <summary>
- *   The YRefFrame class is used to setup the base orientation of the Yoctopuce inertial
- *   sensors, for instance using a Yocto-3D-V2.
+ *   The <c>YRefFrame</c> class is used to setup the base orientation of the Yoctopuce inertial
+ *   sensors.
  * <para>
  *   Thanks to this, orientation functions relative to the earth surface plane
  *   can use the proper reference frame. The class also implements a tridimensional
@@ -161,6 +161,7 @@ public enum   MOUNTORIENTATION
         base._parseAttr(json_val);
     }
 
+
     public int get_mountPos()
     {
         int res;
@@ -230,6 +231,7 @@ public enum   MOUNTORIENTATION
         }
     }
 
+
     /**
      * <summary>
      *   Returns the reference bearing used by the compass.
@@ -262,6 +264,7 @@ public enum   MOUNTORIENTATION
         return res;
     }
 
+
     public string get_calibrationParam()
     {
         string res;
@@ -284,6 +287,7 @@ public enum   MOUNTORIENTATION
             return _setAttr("calibrationParam", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -349,6 +353,7 @@ public enum   MOUNTORIENTATION
         }
     }
 
+
     /**
      * <summary>
      *   Retrieves a reference frame for a given identifier.
@@ -412,6 +417,7 @@ public enum   MOUNTORIENTATION
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -449,6 +455,7 @@ public enum   MOUNTORIENTATION
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackRefFrame != null) {
@@ -458,6 +465,7 @@ public enum   MOUNTORIENTATION
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -489,6 +497,7 @@ public enum   MOUNTORIENTATION
         }
         return (MOUNTPOSITION) ((position) >> (2));
     }
+
 
     /**
      * <summary>
@@ -522,6 +531,7 @@ public enum   MOUNTORIENTATION
         }
         return (MOUNTORIENTATION) ((position) & (3));
     }
+
 
     /**
      * <summary>
@@ -567,6 +577,7 @@ public enum   MOUNTORIENTATION
         return this.set_mountPos(mixedPos);
     }
 
+
     /**
      * <summary>
      *   Returns the 3D sensor calibration state (Yocto-3D-V2 only).
@@ -605,6 +616,7 @@ public enum   MOUNTORIENTATION
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns estimated quality of the orientation (Yocto-3D-V2 only).
@@ -641,6 +653,7 @@ public enum   MOUNTORIENTATION
         res = ((iCalib[2]) / (1000));
         return res;
     }
+
 
     public virtual int _calibSort(int start, int stopidx)
     {
@@ -682,6 +695,7 @@ public enum   MOUNTORIENTATION
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -731,6 +745,7 @@ public enum   MOUNTORIENTATION
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
      *   Continues the sensors tridimensional calibration process previously
@@ -753,6 +768,7 @@ public enum   MOUNTORIENTATION
         }
         return this.more3DCalibrationV1();
     }
+
 
     public virtual int more3DCalibrationV1()
     {
@@ -955,6 +971,7 @@ public enum   MOUNTORIENTATION
         return YAPI.SUCCESS;
     }
 
+
     public virtual int more3DCalibrationV2()
     {
         int currTick;
@@ -1014,6 +1031,7 @@ public enum   MOUNTORIENTATION
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
      *   Returns instructions to proceed to the tridimensional calibration initiated with
@@ -1029,6 +1047,7 @@ public enum   MOUNTORIENTATION
     {
         return this._calibStageHint;
     }
+
 
     /**
      * <summary>
@@ -1046,6 +1065,7 @@ public enum   MOUNTORIENTATION
         return this._calibProgress;
     }
 
+
     /**
      * <summary>
      *   Returns index of the current stage of the calibration
@@ -1062,6 +1082,7 @@ public enum   MOUNTORIENTATION
         return this._calibStage;
     }
 
+
     /**
      * <summary>
      *   Returns the process indicator for the current stage of the calibration
@@ -1077,6 +1098,7 @@ public enum   MOUNTORIENTATION
     {
         return this._calibStageProgress;
     }
+
 
     /**
      * <summary>
@@ -1097,6 +1119,7 @@ public enum   MOUNTORIENTATION
         return msg;
     }
 
+
     /**
      * <summary>
      *   Applies the sensors tridimensional calibration parameters that have just been computed.
@@ -1116,6 +1139,7 @@ public enum   MOUNTORIENTATION
         }
         return this.save3DCalibrationV1();
     }
+
 
     public virtual int save3DCalibrationV1()
     {
@@ -1183,10 +1207,12 @@ public enum   MOUNTORIENTATION
         return this.set_calibrationParam(newcalib);
     }
 
+
     public virtual int save3DCalibrationV2()
     {
         return this.set_calibrationParam("5,5,5,5,5,5");
     }
+
 
     /**
      * <summary>

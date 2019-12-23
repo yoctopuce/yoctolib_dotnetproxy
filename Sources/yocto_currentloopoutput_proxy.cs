@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_currentloopoutput_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_currentloopoutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YCurrentLoopOutputProxy, the Proxy API for CurrentLoopOutput
  *
@@ -92,7 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YCurrentLoopOutput class allows you to drive a 4-20mA output, for instance using a Yocto-4-20mA-Tx.
+ *   The <c>YCurrentLoopOutput</c> class allows you to drive a 4-20mA output
+ *   by regulating the current flowing through the current loop.
  * <para>
  *   It can also provide information about the power state of the current loop.
  * </para>
@@ -102,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YCurrentLoopOutputProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a 4-20mA output for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the 4-20mA output is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YCurrentLoopOutput.isOnline()</c> to test if the 4-20mA output is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a 4-20mA output by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the 4-20mA output, for instance
+         *   <c>TX420MA1.currentLoopOutput</c>.
+         * </param>
+         * <returns>
+         *   a <c>YCurrentLoopOutput</c> object allowing you to drive the 4-20mA output.
+         * </returns>
+         */
+        public static YCurrentLoopOutputProxy FindCurrentLoopOutput(string func)
+        {
+            return YoctoProxyManager.FindCurrentLoopOutput(func);
+        }
         //--- (end of YCurrentLoopOutput class start)
         //--- (YCurrentLoopOutput definitions)
         public const double _Current_INVALID = Double.NaN;
@@ -153,7 +208,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type CurrentLoopOutput available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YCurrentLoopOutput.FindCurrentLoopOutput</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YCurrentLoopOutput it = YCurrentLoopOutput.FirstCurrentLoopOutput();
@@ -270,7 +340,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the loop current set point in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCurrentLoopOutput.CURRENT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>currentloopoutput._Current_INVALID</c>.
          * </para>
          */
         public double get_current()
@@ -356,7 +426,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current in the loop at device startup, in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCurrentLoopOutput.CURRENTATSTARTUP_INVALID</c>.
+         *   On failure, throws an exception or returns <c>currentloopoutput._Currentatstartup_INVALID</c>.
          * </para>
          */
         public double get_currentAtStartUp()
@@ -383,11 +453,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YCurrentLoopOutput.LOOPPOWER_NOPWR</c>, <c>YCurrentLoopOutput.LOOPPOWER_LOWPWR</c>
-         *   and <c>YCurrentLoopOutput.LOOPPOWER_POWEROK</c> corresponding to the loop powerstate
+         *   a value among <c>currentloopoutput._Looppower_NOPWR</c>, <c>currentloopoutput._Looppower_LOWPWR</c>
+         *   and <c>currentloopoutput._Looppower_POWEROK</c> corresponding to the loop powerstate
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YCurrentLoopOutput.LOOPPOWER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>currentloopoutput._Looppower_INVALID</c>.
          * </para>
          */
         public int get_loopPower()

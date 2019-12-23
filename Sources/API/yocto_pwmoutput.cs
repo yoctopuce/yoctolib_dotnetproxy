@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_pwmoutput.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_pwmoutput.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements yFindPwmOutput(), the high-level API for PwmOutput functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YPwmOutput class start)
 /**
  * <summary>
- *   The YPwmOutput class allows you to drive a PWM output, for instance using a Yocto-PWM-Tx.
+ *   The <c>YPwmOutput</c> class allows you to drive a pulse-width modulated output (PWM).
  * <para>
  *   You can configure the frequency as well as the duty cycle, and setup progressive
  *   transitions.
@@ -144,16 +144,18 @@ public class YPwmOutput : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
-     *   Returns the state of the PWMs.
+     *   Returns the state of the PWM generators.
      * <para>
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   either <c>YPwmOutput.ENABLED_FALSE</c> or <c>YPwmOutput.ENABLED_TRUE</c>, according to the state of the PWMs
+     *   either <c>YPwmOutput.ENABLED_FALSE</c> or <c>YPwmOutput.ENABLED_TRUE</c>, according to the state of
+     *   the PWM generators
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YPwmOutput.ENABLED_INVALID</c>.
@@ -238,6 +240,7 @@ public class YPwmOutput : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the PWM frequency in Hz.
@@ -301,6 +304,7 @@ public class YPwmOutput : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the PWM period in milliseconds.
@@ -358,6 +362,7 @@ public class YPwmOutput : YFunction
             return _setAttr("dutyCycle", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -418,6 +423,7 @@ public class YPwmOutput : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the PWM pulse length in milliseconds, as a floating point number.
@@ -447,6 +453,7 @@ public class YPwmOutput : YFunction
         return res;
     }
 
+
     public string get_pwmTransition()
     {
         string res;
@@ -469,6 +476,7 @@ public class YPwmOutput : YFunction
             return _setAttr("pwmTransition", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -563,17 +571,18 @@ public class YPwmOutput : YFunction
         }
     }
 
+
     /**
      * <summary>
-     *   Returns the PWMs duty cycle at device power on as a floating point number between 0 and 100.
+     *   Returns the PWM generators duty cycle at device power on as a floating point number between 0 and 100.
      * <para>
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   a floating point number corresponding to the PWMs duty cycle at device power on as a floating point
-     *   number between 0 and 100
+     *   a floating point number corresponding to the PWM generators duty cycle at device power on as a
+     *   floating point number between 0 and 100
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YPwmOutput.DUTYCYCLEATPOWERON_INVALID</c>.
@@ -593,9 +602,10 @@ public class YPwmOutput : YFunction
         return res;
     }
 
+
     /**
      * <summary>
-     *   Retrieves a PWM for a given identifier.
+     *   Retrieves a PWM generator for a given identifier.
      * <para>
      *   The identifier can be specified using several formats:
      * </para>
@@ -619,11 +629,11 @@ public class YPwmOutput : YFunction
      * <para>
      * </para>
      * <para>
-     *   This function does not require that the PWM is online at the time
+     *   This function does not require that the PWM generator is online at the time
      *   it is invoked. The returned object is nevertheless valid.
-     *   Use the method <c>YPwmOutput.isOnline()</c> to test if the PWM is
+     *   Use the method <c>YPwmOutput.isOnline()</c> to test if the PWM generator is
      *   indeed online at a given time. In case of ambiguity when looking for
-     *   a PWM by logical name, no error is notified: the first instance
+     *   a PWM generator by logical name, no error is notified: the first instance
      *   found is returned. The search is performed first by hardware name,
      *   then by logical name.
      * </para>
@@ -636,11 +646,11 @@ public class YPwmOutput : YFunction
      * </para>
      * </summary>
      * <param name="func">
-     *   a string that uniquely characterizes the PWM, for instance
+     *   a string that uniquely characterizes the PWM generator, for instance
      *   <c>YPWMTX01.pwmOutput1</c>.
      * </param>
      * <returns>
-     *   a <c>YPwmOutput</c> object allowing you to drive the PWM.
+     *   a <c>YPwmOutput</c> object allowing you to drive the PWM generator.
      * </returns>
      */
     public static YPwmOutput FindPwmOutput(string func)
@@ -655,6 +665,7 @@ public class YPwmOutput : YFunction
         }
         return obj;
     }
+
 
     /**
      * <summary>
@@ -693,6 +704,7 @@ public class YPwmOutput : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackPwmOutput != null) {
@@ -702,6 +714,7 @@ public class YPwmOutput : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -733,6 +746,7 @@ public class YPwmOutput : YFunction
         newval = ""+Convert.ToString( (int) Math.Round(ms_target*65536))+"ms:"+Convert.ToString(ms_duration);
         return this.set_pwmTransition(newval);
     }
+
 
     /**
      * <summary>
@@ -768,6 +782,7 @@ public class YPwmOutput : YFunction
         return this.set_pwmTransition(newval);
     }
 
+
     /**
      * <summary>
      *   Performs a smooth frequency change toward a given value.
@@ -797,6 +812,7 @@ public class YPwmOutput : YFunction
         newval = ""+YAPI._floatToStr( target)+"Hz:"+Convert.ToString(ms_duration);
         return this.set_pwmTransition(newval);
     }
+
 
     /**
      * <summary>
@@ -829,6 +845,7 @@ public class YPwmOutput : YFunction
         return this.set_pwmTransition(newval);
     }
 
+
     /**
      * <summary>
      *   Trigger a given number of pulses of specified duration, at current frequency.
@@ -859,6 +876,7 @@ public class YPwmOutput : YFunction
         newval = ""+Convert.ToString( (int) Math.Round(ms_target*65536))+"ms*"+Convert.ToString(n_pulses);
         return this.set_pwmTransition(newval);
     }
+
 
     /**
      * <summary>
@@ -894,6 +912,7 @@ public class YPwmOutput : YFunction
         return this.set_pwmTransition(newval);
     }
 
+
     /**
      * <summary>
      *   Trigger a given number of pulses at the specified frequency, using current duty cycle.
@@ -924,10 +943,12 @@ public class YPwmOutput : YFunction
         return this.set_pwmTransition(newval);
     }
 
+
     public virtual int markForRepeat()
     {
         return this.set_pwmTransition(":");
     }
+
 
     public virtual int repeatFromMark()
     {
@@ -936,17 +957,17 @@ public class YPwmOutput : YFunction
 
     /**
      * <summary>
-     *   Continues the enumeration of PWMs started using <c>yFirstPwmOutput()</c>.
+     *   Continues the enumeration of PWM generators started using <c>yFirstPwmOutput()</c>.
      * <para>
-     *   Caution: You can't make any assumption about the returned PWMs order.
-     *   If you want to find a specific a PWM, use <c>PwmOutput.findPwmOutput()</c>
+     *   Caution: You can't make any assumption about the returned PWM generators order.
+     *   If you want to find a specific a PWM generator, use <c>PwmOutput.findPwmOutput()</c>
      *   and a hardwareID or a logical name.
      * </para>
      * </summary>
      * <returns>
      *   a pointer to a <c>YPwmOutput</c> object, corresponding to
-     *   a PWM currently online, or a <c>null</c> pointer
-     *   if there are no more PWMs to enumerate.
+     *   a PWM generator currently online, or a <c>null</c> pointer
+     *   if there are no more PWM generators to enumerate.
      * </returns>
      */
     public YPwmOutput nextPwmOutput()
@@ -965,15 +986,15 @@ public class YPwmOutput : YFunction
 
     /**
      * <summary>
-     *   Starts the enumeration of PWMs currently accessible.
+     *   Starts the enumeration of PWM generators currently accessible.
      * <para>
      *   Use the method <c>YPwmOutput.nextPwmOutput()</c> to iterate on
-     *   next PWMs.
+     *   next PWM generators.
      * </para>
      * </summary>
      * <returns>
      *   a pointer to a <c>YPwmOutput</c> object, corresponding to
-     *   the first PWM currently online, or a <c>null</c> pointer
+     *   the first PWM generator currently online, or a <c>null</c> pointer
      *   if there are none.
      * </returns>
      */

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_serialport.cs 38514 2019-11-26 16:54:39Z seb $
+ * $Id: yocto_serialport.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  * Implements yFindSerialPort(), the high-level API for SerialPort functions
  *
@@ -76,6 +76,7 @@ public class YSnoopingRecord
   //--- (generated code: YSnoopingRecord implementation)
 
 
+
     /**
      * <summary>
      *   Returns the elapsed time, in ms, since the beginning of the preceding message.
@@ -91,6 +92,7 @@ public class YSnoopingRecord
         return this._tim;
     }
 
+
     /**
      * <summary>
      *   Returns the message direction (RX=0 , TX=1) .
@@ -105,6 +107,7 @@ public class YSnoopingRecord
     {
         return this._dir;
     }
+
 
     /**
      * <summary>
@@ -133,7 +136,7 @@ public class YSnoopingRecord
 //--- (generated code: YSerialPort class start)
 /**
  * <summary>
- *   The YSerialPort class allows you to fully drive a Yoctopuce serial port, for instance using a Yocto-RS232, a Yocto-RS485-V2 or a Yocto-Serial.
+ *   The <c>YSerialPort</c> class allows you to fully drive a Yoctopuce serial port.
  * <para>
  *   It can be used to send and receive data, and to configure communication
  *   parameters (baud rate, bit count, parity, flow control and protocol).
@@ -159,6 +162,8 @@ public class YSerialPort : YFunction
     public const string LASTMSG_INVALID = YAPI.INVALID_STRING;
     public const string CURRENTJOB_INVALID = YAPI.INVALID_STRING;
     public const string STARTUPJOB_INVALID = YAPI.INVALID_STRING;
+    public const int JOBMAXTASK_INVALID = YAPI.INVALID_UINT;
+    public const int JOBMAXSIZE_INVALID = YAPI.INVALID_UINT;
     public const string COMMAND_INVALID = YAPI.INVALID_STRING;
     public const string PROTOCOL_INVALID = YAPI.INVALID_STRING;
     public const int VOLTAGELEVEL_OFF = 0;
@@ -179,6 +184,8 @@ public class YSerialPort : YFunction
     protected string _lastMsg = LASTMSG_INVALID;
     protected string _currentJob = CURRENTJOB_INVALID;
     protected string _startupJob = STARTUPJOB_INVALID;
+    protected int _jobMaxTask = JOBMAXTASK_INVALID;
+    protected int _jobMaxSize = JOBMAXSIZE_INVALID;
     protected string _command = COMMAND_INVALID;
     protected string _protocol = PROTOCOL_INVALID;
     protected int _voltageLevel = VOLTAGELEVEL_INVALID;
@@ -233,6 +240,14 @@ public class YSerialPort : YFunction
         {
             _startupJob = json_val.getString("startupJob");
         }
+        if (json_val.has("jobMaxTask"))
+        {
+            _jobMaxTask = json_val.getInt("jobMaxTask");
+        }
+        if (json_val.has("jobMaxSize"))
+        {
+            _jobMaxSize = json_val.getInt("jobMaxSize");
+        }
         if (json_val.has("command"))
         {
             _command = json_val.getString("command");
@@ -251,6 +266,7 @@ public class YSerialPort : YFunction
         }
         base._parseAttr(json_val);
     }
+
 
     /**
      * <summary>
@@ -281,6 +297,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the total number of bytes transmitted since last reset.
@@ -309,6 +326,7 @@ public class YSerialPort : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -339,6 +357,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the total number of messages received since last reset.
@@ -367,6 +386,7 @@ public class YSerialPort : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -397,6 +417,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the latest message fully received (for Line, Frame and Modbus protocols).
@@ -425,6 +446,7 @@ public class YSerialPort : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -486,6 +508,7 @@ public class YSerialPort : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the job file to use when the device is powered on.
@@ -546,6 +569,67 @@ public class YSerialPort : YFunction
         }
     }
 
+
+    /**
+     * <summary>
+     *   Returns the maximum number of tasks in a job that the device can handle.
+     * <para>
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   an integer corresponding to the maximum number of tasks in a job that the device can handle
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YSerialPort.JOBMAXTASK_INVALID</c>.
+     * </para>
+     */
+    public int get_jobMaxTask()
+    {
+        int res;
+        lock (_thisLock) {
+            if (this._cacheExpiration == 0) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return JOBMAXTASK_INVALID;
+                }
+            }
+            res = this._jobMaxTask;
+        }
+        return res;
+    }
+
+
+    /**
+     * <summary>
+     *   Returns maximum size allowed for job files.
+     * <para>
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   an integer corresponding to maximum size allowed for job files
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YSerialPort.JOBMAXSIZE_INVALID</c>.
+     * </para>
+     */
+    public int get_jobMaxSize()
+    {
+        int res;
+        lock (_thisLock) {
+            if (this._cacheExpiration == 0) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return JOBMAXSIZE_INVALID;
+                }
+            }
+            res = this._jobMaxSize;
+        }
+        return res;
+    }
+
+
     public string get_command()
     {
         string res;
@@ -568,6 +652,7 @@ public class YSerialPort : YFunction
             return _setAttr("command", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -647,6 +732,7 @@ public class YSerialPort : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the voltage level used on the serial line.
@@ -719,6 +805,7 @@ public class YSerialPort : YFunction
             return _setAttr("voltageLevel", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -794,6 +881,7 @@ public class YSerialPort : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Retrieves a serial port for a given identifier.
@@ -857,6 +945,7 @@ public class YSerialPort : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -894,6 +983,7 @@ public class YSerialPort : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackSerialPort != null) {
@@ -904,10 +994,12 @@ public class YSerialPort : YFunction
         return 0;
     }
 
+
     public virtual int sendCommand(string text)
     {
         return this.set_command(text);
     }
+
 
     /**
      * <summary>
@@ -953,6 +1045,7 @@ public class YSerialPort : YFunction
         res = this._json_get_string(YAPI.DefaultEncoding.GetBytes(msgarr[0]));
         return res;
     }
+
 
     /**
      * <summary>
@@ -1013,6 +1106,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Changes the current internal stream position to the specified value.
@@ -1035,6 +1129,7 @@ public class YSerialPort : YFunction
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
      *   Returns the current absolute stream position pointer of the API object.
@@ -1049,6 +1144,7 @@ public class YSerialPort : YFunction
     {
         return this._rxptr;
     }
+
 
     /**
      * <summary>
@@ -1075,6 +1171,7 @@ public class YSerialPort : YFunction
         res = YAPI._atoi((YAPI.DefaultEncoding.GetString(buff)).Substring( 0, bufflen));
         return res;
     }
+
 
     /**
      * <summary>
@@ -1122,6 +1219,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Saves the job definition string (JSON data) into a job file.
@@ -1147,6 +1245,7 @@ public class YSerialPort : YFunction
         this._upload(jobfile, YAPI.DefaultEncoding.GetBytes(jsonDef));
         return YAPI.SUCCESS;
     }
+
 
     /**
      * <summary>
@@ -1174,6 +1273,7 @@ public class YSerialPort : YFunction
         return this.set_currentJob(jobfile);
     }
 
+
     /**
      * <summary>
      *   Clears the serial port buffer and resets counters to zero.
@@ -1198,6 +1298,7 @@ public class YSerialPort : YFunction
         return this.sendCommand("Z");
     }
 
+
     /**
      * <summary>
      *   Sends a single byte to the serial port.
@@ -1218,6 +1319,7 @@ public class YSerialPort : YFunction
     {
         return this.sendCommand("$"+String.Format("{0:X02}",code));
     }
+
 
     /**
      * <summary>
@@ -1263,6 +1365,7 @@ public class YSerialPort : YFunction
         return this._upload("txdata", buff);
     }
 
+
     /**
      * <summary>
      *   Sends a binary buffer to the serial port, as is.
@@ -1283,6 +1386,7 @@ public class YSerialPort : YFunction
     {
         return this._upload("txdata", buff);
     }
+
 
     /**
      * <summary>
@@ -1319,6 +1423,7 @@ public class YSerialPort : YFunction
         res = this._upload("txdata", buff);
         return res;
     }
+
 
     /**
      * <summary>
@@ -1359,6 +1464,7 @@ public class YSerialPort : YFunction
         res = this._upload("txdata", buff);
         return res;
     }
+
 
     /**
      * <summary>
@@ -1403,6 +1509,7 @@ public class YSerialPort : YFunction
         // send string using file upload
         return this._upload("txdata", buff);
     }
+
 
     /**
      * <summary>
@@ -1479,6 +1586,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Reads data from the receive buffer as a string, starting at current stream position.
@@ -1521,6 +1629,7 @@ public class YSerialPort : YFunction
         res = (YAPI.DefaultEncoding.GetString(buff)).Substring( 0, bufflen);
         return res;
     }
+
 
     /**
      * <summary>
@@ -1570,6 +1679,7 @@ public class YSerialPort : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -1621,6 +1731,7 @@ public class YSerialPort : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -1675,6 +1786,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Manually sets the state of the RTS line.
@@ -1699,6 +1811,7 @@ public class YSerialPort : YFunction
     {
         return this.sendCommand("R"+Convert.ToString(val));
     }
+
 
     /**
      * <summary>
@@ -1728,6 +1841,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Retrieves messages (both direction) in the serial port buffer, starting at current position.
@@ -1745,7 +1859,7 @@ public class YSerialPort : YFunction
      *   in the receive buffer.
      * </param>
      * <returns>
-     *   an array of YSnoopingRecord objects containing the messages found, if any.
+     *   an array of <c>YSnoopingRecord</c> objects containing the messages found, if any.
      *   Binary messages are converted to hexadecimal representation.
      * </returns>
      * <para>
@@ -1779,6 +1893,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Sends a MODBUS message (provided as a hexadecimal string) to the serial port.
@@ -1801,6 +1916,7 @@ public class YSerialPort : YFunction
     {
         return this.sendCommand(":"+hexString);
     }
+
 
     /**
      * <summary>
@@ -1872,6 +1988,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Reads one or more contiguous internal bits (or coil status) from a MODBUS serial device.
@@ -1938,6 +2055,7 @@ public class YSerialPort : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -2006,6 +2124,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Reads one or more contiguous internal registers (holding registers) from a MODBUS serial device.
@@ -2062,6 +2181,7 @@ public class YSerialPort : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -2120,6 +2240,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Sets a single internal bit (or coil) on a MODBUS serial device.
@@ -2168,6 +2289,7 @@ public class YSerialPort : YFunction
         res = 1;
         return res;
     }
+
 
     /**
      * <summary>
@@ -2243,6 +2365,7 @@ public class YSerialPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Sets a single internal register (or holding register) on a MODBUS serial device.
@@ -2288,6 +2411,7 @@ public class YSerialPort : YFunction
         res = 1;
         return res;
     }
+
 
     /**
      * <summary>
@@ -2349,6 +2473,7 @@ public class YSerialPort : YFunction
         res = res + reply[4];
         return res;
     }
+
 
     /**
      * <summary>

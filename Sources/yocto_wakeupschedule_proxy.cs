@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupschedule_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_wakeupschedule_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YWakeUpScheduleProxy, the Proxy API for WakeUpSchedule
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YWakeUpSchedule class implements a wake up condition, for instance using a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
+ *   The <c>YWakeUpSchedule</c> class implements a wake up condition.
  * <para>
  *   The wake up time is
  *   specified as a set of months and/or days and/or hours and/or minutes when the
@@ -104,6 +104,60 @@ namespace YoctoProxyAPI
  */
     public class YWakeUpScheduleProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a wake up schedule for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the wake up schedule is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YWakeUpSchedule.isOnline()</c> to test if the wake up schedule is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a wake up schedule by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the wake up schedule, for instance
+         *   <c>YHUBGSM3.wakeUpSchedule1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YWakeUpSchedule</c> object allowing you to drive the wake up schedule.
+         * </returns>
+         */
+        public static YWakeUpScheduleProxy FindWakeUpSchedule(string func)
+        {
+            return YoctoProxyManager.FindWakeUpSchedule(func);
+        }
         //--- (end of YWakeUpSchedule class start)
         //--- (YWakeUpSchedule definitions)
         public const int _MinutesA_INVALID = -1;
@@ -159,7 +213,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type WakeUpSchedule available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YWakeUpSchedule.FindWakeUpSchedule</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YWakeUpSchedule it = YWakeUpSchedule.FirstWakeUpSchedule();
@@ -199,7 +268,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minutes in the 00-29 interval of each hour scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MINUTESA_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupschedule._Minutesa_INVALID</c>.
          * </para>
          */
         public int get_minutesA()
@@ -285,7 +354,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minutes in the 30-59 interval of each hour scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MINUTESB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupschedule._Minutesb_INVALID</c>.
          * </para>
          */
         public int get_minutesB()
@@ -371,7 +440,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the hours scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpSchedule.HOURS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupschedule._Hours_INVALID</c>.
          * </para>
          */
         public int get_hours()
@@ -457,7 +526,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the days of the week scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpSchedule.WEEKDAYS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupschedule._Weekdays_INVALID</c>.
          * </para>
          */
         public int get_weekDays()
@@ -543,7 +612,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the days of the month scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MONTHDAYS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupschedule._Monthdays_INVALID</c>.
          * </para>
          */
         public int get_monthDays()
@@ -629,7 +698,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the months scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MONTHS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupschedule._Months_INVALID</c>.
          * </para>
          */
         public int get_months()
@@ -731,7 +800,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the date/time (seconds) of the next wake up occurrence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpSchedule.NEXTOCCURENCE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupschedule._Nextoccurence_INVALID</c>.
          * </para>
          */
         public long get_nextOccurence()

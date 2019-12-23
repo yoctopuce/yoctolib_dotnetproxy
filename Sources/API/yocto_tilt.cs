@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_tilt.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_tilt.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindTilt(), the high-level API for Tilt functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YTilt class start)
 /**
  * <summary>
- *   The YSensor class is the parent class for all Yoctopuce sensor types.
+ *   The <c>YSensor</c> class is the parent class for all Yoctopuce sensor types.
  * <para>
  *   It can be
  *   used to read the current value and unit of any sensor, read the min/max
@@ -67,8 +67,8 @@ using YFUN_DESCR = System.Int32;
  *   observed value changes, or at a predefined interval. Using this class rather
  *   than a specific subclass makes it possible to create generic applications
  *   that work with any Yoctopuce sensor, even those that do not yet exist.
- *   Note: The YAnButton class is the only analog input which does not inherit
- *   from YSensor.
+ *   Note: The <c>YAnButton</c> class is the only analog input which does not inherit
+ *   from <c>YSensor</c>.
  * </para>
  * <para>
  * </para>
@@ -114,6 +114,7 @@ public class YTilt : YSensor
         }
         base._parseAttr(json_val);
     }
+
 
     /**
      * <summary>
@@ -177,6 +178,7 @@ public class YTilt : YSensor
         }
     }
 
+
     public int get_axis()
     {
         int res;
@@ -190,6 +192,7 @@ public class YTilt : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -254,6 +257,7 @@ public class YTilt : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -291,6 +295,7 @@ public class YTilt : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackTilt != null) {
@@ -300,6 +305,7 @@ public class YTilt : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -314,7 +320,7 @@ public class YTilt : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -331,6 +337,7 @@ public class YTilt : YSensor
         this._timedReportCallbackTilt = callback;
         return 0;
     }
+
 
     public override int _invokeTimedReportCallback(YMeasure value)
     {

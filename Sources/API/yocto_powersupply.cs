@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_powersupply.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_powersupply.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindPowerSupply(), the high-level API for PowerSupply functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YPowerSupply class start)
 /**
  * <summary>
- *   The YPowerSupply class allows you to drive a Yoctopuce power supply$DEV_ENà.
+ *   The <c>YPowerSupply</c> class allows you to drive a Yoctopuce power supply.
  * <para>
  *   It can be use to change the voltage set point,
  *   the current limit and the enable/disable the output.
@@ -203,6 +203,7 @@ public class YPowerSupply : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the voltage set point, in V.
@@ -261,6 +262,7 @@ public class YPowerSupply : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the current limit, in mA.
@@ -289,6 +291,7 @@ public class YPowerSupply : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -350,6 +353,7 @@ public class YPowerSupply : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the output voltage control point.
@@ -410,6 +414,7 @@ public class YPowerSupply : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the measured output voltage, in V.
@@ -438,6 +443,7 @@ public class YPowerSupply : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -468,6 +474,7 @@ public class YPowerSupply : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the measured input voltage, in V.
@@ -496,6 +503,7 @@ public class YPowerSupply : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -526,6 +534,7 @@ public class YPowerSupply : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the LDO temperature, in Celsius.
@@ -554,6 +563,7 @@ public class YPowerSupply : YFunction
         }
         return res;
     }
+
 
     public string get_voltageTransition()
     {
@@ -608,6 +618,7 @@ public class YPowerSupply : YFunction
             return _setAttr("voltageAtStartUp", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -669,6 +680,7 @@ public class YPowerSupply : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the selected current limit at device startup, in mA.
@@ -698,6 +710,7 @@ public class YPowerSupply : YFunction
         return res;
     }
 
+
     public string get_command()
     {
         string res;
@@ -720,6 +733,7 @@ public class YPowerSupply : YFunction
             return _setAttr("command", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -784,6 +798,7 @@ public class YPowerSupply : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -821,6 +836,7 @@ public class YPowerSupply : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackPowerSupply != null) {
@@ -830,6 +846,7 @@ public class YPowerSupply : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>

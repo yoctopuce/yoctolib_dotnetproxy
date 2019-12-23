@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_messagebox_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_messagebox_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YMessageBoxProxy, the Proxy API for MessageBox
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YMessageBox class provides SMS sending and receiving capability to
- *   GSM-enabled Yoctopuce devices, for instance using a YoctoHub-GSM-2G, a YoctoHub-GSM-3G-EU or a YoctoHub-GSM-3G-NA.
+ *   The <c>YMessageBox</c> class provides SMS sending and receiving capability for
+ *   GSM-enabled Yoctopuce devices.
  * <para>
  * </para>
  * <para>
@@ -102,6 +102,60 @@ namespace YoctoProxyAPI
  */
     public class YMessageBoxProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a SMS message box interface for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the SMS message box interface is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YMessageBox.isOnline()</c> to test if the SMS message box interface is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a SMS message box interface by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the SMS message box interface, for instance
+         *   <c>YHUBGSM1.messageBox</c>.
+         * </param>
+         * <returns>
+         *   a <c>YMessageBox</c> object allowing you to drive the SMS message box interface.
+         * </returns>
+         */
+        public static YMessageBoxProxy FindMessageBox(string func)
+        {
+            return YoctoProxyManager.FindMessageBox(func);
+        }
         //--- (end of generated code: YMessageBox class start)
         //--- (generated code: YMessageBox definitions)
         public const int _SlotsInUse_INVALID = -1;
@@ -150,7 +204,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type MessageBox available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YMessageBox.FindMessageBox</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YMessageBox it = YMessageBox.FirstMessageBox();
@@ -200,7 +269,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of message storage slots currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMessageBox.SLOTSINUSE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>messagebox._Slotsinuse_INVALID</c>.
          * </para>
          */
         public int get_slotsInUse()
@@ -227,7 +296,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of message storage slots on the SIM card
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMessageBox.SLOTSCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>messagebox._Slotscount_INVALID</c>.
          * </para>
          */
         public int get_slotsCount()
@@ -254,7 +323,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of SMS units sent so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMessageBox.PDUSENT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>messagebox._Pdusent_INVALID</c>.
          * </para>
          */
         public int get_pduSent()
@@ -313,7 +382,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of SMS units received so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMessageBox.PDURECEIVED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>messagebox._Pdureceived_INVALID</c>.
          * </para>
          */
         public int get_pduReceived()

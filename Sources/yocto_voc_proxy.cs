@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_voc_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_voc_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YVocProxy, the Proxy API for Voc
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YVoc class allows you to read and configure Yoctopuce Volatile Organic
- *   Compound sensors, for instance using a Yocto-VOC-V3.
+ *   The <c>YVoc</c> class allows you to read and configure Yoctopuce Volatile Organic Compound sensors.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  * </para>
  * <para>
  * </para>
@@ -104,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YVocProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a Volatile Organic Compound sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the Volatile Organic Compound sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YVoc.isOnline()</c> to test if the Volatile Organic Compound sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a Volatile Organic Compound sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the Volatile Organic Compound sensor, for instance
+         *   <c>YVOCMK03.voc</c>.
+         * </param>
+         * <returns>
+         *   a <c>YVoc</c> object allowing you to drive the Volatile Organic Compound sensor.
+         * </returns>
+         */
+        public static YVocProxy FindVoc(string func)
+        {
+            return YoctoProxyManager.FindVoc(func);
+        }
         //--- (end of YVoc class start)
         //--- (YVoc definitions)
 
@@ -145,7 +198,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Voc available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YVoc.FindVoc</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YVoc it = YVoc.FirstVoc();

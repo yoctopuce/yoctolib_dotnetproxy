@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_hubport_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_hubport_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YHubPortProxy, the Proxy API for HubPort
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YHubPort class provides control over the power supply for every port
- *   on a YoctoHub, for instance using a YoctoHub-Ethernet, a YoctoHub-GSM-3G-NA, a YoctoHub-Shield or a YoctoHub-Wireless-g.
+ *   The <c>YHubPort</c> class provides control over the power supply for slave ports
+ *   on a YoctoHub.
  * <para>
  *   It provide information about the device connected to it.
  *   The logical name of a YHubPort is always automatically set to the
@@ -105,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YHubPortProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a YoctoHub slave port for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the YoctoHub slave port is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YHubPort.isOnline()</c> to test if the YoctoHub slave port is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a YoctoHub slave port by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the YoctoHub slave port, for instance
+         *   <c>YHUBETH1.hubPort1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YHubPort</c> object allowing you to drive the YoctoHub slave port.
+         * </returns>
+         */
+        public static YHubPortProxy FindHubPort(string func)
+        {
+            return YoctoProxyManager.FindHubPort(func);
+        }
         //--- (end of YHubPort class start)
         //--- (YHubPort definitions)
         public const int _Enabled_INVALID = 0;
@@ -158,7 +212,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type HubPort available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YHubPort.FindHubPort</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YHubPort it = YHubPort.FirstHubPort();
@@ -182,18 +251,18 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns true if the Yocto-hub port is powered, false otherwise.
+         *   Returns true if the YoctoHub port is powered, false otherwise.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YHubPort.ENABLED_FALSE</c> or <c>YHubPort.ENABLED_TRUE</c>, according to true if the
-         *   Yocto-hub port is powered, false otherwise
+         *   either <c>hubport._Enabled_FALSE</c> or <c>hubport._Enabled_TRUE</c>, according to true if the
+         *   YoctoHub port is powered, false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YHubPort.ENABLED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>hubport._Enabled_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -209,7 +278,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the activation of the Yocto-hub port.
+         *   Changes the activation of the YoctoHub port.
          * <para>
          *   If the port is enabled, the
          *   connected module is powered. Otherwise, port power is shut down.
@@ -218,8 +287,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YHubPort.ENABLED_FALSE</c> or <c>YHubPort.ENABLED_TRUE</c>, according to the activation
-         *   of the Yocto-hub port
+         *   either <c>hubport._Enabled_FALSE</c> or <c>hubport._Enabled_TRUE</c>, according to the activation
+         *   of the YoctoHub port
          * </param>
          * <para>
          * </para>
@@ -293,19 +362,19 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the current state of the Yocto-hub port.
+         *   Returns the current state of the YoctoHub port.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YHubPort.PORTSTATE_OFF</c>, <c>YHubPort.PORTSTATE_OVRLD</c>,
-         *   <c>YHubPort.PORTSTATE_ON</c>, <c>YHubPort.PORTSTATE_RUN</c> and <c>YHubPort.PORTSTATE_PROG</c>
-         *   corresponding to the current state of the Yocto-hub port
+         *   a value among <c>hubport._Portstate_OFF</c>, <c>hubport._Portstate_OVRLD</c>,
+         *   <c>hubport._Portstate_ON</c>, <c>hubport._Portstate_RUN</c> and <c>hubport._Portstate_PROG</c>
+         *   corresponding to the current state of the YoctoHub port
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YHubPort.PORTSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>hubport._Portstate_INVALID</c>.
          * </para>
          */
         public int get_portState()
@@ -321,7 +390,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the current baud rate used by this Yocto-hub port, in kbps.
+         *   Returns the current baud rate used by this YoctoHub port, in kbps.
          * <para>
          *   The default value is 1000 kbps, but a slower rate may be used if communication
          *   problems are encountered.
@@ -330,10 +399,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the current baud rate used by this Yocto-hub port, in kbps
+         *   an integer corresponding to the current baud rate used by this YoctoHub port, in kbps
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YHubPort.BAUDRATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>hubport._Baudrate_INVALID</c>.
          * </para>
          */
         public int get_baudRate()

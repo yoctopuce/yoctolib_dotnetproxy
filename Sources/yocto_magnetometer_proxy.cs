@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_magnetometer_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_magnetometer_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YMagnetometerProxy, the Proxy API for Magnetometer
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YSensor class is the parent class for all Yoctopuce sensor types.
+ *   The <c>YSensor</c> class is the parent class for all Yoctopuce sensor types.
  * <para>
  *   It can be
  *   used to read the current value and unit of any sensor, read the min/max
@@ -101,8 +101,8 @@ namespace YoctoProxyAPI
  *   observed value changes, or at a predefined interval. Using this class rather
  *   than a specific subclass makes it possible to create generic applications
  *   that work with any Yoctopuce sensor, even those that do not yet exist.
- *   Note: The YAnButton class is the only analog input which does not inherit
- *   from YSensor.
+ *   Note: The <c>YAnButton</c> class is the only analog input which does not inherit
+ *   from <c>YSensor</c>.
  * </para>
  * <para>
  * </para>
@@ -110,6 +110,60 @@ namespace YoctoProxyAPI
  */
     public class YMagnetometerProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a magnetometer for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the magnetometer is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YMagnetometer.isOnline()</c> to test if the magnetometer is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a magnetometer by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the magnetometer, for instance
+         *   <c>Y3DMK002.magnetometer</c>.
+         * </param>
+         * <returns>
+         *   a <c>YMagnetometer</c> object allowing you to drive the magnetometer.
+         * </returns>
+         */
+        public static YMagnetometerProxy FindMagnetometer(string func)
+        {
+            return YoctoProxyManager.FindMagnetometer(func);
+        }
         //--- (end of YMagnetometer class start)
         //--- (YMagnetometer definitions)
         public const int _Bandwidth_INVALID = -1;
@@ -156,7 +210,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Magnetometer available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YMagnetometer.FindMagnetometer</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YMagnetometer it = YMagnetometer.FirstMagnetometer();
@@ -191,7 +260,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMagnetometer.BANDWIDTH_INVALID</c>.
+         *   On failure, throws an exception or returns <c>magnetometer._Bandwidth_INVALID</c>.
          * </para>
          */
         public int get_bandwidth()
@@ -279,7 +348,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the X component of the magnetic field, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMagnetometer.XVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>magnetometer._Xvalue_INVALID</c>.
          * </para>
          */
         public double get_xValue()
@@ -306,7 +375,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the Y component of the magnetic field, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMagnetometer.YVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>magnetometer._Yvalue_INVALID</c>.
          * </para>
          */
         public double get_yValue()
@@ -333,7 +402,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the Z component of the magnetic field, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMagnetometer.ZVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>magnetometer._Zvalue_INVALID</c>.
          * </para>
          */
         public double get_zValue()

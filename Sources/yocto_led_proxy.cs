@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_led_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_led_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YLedProxy, the Proxy API for Led
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YLed class allows you to drive a monocolor LED, for instance using a Yocto-Buzzer.
+ *   The <c>YLed</c> class allows you to drive a monocolor LED.
  * <para>
  *   You can not only to drive the intensity of the LED, but also to
  *   have it blink at various preset frequencies.
@@ -103,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YLedProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a monochrome LED for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the monochrome LED is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YLed.isOnline()</c> to test if the monochrome LED is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a monochrome LED by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the monochrome LED, for instance
+         *   <c>YBUZZER2.led1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YLed</c> object allowing you to drive the monochrome LED.
+         * </returns>
+         */
+        public static YLedProxy FindLed(string func)
+        {
+            return YoctoProxyManager.FindLed(func);
+        }
         //--- (end of YLed class start)
         //--- (YLed definitions)
         public const int _Power_INVALID = 0;
@@ -158,7 +212,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Led available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YLed.FindLed</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YLed it = YLed.FirstLed();
@@ -190,10 +259,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YLed.POWER_OFF</c> or <c>YLed.POWER_ON</c>, according to the current LED state
+         *   either <c>led._Power_OFF</c> or <c>led._Power_ON</c>, according to the current LED state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YLed.POWER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>led._Power_INVALID</c>.
          * </para>
          */
         public int get_power()
@@ -216,7 +285,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YLed.POWER_OFF</c> or <c>YLed.POWER_ON</c>, according to the state of the LED
+         *   either <c>led._Power_OFF</c> or <c>led._Power_ON</c>, according to the state of the LED
          * </param>
          * <para>
          * </para>
@@ -264,7 +333,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current LED intensity (in per cent)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YLed.LUMINOSITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>led._Luminosity_INVALID</c>.
          * </para>
          */
         public int get_luminosity()
@@ -389,12 +458,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YLed.BLINKING_STILL</c>, <c>YLed.BLINKING_RELAX</c>, <c>YLed.BLINKING_AWARE</c>,
-         *   <c>YLed.BLINKING_RUN</c>, <c>YLed.BLINKING_CALL</c> and <c>YLed.BLINKING_PANIC</c> corresponding to
+         *   a value among <c>led._Blinking_STILL</c>, <c>led._Blinking_RELAX</c>, <c>led._Blinking_AWARE</c>,
+         *   <c>led._Blinking_RUN</c>, <c>led._Blinking_CALL</c> and <c>led._Blinking_PANIC</c> corresponding to
          *   the current LED signaling mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YLed.BLINKING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>led._Blinking_INVALID</c>.
          * </para>
          */
         public int get_blinking()
@@ -417,8 +486,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YLed.BLINKING_STILL</c>, <c>YLed.BLINKING_RELAX</c>, <c>YLed.BLINKING_AWARE</c>,
-         *   <c>YLed.BLINKING_RUN</c>, <c>YLed.BLINKING_CALL</c> and <c>YLed.BLINKING_PANIC</c> corresponding to
+         *   a value among <c>led._Blinking_STILL</c>, <c>led._Blinking_RELAX</c>, <c>led._Blinking_AWARE</c>,
+         *   <c>led._Blinking_RUN</c>, <c>led._Blinking_CALL</c> and <c>led._Blinking_PANIC</c> corresponding to
          *   the current LED signaling mode
          * </param>
          * <para>

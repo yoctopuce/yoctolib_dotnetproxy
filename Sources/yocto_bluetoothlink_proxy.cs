@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_bluetoothlink_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_bluetoothlink_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YBluetoothLinkProxy, the Proxy API for BluetoothLink
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   BluetoothLink function provides control over bluetooth link
- *   and status for devices that are bluetooth-enabled.
+ *   BluetoothLink function provides control over Bluetooth link
+ *   and status for devices that are Bluetooth-enabled.
  * <para>
  * </para>
  * <para>
@@ -102,6 +102,60 @@ namespace YoctoProxyAPI
  */
     public class YBluetoothLinkProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a Bluetooth sound controller for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the Bluetooth sound controller is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YBluetoothLink.isOnline()</c> to test if the Bluetooth sound controller is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a Bluetooth sound controller by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the Bluetooth sound controller, for instance
+         *   <c>MyDevice.bluetoothLink1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YBluetoothLink</c> object allowing you to drive the Bluetooth sound controller.
+         * </returns>
+         */
+        public static YBluetoothLinkProxy FindBluetoothLink(string func)
+        {
+            return YoctoProxyManager.FindBluetoothLink(func);
+        }
         //--- (end of YBluetoothLink class start)
         //--- (YBluetoothLink definitions)
         public const string _OwnAddress_INVALID = YAPI.INVALID_STRING;
@@ -166,7 +220,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type BluetoothLink available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YBluetoothLink.FindBluetoothLink</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YBluetoothLink it = YBluetoothLink.FirstBluetoothLink();
@@ -206,7 +275,7 @@ namespace YoctoProxyAPI
          *   bluetooth network
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.OWNADDRESS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Ownaddress_INVALID</c>.
          * </para>
          */
         public string get_ownAddress()
@@ -235,7 +304,7 @@ namespace YoctoProxyAPI
          *   was rejected by the SIM card
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.PAIRINGPIN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Pairingpin_INVALID</c>.
          * </para>
          */
         public string get_pairingPin()
@@ -319,7 +388,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the MAC-48 address of the remote device to connect to
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.REMOTEADDRESS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Remoteaddress_INVALID</c>.
          * </para>
          */
         public string get_remoteAddress()
@@ -403,7 +472,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the bluetooth name the remote device, if found on the bluetooth network
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.REMOTENAME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Remotename_INVALID</c>.
          * </para>
          */
         public string get_remoteName()
@@ -425,11 +494,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YBluetoothLink.MUTE_FALSE</c> or <c>YBluetoothLink.MUTE_TRUE</c>, according to the state
+         *   either <c>bluetoothlink._Mute_FALSE</c> or <c>bluetoothlink._Mute_TRUE</c>, according to the state
          *   of the mute function
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.MUTE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Mute_INVALID</c>.
          * </para>
          */
         public int get_mute()
@@ -454,7 +523,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YBluetoothLink.MUTE_FALSE</c> or <c>YBluetoothLink.MUTE_TRUE</c>, according to the state
+         *   either <c>bluetoothlink._Mute_FALSE</c> or <c>bluetoothlink._Mute_TRUE</c>, according to the state
          *   of the mute function
          * </param>
          * <para>
@@ -517,7 +586,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the audio pre-amplifier volume, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.PREAMPLIFIER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Preamplifier_INVALID</c>.
          * </para>
          */
         public int get_preAmplifier()
@@ -603,7 +672,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the connected headset volume, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.VOLUME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Volume_INVALID</c>.
          * </para>
          */
         public int get_volume()
@@ -659,13 +728,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YBluetoothLink.LINKSTATE_DOWN</c>, <c>YBluetoothLink.LINKSTATE_FREE</c>,
-         *   <c>YBluetoothLink.LINKSTATE_SEARCH</c>, <c>YBluetoothLink.LINKSTATE_EXISTS</c>,
-         *   <c>YBluetoothLink.LINKSTATE_LINKED</c> and <c>YBluetoothLink.LINKSTATE_PLAY</c> corresponding to
+         *   a value among <c>bluetoothlink._Linkstate_DOWN</c>, <c>bluetoothlink._Linkstate_FREE</c>,
+         *   <c>bluetoothlink._Linkstate_SEARCH</c>, <c>bluetoothlink._Linkstate_EXISTS</c>,
+         *   <c>bluetoothlink._Linkstate_LINKED</c> and <c>bluetoothlink._Linkstate_PLAY</c> corresponding to
          *   the bluetooth link state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.LINKSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Linkstate_INVALID</c>.
          * </para>
          */
         public int get_linkState()
@@ -709,7 +778,7 @@ namespace YoctoProxyAPI
          *   connection is established
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YBluetoothLink.LINKQUALITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>bluetoothlink._Linkquality_INVALID</c>.
          * </para>
          */
         public int get_linkQuality()

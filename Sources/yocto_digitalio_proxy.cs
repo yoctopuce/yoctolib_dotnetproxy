@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_digitalio_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_digitalio_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YDigitalIOProxy, the Proxy API for DigitalIO
  *
@@ -92,14 +92,14 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YDigitalIO class allows you drive a Yoctopuce digital input/output port, for instance using a Yocto-IO or a Yocto-Maxi-IO-V2.
+ *   The <c>YDigitalIO</c> class allows you drive a Yoctopuce digital input/output port.
  * <para>
  *   It can be used to setup the direction of each channel, to read the state of each channel
  *   and to switch the state of each channel configures as an output.
  *   You can work on all channels at once, or one by one. Most functions
  *   use a binary representation for channels where bit 0 matches channel #0 , bit 1 matches channel
  *   #1 and so on. If you are not familiar with numbers binary representation, you will find more
- *   information here: en.wikipedia.org/wiki/Binary_number#Representation. It is also possible
+ *   information here: <c>https://en.wikipedia.org/wiki/Binary_number#Representation</c>. It is also possible
  *   to automatically generate short pulses of a determined duration. Electrical behavior
  *   of each I/O can be modified (open drain and reverse polarity).
  * </para>
@@ -109,6 +109,60 @@ namespace YoctoProxyAPI
  */
     public class YDigitalIOProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a digital IO port for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the digital IO port is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YDigitalIO.isOnline()</c> to test if the digital IO port is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a digital IO port by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the digital IO port, for instance
+         *   <c>YMINIIO0.digitalIO</c>.
+         * </param>
+         * <returns>
+         *   a <c>YDigitalIO</c> object allowing you to drive the digital IO port.
+         * </returns>
+         */
+        public static YDigitalIOProxy FindDigitalIO(string func)
+        {
+            return YoctoProxyManager.FindDigitalIO(func);
+        }
         //--- (end of YDigitalIO class start)
         //--- (YDigitalIO definitions)
         public const int _PortState_INVALID = -1;
@@ -167,7 +221,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type DigitalIO available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YDigitalIO.FindDigitalIO</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YDigitalIO it = YDigitalIO.FirstDigitalIO();
@@ -235,7 +304,7 @@ namespace YoctoProxyAPI
          *   representing a channel
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDigitalIO.PORTSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>digitalio._Portstate_INVALID</c>.
          * </para>
          */
         public int get_portState()
@@ -319,7 +388,7 @@ namespace YoctoProxyAPI
          *   an input, 1 makes it an output
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDigitalIO.PORTDIRECTION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>digitalio._Portdirection_INVALID</c>.
          * </para>
          */
         public int get_portDirection()
@@ -407,7 +476,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the electrical interface for each bit of the port
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDigitalIO.PORTOPENDRAIN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>digitalio._Portopendrain_INVALID</c>.
          * </para>
          */
         public int get_portOpenDrain()
@@ -496,7 +565,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the polarity of all the bits of the port
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDigitalIO.PORTPOLARITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>digitalio._Portpolarity_INVALID</c>.
          * </para>
          */
         public int get_portPolarity()
@@ -587,7 +656,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDigitalIO.PORTDIAGS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>digitalio._Portdiags_INVALID</c>.
          * </para>
          */
         public int get_portDiags()
@@ -625,7 +694,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of bits (i.e
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDigitalIO.PORTSIZE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>digitalio._Portsize_INVALID</c>.
          * </para>
          */
         public int get_portSize()
@@ -649,11 +718,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YDigitalIO.OUTPUTVOLTAGE_USB_5V</c>, <c>YDigitalIO.OUTPUTVOLTAGE_USB_3V</c> and
-         *   <c>YDigitalIO.OUTPUTVOLTAGE_EXT_V</c> corresponding to the voltage source used to drive output bits
+         *   a value among <c>digitalio._Outputvoltage_USB_5V</c>, <c>digitalio._Outputvoltage_USB_3V</c> and
+         *   <c>digitalio._Outputvoltage_EXT_V</c> corresponding to the voltage source used to drive output bits
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDigitalIO.OUTPUTVOLTAGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>digitalio._Outputvoltage_INVALID</c>.
          * </para>
          */
         public int get_outputVoltage()
@@ -677,8 +746,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YDigitalIO.OUTPUTVOLTAGE_USB_5V</c>, <c>YDigitalIO.OUTPUTVOLTAGE_USB_3V</c> and
-         *   <c>YDigitalIO.OUTPUTVOLTAGE_EXT_V</c> corresponding to the voltage source used to drive output bits
+         *   a value among <c>digitalio._Outputvoltage_USB_5V</c>, <c>digitalio._Outputvoltage_USB_3V</c> and
+         *   <c>digitalio._Outputvoltage_EXT_V</c> corresponding to the voltage source used to drive output bits
          * </param>
          * <para>
          * </para>

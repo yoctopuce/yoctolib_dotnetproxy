@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_power_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_power_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YPowerProxy, the Proxy API for Power
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YPower class allows you to read and configure Yoctopuce power
- *   sensors, for instance using a Yocto-Watt.
+ *   The <c>YPower</c> class allows you to read and configure Yoctopuce electrical power sensors.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to access the energy counter and the power factor.
  * </para>
  * <para>
@@ -105,6 +104,60 @@ namespace YoctoProxyAPI
  */
     public class YPowerProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a electrical power sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the electrical power sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YPower.isOnline()</c> to test if the electrical power sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a electrical power sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the electrical power sensor, for instance
+         *   <c>YWATTMK1.power</c>.
+         * </param>
+         * <returns>
+         *   a <c>YPower</c> object allowing you to drive the electrical power sensor.
+         * </returns>
+         */
+        public static YPowerProxy FindPower(string func)
+        {
+            return YoctoProxyManager.FindPower(func);
+        }
         //--- (end of YPower class start)
         //--- (YPower definitions)
         public const int _ShutdownCountdown_INVALID = -1;
@@ -150,7 +203,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Power available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YPower.FindPower</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YPower it = YPower.FirstPower();
@@ -186,7 +254,7 @@ namespace YoctoProxyAPI
          *   measured in W, and the apparent power provided, measured in VA)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPower.COSPHI_INVALID</c>.
+         *   On failure, throws an exception or returns <c>power._Cosphi_INVALID</c>.
          * </para>
          */
         public double get_cosPhi()
@@ -215,7 +283,7 @@ namespace YoctoProxyAPI
          *   integrating the power consumption over time
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPower.METER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>power._Meter_INVALID</c>.
          * </para>
          */
         public double get_meter()
@@ -242,7 +310,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the elapsed time since last energy counter reset, in seconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPower.METERTIMER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>power._Metertimer_INVALID</c>.
          * </para>
          */
         public int get_meterTimer()

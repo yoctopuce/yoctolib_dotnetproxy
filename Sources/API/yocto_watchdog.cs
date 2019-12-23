@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_watchdog.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_watchdog.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindWatchdog(), the high-level API for Watchdog functions
  *
@@ -58,14 +58,14 @@ using YFUN_DESCR = System.Int32;
 //--- (YWatchdog class start)
 /**
  * <summary>
- *   The YWatchdog class allows you to drive a Yoctopuce watchdog, for instance using a Yocto-WatchdogDC.
+ *   The <c>YWatchdog</c> class allows you to drive a Yoctopuce watchdog.
  * <para>
  *   A watchdog works like a relay, with an extra timer that can automatically
  *   trigger a brief power cycle to an appliance after a preset delay, to force this
  *   appliance to reset if a problem occurs. During normal use, the watchdog timer
  *   is reset periodically by the application to prevent the automated power cycle.
  *   Whenever the application dies, the watchdog will automatically trigger the power cycle.
- *   The watchdog can also be driven directly with <i>pulse</i> and <i>delayedPulse</i>
+ *   The watchdog can also be driven directly with <c>pulse</c> and <c>delayedPulse</c>
  *   methods to switch off an appliance for a given duration.
  * </para>
  * <para>
@@ -79,7 +79,7 @@ public class YWatchdog : YFunction
     public new delegate void ValueCallback(YWatchdog func, string value);
     public new delegate void TimedReportCallback(YWatchdog func, YMeasure measure);
 
-    public class YWatchdogDelayedPulse
+    public /* struct */ class YWatchdogDelayedPulse
     {
         public int target = YAPI.INVALID_INT;
         public int ms = YAPI.INVALID_INT;
@@ -197,6 +197,7 @@ public class YWatchdog : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the state of the watchdog (A for the idle position, B for the active position).
@@ -257,9 +258,11 @@ public class YWatchdog : YFunction
         }
     }
 
+
     /**
      * <summary>
-     *   Returns the state of the watchdog at device startup (A for the idle position, B for the active position, UNCHANGED for no change).
+     *   Returns the state of the watchdog at device startup (A for the idle position,
+     *   B for the active position, UNCHANGED to leave the relay state as is).
      * <para>
      * </para>
      * <para>
@@ -268,7 +271,8 @@ public class YWatchdog : YFunction
      * <returns>
      *   a value among <c>YWatchdog.STATEATPOWERON_UNCHANGED</c>, <c>YWatchdog.STATEATPOWERON_A</c> and
      *   <c>YWatchdog.STATEATPOWERON_B</c> corresponding to the state of the watchdog at device startup (A
-     *   for the idle position, B for the active position, UNCHANGED for no change)
+     *   for the idle position,
+     *   B for the active position, UNCHANGED to leave the relay state as is)
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YWatchdog.STATEATPOWERON_INVALID</c>.
@@ -291,7 +295,7 @@ public class YWatchdog : YFunction
     /**
      * <summary>
      *   Changes the state of the watchdog at device startup (A for the idle position,
-     *   B for the active position, UNCHANGED for no modification).
+     *   B for the active position, UNCHANGED to leave the relay state as is).
      * <para>
      *   Remember to call the matching module <c>saveToFlash()</c>
      *   method, otherwise this call will have no effect.
@@ -303,7 +307,7 @@ public class YWatchdog : YFunction
      *   a value among <c>YWatchdog.STATEATPOWERON_UNCHANGED</c>, <c>YWatchdog.STATEATPOWERON_A</c> and
      *   <c>YWatchdog.STATEATPOWERON_B</c> corresponding to the state of the watchdog at device startup (A
      *   for the idle position,
-     *   B for the active position, UNCHANGED for no modification)
+     *   B for the active position, UNCHANGED to leave the relay state as is)
      * </param>
      * <para>
      * </para>
@@ -323,9 +327,10 @@ public class YWatchdog : YFunction
         }
     }
 
+
     /**
      * <summary>
-     *   Returns the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state
+     *   Returns the maximum time (ms) allowed for the watchdog to stay in state
      *   A before automatically switching back in to B state.
      * <para>
      *   Zero means no time limit.
@@ -334,7 +339,7 @@ public class YWatchdog : YFunction
      * </para>
      * </summary>
      * <returns>
-     *   an integer corresponding to the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state
+     *   an integer corresponding to the maximum time (ms) allowed for the watchdog to stay in state
      *   A before automatically switching back in to B state
      * </returns>
      * <para>
@@ -357,7 +362,7 @@ public class YWatchdog : YFunction
 
     /**
      * <summary>
-     *   Changes the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state A
+     *   Changes the maximum time (ms) allowed for the watchdog to stay in state A
      *   before automatically switching back in to B state.
      * <para>
      *   Use zero for no time limit.
@@ -368,7 +373,7 @@ public class YWatchdog : YFunction
      * </para>
      * </summary>
      * <param name="newval">
-     *   an integer corresponding to the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state A
+     *   an integer corresponding to the maximum time (ms) allowed for the watchdog to stay in state A
      *   before automatically switching back in to B state
      * </param>
      * <para>
@@ -389,9 +394,10 @@ public class YWatchdog : YFunction
         }
     }
 
+
     /**
      * <summary>
-     *   Retourne the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state B
+     *   Retourne the maximum time (ms) allowed for the watchdog to stay in state B
      *   before automatically switching back in to A state.
      * <para>
      *   Zero means no time limit.
@@ -422,7 +428,7 @@ public class YWatchdog : YFunction
 
     /**
      * <summary>
-     *   Changes the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state B before
+     *   Changes the maximum time (ms) allowed for the watchdog to stay in state B before
      *   automatically switching back in to A state.
      * <para>
      *   Use zero for no time limit.
@@ -433,7 +439,7 @@ public class YWatchdog : YFunction
      * </para>
      * </summary>
      * <param name="newval">
-     *   an integer corresponding to the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state B before
+     *   an integer corresponding to the maximum time (ms) allowed for the watchdog to stay in state B before
      *   automatically switching back in to A state
      * </param>
      * <para>
@@ -453,6 +459,7 @@ public class YWatchdog : YFunction
             return _setAttr("maxTimeOnStateB", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -513,6 +520,7 @@ public class YWatchdog : YFunction
             return _setAttr("output", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -584,6 +592,7 @@ public class YWatchdog : YFunction
         return _setAttr("pulseTimer", rest_val);
     }
 
+
     public YWatchdogDelayedPulse get_delayedPulseTimer()
     {
         YWatchdogDelayedPulse res;
@@ -637,6 +646,7 @@ public class YWatchdog : YFunction
         return _setAttr("delayedPulseTimer", rest_val);
     }
 
+
     /**
      * <summary>
      *   Returns the number of milliseconds remaining before a pulse (delayedPulse() call)
@@ -667,6 +677,7 @@ public class YWatchdog : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -729,6 +740,7 @@ public class YWatchdog : YFunction
             return _setAttr("autoStart", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -814,6 +826,7 @@ public class YWatchdog : YFunction
         return _setAttr("running", rest_val);
     }
 
+
     /**
      * <summary>
      *   Returns  the waiting duration before a reset is automatically triggered by the watchdog, in milliseconds.
@@ -877,6 +890,7 @@ public class YWatchdog : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the duration of resets caused by the watchdog, in milliseconds.
@@ -936,6 +950,7 @@ public class YWatchdog : YFunction
             return _setAttr("triggerDuration", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1000,6 +1015,7 @@ public class YWatchdog : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -1037,6 +1053,7 @@ public class YWatchdog : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackWatchdog != null) {
@@ -1046,6 +1063,7 @@ public class YWatchdog : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>

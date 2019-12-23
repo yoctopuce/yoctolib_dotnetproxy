@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_voltageoutput_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_voltageoutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YVoltageOutputProxy, the Proxy API for VoltageOutput
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YVoltageOutput class allows you to drive a voltage output, for instance using a Yocto-0-10V-Tx.
+ *   The <c>YVoltageOutput</c> class allows you to drive a voltage output.
  * <para>
  * </para>
  * <para>
@@ -101,6 +101,60 @@ namespace YoctoProxyAPI
  */
     public class YVoltageOutputProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a voltage output for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the voltage output is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YVoltageOutput.isOnline()</c> to test if the voltage output is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a voltage output by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the voltage output, for instance
+         *   <c>TX010V01.voltageOutput1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YVoltageOutput</c> object allowing you to drive the voltage output.
+         * </returns>
+         */
+        public static YVoltageOutputProxy FindVoltageOutput(string func)
+        {
+            return YoctoProxyManager.FindVoltageOutput(func);
+        }
         //--- (end of YVoltageOutput class start)
         //--- (YVoltageOutput definitions)
         public const double _CurrentVoltage_INVALID = Double.NaN;
@@ -147,7 +201,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type VoltageOutput available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YVoltageOutput.FindVoltageOutput</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YVoltageOutput it = YVoltageOutput.FirstVoltageOutput();
@@ -246,7 +315,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the output voltage set point, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YVoltageOutput.CURRENTVOLTAGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>voltageoutput._Currentvoltage_INVALID</c>.
          * </para>
          */
         public double get_currentVoltage()
@@ -332,7 +401,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the selected voltage output at device startup, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YVoltageOutput.VOLTAGEATSTARTUP_INVALID</c>.
+         *   On failure, throws an exception or returns <c>voltageoutput._Voltageatstartup_INVALID</c>.
          * </para>
          */
         public double get_voltageAtStartUp()

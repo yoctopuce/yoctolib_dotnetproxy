@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 38514 2019-11-26 16:54:39Z seb $
+ * $Id: yocto_api.cs 38914 2019-12-20 19:14:33Z mvuilleu $
  *
  * High-level programming interface, common to all modules
  *
@@ -2772,7 +2772,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "38545";
+    public const string YOCTO_API_BUILD_NO = "38914";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -5132,10 +5132,10 @@ public class YAPI
 
     /**
      * <summary>
-     *   Fault-tolerant alternative to <c>RegisterHub()</c>.
+     *   Fault-tolerant alternative to <c>yRegisterHub()</c>.
      * <para>
      *   This function has the same
-     *   purpose and same arguments as <c>RegisterHub()</c>, but does not trigger
+     *   purpose and same arguments as <c>yRegisterHub()</c>, but does not trigger
      *   an error when the selected hub is not available at the time of the function call.
      *   This makes it possible to register a network hub independently of the current
      *   connectivity, and to try to contact it only when a device is actively needed.
@@ -5182,7 +5182,7 @@ public class YAPI
      *   Test if the hub is reachable.
      * <para>
      *   This method do not register the hub, it only test if the
-     *   hub is usable. The url parameter follow the same convention as the <c>RegisterHub</c>
+     *   hub is usable. The url parameter follow the same convention as the <c>yRegisterHub</c>
      *   method. This method is useful to verify the authentication parameters for a hub. It
      *   is possible to force this method to return after mstimeout milliseconds.
      * </para>
@@ -5654,6 +5654,7 @@ public class YAPI
     }
 
     //--- (generated code: YAPIContext yapiwrapper)
+
     /**
      * <summary>
      *   Modifies the delay between each forced enumeration of the used YoctoHubs.
@@ -5677,6 +5678,7 @@ public class YAPI
     {
         _yapiContext.SetDeviceListValidity(deviceListValidity);
     }
+
     /**
      * <summary>
      *   Returns the delay between each forced enumeration of the used YoctoHubs.
@@ -5692,14 +5694,15 @@ public class YAPI
     {
         return _yapiContext.GetDeviceListValidity();
     }
+
     /**
      * <summary>
      *   Modifies the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
      * <para>
      *   This delay impacts only the YoctoHubs and VirtualHub
      *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
-     *   but depending or you network you may want to change this delay.
-     *   For example if your network infrastructure uses a GSM connection.
+     *   but depending or you network you may want to change this delay,
+     *   gor example if your network infrastructure is based on a GSM connection.
      * </para>
      * <para>
      * </para>
@@ -5713,14 +5716,15 @@ public class YAPI
     {
         _yapiContext.SetNetworkTimeout(networkMsTimeout);
     }
+
     /**
      * <summary>
      *   Returns the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
      * <para>
      *   This delay impacts only the YoctoHubs and VirtualHub
      *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
-     *   but depending or you network you may want to change this delay.
-     *   For example if your network infrastructure uses a GSM connection.
+     *   but depending or you network you may want to change this delay,
+     *   for example if your network infrastructure is based on a GSM connection.
      * </para>
      * </summary>
      * <returns>
@@ -5731,6 +5735,7 @@ public class YAPI
     {
         return _yapiContext.GetNetworkTimeout();
     }
+
     /**
      * <summary>
      *   Change the validity period of the data loaded by the library.
@@ -5741,8 +5746,6 @@ public class YAPI
      *   for example in order to reduce network or USB traffic. This parameter
      *   does not affect value change callbacks
      *   Note: This function must be called after <c>yInitAPI</c>.
-     * </para>
-     * <para>
      * </para>
      * </summary>
      * <param name="cacheValidityMs">
@@ -5755,6 +5758,7 @@ public class YAPI
     {
         _yapiContext.SetCacheValidity(cacheValidityMs);
     }
+
     /**
      * <summary>
      *   Returns the validity period of the data loaded by the library.
@@ -5762,8 +5766,6 @@ public class YAPI
      *   This method returns the cache validity of all attributes
      *   module functions.
      *   Note: This function must be called after <c>yInitAPI </c>.
-     * </para>
-     * <para>
      * </para>
      * </summary>
      * <returns>
@@ -5802,6 +5804,7 @@ public class YAPIContext
     //--- (generated code: YAPIContext implementation)
 
 
+
     /**
      * <summary>
      *   Modifies the delay between each forced enumeration of the used YoctoHubs.
@@ -5826,6 +5829,7 @@ public class YAPIContext
         SafeNativeMethods._yapiSetNetDevListValidity(deviceListValidity);
     }
 
+
     /**
      * <summary>
      *   Returns the delay between each forced enumeration of the used YoctoHubs.
@@ -5844,14 +5848,15 @@ public class YAPIContext
         return res;
     }
 
+
     /**
      * <summary>
      *   Modifies the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
      * <para>
      *   This delay impacts only the YoctoHubs and VirtualHub
      *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
-     *   but depending or you network you may want to change this delay.
-     *   For example if your network infrastructure uses a GSM connection.
+     *   but depending or you network you may want to change this delay,
+     *   gor example if your network infrastructure is based on a GSM connection.
      * </para>
      * <para>
      * </para>
@@ -5866,14 +5871,15 @@ public class YAPIContext
         SafeNativeMethods._yapiSetNetworkTimeout(networkMsTimeout);
     }
 
+
     /**
      * <summary>
      *   Returns the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
      * <para>
      *   This delay impacts only the YoctoHubs and VirtualHub
      *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
-     *   but depending or you network you may want to change this delay.
-     *   For example if your network infrastructure uses a GSM connection.
+     *   but depending or you network you may want to change this delay,
+     *   for example if your network infrastructure is based on a GSM connection.
      * </para>
      * </summary>
      * <returns>
@@ -5887,6 +5893,7 @@ public class YAPIContext
         return res;
     }
 
+
     /**
      * <summary>
      *   Change the validity period of the data loaded by the library.
@@ -5897,8 +5904,6 @@ public class YAPIContext
      *   for example in order to reduce network or USB traffic. This parameter
      *   does not affect value change callbacks
      *   Note: This function must be called after <c>yInitAPI</c>.
-     * </para>
-     * <para>
      * </para>
      * </summary>
      * <param name="cacheValidityMs">
@@ -5912,6 +5917,7 @@ public class YAPIContext
         this._defaultCacheValidity = cacheValidityMs;
     }
 
+
     /**
      * <summary>
      *   Returns the validity period of the data loaded by the library.
@@ -5919,8 +5925,6 @@ public class YAPIContext
      *   This method returns the cache validity of all attributes
      *   module functions.
      *   Note: This function must be called after <c>yInitAPI </c>.
-     * </para>
-     * <para>
      * </para>
      * </summary>
      * <returns>
@@ -5946,11 +5950,11 @@ public class YAPIContext
 //--- (generated code: YFirmwareUpdate class start)
 /**
  * <summary>
- *   The YFirmwareUpdate class let you control the firmware update of a Yoctopuce
+ *   The <c>YFirmwareUpdate</c> class let you control the firmware update of a Yoctopuce
  *   module.
  * <para>
- *   This class should not be instantiate directly, instead the method
- *   <c>updateFirmware</c> should be called to get an instance of YFirmwareUpdate.
+ *   This class should not be instantiate directly, but instances should be retrieved
+ *   using the <c>YModule</c> method <c>module.updateFirmware</c>.
  * </para>
  * <para>
  * </para>
@@ -5999,6 +6003,7 @@ public class YFirmwareUpdate
 
 
     //--- (generated code: YFirmwareUpdate implementation)
+
 
 
     public virtual int _processMore(int newupdate)
@@ -6071,6 +6076,7 @@ public class YFirmwareUpdate
         return this._progress;
     }
 
+
     /**
      * <summary>
      *   Returns a list of all the modules in "firmware update" mode.
@@ -6120,6 +6126,7 @@ public class YFirmwareUpdate
         }
         return bootladers;
     }
+
 
     /**
      * <summary>
@@ -6181,6 +6188,7 @@ public class YFirmwareUpdate
         return firmware_path;
     }
 
+
     /**
      * <summary>
      *   Returns the progress of the firmware update, on a scale from 0 to 100.
@@ -6207,6 +6215,7 @@ public class YFirmwareUpdate
         return this._progress;
     }
 
+
     /**
      * <summary>
      *   Returns the last progress message of the firmware update process.
@@ -6225,6 +6234,7 @@ public class YFirmwareUpdate
     {
         return this._progress_msg;
     }
+
 
     /**
      * <summary>
@@ -6268,22 +6278,18 @@ public class YFirmwareUpdate
 
 //--- (generated code: YDataStream class start)
 /**
- * <summary>
- *   YDataStream objects represent bare recorded measure sequences,
- *   exactly as found within the data logger present on Yoctopuce
- *   sensors.
+ * <c>DataStream</c> objects represent bare recorded measure sequences,
+ * exactly as found within the data logger present on Yoctopuce
+ * sensors.
  * <para>
- * </para>
- * <para>
- *   In most cases, it is not necessary to use YDataStream objects
- *   directly, as the YDataSet objects (returned by the
+ *   In most cases, it is not necessary to use <c>DataStream</c> objects
+ *   directly, as the <c>DataSet</c> objects (returned by the
  *   <c>get_recordedData()</c> method from sensors and the
  *   <c>get_dataSets()</c> method from the data logger) provide
  *   a more convenient interface.
  * </para>
  * <para>
  * </para>
- * </summary>
  */
 public class YDataStream
 {
@@ -6336,6 +6342,7 @@ public class YDataStream
 
 
     //--- (generated code: YDataStream implementation)
+
 
 
     public int _initFromDataSet(YDataSet dataset, List<int> encoded)
@@ -6436,6 +6443,7 @@ public class YDataStream
         return 0;
     }
 
+
     public virtual int _parseStream(byte[] sdata)
     {
         int idx;
@@ -6471,6 +6479,7 @@ public class YDataStream
         return YAPI.SUCCESS;
     }
 
+
     public virtual string _get_url()
     {
         string url;
@@ -6479,10 +6488,12 @@ public class YDataStream
         return url;
     }
 
+
     public virtual int loadStream()
     {
         return this._parseStream(this._parent._download(this._get_url()));
     }
+
 
     public double _decodeVal(int w)
     {
@@ -6497,6 +6508,7 @@ public class YDataStream
         return val;
     }
 
+
     public double _decodeAvg(int dw, int count)
     {
         double val;
@@ -6510,10 +6522,12 @@ public class YDataStream
         return val;
     }
 
+
     public virtual bool isClosed()
     {
         return this._isClosed;
     }
+
 
     /**
      * <summary>
@@ -6533,6 +6547,7 @@ public class YDataStream
     {
         return this._runNo;
     }
+
 
     /**
      * <summary>
@@ -6562,6 +6577,7 @@ public class YDataStream
         return (int)(this._utcStamp - Convert.ToUInt32((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
     }
 
+
     /**
      * <summary>
      *   Returns the start time of the data stream, relative to the Jan 1, 1970.
@@ -6586,6 +6602,7 @@ public class YDataStream
         return (int) Math.Round(this._startTime);
     }
 
+
     /**
      * <summary>
      *   Returns the start time of the data stream, relative to the Jan 1, 1970.
@@ -6606,6 +6623,7 @@ public class YDataStream
     {
         return this._startTime;
     }
+
 
     /**
      * <summary>
@@ -6628,15 +6646,18 @@ public class YDataStream
         return (int) Math.Round(this._dataSamplesInterval*1000);
     }
 
+
     public virtual double get_dataSamplesInterval()
     {
         return this._dataSamplesInterval;
     }
 
+
     public virtual double get_firstDataSamplesInterval()
     {
         return this._firstMeasureDuration;
     }
+
 
     /**
      * <summary>
@@ -6666,6 +6687,7 @@ public class YDataStream
         this.loadStream();
         return this._nRows;
     }
+
 
     /**
      * <summary>
@@ -6697,6 +6719,7 @@ public class YDataStream
         this.loadStream();
         return this._nCols;
     }
+
 
     /**
      * <summary>
@@ -6733,6 +6756,7 @@ public class YDataStream
         return this._columnNames;
     }
 
+
     /**
      * <summary>
      *   Returns the smallest measure observed within this stream.
@@ -6755,6 +6779,7 @@ public class YDataStream
     {
         return this._minVal;
     }
+
 
     /**
      * <summary>
@@ -6779,6 +6804,7 @@ public class YDataStream
         return this._avgVal;
     }
 
+
     /**
      * <summary>
      *   Returns the largest measure observed within this stream.
@@ -6802,6 +6828,7 @@ public class YDataStream
         return this._maxVal;
     }
 
+
     public virtual double get_realDuration()
     {
         if (this._isClosed) {
@@ -6809,6 +6836,7 @@ public class YDataStream
         }
         return (double) Convert.ToUInt32((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds) - this._utcStamp;
     }
+
 
     /**
      * <summary>
@@ -6841,6 +6869,7 @@ public class YDataStream
         }
         return this._values;
     }
+
 
     /**
      * <summary>
@@ -6890,16 +6919,13 @@ public class YDataStream
 
 //--- (generated code: YMeasure class start)
 /**
- * <summary>
- *   YMeasure objects are used within the API to represent
- *   a value measured at a specified time.
- * <para>
- *   These objects are
- *   used in particular in conjunction with the YDataSet class.
- * </para>
+ * <c>YMeasure</c> objects are used within the API to represent
+ * a value measured at a specified time. These objects are
+ * used in particular in conjunction with the <c>YDataSet</c> class,
+ * but also for sensors periodic timed reports
+ * (see <c>sensor.registerTimedReportCallback</c>).
  * <para>
  * </para>
- * </summary>
  */
 public class YMeasure
 {
@@ -6946,6 +6972,7 @@ public class YMeasure
     //--- (generated code: YMeasure implementation)
 
 
+
     /**
      * <summary>
      *   Returns the start time of the measure, relative to the Jan 1, 1970 UTC
@@ -6958,7 +6985,7 @@ public class YMeasure
      * </para>
      * </summary>
      * <returns>
-     *   an floating point number corresponding to the number of seconds
+     *   a floating point number corresponding to the number of seconds
      *   between the Jan 1, 1970 UTC and the beginning of this measure.
      * </returns>
      */
@@ -6966,6 +6993,7 @@ public class YMeasure
     {
         return this._start;
     }
+
 
     /**
      * <summary>
@@ -6979,7 +7007,7 @@ public class YMeasure
      * </para>
      * </summary>
      * <returns>
-     *   an floating point number corresponding to the number of seconds
+     *   a floating point number corresponding to the number of seconds
      *   between the Jan 1, 1970 UTC and the end of this measure.
      * </returns>
      */
@@ -6987,6 +7015,7 @@ public class YMeasure
     {
         return this._end;
     }
+
 
     /**
      * <summary>
@@ -7006,6 +7035,7 @@ public class YMeasure
         return this._minVal;
     }
 
+
     /**
      * <summary>
      *   Returns the average value observed during the time interval
@@ -7023,6 +7053,7 @@ public class YMeasure
     {
         return this._avgVal;
     }
+
 
     /**
      * <summary>
@@ -7047,17 +7078,13 @@ public class YMeasure
 
 //--- (generated code: YDataSet class start)
 /**
- * <summary>
- *   YDataSet objects make it possible to retrieve a set of recorded measures
- *   for a given sensor and a specified time interval.
- * <para>
- *   They can be used
- *   to load data points with a progress report. When the YDataSet object is
- *   instantiated by the <c>get_recordedData()</c>  function, no data is
- *   yet loaded from the module. It is only when the <c>loadMore()</c>
- *   method is called over and over than data will be effectively loaded
- *   from the dataLogger.
- * </para>
+ * <c>YDataSet</c> objects make it possible to retrieve a set of recorded measures
+ * for a given sensor and a specified time interval. They can be used
+ * to load data points with a progress report. When the <c>YDataSet</c> object is
+ * instantiated by the <c>sensor.get_recordedData()</c>  function, no data is
+ * yet loaded from the module. It is only when the <c>loadMore()</c>
+ * method is called over and over than data will be effectively loaded
+ * from the dataLogger.
  * <para>
  *   A preview of available measures is available using the function
  *   <c>get_preview()</c> as soon as <c>loadMore()</c> has been called
@@ -7065,12 +7092,11 @@ public class YMeasure
  *   when loaded by subsequent calls to <c>loadMore()</c>.
  * </para>
  * <para>
- *   This class can only be used on devices that use a recent firmware,
- *   as YDataSet objects are not supported by firmwares older than version 13000.
+ *   This class can only be used on devices that use a relatively recent firmware,
+ *   as <c>YDataSet</c> objects are not supported by firmwares older than version 13000.
  * </para>
  * <para>
  * </para>
- * </summary>
  */
 public class YDataSet
 {
@@ -7172,10 +7198,12 @@ public class YDataSet
     //--- (generated code: YDataSet implementation)
 
 
+
     public virtual List<int> _get_calibration()
     {
         return this._calib;
     }
+
 
     public virtual int loadSummary(byte[] data)
     {
@@ -7346,6 +7374,7 @@ public class YDataSet
         return this.get_progress();
     }
 
+
     public virtual int processMore(int progress, byte[] data)
     {
         YDataStream stream;
@@ -7411,10 +7440,12 @@ public class YDataSet
         return this.get_progress();
     }
 
+
     public virtual List<YDataStream> get_privateDataStreams()
     {
         return this._streams;
     }
+
 
     /**
      * <summary>
@@ -7446,6 +7477,7 @@ public class YDataSet
         return this._hardwareId;
     }
 
+
     /**
      * <summary>
      *   Returns the hardware identifier of the function that performed the measure,
@@ -7464,6 +7496,7 @@ public class YDataSet
     {
         return this._functionId;
     }
+
 
     /**
      * <summary>
@@ -7485,11 +7518,12 @@ public class YDataSet
         return this._unit;
     }
 
+
     /**
      * <summary>
      *   Returns the start time of the dataset, relative to the Jan 1, 1970.
      * <para>
-     *   When the YDataSet is created, the start time is the value passed
+     *   When the <c>YDataSet</c> object is created, the start time is the value passed
      *   in parameter to the <c>get_dataSet()</c> function. After the
      *   very first call to <c>loadMore()</c>, the start time is updated
      *   to reflect the timestamp of the first measure actually found in the
@@ -7497,7 +7531,7 @@ public class YDataSet
      * </para>
      * <para>
      *   <b>DEPRECATED</b>: This method has been replaced by <c>get_summary()</c>
-     *   which contain more precise informations on the YDataSet.
+     *   which contain more precise informations.
      * </para>
      * <para>
      * </para>
@@ -7513,16 +7547,18 @@ public class YDataSet
         return this.imm_get_startTimeUTC();
     }
 
+
     public virtual long imm_get_startTimeUTC()
     {
         return (long) (this._startTimeMs / 1000.0);
     }
 
+
     /**
      * <summary>
      *   Returns the end time of the dataset, relative to the Jan 1, 1970.
      * <para>
-     *   When the YDataSet is created, the end time is the value passed
+     *   When the <c>YDataSet</c> object is created, the end time is the value passed
      *   in parameter to the <c>get_dataSet()</c> function. After the
      *   very first call to <c>loadMore()</c>, the end time is updated
      *   to reflect the timestamp of the last measure actually found in the
@@ -7530,9 +7566,7 @@ public class YDataSet
      * </para>
      * <para>
      *   <b>DEPRECATED</b>: This method has been replaced by <c>get_summary()</c>
-     *   which contain more precise informations on the YDataSet.
-     * </para>
-     * <para>
+     *   which contain more precise informations.
      * </para>
      * <para>
      * </para>
@@ -7548,10 +7582,12 @@ public class YDataSet
         return this.imm_get_endTimeUTC();
     }
 
+
     public virtual long imm_get_endTimeUTC()
     {
         return (long) Math.Round(this._endTimeMs / 1000.0);
     }
+
 
     /**
      * <summary>
@@ -7580,6 +7616,7 @@ public class YDataSet
         }
         return ((1 + (1 + this._progress) * 98) / ((1 + this._streams.Count)));
     }
+
 
     /**
      * <summary>
@@ -7625,10 +7662,11 @@ public class YDataSet
         }
     }
 
+
     /**
      * <summary>
-     *   Returns an YMeasure object which summarizes the whole
-     *   DataSet.
+     *   Returns an <c>YMeasure</c> object which summarizes the whole
+     *   <c>YDataSet</c>.
      * <para>
      *   In includes the following information:
      *   - the start of a time interval
@@ -7645,7 +7683,7 @@ public class YDataSet
      * </para>
      * </summary>
      * <returns>
-     *   an YMeasure object
+     *   an <c>YMeasure</c> object
      * </returns>
      */
     public virtual YMeasure get_summary()
@@ -7653,10 +7691,11 @@ public class YDataSet
         return this._summary;
     }
 
+
     /**
      * <summary>
      *   Returns a condensed version of the measures that can
-     *   retrieved in this YDataSet, as a list of YMeasure
+     *   retrieved in this <c>YDataSet</c>, as a list of <c>YMeasure</c>
      *   objects.
      * <para>
      *   Each item includes:
@@ -7686,12 +7725,13 @@ public class YDataSet
         return this._preview;
     }
 
+
     /**
      * <summary>
      *   Returns the detailed set of measures for the time interval corresponding
      *   to a given condensed measures previously returned by <c>get_preview()</c>.
      * <para>
-     *   The result is provided as a list of YMeasure objects.
+     *   The result is provided as a list of <c>YMeasure</c> objects.
      * </para>
      * <para>
      * </para>
@@ -7764,10 +7804,11 @@ public class YDataSet
         return measures;
     }
 
+
     /**
      * <summary>
      *   Returns all measured values currently available for this DataSet,
-     *   as a list of YMeasure objects.
+     *   as a list of <c>YMeasure</c> objects.
      * <para>
      *   Each item includes:
      *   - the start of the measure time interval
@@ -7811,16 +7852,12 @@ public class YDataSet
 
 //--- (generated code: YConsolidatedDataSet class start)
 /**
- * <summary>
- *   YConsolidatedDataSet objects make it possible to retrieve a set of
- *   recorded measures from multiple sensors, for a specified time interval.
- * <para>
- *   They can be used to load data points progressively, and to receive
- *   data records by timestamp, one by one..
- * </para>
+ * <c>YConsolidatedDataSet</c> objects make it possible to retrieve a set of
+ * recorded measures from multiple sensors, for a specified time interval.
+ * They can be used to load data points progressively, and to receive
+ * data records by timestamp, one by one..
  * <para>
  * </para>
- * </summary>
  */
 public class YConsolidatedDataSet
 {
@@ -7848,6 +7885,7 @@ public class YConsolidatedDataSet
     //--- (generated code: YConsolidatedDataSet implementation)
 
 
+
     public virtual int imm_init(double startt, double endt, List<YSensor> sensorList)
     {
         this._start = startt;
@@ -7857,9 +7895,67 @@ public class YConsolidatedDataSet
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
-     *   Extracts the next data record from the dataLogger of all sensors linked to this
+     *   Returns an object holding historical data for multiple
+     *   sensors, for a specified time interval.
+     * <para>
+     *   The measures will be retrieved from the data logger, which must have been turned
+     *   on at the desired time. The resulting object makes it possible to load progressively
+     *   a large set of measures from multiple sensors, consolidating data on the fly
+     *   to align records based on measurement timestamps.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="sensorNames">
+     *   array of logical names or hardware identifiers of the sensors
+     *   for which data must be loaded from their data logger.
+     * </param>
+     * <param name="startTime">
+     *   the start of the desired measure time interval,
+     *   as a Unix timestamp, i.e. the number of seconds since
+     *   January 1, 1970 UTC. The special value 0 can be used
+     *   to include any measure, without initial limit.
+     * </param>
+     * <param name="endTime">
+     *   the end of the desired measure time interval,
+     *   as a Unix timestamp, i.e. the number of seconds since
+     *   January 1, 1970 UTC. The special value 0 can be used
+     *   to include any measure, without ending limit.
+     * </param>
+     * <returns>
+     *   an instance of <c>YConsolidatedDataSet</c>, providing access to
+     *   consolidated historical data. Records can be loaded progressively
+     *   using the <c>YConsolidatedDataSet.nextRecord()</c> method.
+     * </returns>
+     */
+    public static YConsolidatedDataSet Init(List<string> sensorNames, double startTime, double endTime)
+    {
+        int nSensors;
+        List<YSensor> sensorList = new List<YSensor>();
+        int idx;
+        string sensorName;
+        YSensor s;
+        YConsolidatedDataSet obj;
+        nSensors = sensorNames.Count;
+        sensorList.Clear();
+        idx = 0;
+        while (idx < nSensors) {
+            sensorName = sensorNames[idx];
+            s = YSensor.FindSensor(sensorName);
+            sensorList.Add(s);
+            idx = idx + 1;
+        }
+        obj = new YConsolidatedDataSet(startTime, endTime, sensorList);
+        return obj;
+    }
+
+
+    /**
+     * <summary>
+     *   Extracts the next data record from the data logger of all sensors linked to this
      *   object.
      * <para>
      * </para>
@@ -8522,6 +8618,7 @@ public class YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the logical name of the function.
@@ -8589,6 +8686,7 @@ public class YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns a short string representing the current state of the function.
@@ -8626,6 +8724,7 @@ public class YFunction
             return _setAttr("advertisedValue", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -8690,6 +8789,7 @@ public class YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -8727,6 +8827,7 @@ public class YFunction
         return 0;
     }
 
+
     public virtual int _invokeValueCallback(string value)
     {
         if (this._valueCallbackFunction != null) {
@@ -8735,6 +8836,7 @@ public class YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -8758,6 +8860,7 @@ public class YFunction
         return this.set_advertisedValue("SILENT");
     }
 
+
     /**
      * <summary>
      *   Re-enables the propagation of every new advertised value to the parent hub.
@@ -8778,6 +8881,7 @@ public class YFunction
     {
         return this.set_advertisedValue("");
     }
+
 
     /**
      * <summary>
@@ -8806,6 +8910,7 @@ public class YFunction
         attrVal = this._download(url);
         return YAPI.DefaultEncoding.GetString(attrVal);
     }
+
 
     /**
      * <summary>
@@ -8838,6 +8943,7 @@ public class YFunction
         return true;
     }
 
+
     /**
      * <summary>
      *   Returns the serial number of the module, as set by the factory.
@@ -8857,6 +8963,7 @@ public class YFunction
         m = this.get_module();
         return m.get_serialNumber();
     }
+
 
     public virtual int _parserHelper()
     {
@@ -8987,7 +9094,6 @@ public class YFunction
      *   On failure, throws an exception or returns  <c>YFunction.HARDWAREID_INVALID</c>.
      * </para>
      */
-
     public virtual string get_hardwareId()
     {
         YRETCODE retcode;
@@ -9035,7 +9141,6 @@ public class YFunction
      *   On failure, throws an exception or returns  <c>YFunction.FUNCTIONID_INVALID</c>.
      * </para>
      */
-
     public string get_functionId()
     {
         YRETCODE retcode;
@@ -9089,7 +9194,6 @@ public class YFunction
      *   On failure, throws an exception or returns  <c>YFunction.FRIENDLYNAME_INVALID</c>.
      * </para>
      */
-
     public virtual string get_friendlyName()
     {
         YRETCODE retcode;
@@ -9611,7 +9715,7 @@ public class YFunction
 //--- (generated code: YModule class start)
 /**
  * <summary>
- *   The YModule class can be used with all Yoctopuce USB devices.
+ *   The <c>YModule</c> class can be used with all Yoctopuce USB devices.
  * <para>
  *   It can be used to control the module global parameters, and
  *   to enumerate the functions provided by each module.
@@ -9745,6 +9849,7 @@ public class YModule : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the commercial name of the module, as set by the factory.
@@ -9773,6 +9878,7 @@ public class YModule : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -9803,6 +9909,7 @@ public class YModule : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the USB device identifier of the module.
@@ -9831,6 +9938,7 @@ public class YModule : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -9862,6 +9970,7 @@ public class YModule : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the version of the firmware embedded in the module.
@@ -9890,6 +9999,7 @@ public class YModule : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -9929,6 +10039,7 @@ public class YModule : YFunction
             return _setAttr("persistentSettings", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -9992,6 +10103,7 @@ public class YModule : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the state of the localization beacon.
@@ -10050,6 +10162,7 @@ public class YModule : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the number of milliseconds spent since the module was powered on.
@@ -10079,6 +10192,7 @@ public class YModule : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the current consumed by the module on the USB bus, in milli-amps.
@@ -10107,6 +10221,7 @@ public class YModule : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -10147,6 +10262,7 @@ public class YModule : YFunction
             return _setAttr("rebootCountdown", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -10210,6 +10326,7 @@ public class YModule : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Allows you to find a module from its serial number or from its logical name.
@@ -10263,6 +10380,7 @@ public class YModule : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -10300,6 +10418,7 @@ public class YModule : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackModule != null) {
@@ -10309,6 +10428,7 @@ public class YModule : YFunction
         }
         return 0;
     }
+
 
     public virtual string get_productNameAndRevision()
     {
@@ -10325,6 +10445,7 @@ public class YModule : YFunction
         }
         return fullname;
     }
+
 
     /**
      * <summary>
@@ -10346,6 +10467,7 @@ public class YModule : YFunction
         return this.set_persistentSettings(PERSISTENTSETTINGS_SAVED);
     }
 
+
     /**
      * <summary>
      *   Reloads the settings stored in the nonvolatile memory, as
@@ -10364,6 +10486,7 @@ public class YModule : YFunction
     {
         return this.set_persistentSettings(PERSISTENTSETTINGS_LOADED);
     }
+
 
     /**
      * <summary>
@@ -10386,6 +10509,7 @@ public class YModule : YFunction
         return this.set_rebootCountdown(secBeforeReboot);
     }
 
+
     /**
      * <summary>
      *   Schedules a module reboot into special firmware update mode.
@@ -10407,6 +10531,7 @@ public class YModule : YFunction
         return this.set_rebootCountdown(-secBeforeReboot);
     }
 
+
     public virtual void _startStopDevLog(string serial, bool start)
     {
         int i_start;
@@ -10418,6 +10543,7 @@ public class YModule : YFunction
 
         SafeNativeMethods._yapiStartStopDeviceLogCallback(new StringBuilder(serial), i_start);
     }
+
 
     /**
      * <summary>
@@ -10448,10 +10574,12 @@ public class YModule : YFunction
         return 0;
     }
 
+
     public virtual LogCallback get_logCallback()
     {
         return this._logCallback;
     }
+
 
     /**
      * <summary>
@@ -10477,6 +10605,7 @@ public class YModule : YFunction
         return 0;
     }
 
+
     public virtual int _invokeConfigChangeCallback()
     {
         if (this._confChangeCallback != null) {
@@ -10484,6 +10613,7 @@ public class YModule : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -10510,6 +10640,7 @@ public class YModule : YFunction
         return 0;
     }
 
+
     public virtual int _invokeBeaconCallback(int beaconState)
     {
         if (this._beaconCallback != null) {
@@ -10517,6 +10648,7 @@ public class YModule : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -10530,6 +10662,7 @@ public class YModule : YFunction
         this._setAttr("persistentSettings", "2");
         return 0;
     }
+
 
     /**
      * <summary>
@@ -10579,6 +10712,7 @@ public class YModule : YFunction
         return tmp_res;
     }
 
+
     /**
      * <summary>
      *   Prepares a firmware update of the module.
@@ -10613,6 +10747,7 @@ public class YModule : YFunction
         return new YFirmwareUpdate(serial, path, settings, force);
     }
 
+
     /**
      * <summary>
      *   Prepares a firmware update of the module.
@@ -10634,6 +10769,7 @@ public class YModule : YFunction
     {
         return this.updateFirmwareEx(path, false);
     }
+
 
     /**
      * <summary>
@@ -10718,6 +10854,7 @@ public class YModule : YFunction
         return res;
     }
 
+
     public virtual int loadThermistorExtra(string funcId, string jsonExtra)
     {
         List<string> values = new List<string>();
@@ -10743,6 +10880,7 @@ public class YModule : YFunction
         return YAPI.SUCCESS;
     }
 
+
     public virtual int set_extraSettings(string jsonExtra)
     {
         List<string> extras = new List<string>();
@@ -10759,6 +10897,7 @@ public class YModule : YFunction
         }
         return YAPI.SUCCESS;
     }
+
 
     /**
      * <summary>
@@ -10822,6 +10961,7 @@ public class YModule : YFunction
         return this.set_allSettings(YAPI.DefaultEncoding.GetBytes(json_api));
     }
 
+
     /**
      * <summary>
      *   Tests if the device includes a specific function.
@@ -10856,6 +10996,7 @@ public class YModule : YFunction
         }
         return false;
     }
+
 
     /**
      * <summary>
@@ -10896,6 +11037,7 @@ public class YModule : YFunction
         return res;
     }
 
+
     public virtual byte[] _flattenJsonStruct(byte[] jsoncomplex)
     {
         StringBuilder errmsg = new StringBuilder(YAPI.YOCTO_ERRMSG_LEN);
@@ -10932,6 +11074,7 @@ public class YModule : YFunction
         return YAPI.DefaultEncoding.GetBytes(jsonflat);
     }
 
+
     public virtual int calibVersion(string cparams)
     {
         if (cparams == "0,") {
@@ -10954,6 +11097,7 @@ public class YModule : YFunction
         }
     }
 
+
     public virtual int calibScale(string unit_name, string sensorType)
     {
         if (unit_name == "g" || unit_name == "gauss" || unit_name == "W") {
@@ -10975,6 +11119,7 @@ public class YModule : YFunction
         return 1;
     }
 
+
     public virtual int calibOffset(string unit_name)
     {
         if (unit_name == "% RH" || unit_name == "mbar" || unit_name == "lx") {
@@ -10982,6 +11127,7 @@ public class YModule : YFunction
         }
         return 32767;
     }
+
 
     public virtual string calibConvert(string param, string currentFuncValue, string unit_name, string sensorType)
     {
@@ -11152,6 +11298,7 @@ public class YModule : YFunction
         return param;
     }
 
+
     public virtual int _tryExec(string url)
     {
         int res;
@@ -11175,6 +11322,7 @@ public class YModule : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -11499,6 +11647,7 @@ public class YModule : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the unique hardware identifier of the module.
@@ -11521,6 +11670,7 @@ public class YModule : YFunction
         return serial + ".module";
     }
 
+
     /**
      * <summary>
      *   Downloads the specified built-in file and returns a binary buffer with its content.
@@ -11542,6 +11692,7 @@ public class YModule : YFunction
         return this._download(pathname);
     }
 
+
     /**
      * <summary>
      *   Returns the icon of the module.
@@ -11561,6 +11712,7 @@ public class YModule : YFunction
     {
         return this._download("icon2d.png");
     }
+
 
     /**
      * <summary>
@@ -11585,6 +11737,7 @@ public class YModule : YFunction
         return YAPI.DefaultEncoding.GetString(content);
     }
 
+
     /**
      * <summary>
      *   Adds a text message to the device logs.
@@ -11608,6 +11761,7 @@ public class YModule : YFunction
     {
         return this._upload("logs.txt", YAPI.DefaultEncoding.GetBytes(text));
     }
+
 
     /**
      * <summary>
@@ -11659,6 +11813,7 @@ public class YModule : YFunction
         return subdevices;
     }
 
+
     /**
      * <summary>
      *   Returns the serial number of the YoctoHub on which this module is connected.
@@ -11688,6 +11843,7 @@ public class YModule : YFunction
         }
         return hubserial.ToString();
     }
+
 
     /**
      * <summary>
@@ -12127,7 +12283,7 @@ public class YModule : YFunction
 //--- (generated code: YSensor class start)
 /**
  * <summary>
- *   The YSensor class is the parent class for all Yoctopuce sensor types.
+ *   The <c>YSensor</c> class is the parent class for all Yoctopuce sensor types.
  * <para>
  *   It can be
  *   used to read the current value and unit of any sensor, read the min/max
@@ -12136,8 +12292,8 @@ public class YModule : YFunction
  *   observed value changes, or at a predefined interval. Using this class rather
  *   than a specific subclass makes it possible to create generic applications
  *   that work with any Yoctopuce sensor, even those that do not yet exist.
- *   Note: The YAnButton class is the only analog input which does not inherit
- *   from YSensor.
+ *   Note: The <c>YAnButton</c> class is the only analog input which does not inherit
+ *   from <c>YSensor</c>.
  * </para>
  * <para>
  * </para>
@@ -12249,6 +12405,7 @@ public class YSensor : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the measuring unit for the measure.
@@ -12277,6 +12434,7 @@ public class YSensor : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -12352,6 +12510,7 @@ public class YSensor : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the minimal value observed for the measure since the device was started.
@@ -12414,6 +12573,7 @@ public class YSensor : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the maximal value observed for the measure since the device was started.
@@ -12445,6 +12605,7 @@ public class YSensor : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the uncalibrated, unrounded raw value returned by the
@@ -12475,6 +12636,7 @@ public class YSensor : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -12542,6 +12704,7 @@ public class YSensor : YFunction
             return _setAttr("logFrequency", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -12611,6 +12774,7 @@ public class YSensor : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the measuring mode used for the advertised value pushed to the parent hub.
@@ -12674,6 +12838,7 @@ public class YSensor : YFunction
         }
     }
 
+
     public string get_calibrationParam()
     {
         string res;
@@ -12729,6 +12894,7 @@ public class YSensor : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the resolution of the measured values.
@@ -12761,6 +12927,7 @@ public class YSensor : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the sensor health state code, which is zero when there is an up-to-date measure
@@ -12791,6 +12958,7 @@ public class YSensor : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -12855,6 +13023,7 @@ public class YSensor : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -12892,6 +13061,7 @@ public class YSensor : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackSensor != null) {
@@ -12901,6 +13071,7 @@ public class YSensor : YFunction
         }
         return 0;
     }
+
 
     public override int _parserHelper()
     {
@@ -13022,6 +13193,7 @@ public class YSensor : YFunction
         return 0;
     }
 
+
     /**
      * <summary>
      *   Checks if the sensor is currently able to provide an up-to-date measure.
@@ -13048,19 +13220,20 @@ public class YSensor : YFunction
         return true;
     }
 
+
     /**
      * <summary>
-     *   Returns the YDatalogger object of the device hosting the sensor.
+     *   Returns the <c>YDatalogger</c> object of the device hosting the sensor.
      * <para>
-     *   This method returns an object of
-     *   class YDatalogger that can control global parameters of the data logger. The returned object
+     *   This method returns an object
+     *   that can control global parameters of the data logger. The returned object
      *   should not be freed.
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   an YDataLogger object or null on error.
+     *   an <c>YDatalogger</c> object, or null on error.
      * </returns>
      */
     public virtual YDataLogger get_dataLogger()
@@ -13079,6 +13252,7 @@ public class YSensor : YFunction
         logger = YDataLogger.FindDataLogger(hwid);
         return logger;
     }
+
 
     /**
      * <summary>
@@ -13102,6 +13276,7 @@ public class YSensor : YFunction
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
      *   Stops the datalogger on the device.
@@ -13121,21 +13296,22 @@ public class YSensor : YFunction
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
-     *   Retrieves a DataSet object holding historical data for this
+     *   Retrieves a <c>YDataSet</c> object holding historical data for this
      *   sensor, for a specified time interval.
      * <para>
      *   The measures will be
      *   retrieved from the data logger, which must have been turned
-     *   on at the desired time. See the documentation of the DataSet
+     *   on at the desired time. See the documentation of the <c>YDataSet</c>
      *   class for information on how to get an overview of the
      *   recorded data, and how to load progressively a large set
      *   of measures from the data logger.
      * </para>
      * <para>
      *   This function only works if the device uses a recent firmware,
-     *   as DataSet objects are not supported by firmwares older than
+     *   as <c>YDataSet</c> objects are not supported by firmwares older than
      *   version 13000.
      * </para>
      * <para>
@@ -13154,9 +13330,9 @@ public class YSensor : YFunction
      *   to include any measure, without ending limit.
      * </param>
      * <returns>
-     *   an instance of YDataSet, providing access to historical
+     *   an instance of <c>YDataSet</c>, providing access to historical
      *   data. Past measures can be loaded progressively
-     *   using methods from the YDataSet object.
+     *   using methods from the <c>YDataSet</c> object.
      * </returns>
      */
     public virtual YDataSet get_recordedData(double startTime, double endTime)
@@ -13168,6 +13344,7 @@ public class YSensor : YFunction
         funit = this.get_unit();
         return new YDataSet(this, funcid, funit, startTime, endTime);
     }
+
 
     /**
      * <summary>
@@ -13182,7 +13359,7 @@ public class YSensor : YFunction
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -13200,6 +13377,7 @@ public class YSensor : YFunction
         return 0;
     }
 
+
     public virtual int _invokeTimedReportCallback(YMeasure value)
     {
         if (this._timedReportCallbackSensor != null) {
@@ -13208,6 +13386,7 @@ public class YSensor : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -13254,6 +13433,7 @@ public class YSensor : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -13306,6 +13486,7 @@ public class YSensor : YFunction
         return YAPI.SUCCESS;
     }
 
+
     public virtual string _encodeCalibrationPoints(List<double> rawValues, List<double> refValues)
     {
         string res;
@@ -13341,6 +13522,7 @@ public class YSensor : YFunction
         return res;
     }
 
+
     public virtual double _applyCalibration(double rawValue)
     {
         if (rawValue == CURRENTVALUE_INVALID) {
@@ -13357,6 +13539,7 @@ public class YSensor : YFunction
         }
         return this._calhdl(rawValue, this._caltyp, this._calpar, this._calraw, this._calref);
     }
+
 
     public virtual YMeasure _decodeTimedReport(double timestamp, double duration, List<int> report)
     {
@@ -13460,6 +13643,7 @@ public class YSensor : YFunction
         return new YMeasure(startTime, endTime, minVal, avgVal, maxVal);
     }
 
+
     public double _decodeVal(int w)
     {
         double val;
@@ -13471,6 +13655,7 @@ public class YSensor : YFunction
         }
         return val;
     }
+
 
     public double _decodeAvg(int dw)
     {
@@ -13565,11 +13750,11 @@ public class YSensor : YFunction
 /**
  * <summary>
  *   A non-volatile memory for storing ongoing measured data is available on most Yoctopuce
- *   sensors, for instance using a Yocto-3D-V2, a Yocto-Light-V3, a Yocto-Meteo-V2 or a Yocto-Watt.
+ *   sensors.
  * <para>
  *   Recording can happen automatically, without requiring a permanent
  *   connection to a computer.
- *   The YDataLogger class controls the global parameters of the internal data
+ *   The <c>YDataLogger</c> class controls the global parameters of the internal data
  *   logger. Recording control (start/stop) as well as data retreival is done at
  *   sensor objects level.
  * </para>
@@ -13656,6 +13841,7 @@ public class YDataLogger : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the current run number, corresponding to the number of times the module was
@@ -13686,6 +13872,7 @@ public class YDataLogger : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -13744,6 +13931,7 @@ public class YDataLogger : YFunction
             return _setAttr("timeUTC", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -13805,6 +13993,7 @@ public class YDataLogger : YFunction
             return _setAttr("recording", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -13870,6 +14059,7 @@ public class YDataLogger : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns true if the data logger is synchronised with the localization beacon.
@@ -13932,6 +14122,7 @@ public class YDataLogger : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the percentage of datalogger memory in use.
@@ -13961,6 +14152,7 @@ public class YDataLogger : YFunction
         return res;
     }
 
+
     public int get_clearHistory()
     {
         int res;
@@ -13983,6 +14175,7 @@ public class YDataLogger : YFunction
             return _setAttr("clearHistory", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -14047,6 +14240,7 @@ public class YDataLogger : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -14084,6 +14278,7 @@ public class YDataLogger : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackDataLogger != null) {
@@ -14093,6 +14288,7 @@ public class YDataLogger : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -14113,22 +14309,23 @@ public class YDataLogger : YFunction
         return this.set_clearHistory(CLEARHISTORY_TRUE);
     }
 
+
     /**
      * <summary>
-     *   Returns a list of YDataSet objects that can be used to retrieve
+     *   Returns a list of <c>YDataSet</c> objects that can be used to retrieve
      *   all measures stored by the data logger.
      * <para>
      * </para>
      * <para>
      *   This function only works if the device uses a recent firmware,
-     *   as YDataSet objects are not supported by firmwares older than
+     *   as <c>YDataSet</c> objects are not supported by firmwares older than
      *   version 13000.
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   a list of YDataSet object.
+     *   a list of <c>YDataSet</c> object.
      * </returns>
      * <para>
      *   On failure, throws an exception or returns an empty list.
@@ -14138,6 +14335,7 @@ public class YDataLogger : YFunction
     {
         return this.parse_dataSets(this._download("logger.json"));
     }
+
 
     public virtual List<YDataSet> parse_dataSets(byte[] json)
     {

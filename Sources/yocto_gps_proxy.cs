@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gps_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_gps_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YGpsProxy, the Proxy API for Gps
  *
@@ -92,14 +92,14 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YGps class allows you to retrieve positioning
- *   data from a GPS sensor, for instance using a Yocto-GPS.
+ *   The <c>YGps</c> class allows you to retrieve positioning
+ *   data from a GPS/GNSS sensor.
  * <para>
  *   This class can provides
  *   complete positioning information. However, if you
  *   wish to define callbacks on position changes or record
  *   the position in the datalogger, you
- *   should use the YLatitude et YLongitude classes.
+ *   should use the <c>YLatitude</c> et <c>YLongitude</c> classes.
  * </para>
  * <para>
  * </para>
@@ -107,6 +107,60 @@ namespace YoctoProxyAPI
  */
     public class YGpsProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a geolocalization module for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the geolocalization module is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YGps.isOnline()</c> to test if the geolocalization module is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a geolocalization module by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the geolocalization module, for instance
+         *   <c>YGNSSMK1.gps</c>.
+         * </param>
+         * <returns>
+         *   a <c>YGps</c> object allowing you to drive the geolocalization module.
+         * </returns>
+         */
+        public static YGpsProxy FindGps(string func)
+        {
+            return YoctoProxyManager.FindGps(func);
+        }
         //--- (end of YGps class start)
         //--- (YGps definitions)
         public const int _IsFixed_INVALID = 0;
@@ -180,7 +234,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Gps available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YGps.FindGps</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YGps it = YGps.FirstGps();
@@ -216,11 +285,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YGps.ISFIXED_FALSE</c> or <c>YGps.ISFIXED_TRUE</c>, according to TRUE if the receiver has
+         *   either <c>gps._Isfixed_FALSE</c> or <c>gps._Isfixed_TRUE</c>, according to TRUE if the receiver has
          *   found enough satellites to work
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.ISFIXED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Isfixed_INVALID</c>.
          * </para>
          */
         public int get_isFixed()
@@ -275,7 +344,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total count of satellites used to compute GPS position
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.SATCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Satcount_INVALID</c>.
          * </para>
          */
         public long get_satCount()
@@ -306,7 +375,7 @@ namespace YoctoProxyAPI
          *   on a 32 bit integer: bits 0.
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.SATPERCONST_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Satperconst_INVALID</c>.
          * </para>
          */
         public long get_satPerConst()
@@ -334,7 +403,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to effective GPS data refresh frequency
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.GPSREFRESHRATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Gpsrefreshrate_INVALID</c>.
          * </para>
          */
         public double get_gpsRefreshRate()
@@ -358,11 +427,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YGps.COORDSYSTEM_GPS_DMS</c>, <c>YGps.COORDSYSTEM_GPS_DM</c> and
-         *   <c>YGps.COORDSYSTEM_GPS_D</c> corresponding to the representation system used for positioning data
+         *   a value among <c>gps._Coordsystem_GPS_DMS</c>, <c>gps._Coordsystem_GPS_DM</c> and
+         *   <c>gps._Coordsystem_GPS_D</c> corresponding to the representation system used for positioning data
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.COORDSYSTEM_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Coordsystem_INVALID</c>.
          * </para>
          */
         public int get_coordSystem()
@@ -387,8 +456,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YGps.COORDSYSTEM_GPS_DMS</c>, <c>YGps.COORDSYSTEM_GPS_DM</c> and
-         *   <c>YGps.COORDSYSTEM_GPS_D</c> corresponding to the representation system used for positioning data
+         *   a value among <c>gps._Coordsystem_GPS_DMS</c>, <c>gps._Coordsystem_GPS_DM</c> and
+         *   <c>gps._Coordsystem_GPS_D</c> corresponding to the representation system used for positioning data
          * </param>
          * <para>
          * </para>
@@ -448,14 +517,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YGps.CONSTELLATION_GNSS</c>, <c>YGps.CONSTELLATION_GPS</c>,
-         *   <c>YGps.CONSTELLATION_GLONASS</c>, <c>YGps.CONSTELLATION_GALILEO</c>,
-         *   <c>YGps.CONSTELLATION_GPS_GLONASS</c>, <c>YGps.CONSTELLATION_GPS_GALILEO</c> and
-         *   <c>YGps.CONSTELLATION_GLONASS_GALILEO</c> corresponding to the the satellites constellation used to compute
+         *   a value among <c>gps._Constellation_GNSS</c>, <c>gps._Constellation_GPS</c>,
+         *   <c>gps._Constellation_GLONASS</c>, <c>gps._Constellation_GALILEO</c>,
+         *   <c>gps._Constellation_GPS_GLONASS</c>, <c>gps._Constellation_GPS_GALILEO</c> and
+         *   <c>gps._Constellation_GLONASS_GALILEO</c> corresponding to the the satellites constellation used to compute
          *   positioning data
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.CONSTELLATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Constellation_INVALID</c>.
          * </para>
          */
         public int get_constellation()
@@ -481,10 +550,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YGps.CONSTELLATION_GNSS</c>, <c>YGps.CONSTELLATION_GPS</c>,
-         *   <c>YGps.CONSTELLATION_GLONASS</c>, <c>YGps.CONSTELLATION_GALILEO</c>,
-         *   <c>YGps.CONSTELLATION_GPS_GLONASS</c>, <c>YGps.CONSTELLATION_GPS_GALILEO</c> and
-         *   <c>YGps.CONSTELLATION_GLONASS_GALILEO</c> corresponding to the satellites constellation used to compute
+         *   a value among <c>gps._Constellation_GNSS</c>, <c>gps._Constellation_GPS</c>,
+         *   <c>gps._Constellation_GLONASS</c>, <c>gps._Constellation_GALILEO</c>,
+         *   <c>gps._Constellation_GPS_GLONASS</c>, <c>gps._Constellation_GPS_GALILEO</c> and
+         *   <c>gps._Constellation_GLONASS_GALILEO</c> corresponding to the satellites constellation used to compute
          *   positioning data
          * </param>
          * <para>
@@ -521,7 +590,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the current latitude
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.LATITUDE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Latitude_INVALID</c>.
          * </para>
          */
         public string get_latitude()
@@ -546,7 +615,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the current longitude
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.LONGITUDE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Longitude_INVALID</c>.
          * </para>
          */
         public string get_longitude()
@@ -573,7 +642,7 @@ namespace YoctoProxyAPI
          *   the smaller that number is, the better
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.DILUTION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Dilution_INVALID</c>.
          * </para>
          */
         public double get_dilution()
@@ -602,7 +671,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current altitude
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.ALTITUDE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Altitude_INVALID</c>.
          * </para>
          */
         public double get_altitude()
@@ -629,7 +698,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current ground speed in Km/h
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.GROUNDSPEED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Groundspeed_INVALID</c>.
          * </para>
          */
         public double get_groundSpeed()
@@ -658,7 +727,7 @@ namespace YoctoProxyAPI
          *   is the true (geographic) north
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.DIRECTION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Direction_INVALID</c>.
          * </para>
          */
         public double get_direction()
@@ -687,7 +756,7 @@ namespace YoctoProxyAPI
          *   seconds elapsed since Jan 1st, 1970)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.UNIXTIME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Unixtime_INVALID</c>.
          * </para>
          */
         public long get_unixTime()
@@ -714,7 +783,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the current time in the form "YYYY/MM/DD hh:mm:ss"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.DATETIME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Datetime_INVALID</c>.
          * </para>
          */
         public string get_dateTime()
@@ -739,7 +808,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of seconds between current time and UTC time (time zone)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGps.UTCOFFSET_INVALID</c>.
+         *   On failure, throws an exception or returns <c>gps._Utcoffset_INVALID</c>.
          * </para>
          */
         public int get_utcOffset()

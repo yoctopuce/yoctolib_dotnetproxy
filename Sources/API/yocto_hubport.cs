@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_hubport.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_hubport.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindHubPort(), the high-level API for HubPort functions
  *
@@ -58,8 +58,8 @@ using YFUN_DESCR = System.Int32;
 //--- (YHubPort class start)
 /**
  * <summary>
- *   The YHubPort class provides control over the power supply for every port
- *   on a YoctoHub, for instance using a YoctoHub-Ethernet, a YoctoHub-GSM-3G-NA, a YoctoHub-Shield or a YoctoHub-Wireless-g.
+ *   The <c>YHubPort</c> class provides control over the power supply for slave ports
+ *   on a YoctoHub.
  * <para>
  *   It provide information about the device connected to it.
  *   The logical name of a YHubPort is always automatically set to the
@@ -119,9 +119,10 @@ public class YHubPort : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
-     *   Returns true if the Yocto-hub port is powered, false otherwise.
+     *   Returns true if the YoctoHub port is powered, false otherwise.
      * <para>
      * </para>
      * <para>
@@ -129,7 +130,7 @@ public class YHubPort : YFunction
      * </summary>
      * <returns>
      *   either <c>YHubPort.ENABLED_FALSE</c> or <c>YHubPort.ENABLED_TRUE</c>, according to true if the
-     *   Yocto-hub port is powered, false otherwise
+     *   YoctoHub port is powered, false otherwise
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YHubPort.ENABLED_INVALID</c>.
@@ -151,7 +152,7 @@ public class YHubPort : YFunction
 
     /**
      * <summary>
-     *   Changes the activation of the Yocto-hub port.
+     *   Changes the activation of the YoctoHub port.
      * <para>
      *   If the port is enabled, the
      *   connected module is powered. Otherwise, port power is shut down.
@@ -161,7 +162,7 @@ public class YHubPort : YFunction
      * </summary>
      * <param name="newval">
      *   either <c>YHubPort.ENABLED_FALSE</c> or <c>YHubPort.ENABLED_TRUE</c>, according to the activation
-     *   of the Yocto-hub port
+     *   of the YoctoHub port
      * </param>
      * <para>
      * </para>
@@ -181,9 +182,10 @@ public class YHubPort : YFunction
         }
     }
 
+
     /**
      * <summary>
-     *   Returns the current state of the Yocto-hub port.
+     *   Returns the current state of the YoctoHub port.
      * <para>
      * </para>
      * <para>
@@ -192,7 +194,7 @@ public class YHubPort : YFunction
      * <returns>
      *   a value among <c>YHubPort.PORTSTATE_OFF</c>, <c>YHubPort.PORTSTATE_OVRLD</c>,
      *   <c>YHubPort.PORTSTATE_ON</c>, <c>YHubPort.PORTSTATE_RUN</c> and <c>YHubPort.PORTSTATE_PROG</c>
-     *   corresponding to the current state of the Yocto-hub port
+     *   corresponding to the current state of the YoctoHub port
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YHubPort.PORTSTATE_INVALID</c>.
@@ -212,9 +214,10 @@ public class YHubPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
-     *   Returns the current baud rate used by this Yocto-hub port, in kbps.
+     *   Returns the current baud rate used by this YoctoHub port, in kbps.
      * <para>
      *   The default value is 1000 kbps, but a slower rate may be used if communication
      *   problems are encountered.
@@ -223,7 +226,7 @@ public class YHubPort : YFunction
      * </para>
      * </summary>
      * <returns>
-     *   an integer corresponding to the current baud rate used by this Yocto-hub port, in kbps
+     *   an integer corresponding to the current baud rate used by this YoctoHub port, in kbps
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YHubPort.BAUDRATE_INVALID</c>.
@@ -243,9 +246,10 @@ public class YHubPort : YFunction
         return res;
     }
 
+
     /**
      * <summary>
-     *   Retrieves a Yocto-hub port for a given identifier.
+     *   Retrieves a YoctoHub slave port for a given identifier.
      * <para>
      *   The identifier can be specified using several formats:
      * </para>
@@ -269,11 +273,11 @@ public class YHubPort : YFunction
      * <para>
      * </para>
      * <para>
-     *   This function does not require that the Yocto-hub port is online at the time
+     *   This function does not require that the YoctoHub slave port is online at the time
      *   it is invoked. The returned object is nevertheless valid.
-     *   Use the method <c>YHubPort.isOnline()</c> to test if the Yocto-hub port is
+     *   Use the method <c>YHubPort.isOnline()</c> to test if the YoctoHub slave port is
      *   indeed online at a given time. In case of ambiguity when looking for
-     *   a Yocto-hub port by logical name, no error is notified: the first instance
+     *   a YoctoHub slave port by logical name, no error is notified: the first instance
      *   found is returned. The search is performed first by hardware name,
      *   then by logical name.
      * </para>
@@ -286,11 +290,11 @@ public class YHubPort : YFunction
      * </para>
      * </summary>
      * <param name="func">
-     *   a string that uniquely characterizes the Yocto-hub port, for instance
+     *   a string that uniquely characterizes the YoctoHub slave port, for instance
      *   <c>YHUBETH1.hubPort1</c>.
      * </param>
      * <returns>
-     *   a <c>YHubPort</c> object allowing you to drive the Yocto-hub port.
+     *   a <c>YHubPort</c> object allowing you to drive the YoctoHub slave port.
      * </returns>
      */
     public static YHubPort FindHubPort(string func)
@@ -305,6 +309,7 @@ public class YHubPort : YFunction
         }
         return obj;
     }
+
 
     /**
      * <summary>
@@ -343,6 +348,7 @@ public class YHubPort : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackHubPort != null) {
@@ -355,17 +361,17 @@ public class YHubPort : YFunction
 
     /**
      * <summary>
-     *   Continues the enumeration of Yocto-hub ports started using <c>yFirstHubPort()</c>.
+     *   Continues the enumeration of YoctoHub slave ports started using <c>yFirstHubPort()</c>.
      * <para>
-     *   Caution: You can't make any assumption about the returned Yocto-hub ports order.
-     *   If you want to find a specific a Yocto-hub port, use <c>HubPort.findHubPort()</c>
+     *   Caution: You can't make any assumption about the returned YoctoHub slave ports order.
+     *   If you want to find a specific a YoctoHub slave port, use <c>HubPort.findHubPort()</c>
      *   and a hardwareID or a logical name.
      * </para>
      * </summary>
      * <returns>
      *   a pointer to a <c>YHubPort</c> object, corresponding to
-     *   a Yocto-hub port currently online, or a <c>null</c> pointer
-     *   if there are no more Yocto-hub ports to enumerate.
+     *   a YoctoHub slave port currently online, or a <c>null</c> pointer
+     *   if there are no more YoctoHub slave ports to enumerate.
      * </returns>
      */
     public YHubPort nextHubPort()
@@ -384,15 +390,15 @@ public class YHubPort : YFunction
 
     /**
      * <summary>
-     *   Starts the enumeration of Yocto-hub ports currently accessible.
+     *   Starts the enumeration of YoctoHub slave ports currently accessible.
      * <para>
      *   Use the method <c>YHubPort.nextHubPort()</c> to iterate on
-     *   next Yocto-hub ports.
+     *   next YoctoHub slave ports.
      * </para>
      * </summary>
      * <returns>
      *   a pointer to a <c>YHubPort</c> object, corresponding to
-     *   the first Yocto-hub port currently online, or a <c>null</c> pointer
+     *   the first YoctoHub slave port currently online, or a <c>null</c> pointer
      *   if there are none.
      * </returns>
      */

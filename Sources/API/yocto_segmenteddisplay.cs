@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_segmenteddisplay.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_segmenteddisplay.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindSegmentedDisplay(), the high-level API for SegmentedDisplay functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YSegmentedDisplay class start)
 /**
  * <summary>
- *   The SegmentedDisplay class allows you to drive segmented displays.
+ *   The <c>SegmentedDisplay</c> class allows you to drive segmented displays.
  * <para>
  * </para>
  * <para>
@@ -105,6 +105,7 @@ public class YSegmentedDisplay : YFunction
         }
         base._parseAttr(json_val);
     }
+
 
     /**
      * <summary>
@@ -164,6 +165,7 @@ public class YSegmentedDisplay : YFunction
         }
     }
 
+
     public int get_displayMode()
     {
         int res;
@@ -186,6 +188,7 @@ public class YSegmentedDisplay : YFunction
             return _setAttr("displayMode", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -213,9 +216,9 @@ public class YSegmentedDisplay : YFunction
      * <para>
      * </para>
      * <para>
-     *   This function does not require that the segmented displays is online at the time
+     *   This function does not require that the segmented display is online at the time
      *   it is invoked. The returned object is nevertheless valid.
-     *   Use the method <c>YSegmentedDisplay.isOnline()</c> to test if the segmented displays is
+     *   Use the method <c>YSegmentedDisplay.isOnline()</c> to test if the segmented display is
      *   indeed online at a given time. In case of ambiguity when looking for
      *   a segmented display by logical name, no error is notified: the first instance
      *   found is returned. The search is performed first by hardware name,
@@ -230,11 +233,11 @@ public class YSegmentedDisplay : YFunction
      * </para>
      * </summary>
      * <param name="func">
-     *   a string that uniquely characterizes the segmented displays, for instance
+     *   a string that uniquely characterizes the segmented display, for instance
      *   <c>MyDevice.segmentedDisplay</c>.
      * </param>
      * <returns>
-     *   a <c>YSegmentedDisplay</c> object allowing you to drive the segmented displays.
+     *   a <c>YSegmentedDisplay</c> object allowing you to drive the segmented display.
      * </returns>
      */
     public static YSegmentedDisplay FindSegmentedDisplay(string func)
@@ -249,6 +252,7 @@ public class YSegmentedDisplay : YFunction
         }
         return obj;
     }
+
 
     /**
      * <summary>
@@ -286,6 +290,7 @@ public class YSegmentedDisplay : YFunction
         }
         return 0;
     }
+
 
     public override int _invokeValueCallback(string value)
     {
@@ -336,7 +341,7 @@ public class YSegmentedDisplay : YFunction
      * </summary>
      * <returns>
      *   a pointer to a <c>YSegmentedDisplay</c> object, corresponding to
-     *   the first segmented displays currently online, or a <c>null</c> pointer
+     *   the first segmented display currently online, or a <c>null</c> pointer
      *   if there are none.
      * </returns>
      */

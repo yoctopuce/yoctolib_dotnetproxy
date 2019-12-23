@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_anbutton_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_anbutton_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YAnButtonProxy, the Proxy API for AnButton
  *
@@ -92,8 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YAnButton class allows you to access simple resistive inputs on Yoctopuce
- *   devices, for instance using a Yocto-Buzzer, a Yocto-Display, a Yocto-Knob or a Yocto-MaxiDisplay.
+ *   The <c>YAnButton</c> class provide access to basic resistive inputs.
  * <para>
  *   Such inputs can be used to measure the state
  *   of a simple button as well as to read an analog potentiometer (variable resistance).
@@ -108,6 +107,60 @@ namespace YoctoProxyAPI
  */
     public class YAnButtonProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves an analog input for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the analog input is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YAnButton.isOnline()</c> to test if the analog input is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   an analog input by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the analog input, for instance
+         *   <c>YBUZZER2.anButton1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YAnButton</c> object allowing you to drive the analog input.
+         * </returns>
+         */
+        public static YAnButtonProxy FindAnButton(string func)
+        {
+            return YoctoProxyManager.FindAnButton(func);
+        }
         //--- (end of YAnButton class start)
         //--- (YAnButton definitions)
         public const int _CalibratedValue_INVALID = -1;
@@ -170,7 +223,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type AnButton available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YAnButton.FindAnButton</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YAnButton it = YAnButton.FirstAnButton();
@@ -239,7 +307,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current calibrated input value (between 0 and 1000, included)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.CALIBRATEDVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Calibratedvalue_INVALID</c>.
          * </para>
          */
         public int get_calibratedValue()
@@ -266,7 +334,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current measured input value as-is (between 0 and 4095, included)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.RAWVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Rawvalue_INVALID</c>.
          * </para>
          */
         public int get_rawValue()
@@ -290,10 +358,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YAnButton.ANALOGCALIBRATION_OFF</c> or <c>YAnButton.ANALOGCALIBRATION_ON</c>
+         *   either <c>anbutton._Analogcalibration_OFF</c> or <c>anbutton._Analogcalibration_ON</c>
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.ANALOGCALIBRATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Analogcalibration_INVALID</c>.
          * </para>
          */
         public int get_analogCalibration()
@@ -318,7 +386,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YAnButton.ANALOGCALIBRATION_OFF</c> or <c>YAnButton.ANALOGCALIBRATION_ON</c>
+         *   either <c>anbutton._Analogcalibration_OFF</c> or <c>anbutton._Analogcalibration_ON</c>
          * </param>
          * <para>
          * </para>
@@ -380,7 +448,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximal value measured during the calibration (between 0 and 4095, included)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.CALIBRATIONMAX_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Calibrationmax_INVALID</c>.
          * </para>
          */
         public int get_calibrationMax()
@@ -469,7 +537,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minimal value measured during the calibration (between 0 and 4095, included)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.CALIBRATIONMIN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Calibrationmin_INVALID</c>.
          * </para>
          */
         public int get_calibrationMin()
@@ -558,7 +626,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the sensibility for the input (between 1 and 1000) for triggering user callbacks
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.SENSITIVITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Sensitivity_INVALID</c>.
          * </para>
          */
         public int get_sensitivity()
@@ -644,11 +712,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YAnButton.ISPRESSED_FALSE</c> or <c>YAnButton.ISPRESSED_TRUE</c>, according to true if
+         *   either <c>anbutton._Ispressed_FALSE</c> or <c>anbutton._Ispressed_TRUE</c>, according to true if
          *   the input (considered as binary) is active (closed contact), and false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.ISPRESSED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Ispressed_INVALID</c>.
          * </para>
          */
         public int get_isPressed()
@@ -676,7 +744,7 @@ namespace YoctoProxyAPI
          *   the input button was pressed (the input contact transitioned from open to closed)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.LASTTIMEPRESSED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Lasttimepressed_INVALID</c>.
          * </para>
          */
         public long get_lastTimePressed()
@@ -703,7 +771,7 @@ namespace YoctoProxyAPI
          *   the input button was released (the input contact transitioned from closed to open)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.LASTTIMERELEASED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Lasttimereleased_INVALID</c>.
          * </para>
          */
         public long get_lastTimeReleased()
@@ -731,7 +799,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the pulse counter value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.PULSECOUNTER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Pulsecounter_INVALID</c>.
          * </para>
          */
         public long get_pulseCounter()
@@ -758,7 +826,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the timer of the pulses counter (ms)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAnButton.PULSETIMER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>anbutton._Pulsetimer_INVALID</c>.
          * </para>
          */
         public long get_pulseTimer()

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multiaxiscontroller_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_multiaxiscontroller_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YMultiAxisControllerProxy, the Proxy API for MultiAxisController
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YMultiAxisController class allows you to drive multiple stepper motors
+ *   The <c>YMultiAxisController</c> class allows you to drive multiple stepper motors
  *   synchronously.
  * <para>
  * </para>
@@ -102,6 +102,60 @@ namespace YoctoProxyAPI
  */
     public class YMultiAxisControllerProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a multi-axis controller for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the multi-axis controller is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YMultiAxisController.isOnline()</c> to test if the multi-axis controller is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a multi-axis controller by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the multi-axis controller, for instance
+         *   <c>MyDevice.multiAxisController</c>.
+         * </param>
+         * <returns>
+         *   a <c>YMultiAxisController</c> object allowing you to drive the multi-axis controller.
+         * </returns>
+         */
+        public static YMultiAxisControllerProxy FindMultiAxisController(string func)
+        {
+            return YoctoProxyManager.FindMultiAxisController(func);
+        }
         //--- (end of YMultiAxisController class start)
         //--- (YMultiAxisController definitions)
         public const int _NAxis_INVALID = -1;
@@ -152,7 +206,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type MultiAxisController available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YMultiAxisController.FindMultiAxisController</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YMultiAxisController it = YMultiAxisController.FirstMultiAxisController();
@@ -186,7 +255,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of synchronized controllers
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiAxisController.NAXIS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multiaxiscontroller._Naxis_INVALID</c>.
          * </para>
          */
         public int get_nAxis()
@@ -242,13 +311,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YMultiAxisController.GLOBALSTATE_ABSENT</c>,
-         *   <c>YMultiAxisController.GLOBALSTATE_ALERT</c>, <c>YMultiAxisController.GLOBALSTATE_HI_Z</c>,
-         *   <c>YMultiAxisController.GLOBALSTATE_STOP</c>, <c>YMultiAxisController.GLOBALSTATE_RUN</c> and
-         *   <c>YMultiAxisController.GLOBALSTATE_BATCH</c> corresponding to the stepper motor set overall state
+         *   a value among <c>multiaxiscontroller._Globalstate_ABSENT</c>,
+         *   <c>multiaxiscontroller._Globalstate_ALERT</c>, <c>multiaxiscontroller._Globalstate_HI_Z</c>,
+         *   <c>multiaxiscontroller._Globalstate_STOP</c>, <c>multiaxiscontroller._Globalstate_RUN</c> and
+         *   <c>multiaxiscontroller._Globalstate_BATCH</c> corresponding to the stepper motor set overall state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YMultiAxisController.GLOBALSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>multiaxiscontroller._Globalstate_INVALID</c>.
          * </para>
          */
         public int get_globalState()

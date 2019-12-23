@@ -47,6 +47,8 @@
     <Compile Include="API\yocto_api.cs" />
     <Compile Include="yocto_module_proxy.cs" />
     <Compile Include="yocto_sensor_proxy.cs" />
+    <Compile Include="yocto_dataset_proxy.cs" />
+    <Compile Include="yocto_consolidateddataset_proxy.cs" />
         <Compile Include="API\yocto_accelerometer.cs"/>
     <Compile Include="API\yocto_altitude.cs"/>
     <Compile Include="API\yocto_anbutton.cs"/>
@@ -185,6 +187,7 @@
     <Compile Include="yocto_watchdog_proxy.cs"/>
     <Compile Include="yocto_weighscale_proxy.cs"/>
     <Compile Include="yocto_wireless_proxy.cs"/>
+    <Compile Include="yocto_function_proxy.cs"/>
     <Compile Include="yocto_firmwareupdate_proxy.cs"/>
     <Compile Include="yocto_displaylayer_proxy.cs"/>
     <Compile Include="yocto_filerecord_proxy.cs"/>

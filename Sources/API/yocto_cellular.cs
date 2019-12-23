@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_cellular.cs 38514 2019-11-26 16:54:39Z seb $
+ * $Id: yocto_cellular.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  * Implements yFindCellular(), the high-level API for Cellular functions
  *
@@ -58,6 +58,13 @@ using YFUN_DESCR = System.Int32;
 //--- (generated code: YCellRecord dlldef)
 //--- (end of generated code: YCellRecord dlldef)
 //--- (generated code: YCellRecord class start)
+/**
+ * <c>YCellRecord</c> objects are used to describe a wireless network.
+ * These objects are used in particular in conjunction with the
+ * <c>YCellular</c> class.
+ * <para>
+ * </para>
+ */
 public class YCellRecord
 {
 //--- (end of generated code: YCellRecord class start)
@@ -88,9 +95,10 @@ public class YCellRecord
     //--- (generated code: YCellRecord implementation)
 
 
+
     /**
      * <summary>
-     *   Returns the name of the the cell operator.
+     *   Returns the name of the the cell operator, as received from the network.
      * <para>
      * </para>
      * </summary>
@@ -103,14 +111,16 @@ public class YCellRecord
         return this._oper;
     }
 
+
     /**
      * <summary>
      *   Returns the Mobile Country Code (MCC).
      * <para>
+     *   The MCC is a unique identifier for each country.
      * </para>
      * </summary>
      * <returns>
-     *   the Mobile Country Code (MCC).
+     *   an integer corresponding to the Mobile Country Code (MCC).
      * </returns>
      */
     public virtual int get_mobileCountryCode()
@@ -118,14 +128,17 @@ public class YCellRecord
         return this._mcc;
     }
 
+
     /**
      * <summary>
      *   Returns the Mobile Network Code (MNC).
      * <para>
+     *   The MNC is a unique identifier for each phone
+     *   operator within a country.
      * </para>
      * </summary>
      * <returns>
-     *   the Mobile Network Code (MNC).
+     *   an integer corresponding to the Mobile Network Code (MNC).
      * </returns>
      */
     public virtual int get_mobileNetworkCode()
@@ -133,14 +146,17 @@ public class YCellRecord
         return this._mnc;
     }
 
+
     /**
      * <summary>
      *   Returns the Location Area Code (LAC).
      * <para>
+     *   The LAC is a unique identifier for each
+     *   place within a country.
      * </para>
      * </summary>
      * <returns>
-     *   the Location Area Code (LAC).
+     *   an integer corresponding to the Location Area Code (LAC).
      * </returns>
      */
     public virtual int get_locationAreaCode()
@@ -148,14 +164,17 @@ public class YCellRecord
         return this._lac;
     }
 
+
     /**
      * <summary>
-     *   Returns the Cell Id.
+     *   Returns the Cell ID.
      * <para>
+     *   The Cell ID is a unique identifier for each
+     *   base transmission station within a LAC.
      * </para>
      * </summary>
      * <returns>
-     *   the Cell Id.
+     *   an integer corresponding to the Cell Id.
      * </returns>
      */
     public virtual int get_cellId()
@@ -163,14 +182,15 @@ public class YCellRecord
         return this._cid;
     }
 
+
     /**
      * <summary>
-     *   Returns the signal strength.
+     *   Returns the signal strength, measured in dBm.
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   the signal strength.
+     *   an integer corresponding to the signal strength.
      * </returns>
      */
     public virtual int get_signalStrength()
@@ -178,14 +198,18 @@ public class YCellRecord
         return this._dbm;
     }
 
+
     /**
      * <summary>
      *   Returns the Timing Advance (TA).
      * <para>
+     *   The TA corresponds to the time necessary
+     *   for the signal to reach the base station from the device.
+     *   Each increment corresponds about to 550m of distance.
      * </para>
      * </summary>
      * <returns>
-     *   the Timing Advance (TA).
+     *   an integer corresponding to the Timing Advance (TA).
      * </returns>
      */
     public virtual int get_timingAdvance()
@@ -207,9 +231,10 @@ public class YCellRecord
 //--- (generated code: YCellular class start)
 /**
  * <summary>
- *   The YCellular class provides control over cellular network parameters
- *   and status for devices that are GSM-enabled, for instance using a YoctoHub-GSM-2G, a YoctoHub-GSM-3G-EU or a YoctoHub-GSM-3G-NA.
+ *   The <c>YCellular</c> class provides control over cellular network parameters
+ *   and status for devices that are GSM-enabled.
  * <para>
+ *   Note that TCP/IP parameters are configured separately, using class <c>YNetwork</c>.
  * </para>
  * <para>
  * </para>
@@ -348,6 +373,7 @@ public class YCellular : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the link quality, expressed in percent.
@@ -376,6 +402,7 @@ public class YCellular : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -406,6 +433,7 @@ public class YCellular : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the unique identifier of the cellular antenna in use: MCC, MNC, LAC and Cell ID.
@@ -434,6 +462,7 @@ public class YCellular : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -465,6 +494,7 @@ public class YCellular : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -499,6 +529,7 @@ public class YCellular : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the latest status message from the wireless interface.
@@ -527,6 +558,7 @@ public class YCellular : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -601,6 +633,7 @@ public class YCellular : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the name of the only cell operator to use if automatic choice is disabled,
@@ -668,6 +701,7 @@ public class YCellular : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns true if the airplane mode is active (radio turned off).
@@ -727,6 +761,7 @@ public class YCellular : YFunction
             return _setAttr("airplaneMode", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -799,6 +834,7 @@ public class YCellular : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the Access Point Name (APN) to be used, if needed.
@@ -861,6 +897,7 @@ public class YCellular : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns an opaque string if APN authentication parameters have been configured
@@ -901,6 +938,7 @@ public class YCellular : YFunction
             return _setAttr("apnSecret", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -962,6 +1000,7 @@ public class YCellular : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the number of bytes sent so far.
@@ -1019,6 +1058,7 @@ public class YCellular : YFunction
             return _setAttr("dataSent", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1078,6 +1118,7 @@ public class YCellular : YFunction
         }
     }
 
+
     public string get_command()
     {
         string res;
@@ -1100,6 +1141,7 @@ public class YCellular : YFunction
             return _setAttr("command", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1164,6 +1206,7 @@ public class YCellular : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -1201,6 +1244,7 @@ public class YCellular : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackCellular != null) {
@@ -1210,6 +1254,7 @@ public class YCellular : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -1248,6 +1293,7 @@ public class YCellular : YFunction
         return this.set_command("AT+CPIN="+puk+","+newPin);
     }
 
+
     /**
      * <summary>
      *   Configure authentication parameters to connect to the APN.
@@ -1276,6 +1322,7 @@ public class YCellular : YFunction
         return this.set_apnSecret(""+username+","+password);
     }
 
+
     /**
      * <summary>
      *   Clear the transmitted data counters.
@@ -1300,6 +1347,7 @@ public class YCellular : YFunction
         retcode = this.set_dataSent(0);
         return retcode;
     }
+
 
     /**
      * <summary>
@@ -1380,6 +1428,7 @@ public class YCellular : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the list detected cell operators in the neighborhood.
@@ -1422,6 +1471,7 @@ public class YCellular : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns a list of nearby cellular antennas, as required for quick
@@ -1433,7 +1483,7 @@ public class YCellular : YFunction
      * </para>
      * </summary>
      * <returns>
-     *   a list of YCellRecords.
+     *   a list of <c>YCellRecords</c>.
      * </returns>
      */
     public virtual List<YCellRecord> quickCellSurvey()

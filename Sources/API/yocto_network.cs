@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_network.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_network.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindNetwork(), the high-level API for Network functions
  *
@@ -57,14 +57,10 @@ using YFUN_DESCR = System.Int32;
 //--- (end of YNetwork yapiwrapper)
 //--- (YNetwork class start)
 /**
- * <summary>
- *   YNetwork objects provide access to TCP/IP parameters of Yoctopuce
- *   devices that include a built-in network interface, for instance using a YoctoHub-Ethernet, a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA or a YoctoHub-Wireless-g.
+ * <c>YNetwork</c> objects provide access to TCP/IP parameters of Yoctopuce
+ * devices that include a built-in network interface.
  * <para>
  * </para>
- * <para>
- * </para>
- * </summary>
  */
 public class YNetwork : YFunction
 {
@@ -257,6 +253,7 @@ public class YNetwork : YFunction
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the current established working mode of the network interface.
@@ -301,6 +298,7 @@ public class YNetwork : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the MAC address of the network interface.
@@ -331,6 +329,7 @@ public class YNetwork : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -363,6 +362,7 @@ public class YNetwork : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the subnet mask currently used by the device.
@@ -392,6 +392,7 @@ public class YNetwork : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the IP address of the router on the device subnet (default gateway).
@@ -420,6 +421,7 @@ public class YNetwork : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -472,6 +474,7 @@ public class YNetwork : YFunction
             return _setAttr("ipConfig", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -533,6 +536,7 @@ public class YNetwork : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the IP address of the secondary name server to be used by the module.
@@ -592,6 +596,7 @@ public class YNetwork : YFunction
             return _setAttr("secondaryDNS", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -653,6 +658,7 @@ public class YNetwork : YFunction
             return _setAttr("ntpServer", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -724,6 +730,7 @@ public class YNetwork : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns a hash string if a password has been set for user "admin",
@@ -794,6 +801,7 @@ public class YNetwork : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the TCP port used to serve the hub web UI.
@@ -857,6 +865,7 @@ public class YNetwork : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the HTML page to serve for the URL "/"" of the hub.
@@ -919,6 +928,7 @@ public class YNetwork : YFunction
             return _setAttr("defaultPage", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -985,6 +995,7 @@ public class YNetwork : YFunction
             return _setAttr("discoverable", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1054,6 +1065,7 @@ public class YNetwork : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the callback URL to notify of significant state changes.
@@ -1113,6 +1125,7 @@ public class YNetwork : YFunction
             return _setAttr("callbackUrl", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1177,6 +1190,7 @@ public class YNetwork : YFunction
             return _setAttr("callbackMethod", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1249,6 +1263,7 @@ public class YNetwork : YFunction
             return _setAttr("callbackEncoding", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1353,6 +1368,7 @@ public class YNetwork : YFunction
         return _setAttr("callbackCredentials", rest_val);
     }
 
+
     /**
      * <summary>
      *   Returns the initial waiting time before first callback notifications, in seconds.
@@ -1411,6 +1427,7 @@ public class YNetwork : YFunction
             return _setAttr("callbackInitialDelay", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1472,6 +1489,7 @@ public class YNetwork : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the minimum waiting time between two HTTP callbacks, in seconds.
@@ -1530,6 +1548,7 @@ public class YNetwork : YFunction
             return _setAttr("callbackMinDelay", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -1590,6 +1609,7 @@ public class YNetwork : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the current consumed by the module from Power-over-Ethernet (PoE), in milliamps.
@@ -1620,6 +1640,7 @@ public class YNetwork : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -1684,6 +1705,7 @@ public class YNetwork : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -1721,6 +1743,7 @@ public class YNetwork : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackNetwork != null) {
@@ -1730,6 +1753,7 @@ public class YNetwork : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -1763,6 +1787,7 @@ public class YNetwork : YFunction
         return this.set_ipConfig("DHCP:"+ fallbackIpAddr+"/"+Convert.ToString( fallbackSubnetMaskLen)+"/"+fallbackRouter);
     }
 
+
     /**
      * <summary>
      *   Changes the configuration of the network interface to enable the use of an
@@ -1784,6 +1809,7 @@ public class YNetwork : YFunction
     {
         return this.set_ipConfig("DHCP:");
     }
+
 
     /**
      * <summary>
@@ -1813,6 +1839,7 @@ public class YNetwork : YFunction
         return this.set_ipConfig("STATIC:"+ ipAddress+"/"+Convert.ToString( subnetMaskLen)+"/"+router);
     }
 
+
     /**
      * <summary>
      *   Pings host to test the network connectivity.
@@ -1839,6 +1866,7 @@ public class YNetwork : YFunction
         return YAPI.DefaultEncoding.GetString(content);
     }
 
+
     /**
      * <summary>
      *   Trigger an HTTP callback quickly.
@@ -1860,6 +1888,7 @@ public class YNetwork : YFunction
     {
         return this.set_callbackMethod(this.get_callbackMethod());
     }
+
 
     /**
      * <summary>

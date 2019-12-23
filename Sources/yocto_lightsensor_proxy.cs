@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_lightsensor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_lightsensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YLightSensorProxy, the Proxy API for LightSensor
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YLightSensor class allows you to read and configure Yoctopuce light
- *   sensors, for instance using a Yocto-Light-V3, a Yocto-Proximity or a Yocto-RangeFinder.
+ *   The <c>YLightSensor</c> class allows you to read and configure Yoctopuce light sensors.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to easily perform a one-point linear calibration
  *   to compensate the effect of a glass or filter placed in front of the sensor.
  *   For some light sensors with several working modes, this class can select the
@@ -108,6 +107,60 @@ namespace YoctoProxyAPI
  */
     public class YLightSensorProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a light sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the light sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YLightSensor.isOnline()</c> to test if the light sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a light sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the light sensor, for instance
+         *   <c>LIGHTMK3.lightSensor</c>.
+         * </param>
+         * <returns>
+         *   a <c>YLightSensor</c> object allowing you to drive the light sensor.
+         * </returns>
+         */
+        public static YLightSensorProxy FindLightSensor(string func)
+        {
+            return YoctoProxyManager.FindLightSensor(func);
+        }
         //--- (end of YLightSensor class start)
         //--- (YLightSensor definitions)
         public const int _MeasureType_INVALID = 0;
@@ -156,7 +209,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type LightSensor available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YLightSensor.FindLightSensor</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YLightSensor it = YLightSensor.FirstLightSensor();
@@ -224,12 +292,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YLightSensor.MEASURETYPE_HUMAN_EYE</c>, <c>YLightSensor.MEASURETYPE_WIDE_SPECTRUM</c>,
-         *   <c>YLightSensor.MEASURETYPE_INFRARED</c>, <c>YLightSensor.MEASURETYPE_HIGH_RATE</c> and
-         *   <c>YLightSensor.MEASURETYPE_HIGH_ENERGY</c> corresponding to the type of light measure
+         *   a value among <c>lightsensor._Measuretype_HUMAN_EYE</c>, <c>lightsensor._Measuretype_WIDE_SPECTRUM</c>,
+         *   <c>lightsensor._Measuretype_INFRARED</c>, <c>lightsensor._Measuretype_HIGH_RATE</c> and
+         *   <c>lightsensor._Measuretype_HIGH_ENERGY</c> corresponding to the type of light measure
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YLightSensor.MEASURETYPE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>lightsensor._Measuretype_INVALID</c>.
          * </para>
          */
         public int get_measureType()
@@ -257,9 +325,9 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YLightSensor.MEASURETYPE_HUMAN_EYE</c>, <c>YLightSensor.MEASURETYPE_WIDE_SPECTRUM</c>,
-         *   <c>YLightSensor.MEASURETYPE_INFRARED</c>, <c>YLightSensor.MEASURETYPE_HIGH_RATE</c> and
-         *   <c>YLightSensor.MEASURETYPE_HIGH_ENERGY</c> corresponding to the light sensor type used in the device
+         *   a value among <c>lightsensor._Measuretype_HUMAN_EYE</c>, <c>lightsensor._Measuretype_WIDE_SPECTRUM</c>,
+         *   <c>lightsensor._Measuretype_INFRARED</c>, <c>lightsensor._Measuretype_HIGH_RATE</c> and
+         *   <c>lightsensor._Measuretype_HIGH_ENERGY</c> corresponding to the light sensor type used in the device
          * </param>
          * <para>
          * </para>

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_arithmeticsensor.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_arithmeticsensor.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindArithmeticSensor(), the high-level API for ArithmeticSensor functions
  *
@@ -58,12 +58,12 @@ using YFUN_DESCR = System.Int32;
 //--- (YArithmeticSensor class start)
 /**
  * <summary>
- *   The YArithmeticSensor class allows some Yoctopuce devices to compute in real-time
+ *   The <c>YArithmeticSensor</c> class allows some Yoctopuce devices to compute in real-time
  *   values based on an arithmetic formula involving one or more measured signals as
  *   well as the temperature.
  * <para>
- *   This functionality is only available on specific
- *   Yoctopuce devices, for instance using a Yocto-MaxiMicroVolt-Rx.
+ *   As for any physical sensor, the computed values can be
+ *   read by callback and stored in the built-in datalogger.
  * </para>
  * <para>
  * </para>
@@ -138,6 +138,7 @@ public class YArithmeticSensor : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns a short informative description of the formula.
@@ -167,6 +168,7 @@ public class YArithmeticSensor : YSensor
         return res;
     }
 
+
     public string get_command()
     {
         string res;
@@ -189,6 +191,7 @@ public class YArithmeticSensor : YSensor
             return _setAttr("command", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -253,6 +256,7 @@ public class YArithmeticSensor : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -290,6 +294,7 @@ public class YArithmeticSensor : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackArithmeticSensor != null) {
@@ -299,6 +304,7 @@ public class YArithmeticSensor : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -313,7 +319,7 @@ public class YArithmeticSensor : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -331,6 +337,7 @@ public class YArithmeticSensor : YSensor
         return 0;
     }
 
+
     public override int _invokeTimedReportCallback(YMeasure value)
     {
         if (this._timedReportCallbackArithmeticSensor != null) {
@@ -340,6 +347,7 @@ public class YArithmeticSensor : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -383,6 +391,7 @@ public class YArithmeticSensor : YSensor
         return resval;
     }
 
+
     /**
      * <summary>
      *   Retrieves the algebraic expression defining the arithmetic function, as previously
@@ -414,6 +423,7 @@ public class YArithmeticSensor : YSensor
         }
         return content;
     }
+
 
     /**
      * <summary>
@@ -467,6 +477,7 @@ public class YArithmeticSensor : YSensor
 
         return this._upload(fname, YAPI.DefaultEncoding.GetBytes(defstr));
     }
+
 
     /**
      * <summary>

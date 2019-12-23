@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_magnetometer.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_magnetometer.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindMagnetometer(), the high-level API for Magnetometer functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YMagnetometer class start)
 /**
  * <summary>
- *   The YSensor class is the parent class for all Yoctopuce sensor types.
+ *   The <c>YSensor</c> class is the parent class for all Yoctopuce sensor types.
  * <para>
  *   It can be
  *   used to read the current value and unit of any sensor, read the min/max
@@ -67,8 +67,8 @@ using YFUN_DESCR = System.Int32;
  *   observed value changes, or at a predefined interval. Using this class rather
  *   than a specific subclass makes it possible to create generic applications
  *   that work with any Yoctopuce sensor, even those that do not yet exist.
- *   Note: The YAnButton class is the only analog input which does not inherit
- *   from YSensor.
+ *   Note: The <c>YAnButton</c> class is the only analog input which does not inherit
+ *   from <c>YSensor</c>.
  * </para>
  * <para>
  * </para>
@@ -123,6 +123,7 @@ public class YMagnetometer : YSensor
         }
         base._parseAttr(json_val);
     }
+
 
     /**
      * <summary>
@@ -186,6 +187,7 @@ public class YMagnetometer : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns the X component of the magnetic field, as a floating point number.
@@ -214,6 +216,7 @@ public class YMagnetometer : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -244,6 +247,7 @@ public class YMagnetometer : YSensor
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the Z component of the magnetic field, as a floating point number.
@@ -272,6 +276,7 @@ public class YMagnetometer : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -336,6 +341,7 @@ public class YMagnetometer : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -373,6 +379,7 @@ public class YMagnetometer : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackMagnetometer != null) {
@@ -382,6 +389,7 @@ public class YMagnetometer : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -396,7 +404,7 @@ public class YMagnetometer : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -413,6 +421,7 @@ public class YMagnetometer : YSensor
         this._timedReportCallbackMagnetometer = callback;
         return 0;
     }
+
 
     public override int _invokeTimedReportCallback(YMeasure value)
     {

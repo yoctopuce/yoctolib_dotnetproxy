@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_genericsensor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_genericsensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YGenericSensorProxy, the Proxy API for GenericSensor
  *
@@ -92,10 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YGenericSensor class allows you to read and configure Yoctopuce signal
- *   transducers, for instance using a Yocto-0-10V-Rx, a Yocto-4-20mA-Rx, a Yocto-RS232 or a Yocto-milliVolt-Rx.
+ *   The <c>YGenericSensor</c> class allows you to read and configure Yoctopuce signal
+ *   transducers.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
  *   to register callback functions, to access the autonomous datalogger.
  *   This class adds the ability to configure the automatic conversion between the
  *   measured signal and the corresponding engineering unit.
@@ -106,6 +106,60 @@ namespace YoctoProxyAPI
  */
     public class YGenericSensorProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a generic sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the generic sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YGenericSensor.isOnline()</c> to test if the generic sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a generic sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the generic sensor, for instance
+         *   <c>RX010V01.genericSensor1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YGenericSensor</c> object allowing you to drive the generic sensor.
+         * </returns>
+         */
+        public static YGenericSensorProxy FindGenericSensor(string func)
+        {
+            return YoctoProxyManager.FindGenericSensor(func);
+        }
         //--- (end of YGenericSensor class start)
         //--- (YGenericSensor definitions)
         public const double _SignalValue_INVALID = Double.NaN;
@@ -167,7 +221,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type GenericSensor available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YGenericSensor.FindGenericSensor</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YGenericSensor it = YGenericSensor.FirstGenericSensor();
@@ -243,7 +312,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current value of the electrical signal measured by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>genericsensor._Signalvalue_INVALID</c>.
          * </para>
          */
         public double get_signalValue()
@@ -280,7 +349,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the measuring unit of the electrical signal used by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALUNIT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>genericsensor._Signalunit_INVALID</c>.
          * </para>
          */
         public string get_signalUnit()
@@ -305,7 +374,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the input signal range used by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALRANGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>genericsensor._Signalrange_INVALID</c>.
          * </para>
          */
         public string get_signalRange()
@@ -400,7 +469,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the physical value range measured by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGenericSensor.VALUERANGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>genericsensor._Valuerange_INVALID</c>.
          * </para>
          */
         public string get_valueRange()
@@ -555,7 +624,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the electric signal bias for zero shift adjustment
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALBIAS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>genericsensor._Signalbias_INVALID</c>.
          * </para>
          */
         public double get_signalBias()
@@ -584,13 +653,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
-         *   <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+         *   a value among <c>genericsensor._Signalsampling_HIGH_RATE</c>,
+         *   <c>genericsensor._Signalsampling_HIGH_RATE_FILTERED</c>, <c>genericsensor._Signalsampling_LOW_NOISE</c>,
+         *   <c>genericsensor._Signalsampling_LOW_NOISE_FILTERED</c> and <c>genericsensor._Signalsampling_HIGHEST_RATE</c>
          *   corresponding to the electric signal sampling method to use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALSAMPLING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>genericsensor._Signalsampling_INVALID</c>.
          * </para>
          */
         public int get_signalSampling()
@@ -620,9 +689,9 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
-         *   <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+         *   a value among <c>genericsensor._Signalsampling_HIGH_RATE</c>,
+         *   <c>genericsensor._Signalsampling_HIGH_RATE_FILTERED</c>, <c>genericsensor._Signalsampling_LOW_NOISE</c>,
+         *   <c>genericsensor._Signalsampling_LOW_NOISE_FILTERED</c> and <c>genericsensor._Signalsampling_HIGHEST_RATE</c>
          *   corresponding to the electric signal sampling method to use
          * </param>
          * <para>
@@ -682,11 +751,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YGenericSensor.ENABLED_FALSE</c> or <c>YGenericSensor.ENABLED_TRUE</c>, according to the
+         *   either <c>genericsensor._Enabled_FALSE</c> or <c>genericsensor._Enabled_TRUE</c>, according to the
          *   activation state of this input
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YGenericSensor.ENABLED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>genericsensor._Enabled_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -714,7 +783,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YGenericSensor.ENABLED_FALSE</c> or <c>YGenericSensor.ENABLED_TRUE</c>, according to the
+         *   either <c>genericsensor._Enabled_FALSE</c> or <c>genericsensor._Enabled_TRUE</c>, according to the
          *   activation state of this input
          * </param>
          * <para>

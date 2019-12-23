@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_module_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_module_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YModuleProxy, the Proxy API for Module
  *
@@ -93,7 +93,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YModule class can be used with all Yoctopuce USB devices.
+ *   The <c>YModule</c> class can be used with all Yoctopuce USB devices.
  * <para>
  *   It can be used to control the module global parameters, and
  *   to enumerate the functions provided by each module.
@@ -104,6 +104,43 @@ namespace YoctoProxyAPI
  */
     public class YModuleProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Allows you to find a module from its serial number or from its logical name.
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the module is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YModule.isOnline()</c> to test if the module is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a module by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string containing either the serial number or
+         *   the logical name of the desired module
+         * </param>
+         * <returns>
+         *   a <c>YModule</c> object allowing you to drive the module
+         *   or get additional information on the module.
+         * </returns>
+         */
+        public static YModuleProxy FindModule(string func)
+        {
+            return YoctoProxyManager.FindModule(func);
+        }
         //--- (end of generated code: YModule class start)
     //--- (generated code: YModule definitions)
         public const string _ProductName_INVALID = YAPI.INVALID_STRING;
@@ -128,7 +165,6 @@ namespace YoctoProxyAPI
         protected new YModule _func;
         // property cache
         protected string _productName = _ProductName_INVALID;
-        protected string _serialNumber = _SerialNumber_INVALID;
         protected int _productId = _ProductId_INVALID;
         protected int _productRelease = _ProductRelease_INVALID;
         protected int _luminosity = _Luminosity_INVALID;
@@ -191,7 +227,15 @@ namespace YoctoProxyAPI
             _func.registerBeaconCallback(beaconChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumère toutes les fonctions de type Module.
+         * <para>
+         *   Returns an array of strings representing hardware identifiers for all Module functions presently connected.
+         * </para>
+         * </summary>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YModule it = YModule.FirstModule();
@@ -209,7 +253,6 @@ namespace YoctoProxyAPI
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _beacon = _func.get_beacon()+1;
             _productName = _func.get_productName();
-            _serialNumber = _func.get_serialNumber();
             _productId = _func.get_productId();
             _productRelease = _func.get_productRelease();
         }
@@ -242,7 +285,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the commercial name of the module, as set by the factory
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.PRODUCTNAME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Productname_INVALID</c>.
          * </para>
          */
         public string get_productName()
@@ -253,41 +296,6 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException(msg);
             }
             return _func.get_productName();
-        }
-
-        // property with cached value for instant access (constant value)
-        public string SerialNumber
-        {
-            get
-            {
-                if (_func == null) return _SerialNumber_INVALID;
-                return (_online ? _serialNumber : _SerialNumber_INVALID);
-            }
-        }
-
-        /**
-         * <summary>
-         *   Returns the serial number of the module, as set by the factory.
-         * <para>
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <returns>
-         *   a string corresponding to the serial number of the module, as set by the factory
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns <c>YModule.SERIALNUMBER_INVALID</c>.
-         * </para>
-         */
-        public string get_serialNumber()
-        {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.get_serialNumber();
         }
 
         // property with cached value for instant access (constant value)
@@ -312,7 +320,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the USB device identifier of the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.PRODUCTID_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Productid_INVALID</c>.
          * </para>
          */
         public int get_productId()
@@ -350,7 +358,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the release number of the module hardware, preprogrammed at the factory
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.PRODUCTRELEASE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Productrelease_INVALID</c>.
          * </para>
          */
         public int get_productRelease()
@@ -377,7 +385,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the version of the firmware embedded in the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.FIRMWARERELEASE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Firmwarerelease_INVALID</c>.
          * </para>
          */
         public string get_firmwareRelease()
@@ -399,11 +407,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YModule.PERSISTENTSETTINGS_LOADED</c>, <c>YModule.PERSISTENTSETTINGS_SAVED</c> and
-         *   <c>YModule.PERSISTENTSETTINGS_MODIFIED</c> corresponding to the current state of persistent module settings
+         *   a value among <c>module._Persistentsettings_LOADED</c>, <c>module._Persistentsettings_SAVED</c> and
+         *   <c>module._Persistentsettings_MODIFIED</c> corresponding to the current state of persistent module settings
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.PERSISTENTSETTINGS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Persistentsettings_INVALID</c>.
          * </para>
          */
         public int get_persistentSettings()
@@ -429,7 +437,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the luminosity of the  module informative LEDs (from 0 to 100)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.LUMINOSITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Luminosity_INVALID</c>.
          * </para>
          */
         public int get_luminosity()
@@ -514,10 +522,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YModule.BEACON_OFF</c> or <c>YModule.BEACON_ON</c>, according to the state of the localization beacon
+         *   either <c>module._Beacon_OFF</c> or <c>module._Beacon_ON</c>, according to the state of the localization beacon
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.BEACON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Beacon_INVALID</c>.
          * </para>
          */
         public int get_beacon()
@@ -540,7 +548,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YModule.BEACON_OFF</c> or <c>YModule.BEACON_ON</c>
+         *   either <c>module._Beacon_OFF</c> or <c>module._Beacon_ON</c>
          * </param>
          * <para>
          * </para>
@@ -576,7 +584,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of milliseconds spent since the module was powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.UPTIME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Uptime_INVALID</c>.
          * </para>
          */
         public long get_upTime()
@@ -601,7 +609,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current consumed by the module on the USB bus, in milli-amps
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.USBCURRENT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Usbcurrent_INVALID</c>.
          * </para>
          */
         public int get_usbCurrent()
@@ -630,7 +638,7 @@ namespace YoctoProxyAPI
          *   reboot has been scheduled
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.REBOOTCOUNTDOWN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Rebootcountdown_INVALID</c>.
          * </para>
          */
         public int get_rebootCountdown()
@@ -656,7 +664,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the value previously stored in this attribute
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YModule.USERVAR_INVALID</c>.
+         *   On failure, throws an exception or returns <c>module._Uservar_INVALID</c>.
          * </para>
          */
         public int get_userVar()

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_oscontrol.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_oscontrol.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindOsControl(), the high-level API for OsControl functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YOsControl class start)
 /**
  * <summary>
- *   The YOScontrol class provides some control over the operating system running a VirtualHub.
+ *   The <c>YOScontrol</c> class provides some control over the operating system running a VirtualHub.
  * <para>
  *   YOsControl is available on VirtualHub software only. This feature must be activated at the VirtualHub
  *   start up with -o option.
@@ -97,6 +97,7 @@ public class YOsControl : YFunction
         }
         base._parseAttr(json_val);
     }
+
 
     /**
      * <summary>
@@ -137,6 +138,7 @@ public class YOsControl : YFunction
             return _setAttr("shutdownCountdown", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -201,6 +203,7 @@ public class YOsControl : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -238,6 +241,7 @@ public class YOsControl : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackOsControl != null) {
@@ -247,6 +251,7 @@ public class YOsControl : YFunction
         }
         return 0;
     }
+
 
     /**
      * <summary>

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_gyro.cs 38514 2019-11-26 16:54:39Z seb $
+ * $Id: yocto_gyro.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  * Implements yFindGyro(), the high-level API for Gyro functions
  *
@@ -55,13 +55,14 @@ using YFUN_DESCR = System.Int32;
 //--- (generated code: YQt class start)
 /**
  * <summary>
- *   The YQt class provides direct access to the 3D attitude estimation provided by Yoctopuce
- *   inertial sensors, for instance using a Yocto-3D-V2.
+ *   The <c>YQt</c> class provides direct access to the 3D attitude estimation
+ *   provided by Yoctopuce inertial sensors.
  * <para>
- *   The four instances of YQt provide direct access to the individual
- *   quaternion components representing the orientation.
- *   It is usually not needed to use the YQt class directly, as the
- *   YGyro class provides a more convenient higher-level interface.
+ *   The four instances of <c>YQt</c>
+ *   provide direct access to the individual quaternion components representing the
+ *   orientation. It is usually not needed to use the <c>YQt</c> class
+ *   directly, as the <c>YGyro</c> class provides a more convenient higher-level
+ *   interface.
  * </para>
  * <para>
  * </para>
@@ -94,6 +95,7 @@ public class YQt : YSensor
     {
         base._parseAttr(json_val);
     }
+
 
     /**
      * <summary>
@@ -158,6 +160,7 @@ public class YQt : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -195,6 +198,7 @@ public class YQt : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackQt != null) {
@@ -204,6 +208,7 @@ public class YQt : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -218,7 +223,7 @@ public class YQt : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -235,6 +240,7 @@ public class YQt : YSensor
         this._timedReportCallbackQt = callback;
         return 0;
     }
+
 
     public override int _invokeTimedReportCallback(YMeasure value)
     {
@@ -329,11 +335,13 @@ public class YQt : YSensor
 //--- (generated code: YGyro class start)
 /**
  * <summary>
- *   The YGyro class allows you to read and configure Yoctopuce angular velocity
- *   sensors, for instance using a Yocto-3D-V2.
+ *   The <c>YGyro</c> class allows you to read and configure Yoctopuce gyroscopes.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
+ *   This class adds the possibility to access x, y and z components of the rotation
+ *   vector separately, as well as the possibility to deal with quaternion-based
+ *   orientation estimates.
  * </para>
  * <para>
  * </para>
@@ -423,6 +431,7 @@ public class YGyro : YSensor
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
@@ -485,6 +494,7 @@ public class YGyro : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns the angular velocity around the X axis of the device, as a floating point number.
@@ -514,6 +524,7 @@ public class YGyro : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -545,6 +556,7 @@ public class YGyro : YSensor
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the angular velocity around the Z axis of the device, as a floating point number.
@@ -574,6 +586,7 @@ public class YGyro : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -638,6 +651,7 @@ public class YGyro : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -675,6 +689,7 @@ public class YGyro : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackGyro != null) {
@@ -684,6 +699,7 @@ public class YGyro : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -698,7 +714,7 @@ public class YGyro : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -716,6 +732,7 @@ public class YGyro : YSensor
         return 0;
     }
 
+
     public override int _invokeTimedReportCallback(YMeasure value)
     {
         if (this._timedReportCallbackGyro != null) {
@@ -725,6 +742,7 @@ public class YGyro : YSensor
         }
         return 0;
     }
+
 
     public virtual int _loadQuaternion()
     {
@@ -762,6 +780,7 @@ public class YGyro : YSensor
         }
         return YAPI.SUCCESS;
     }
+
 
     public virtual int _loadAngles()
     {
@@ -802,6 +821,7 @@ public class YGyro : YSensor
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
      *   Returns the estimated roll angle, based on the integration of
@@ -825,6 +845,7 @@ public class YGyro : YSensor
         this._loadAngles();
         return this._roll;
     }
+
 
     /**
      * <summary>
@@ -850,6 +871,7 @@ public class YGyro : YSensor
         return this._pitch;
     }
 
+
     /**
      * <summary>
      *   Returns the estimated heading angle, based on the integration of
@@ -874,6 +896,7 @@ public class YGyro : YSensor
         return this._head;
     }
 
+
     /**
      * <summary>
      *   Returns the <c>w</c> component (real part) of the quaternion
@@ -895,6 +918,7 @@ public class YGyro : YSensor
         this._loadQuaternion();
         return this._w;
     }
+
 
     /**
      * <summary>
@@ -920,6 +944,7 @@ public class YGyro : YSensor
         return this._x;
     }
 
+
     /**
      * <summary>
      *   Returns the <c>y</c> component of the quaternion
@@ -944,6 +969,7 @@ public class YGyro : YSensor
         return this._y;
     }
 
+
     /**
      * <summary>
      *   Returns the <c>x</c> component of the quaternion
@@ -967,6 +993,7 @@ public class YGyro : YSensor
         this._loadQuaternion();
         return this._z;
     }
+
 
     /**
      * <summary>
@@ -1017,6 +1044,7 @@ public class YGyro : YSensor
         return 0;
     }
 
+
     /**
      * <summary>
      *   Registers a callback function that will be invoked each time that the estimated
@@ -1065,6 +1093,7 @@ public class YGyro : YSensor
         }
         return 0;
     }
+
 
     public virtual int _invokeGyroCallbacks(int qtIndex, double qtValue)
     {

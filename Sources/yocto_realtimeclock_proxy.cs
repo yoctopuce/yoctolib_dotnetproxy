@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_realtimeclock_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YRealTimeClock class provide access to the embedded real-time clock available on some Yoctopuce
- *   devices, for instance using a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
+ *   The <c>YRealTimeClock</c> class provide access to the embedded real-time clock available on some Yoctopuce
+ *   devices.
  * <para>
  *   It can provide current date and time, even after a power outage
  *   lasting several days. It is the base for automated wake-up functions provided by the WakeUpScheduler.
@@ -106,6 +106,60 @@ namespace YoctoProxyAPI
  */
     public class YRealTimeClockProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a real-time clock for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the real-time clock is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YRealTimeClock.isOnline()</c> to test if the real-time clock is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a real-time clock by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the real-time clock, for instance
+         *   <c>YHUBGSM3.realTimeClock</c>.
+         * </param>
+         * <returns>
+         *   a <c>YRealTimeClock</c> object allowing you to drive the real-time clock.
+         * </returns>
+         */
+        public static YRealTimeClockProxy FindRealTimeClock(string func)
+        {
+            return YoctoProxyManager.FindRealTimeClock(func);
+        }
         //--- (end of YRealTimeClock class start)
         //--- (YRealTimeClock definitions)
         public const long _UnixTime_INVALID = YAPI.INVALID_LONG;
@@ -154,7 +208,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type RealTimeClock available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YRealTimeClock.FindRealTimeClock</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YRealTimeClock it = YRealTimeClock.FirstRealTimeClock();
@@ -199,7 +268,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current time in Unix format (number of elapsed seconds since Jan 1st, 1970)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRealTimeClock.UNIXTIME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>realtimeclock._Unixtime_INVALID</c>.
          * </para>
          */
         public long get_unixTime()
@@ -259,7 +328,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the current time in the form "YYYY/MM/DD hh:mm:ss"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRealTimeClock.DATETIME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>realtimeclock._Datetime_INVALID</c>.
          * </para>
          */
         public string get_dateTime()
@@ -284,7 +353,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of seconds between current time and UTC time (time zone)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRealTimeClock.UTCOFFSET_INVALID</c>.
+         *   On failure, throws an exception or returns <c>realtimeclock._Utcoffset_INVALID</c>.
          * </para>
          */
         public int get_utcOffset()
@@ -366,11 +435,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YRealTimeClock.TIMESET_FALSE</c> or <c>YRealTimeClock.TIMESET_TRUE</c>, according to true
+         *   either <c>realtimeclock._Timeset_FALSE</c> or <c>realtimeclock._Timeset_TRUE</c>, according to true
          *   if the clock has been set, and false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRealTimeClock.TIMESET_INVALID</c>.
+         *   On failure, throws an exception or returns <c>realtimeclock._Timeset_INVALID</c>.
          * </para>
          */
         public int get_timeSet()

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_serialport_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_serialport_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YSerialPortProxy, the Proxy API for SerialPort
  *
@@ -90,7 +90,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YSerialPort class allows you to fully drive a Yoctopuce serial port, for instance using a Yocto-RS232, a Yocto-RS485-V2 or a Yocto-Serial.
+ *   The <c>YSerialPort</c> class allows you to fully drive a Yoctopuce serial port.
  * <para>
  *   It can be used to send and receive data, and to configure communication
  *   parameters (baud rate, bit count, parity, flow control and protocol).
@@ -103,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YSerialPortProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a serial port for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the serial port is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YSerialPort.isOnline()</c> to test if the serial port is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a serial port by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the serial port, for instance
+         *   <c>RS232MK1.serialPort</c>.
+         * </param>
+         * <returns>
+         *   a <c>YSerialPort</c> object allowing you to drive the serial port.
+         * </returns>
+         */
+        public static YSerialPortProxy FindSerialPort(string func)
+        {
+            return YoctoProxyManager.FindSerialPort(func);
+        }
         //--- (end of generated code: YSerialPort class start)
         public const int _EventCount_INVALID = YAPI.INVALID_UINT;
         //--- (generated code: YSerialPort definitions)
@@ -114,6 +168,8 @@ namespace YoctoProxyAPI
         public const string _LastMsg_INVALID = YAPI.INVALID_STRING;
         public const string _CurrentJob_INVALID = YAPI.INVALID_STRING;
         public const string _StartupJob_INVALID = YAPI.INVALID_STRING;
+        public const int _JobMaxTask_INVALID = -1;
+        public const int _JobMaxSize_INVALID = -1;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
         public const string _Protocol_INVALID = YAPI.INVALID_STRING;
         public const int _VoltageLevel_INVALID = 0;
@@ -131,6 +187,8 @@ namespace YoctoProxyAPI
         protected new YSerialPort _func;
         // property cache
         protected string _startupJob = _StartupJob_INVALID;
+        protected int _jobMaxTask = _JobMaxTask_INVALID;
+        protected int _jobMaxSize = _JobMaxSize_INVALID;
         protected string _protocol = _Protocol_INVALID;
         protected int _voltageLevel = _VoltageLevel_INVALID;
         protected string _serialMode = _SerialMode_INVALID;
@@ -192,7 +250,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type SerialPort available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YSerialPort.FindSerialPort</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YSerialPort it = YSerialPort.FirstSerialPort();
@@ -207,6 +280,8 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
+            _jobMaxTask = _func.get_jobMaxTask();
+            _jobMaxSize = _func.get_jobMaxSize();
         }
 
         protected override void moduleConfigHasChanged()
@@ -231,7 +306,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.RXCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Rxcount_INVALID</c>.
          * </para>
          */
         public int get_rxCount()
@@ -258,7 +333,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes transmitted since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.TXCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Txcount_INVALID</c>.
          * </para>
          */
         public int get_txCount()
@@ -285,7 +360,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of communication errors detected since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.ERRCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Errcount_INVALID</c>.
          * </para>
          */
         public int get_errCount()
@@ -312,7 +387,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.RXMSGCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Rxmsgcount_INVALID</c>.
          * </para>
          */
         public int get_rxMsgCount()
@@ -339,7 +414,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages send since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.TXMSGCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Txmsgcount_INVALID</c>.
          * </para>
          */
         public int get_txMsgCount()
@@ -366,7 +441,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest message fully received (for Line, Frame and Modbus protocols)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.LASTMSG_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Lastmsg_INVALID</c>.
          * </para>
          */
         public string get_lastMsg()
@@ -391,7 +466,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the job file currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.CURRENTJOB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Currentjob_INVALID</c>.
          * </para>
          */
         public string get_currentJob()
@@ -450,7 +525,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the job file to use when the device is powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.STARTUPJOB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Startupjob_INVALID</c>.
          * </para>
          */
         public string get_startupJob()
@@ -522,6 +597,80 @@ namespace YoctoProxyAPI
             _startupJob = newval;
         }
 
+        // property with cached value for instant access (constant value)
+        public int JobMaxTask
+        {
+            get
+            {
+                if (_func == null) return _JobMaxTask_INVALID;
+                return (_online ? _jobMaxTask : _JobMaxTask_INVALID);
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the maximum number of tasks in a job that the device can handle.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the maximum number of tasks in a job that the device can handle
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>serialport._Jobmaxtask_INVALID</c>.
+         * </para>
+         */
+        public int get_jobMaxTask()
+        {
+            if (_func == null)
+            {
+                string msg = "No SerialPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            int res = _func.get_jobMaxTask();
+            if (res == YAPI.INVALID_INT) res = _JobMaxTask_INVALID;
+            return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        public int JobMaxSize
+        {
+            get
+            {
+                if (_func == null) return _JobMaxSize_INVALID;
+                return (_online ? _jobMaxSize : _JobMaxSize_INVALID);
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns maximum size allowed for job files.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to maximum size allowed for job files
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>serialport._Jobmaxsize_INVALID</c>.
+         * </para>
+         */
+        public int get_jobMaxSize()
+        {
+            if (_func == null)
+            {
+                string msg = "No SerialPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            int res = _func.get_jobMaxSize();
+            if (res == YAPI.INVALID_INT) res = _JobMaxSize_INVALID;
+            return res;
+        }
+
         /**
          * <summary>
          *   Returns the type of protocol used over the serial line, as a string.
@@ -542,7 +691,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the type of protocol used over the serial line, as a string
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.PROTOCOL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Protocol_INVALID</c>.
          * </para>
          */
         public string get_protocol()
@@ -633,14 +782,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
+         *   a value among <c>serialport._Voltagelevel_OFF</c>, <c>serialport._Voltagelevel_TTL3V</c>,
+         *   <c>serialport._Voltagelevel_TTL3VR</c>, <c>serialport._Voltagelevel_TTL5V</c>,
+         *   <c>serialport._Voltagelevel_TTL5VR</c>, <c>serialport._Voltagelevel_RS232</c>,
+         *   <c>serialport._Voltagelevel_RS485</c> and <c>serialport._Voltagelevel_TTL1V8</c> corresponding to
          *   the voltage level used on the serial line
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.VOLTAGELEVEL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Voltagelevel_INVALID</c>.
          * </para>
          */
         public int get_voltageLevel()
@@ -670,10 +819,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
+         *   a value among <c>serialport._Voltagelevel_OFF</c>, <c>serialport._Voltagelevel_TTL3V</c>,
+         *   <c>serialport._Voltagelevel_TTL3VR</c>, <c>serialport._Voltagelevel_TTL5V</c>,
+         *   <c>serialport._Voltagelevel_TTL5VR</c>, <c>serialport._Voltagelevel_RS232</c>,
+         *   <c>serialport._Voltagelevel_RS485</c> and <c>serialport._Voltagelevel_TTL1V8</c> corresponding to
          *   the voltage type used on the serial line
          * </param>
          * <para>
@@ -743,7 +892,7 @@ namespace YoctoProxyAPI
          *   "9600,8N1"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSerialPort.SERIALMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>serialport._Serialmode_INVALID</c>.
          * </para>
          */
         public string get_serialMode()
@@ -1445,7 +1594,7 @@ namespace YoctoProxyAPI
          *   in the receive buffer.
          * </param>
          * <returns>
-         *   an array of YSnoopingRecord objects containing the messages found, if any.
+         *   an array of <c>YSnoopingRecord</c> objects containing the messages found, if any.
          *   Binary messages are converted to hexadecimal representation.
          * </returns>
          * <para>

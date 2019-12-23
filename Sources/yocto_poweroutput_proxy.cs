@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_poweroutput_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_poweroutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YPowerOutputProxy, the Proxy API for PowerOutput
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   Yoctopuce application programming interface allows you to control
- *   the power output featured on some devices such as the Yocto-Serial.
+ *   The <c>YPowerOutput</c> class allows you to control
+ *   the power output featured on some Yoctopuce devices.
  * <para>
  * </para>
  * <para>
@@ -102,6 +102,60 @@ namespace YoctoProxyAPI
  */
     public class YPowerOutputProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a power output for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the power output is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YPowerOutput.isOnline()</c> to test if the power output is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a power output by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the power output, for instance
+         *   <c>YI2CMK01.powerOutput</c>.
+         * </param>
+         * <returns>
+         *   a <c>YPowerOutput</c> object allowing you to drive the power output.
+         * </returns>
+         */
+        public static YPowerOutputProxy FindPowerOutput(string func)
+        {
+            return YoctoProxyManager.FindPowerOutput(func);
+        }
         //--- (end of YPowerOutput class start)
         //--- (YPowerOutput definitions)
         public const int _Voltage_INVALID = 0;
@@ -150,7 +204,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type PowerOutput available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YPowerOutput.FindPowerOutput</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YPowerOutput it = YPowerOutput.FirstPowerOutput();
@@ -183,12 +252,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YPowerOutput.VOLTAGE_OFF</c>, <c>YPowerOutput.VOLTAGE_OUT3V3</c>,
-         *   <c>YPowerOutput.VOLTAGE_OUT5V</c>, <c>YPowerOutput.VOLTAGE_OUT4V7</c> and
-         *   <c>YPowerOutput.VOLTAGE_OUT1V8</c> corresponding to the voltage on the power output featured by the module
+         *   a value among <c>poweroutput._Voltage_OFF</c>, <c>poweroutput._Voltage_OUT3V3</c>,
+         *   <c>poweroutput._Voltage_OUT5V</c>, <c>poweroutput._Voltage_OUT4V7</c> and
+         *   <c>poweroutput._Voltage_OUT1V8</c> corresponding to the voltage on the power output featured by the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPowerOutput.VOLTAGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>poweroutput._Voltage_INVALID</c>.
          * </para>
          */
         public int get_voltage()
@@ -214,9 +283,9 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YPowerOutput.VOLTAGE_OFF</c>, <c>YPowerOutput.VOLTAGE_OUT3V3</c>,
-         *   <c>YPowerOutput.VOLTAGE_OUT5V</c>, <c>YPowerOutput.VOLTAGE_OUT4V7</c> and
-         *   <c>YPowerOutput.VOLTAGE_OUT1V8</c> corresponding to the voltage on the power output provided by the
+         *   a value among <c>poweroutput._Voltage_OFF</c>, <c>poweroutput._Voltage_OUT3V3</c>,
+         *   <c>poweroutput._Voltage_OUT5V</c>, <c>poweroutput._Voltage_OUT4V7</c> and
+         *   <c>poweroutput._Voltage_OUT1V8</c> corresponding to the voltage on the power output provided by the
          *   module
          * </param>
          * <para>

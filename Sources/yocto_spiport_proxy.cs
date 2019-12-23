@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_spiport_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_spiport_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YSpiPortProxy, the Proxy API for SpiPort
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YSpiPort class allows you to fully drive a Yoctopuce SPI port, for instance using a Yocto-SPI.
+ *   The <c>YSpiPort</c> class allows you to fully drive a Yoctopuce SPI port.
  * <para>
  *   It can be used to send and receive data, and to configure communication
  *   parameters (baud rate, bit count, parity, flow control and protocol).
@@ -105,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YSpiPortProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a SPI port for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the SPI port is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YSpiPort.isOnline()</c> to test if the SPI port is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a SPI port by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the SPI port, for instance
+         *   <c>YSPIMK01.spiPort</c>.
+         * </param>
+         * <returns>
+         *   a <c>YSpiPort</c> object allowing you to drive the SPI port.
+         * </returns>
+         */
+        public static YSpiPortProxy FindSpiPort(string func)
+        {
+            return YoctoProxyManager.FindSpiPort(func);
+        }
         //--- (end of YSpiPort class start)
         //--- (YSpiPort definitions)
         public const int _RxCount_INVALID = -1;
@@ -115,6 +169,8 @@ namespace YoctoProxyAPI
         public const string _LastMsg_INVALID = YAPI.INVALID_STRING;
         public const string _CurrentJob_INVALID = YAPI.INVALID_STRING;
         public const string _StartupJob_INVALID = YAPI.INVALID_STRING;
+        public const int _JobMaxTask_INVALID = -1;
+        public const int _JobMaxSize_INVALID = -1;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
         public const string _Protocol_INVALID = YAPI.INVALID_STRING;
         public const int _VoltageLevel_INVALID = 0;
@@ -138,6 +194,8 @@ namespace YoctoProxyAPI
         protected new YSpiPort _func;
         // property cache
         protected string _startupJob = _StartupJob_INVALID;
+        protected int _jobMaxTask = _JobMaxTask_INVALID;
+        protected int _jobMaxSize = _JobMaxSize_INVALID;
         protected string _protocol = _Protocol_INVALID;
         protected int _voltageLevel = _VoltageLevel_INVALID;
         protected string _spiMode = _SpiMode_INVALID;
@@ -178,7 +236,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type SpiPort available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YSpiPort.FindSpiPort</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YSpiPort it = YSpiPort.FirstSpiPort();
@@ -193,6 +266,8 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
+            _jobMaxTask = _func.get_jobMaxTask();
+            _jobMaxSize = _func.get_jobMaxSize();
         }
 
         protected override void moduleConfigHasChanged()
@@ -221,7 +296,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.RXCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Rxcount_INVALID</c>.
          * </para>
          */
         public int get_rxCount()
@@ -248,7 +323,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes transmitted since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.TXCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Txcount_INVALID</c>.
          * </para>
          */
         public int get_txCount()
@@ -275,7 +350,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of communication errors detected since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.ERRCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Errcount_INVALID</c>.
          * </para>
          */
         public int get_errCount()
@@ -302,7 +377,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.RXMSGCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Rxmsgcount_INVALID</c>.
          * </para>
          */
         public int get_rxMsgCount()
@@ -329,7 +404,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages send since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.TXMSGCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Txmsgcount_INVALID</c>.
          * </para>
          */
         public int get_txMsgCount()
@@ -356,7 +431,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest message fully received (for Line and Frame protocols)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.LASTMSG_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Lastmsg_INVALID</c>.
          * </para>
          */
         public string get_lastMsg()
@@ -381,7 +456,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the job file currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.CURRENTJOB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Currentjob_INVALID</c>.
          * </para>
          */
         public string get_currentJob()
@@ -440,7 +515,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the job file to use when the device is powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.STARTUPJOB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Startupjob_INVALID</c>.
          * </para>
          */
         public string get_startupJob()
@@ -512,6 +587,80 @@ namespace YoctoProxyAPI
             _startupJob = newval;
         }
 
+        // property with cached value for instant access (constant value)
+        public int JobMaxTask
+        {
+            get
+            {
+                if (_func == null) return _JobMaxTask_INVALID;
+                return (_online ? _jobMaxTask : _JobMaxTask_INVALID);
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the maximum number of tasks in a job that the device can handle.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the maximum number of tasks in a job that the device can handle
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>spiport._Jobmaxtask_INVALID</c>.
+         * </para>
+         */
+        public int get_jobMaxTask()
+        {
+            if (_func == null)
+            {
+                string msg = "No SpiPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            int res = _func.get_jobMaxTask();
+            if (res == YAPI.INVALID_INT) res = _JobMaxTask_INVALID;
+            return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        public int JobMaxSize
+        {
+            get
+            {
+                if (_func == null) return _JobMaxSize_INVALID;
+                return (_online ? _jobMaxSize : _JobMaxSize_INVALID);
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns maximum size allowed for job files.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to maximum size allowed for job files
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>spiport._Jobmaxsize_INVALID</c>.
+         * </para>
+         */
+        public int get_jobMaxSize()
+        {
+            if (_func == null)
+            {
+                string msg = "No SpiPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            int res = _func.get_jobMaxSize();
+            if (res == YAPI.INVALID_INT) res = _JobMaxSize_INVALID;
+            return res;
+        }
+
         /**
          * <summary>
          *   Returns the type of protocol used over the serial line, as a string.
@@ -528,7 +677,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the type of protocol used over the serial line, as a string
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.PROTOCOL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Protocol_INVALID</c>.
          * </para>
          */
         public string get_protocol()
@@ -615,14 +764,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
+         *   a value among <c>spiport._Voltagelevel_OFF</c>, <c>spiport._Voltagelevel_TTL3V</c>,
+         *   <c>spiport._Voltagelevel_TTL3VR</c>, <c>spiport._Voltagelevel_TTL5V</c>,
+         *   <c>spiport._Voltagelevel_TTL5VR</c>, <c>spiport._Voltagelevel_RS232</c>,
+         *   <c>spiport._Voltagelevel_RS485</c> and <c>spiport._Voltagelevel_TTL1V8</c> corresponding to the
          *   voltage level used on the serial line
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.VOLTAGELEVEL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Voltagelevel_INVALID</c>.
          * </para>
          */
         public int get_voltageLevel()
@@ -652,10 +801,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
+         *   a value among <c>spiport._Voltagelevel_OFF</c>, <c>spiport._Voltagelevel_TTL3V</c>,
+         *   <c>spiport._Voltagelevel_TTL3VR</c>, <c>spiport._Voltagelevel_TTL5V</c>,
+         *   <c>spiport._Voltagelevel_TTL5VR</c>, <c>spiport._Voltagelevel_RS232</c>,
+         *   <c>spiport._Voltagelevel_RS485</c> and <c>spiport._Voltagelevel_TTL1V8</c> corresponding to the
          *   voltage type used on the serial line
          * </param>
          * <para>
@@ -722,7 +871,7 @@ namespace YoctoProxyAPI
          *   "125000,0,msb"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.SPIMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Spimode_INVALID</c>.
          * </para>
          */
         public string get_spiMode()
@@ -807,11 +956,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YSpiPort.SSPOLARITY_ACTIVE_LOW</c> or <c>YSpiPort.SSPOLARITY_ACTIVE_HIGH</c>, according
+         *   either <c>spiport._Sspolarity_ACTIVE_LOW</c> or <c>spiport._Sspolarity_ACTIVE_HIGH</c>, according
          *   to the SS line polarity
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.SSPOLARITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Sspolarity_INVALID</c>.
          * </para>
          */
         public int get_ssPolarity()
@@ -836,7 +985,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YSpiPort.SSPOLARITY_ACTIVE_LOW</c> or <c>YSpiPort.SSPOLARITY_ACTIVE_HIGH</c>, according
+         *   either <c>spiport._Sspolarity_ACTIVE_LOW</c> or <c>spiport._Sspolarity_ACTIVE_HIGH</c>, according
          *   to the SS line polarity
          * </param>
          * <para>
@@ -896,11 +1045,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YSpiPort.SHIFTSAMPLING_OFF</c> or <c>YSpiPort.SHIFTSAMPLING_ON</c>, according to true
+         *   either <c>spiport._Shiftsampling_OFF</c> or <c>spiport._Shiftsampling_ON</c>, according to true
          *   when the SDI line phase is shifted with regards to the SDO line
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSpiPort.SHIFTSAMPLING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>spiport._Shiftsampling_INVALID</c>.
          * </para>
          */
         public int get_shiftSampling()
@@ -928,7 +1077,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YSpiPort.SHIFTSAMPLING_OFF</c> or <c>YSpiPort.SHIFTSAMPLING_ON</c>, according to the SDI
+         *   either <c>spiport._Shiftsampling_OFF</c> or <c>spiport._Shiftsampling_ON</c>, according to the SDI
          *   line sampling shift
          * </param>
          * <para>

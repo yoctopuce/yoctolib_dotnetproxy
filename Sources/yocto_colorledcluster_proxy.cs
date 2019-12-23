@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorledcluster_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_colorledcluster_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YColorLedClusterProxy, the Proxy API for ColorLedCluster
  *
@@ -92,11 +92,11 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YColorLedCluster class allows you to drive a
- *   color LED cluster, for instance using a Yocto-Color-V2.
+ *   The <c>YColorLedCluster</c> class allows you to drive a
+ *   color LED cluster.
  * <para>
- *   Unlike the ColorLed class, the ColorLedCluster
- *   allows to handle several LEDs at one. Color changes can be done using RGB
+ *   Unlike the <c>ColorLed</c> class, the <c>YColorLedCluster</c>
+ *   class allows to handle several LEDs at once. Color changes can be done using RGB
  *   coordinates as well as HSL coordinates.
  *   The module performs all conversions form RGB to HSL automatically. It is then
  *   self-evident to turn on a LED with a given hue and to progressively vary its
@@ -109,6 +109,60 @@ namespace YoctoProxyAPI
  */
     public class YColorLedClusterProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a RGB LED cluster for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the RGB LED cluster is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YColorLedCluster.isOnline()</c> to test if the RGB LED cluster is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a RGB LED cluster by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the RGB LED cluster, for instance
+         *   <c>YRGBLED2.colorLedCluster</c>.
+         * </param>
+         * <returns>
+         *   a <c>YColorLedCluster</c> object allowing you to drive the RGB LED cluster.
+         * </returns>
+         */
+        public static YColorLedClusterProxy FindColorLedCluster(string func)
+        {
+            return YoctoProxyManager.FindColorLedCluster(func);
+        }
         //--- (end of YColorLedCluster class start)
         //--- (YColorLedCluster definitions)
         public const int _ActiveLedCount_INVALID = -1;
@@ -163,7 +217,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type ColorLedCluster available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YColorLedCluster.FindColorLedCluster</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YColorLedCluster it = YColorLedCluster.FirstColorLedCluster();
@@ -203,7 +272,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of LEDs currently handled by the device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLedCluster.ACTIVELEDCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorledcluster._Activeledcount_INVALID</c>.
          * </para>
          */
         public int get_activeLedCount()
@@ -286,11 +355,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
+         *   either <c>colorledcluster._Ledtype_RGB</c> or <c>colorledcluster._Ledtype_RGBW</c>, according to
          *   the RGB LED type currently handled by the device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLedCluster.LEDTYPE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorledcluster._Ledtype_INVALID</c>.
          * </para>
          */
         public int get_ledType()
@@ -315,7 +384,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
+         *   either <c>colorledcluster._Ledtype_RGB</c> or <c>colorledcluster._Ledtype_RGBW</c>, according to
          *   the RGB LED type currently handled by the device
          * </param>
          * <para>
@@ -388,7 +457,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum number of LEDs that the device can handle
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLedCluster.MAXLEDCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorledcluster._Maxledcount_INVALID</c>.
          * </para>
          */
         public int get_maxLedCount()
@@ -425,7 +494,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum number of sequences that the device can handle
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLedCluster.BLINKSEQMAXCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorledcluster._Blinkseqmaxcount_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqMaxCount()
@@ -462,7 +531,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum length of sequences
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLedCluster.BLINKSEQMAXSIZE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorledcluster._Blinkseqmaxsize_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqMaxSize()

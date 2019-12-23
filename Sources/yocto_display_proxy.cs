@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_display_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_display_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YDisplayProxy, the Proxy API for Display
  *
@@ -90,7 +90,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YDisplay class allows to drive Yoctopuce displays, for instance using a Yocto-Display, a Yocto-MaxiDisplay, a Yocto-MaxiDisplay-G or a Yocto-MiniDisplay.
+ *   The <c>YDisplay</c> class allows to drive Yoctopuce displays.
  * <para>
  *   Yoctopuce display interface has been designed to easily
  *   show information and images. The device provides built-in
@@ -99,11 +99,71 @@ namespace YoctoProxyAPI
  *   sequences (animations).
  * </para>
  * <para>
+ *   In order to draw on the screen, you should use the
+ *   <c>display.get_displayLayer</c> method to retrieve the layer(s) on
+ *   which you want to draw, and then use methods defined in
+ *   <c>YDisplayLayer</c> to draw on the layers.
+ * </para>
+ * <para>
  * </para>
  * </summary>
  */
     public class YDisplayProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a display for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the display is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YDisplay.isOnline()</c> to test if the display is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a display by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the display, for instance
+         *   <c>YD128X32.display</c>.
+         * </param>
+         * <returns>
+         *   a <c>YDisplay</c> object allowing you to drive the display.
+         * </returns>
+         */
+        public static YDisplayProxy FindDisplay(string func)
+        {
+            return YoctoProxyManager.FindDisplay(func);
+        }
         //--- (end of generated code: YDisplay class start)
         //--- (generated code: YDisplay definitions)
         public const int _Enabled_INVALID = 0;
@@ -203,7 +263,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Display available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YDisplay.FindDisplay</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YDisplay it = YDisplay.FirstDisplay();
@@ -245,11 +320,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YDisplay.ENABLED_FALSE</c> or <c>YDisplay.ENABLED_TRUE</c>, according to true if the
+         *   either <c>display._Enabled_FALSE</c> or <c>display._Enabled_TRUE</c>, according to true if the
          *   screen is powered, false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.ENABLED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Enabled_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -272,7 +347,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YDisplay.ENABLED_FALSE</c> or <c>YDisplay.ENABLED_TRUE</c>, according to the power state
+         *   either <c>display._Enabled_FALSE</c> or <c>display._Enabled_TRUE</c>, according to the power state
          *   of the display
          * </param>
          * <para>
@@ -309,7 +384,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the sequence to play when the displayed is powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.STARTUPSEQ_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Startupseq_INVALID</c>.
          * </para>
          */
         public string get_startupSeq()
@@ -393,7 +468,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the luminosity of the  module informative LEDs (from 0 to 100)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.BRIGHTNESS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Brightness_INVALID</c>.
          * </para>
          */
         public int get_brightness()
@@ -477,12 +552,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YDisplay.ORIENTATION_LEFT</c>, <c>YDisplay.ORIENTATION_UP</c>,
-         *   <c>YDisplay.ORIENTATION_RIGHT</c> and <c>YDisplay.ORIENTATION_DOWN</c> corresponding to the
+         *   a value among <c>display._Orientation_LEFT</c>, <c>display._Orientation_UP</c>,
+         *   <c>display._Orientation_RIGHT</c> and <c>display._Orientation_DOWN</c> corresponding to the
          *   currently selected display orientation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.ORIENTATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Orientation_INVALID</c>.
          * </para>
          */
         public int get_orientation()
@@ -507,8 +582,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YDisplay.ORIENTATION_LEFT</c>, <c>YDisplay.ORIENTATION_UP</c>,
-         *   <c>YDisplay.ORIENTATION_RIGHT</c> and <c>YDisplay.ORIENTATION_DOWN</c> corresponding to the display orientation
+         *   a value among <c>display._Orientation_LEFT</c>, <c>display._Orientation_UP</c>,
+         *   <c>display._Orientation_RIGHT</c> and <c>display._Orientation_DOWN</c> corresponding to the display orientation
          * </param>
          * <para>
          * </para>
@@ -580,7 +655,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the display width, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.DISPLAYWIDTH_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Displaywidth_INVALID</c>.
          * </para>
          */
         public int get_displayWidth()
@@ -617,7 +692,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the display height, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.DISPLAYHEIGHT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Displayheight_INVALID</c>.
          * </para>
          */
         public int get_displayHeight()
@@ -651,11 +726,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YDisplay.DISPLAYTYPE_MONO</c>, <c>YDisplay.DISPLAYTYPE_GRAY</c> and
-         *   <c>YDisplay.DISPLAYTYPE_RGB</c> corresponding to the display type: monochrome, gray levels or full color
+         *   a value among <c>display._Displaytype_MONO</c>, <c>display._Displaytype_GRAY</c> and
+         *   <c>display._Displaytype_RGB</c> corresponding to the display type: monochrome, gray levels or full color
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.DISPLAYTYPE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Displaytype_INVALID</c>.
          * </para>
          */
         public int get_displayType()
@@ -691,7 +766,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the width of the layers to draw on, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.LAYERWIDTH_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Layerwidth_INVALID</c>.
          * </para>
          */
         public int get_layerWidth()
@@ -728,7 +803,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the height of the layers to draw on, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.LAYERHEIGHT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Layerheight_INVALID</c>.
          * </para>
          */
         public int get_layerHeight()
@@ -765,7 +840,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of available layers to draw on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDisplay.LAYERCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>display._Layercount_INVALID</c>.
          * </para>
          */
         public int get_layerCount()

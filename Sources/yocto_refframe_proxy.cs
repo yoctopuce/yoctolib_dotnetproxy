@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_refframe_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_refframe_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YRefFrameProxy, the Proxy API for RefFrame
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YRefFrame class is used to setup the base orientation of the Yoctopuce inertial
- *   sensors, for instance using a Yocto-3D-V2.
+ *   The <c>YRefFrame</c> class is used to setup the base orientation of the Yoctopuce inertial
+ *   sensors.
  * <para>
  *   Thanks to this, orientation functions relative to the earth surface plane
  *   can use the proper reference frame. The class also implements a tridimensional
@@ -106,6 +106,60 @@ namespace YoctoProxyAPI
  */
     public class YRefFrameProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a reference frame for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the reference frame is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YRefFrame.isOnline()</c> to test if the reference frame is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a reference frame by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the reference frame, for instance
+         *   <c>Y3DMK002.refFrame</c>.
+         * </param>
+         * <returns>
+         *   a <c>YRefFrame</c> object allowing you to drive the reference frame.
+         * </returns>
+         */
+        public static YRefFrameProxy FindRefFrame(string func)
+        {
+            return YoctoProxyManager.FindRefFrame(func);
+        }
         //--- (end of YRefFrame class start)
         //--- (YRefFrame definitions)
         public const int _MountPos_INVALID = -1;
@@ -246,7 +300,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type RefFrame available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YRefFrame.FindRefFrame</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YRefFrame it = YRefFrame.FirstRefFrame();
@@ -360,7 +429,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the reference bearing used by the compass
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRefFrame.BEARING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>refframe._Bearing_INVALID</c>.
          * </para>
          */
         public double get_bearing()
@@ -385,12 +454,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YRefFrame.FUSIONMODE_NDOF</c>, <c>YRefFrame.FUSIONMODE_NDOF_FMC_OFF</c>,
-         *   <c>YRefFrame.FUSIONMODE_M4G</c>, <c>YRefFrame.FUSIONMODE_COMPASS</c> and
-         *   <c>YRefFrame.FUSIONMODE_IMU</c> corresponding to the BNO055 fusion mode
+         *   a value among <c>refframe._Fusionmode_NDOF</c>, <c>refframe._Fusionmode_NDOF_FMC_OFF</c>,
+         *   <c>refframe._Fusionmode_M4G</c>, <c>refframe._Fusionmode_COMPASS</c> and
+         *   <c>refframe._Fusionmode_IMU</c> corresponding to the BNO055 fusion mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRefFrame.FUSIONMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>refframe._Fusionmode_INVALID</c>.
          * </para>
          */
         public int get_fusionMode()
@@ -415,8 +484,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YRefFrame.FUSIONMODE_NDOF</c>, <c>YRefFrame.FUSIONMODE_NDOF_FMC_OFF</c>,
-         *   <c>YRefFrame.FUSIONMODE_M4G</c>, <c>YRefFrame.FUSIONMODE_COMPASS</c> and <c>YRefFrame.FUSIONMODE_IMU</c>
+         *   a value among <c>refframe._Fusionmode_NDOF</c>, <c>refframe._Fusionmode_NDOF_FMC_OFF</c>,
+         *   <c>refframe._Fusionmode_M4G</c>, <c>refframe._Fusionmode_COMPASS</c> and <c>refframe._Fusionmode_IMU</c>
          * </param>
          * <para>
          * </para>
@@ -477,14 +546,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among the <c>YRefFrame.MOUNTPOSITION</c> enumeration
-         *   (<c>YRefFrame.MOUNTPOSITION_BOTTOM</c>,   <c>YRefFrame.MOUNTPOSITION_TOP</c>,
-         *   <c>YRefFrame.MOUNTPOSITION_FRONT</c>,    <c>YRefFrame.MOUNTPOSITION_RIGHT</c>,
-         *   <c>YRefFrame.MOUNTPOSITION_REAR</c>,     <c>YRefFrame.MOUNTPOSITION_LEFT</c>),
+         *   a value among the <c>Y_MOUNTPOSITION</c> enumeration
+         *   (<c>refframe._Mountposition_BOTTOM</c>,   <c>refframe._Mountposition_TOP</c>,
+         *   <c>refframe._Mountposition_FRONT</c>,    <c>refframe._Mountposition_RIGHT</c>,
+         *   <c>refframe._Mountposition_REAR</c>,     <c>refframe._Mountposition_LEFT</c>),
          *   corresponding to the installation in a box, on one of the six faces.
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns YRefFrame.MOUNTPOSITION_INVALID.
+         *   On failure, throws an exception or returns refframe._Mountposition_INVALID.
          * </para>
          */
         public virtual int get_mountPosition()
@@ -508,16 +577,16 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among the enumeration <c>YRefFrame.MOUNTORIENTATION</c>
-         *   (<c>YRefFrame.MOUNTORIENTATION_TWELVE</c>, <c>YRefFrame.MOUNTORIENTATION_THREE</c>,
-         *   <c>YRefFrame.MOUNTORIENTATION_SIX</c>,     <c>YRefFrame.MOUNTORIENTATION_NINE</c>)
+         *   a value among the enumeration <c>Y_MOUNTORIENTATION</c>
+         *   (<c>refframe._Mountorientation_TWELVE</c>, <c>refframe._Mountorientation_THREE</c>,
+         *   <c>refframe._Mountorientation_SIX</c>,     <c>refframe._Mountorientation_NINE</c>)
          *   corresponding to the orientation of the "X" arrow on the device,
          *   as on a clock dial seen from an observer in the center of the box.
          *   On the bottom face, the 12H orientation points to the front, while
          *   on the top face, the 12H orientation points to the rear.
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns YRefFrame.MOUNTORIENTATION_INVALID.
+         *   On failure, throws an exception or returns refframe._Mountorientation_INVALID.
          * </para>
          */
         public virtual int get_mountOrientation()
@@ -544,16 +613,16 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="position">
-         *   a value among the <c>YRefFrame.MOUNTPOSITION</c> enumeration
-         *   (<c>YRefFrame.MOUNTPOSITION_BOTTOM</c>,   <c>YRefFrame.MOUNTPOSITION_TOP</c>,
-         *   <c>YRefFrame.MOUNTPOSITION_FRONT</c>,    <c>YRefFrame.MOUNTPOSITION_RIGHT</c>,
-         *   <c>YRefFrame.MOUNTPOSITION_REAR</c>,     <c>YRefFrame.MOUNTPOSITION_LEFT</c>),
+         *   a value among the <c>Y_MOUNTPOSITION</c> enumeration
+         *   (<c>refframe._Mountposition_BOTTOM</c>,   <c>refframe._Mountposition_TOP</c>,
+         *   <c>refframe._Mountposition_FRONT</c>,    <c>refframe._Mountposition_RIGHT</c>,
+         *   <c>refframe._Mountposition_REAR</c>,     <c>refframe._Mountposition_LEFT</c>),
          *   corresponding to the installation in a box, on one of the six faces.
          * </param>
          * <param name="orientation">
-         *   a value among the enumeration <c>YRefFrame.MOUNTORIENTATION</c>
-         *   (<c>YRefFrame.MOUNTORIENTATION_TWELVE</c>, <c>YRefFrame.MOUNTORIENTATION_THREE</c>,
-         *   <c>YRefFrame.MOUNTORIENTATION_SIX</c>,     <c>YRefFrame.MOUNTORIENTATION_NINE</c>)
+         *   a value among the enumeration <c>Y_MOUNTORIENTATION</c>
+         *   (<c>refframe._Mountorientation_TWELVE</c>, <c>refframe._Mountorientation_THREE</c>,
+         *   <c>refframe._Mountorientation_SIX</c>,     <c>refframe._Mountorientation_NINE</c>)
          *   corresponding to the orientation of the "X" arrow on the device,
          *   as on a clock dial seen from an observer in the center of the box.
          *   On the bottom face, the 12H orientation points to the front, while

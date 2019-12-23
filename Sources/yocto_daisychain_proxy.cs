@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_daisychain_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_daisychain_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YDaisyChainProxy, the Proxy API for DaisyChain
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YDaisyChain interface can be used to verify that devices that
+ *   The <c>YDaisyChain</c> class can be used to verify that devices that
  *   are daisy-chained directly from device to device, without a hub,
  *   are detected properly.
  * <para>
@@ -103,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YDaisyChainProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a module chain for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the module chain is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YDaisyChain.isOnline()</c> to test if the module chain is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a module chain by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the module chain, for instance
+         *   <c>MyDevice.daisyChain</c>.
+         * </param>
+         * <returns>
+         *   a <c>YDaisyChain</c> object allowing you to drive the module chain.
+         * </returns>
+         */
+        public static YDaisyChainProxy FindDaisyChain(string func)
+        {
+            return YoctoProxyManager.FindDaisyChain(func);
+        }
         //--- (end of YDaisyChain class start)
         //--- (YDaisyChain definitions)
         public const int _DaisyState_INVALID = 0;
@@ -153,7 +207,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type DaisyChain available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YDaisyChain.FindDaisyChain</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YDaisyChain it = YDaisyChain.FirstDaisyChain();
@@ -185,12 +254,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YDaisyChain.DAISYSTATE_READY</c>, <c>YDaisyChain.DAISYSTATE_IS_CHILD</c>,
-         *   <c>YDaisyChain.DAISYSTATE_FIRMWARE_MISMATCH</c>, <c>YDaisyChain.DAISYSTATE_CHILD_MISSING</c> and
-         *   <c>YDaisyChain.DAISYSTATE_CHILD_LOST</c> corresponding to the state of the daisy-link between modules
+         *   a value among <c>daisychain._Daisystate_READY</c>, <c>daisychain._Daisystate_IS_CHILD</c>,
+         *   <c>daisychain._Daisystate_FIRMWARE_MISMATCH</c>, <c>daisychain._Daisystate_CHILD_MISSING</c> and
+         *   <c>daisychain._Daisystate_CHILD_LOST</c> corresponding to the state of the daisy-link between modules
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDaisyChain.DAISYSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>daisychain._Daisystate_INVALID</c>.
          * </para>
          */
         public int get_daisyState()
@@ -216,7 +285,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of child nodes currently detected
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDaisyChain.CHILDCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>daisychain._Childcount_INVALID</c>.
          * </para>
          */
         public int get_childCount()
@@ -243,7 +312,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of child nodes expected in normal conditions
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDaisyChain.REQUIREDCHILDCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>daisychain._Requiredchildcount_INVALID</c>.
          * </para>
          */
         public int get_requiredChildCount()

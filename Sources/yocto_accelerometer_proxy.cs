@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_accelerometer_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_accelerometer_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YAccelerometerProxy, the Proxy API for Accelerometer
  *
@@ -92,11 +92,12 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YAccelerometer class allows you to read and configure Yoctopuce acceleration
- *   sensors, for instance using a Yocto-3D-V2.
+ *   The <c>YAccelerometer</c> class allows you to read and configure Yoctopuce accelerometers.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
+ *   This class adds the possibility to access x, y and z components of the acceleration
+ *   vector separately.
  * </para>
  * <para>
  * </para>
@@ -104,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YAccelerometerProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves an accelerometer for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the accelerometer is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YAccelerometer.isOnline()</c> to test if the accelerometer is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   an accelerometer by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the accelerometer, for instance
+         *   <c>Y3DMK002.accelerometer</c>.
+         * </param>
+         * <returns>
+         *   a <c>YAccelerometer</c> object allowing you to drive the accelerometer.
+         * </returns>
+         */
+        public static YAccelerometerProxy FindAccelerometer(string func)
+        {
+            return YoctoProxyManager.FindAccelerometer(func);
+        }
         //--- (end of YAccelerometer class start)
         //--- (YAccelerometer definitions)
         public const int _Bandwidth_INVALID = -1;
@@ -153,7 +208,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Accelerometer available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YAccelerometer.FindAccelerometer</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YAccelerometer it = YAccelerometer.FirstAccelerometer();
@@ -188,7 +258,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAccelerometer.BANDWIDTH_INVALID</c>.
+         *   On failure, throws an exception or returns <c>accelerometer._Bandwidth_INVALID</c>.
          * </para>
          */
         public int get_bandwidth()
@@ -276,7 +346,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the X component of the acceleration, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAccelerometer.XVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>accelerometer._Xvalue_INVALID</c>.
          * </para>
          */
         public double get_xValue()
@@ -303,7 +373,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the Y component of the acceleration, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAccelerometer.YVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>accelerometer._Yvalue_INVALID</c>.
          * </para>
          */
         public double get_yValue()
@@ -330,7 +400,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the Z component of the acceleration, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YAccelerometer.ZVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>accelerometer._Zvalue_INVALID</c>.
          * </para>
          */
         public double get_zValue()

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_i2cport_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_i2cport_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YI2cPortProxy, the Proxy API for I2cPort
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YI2cPort classe allows you to fully drive a Yoctopuce I2C port, for instance using a Yocto-I2C.
+ *   The <c>YI2cPort</c> classe allows you to fully drive a Yoctopuce I2C port.
  * <para>
  *   It can be used to send and receive data, and to configure communication
  *   parameters (baud rate, etc).
@@ -105,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YI2cPortProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves an I2C port for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the I2C port is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YI2cPort.isOnline()</c> to test if the I2C port is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   an I2C port by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the I2C port, for instance
+         *   <c>YI2CMK01.i2cPort</c>.
+         * </param>
+         * <returns>
+         *   a <c>YI2cPort</c> object allowing you to drive the I2C port.
+         * </returns>
+         */
+        public static YI2cPortProxy FindI2cPort(string func)
+        {
+            return YoctoProxyManager.FindI2cPort(func);
+        }
         //--- (end of YI2cPort class start)
         //--- (YI2cPort definitions)
         public const int _RxCount_INVALID = -1;
@@ -115,6 +169,8 @@ namespace YoctoProxyAPI
         public const string _LastMsg_INVALID = YAPI.INVALID_STRING;
         public const string _CurrentJob_INVALID = YAPI.INVALID_STRING;
         public const string _StartupJob_INVALID = YAPI.INVALID_STRING;
+        public const int _JobMaxTask_INVALID = -1;
+        public const int _JobMaxSize_INVALID = -1;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
         public const string _Protocol_INVALID = YAPI.INVALID_STRING;
         public const int _I2cVoltageLevel_INVALID = 0;
@@ -127,6 +183,8 @@ namespace YoctoProxyAPI
         protected new YI2cPort _func;
         // property cache
         protected string _startupJob = _StartupJob_INVALID;
+        protected int _jobMaxTask = _JobMaxTask_INVALID;
+        protected int _jobMaxSize = _JobMaxSize_INVALID;
         protected string _protocol = _Protocol_INVALID;
         protected int _i2cVoltageLevel = _I2cVoltageLevel_INVALID;
         protected string _i2cMode = _I2cMode_INVALID;
@@ -165,7 +223,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type I2cPort available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YI2cPort.FindI2cPort</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YI2cPort it = YI2cPort.FirstI2cPort();
@@ -180,6 +253,8 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
+            _jobMaxTask = _func.get_jobMaxTask();
+            _jobMaxSize = _func.get_jobMaxSize();
         }
 
         protected override void moduleConfigHasChanged()
@@ -204,7 +279,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.RXCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Rxcount_INVALID</c>.
          * </para>
          */
         public int get_rxCount()
@@ -231,7 +306,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes transmitted since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.TXCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Txcount_INVALID</c>.
          * </para>
          */
         public int get_txCount()
@@ -258,7 +333,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of communication errors detected since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.ERRCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Errcount_INVALID</c>.
          * </para>
          */
         public int get_errCount()
@@ -285,7 +360,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.RXMSGCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Rxmsgcount_INVALID</c>.
          * </para>
          */
         public int get_rxMsgCount()
@@ -312,7 +387,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages send since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.TXMSGCOUNT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Txmsgcount_INVALID</c>.
          * </para>
          */
         public int get_txMsgCount()
@@ -339,7 +414,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest message fully received (for Line and Frame protocols)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.LASTMSG_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Lastmsg_INVALID</c>.
          * </para>
          */
         public string get_lastMsg()
@@ -364,7 +439,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the job file currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.CURRENTJOB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Currentjob_INVALID</c>.
          * </para>
          */
         public string get_currentJob()
@@ -423,7 +498,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the job file to use when the device is powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.STARTUPJOB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Startupjob_INVALID</c>.
          * </para>
          */
         public string get_startupJob()
@@ -495,6 +570,80 @@ namespace YoctoProxyAPI
             _startupJob = newval;
         }
 
+        // property with cached value for instant access (constant value)
+        public int JobMaxTask
+        {
+            get
+            {
+                if (_func == null) return _JobMaxTask_INVALID;
+                return (_online ? _jobMaxTask : _JobMaxTask_INVALID);
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the maximum number of tasks in a job that the device can handle.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the maximum number of tasks in a job that the device can handle
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>i2cport._Jobmaxtask_INVALID</c>.
+         * </para>
+         */
+        public int get_jobMaxTask()
+        {
+            if (_func == null)
+            {
+                string msg = "No I2cPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            int res = _func.get_jobMaxTask();
+            if (res == YAPI.INVALID_INT) res = _JobMaxTask_INVALID;
+            return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        public int JobMaxSize
+        {
+            get
+            {
+                if (_func == null) return _JobMaxSize_INVALID;
+                return (_online ? _jobMaxSize : _JobMaxSize_INVALID);
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns maximum size allowed for job files.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to maximum size allowed for job files
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>i2cport._Jobmaxsize_INVALID</c>.
+         * </para>
+         */
+        public int get_jobMaxSize()
+        {
+            if (_func == null)
+            {
+                string msg = "No I2cPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            int res = _func.get_jobMaxSize();
+            if (res == YAPI.INVALID_INT) res = _JobMaxSize_INVALID;
+            return res;
+        }
+
         /**
          * <summary>
          *   Returns the type of protocol used to send I2C messages, as a string.
@@ -510,7 +659,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the type of protocol used to send I2C messages, as a string
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.PROTOCOL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._Protocol_INVALID</c>.
          * </para>
          */
         public string get_protocol()
@@ -596,11 +745,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YI2cPort.I2CVOLTAGELEVEL_OFF</c>, <c>YI2cPort.I2CVOLTAGELEVEL_3V3</c> and
-         *   <c>YI2cPort.I2CVOLTAGELEVEL_1V8</c> corresponding to the voltage level used on the I2C bus
+         *   a value among <c>i2cport._I2cvoltagelevel_OFF</c>, <c>i2cport._I2cvoltagelevel_3V3</c> and
+         *   <c>i2cport._I2cvoltagelevel_1V8</c> corresponding to the voltage level used on the I2C bus
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.I2CVOLTAGELEVEL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._I2cvoltagelevel_INVALID</c>.
          * </para>
          */
         public int get_i2cVoltageLevel()
@@ -625,8 +774,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YI2cPort.I2CVOLTAGELEVEL_OFF</c>, <c>YI2cPort.I2CVOLTAGELEVEL_3V3</c> and
-         *   <c>YI2cPort.I2CVOLTAGELEVEL_1V8</c> corresponding to the voltage level used on the I2C bus
+         *   a value among <c>i2cport._I2cvoltagelevel_OFF</c>, <c>i2cport._I2cvoltagelevel_3V3</c> and
+         *   <c>i2cport._I2cvoltagelevel_1V8</c> corresponding to the voltage level used on the I2C bus
          * </param>
          * <para>
          * </para>
@@ -694,7 +843,7 @@ namespace YoctoProxyAPI
          *   "400kbps,2000ms,NoRestart"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YI2cPort.I2CMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>i2cport._I2cmode_INVALID</c>.
          * </para>
          */
         public string get_i2cMode()
@@ -956,7 +1105,7 @@ namespace YoctoProxyAPI
          *   a string containing a JSON definition of the job
          * </param>
          * <returns>
-         *   <c>YAPI_SUCCESS</c> if the call succeeds.
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -987,7 +1136,7 @@ namespace YoctoProxyAPI
          *   name of the job file (on the device filesystem)
          * </param>
          * <returns>
-         *   <c>YAPI_SUCCESS</c> if the call succeeds.
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

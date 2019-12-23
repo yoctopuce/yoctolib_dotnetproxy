@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_segmenteddisplay_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_segmenteddisplay_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YSegmentedDisplayProxy, the Proxy API for SegmentedDisplay
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The SegmentedDisplay class allows you to drive segmented displays.
+ *   The <c>SegmentedDisplay</c> class allows you to drive segmented displays.
  * <para>
  * </para>
  * <para>
@@ -101,6 +101,60 @@ namespace YoctoProxyAPI
  */
     public class YSegmentedDisplayProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a segmented display for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the segmented display is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YSegmentedDisplay.isOnline()</c> to test if the segmented display is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a segmented display by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the segmented display, for instance
+         *   <c>MyDevice.segmentedDisplay</c>.
+         * </param>
+         * <returns>
+         *   a <c>YSegmentedDisplay</c> object allowing you to drive the segmented display.
+         * </returns>
+         */
+        public static YSegmentedDisplayProxy FindSegmentedDisplay(string func)
+        {
+            return YoctoProxyManager.FindSegmentedDisplay(func);
+        }
         //--- (end of YSegmentedDisplay class start)
         //--- (YSegmentedDisplay definitions)
         public const string _DisplayedText_INVALID = YAPI.INVALID_STRING;
@@ -148,7 +202,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type SegmentedDisplay available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YSegmentedDisplay.FindSegmentedDisplay</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YSegmentedDisplay it = YSegmentedDisplay.FirstSegmentedDisplay();
@@ -182,7 +251,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the text currently displayed on the screen
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YSegmentedDisplay.DISPLAYEDTEXT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>segmenteddisplay._Displayedtext_INVALID</c>.
          * </para>
          */
         public string get_displayedText()

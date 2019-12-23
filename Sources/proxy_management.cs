@@ -24,6 +24,10 @@ namespace YoctoProxyAPI
         private static bool LibraryAPIInitialized = false;
         private static bool InnerThreadMustStop = false;
 
+        const int LogBufferMaxCount = 1000;
+        private static List<String> logBuffer = new List<string>() ;
+
+
         public static void apilog(string msg)
         {
             InternalStuff.log(msg);
@@ -42,7 +46,7 @@ namespace YoctoProxyAPI
         public static bool initYoctopuceLibrary(ref string errmsg, bool silent)
         {
             if (LibraryAPIInitialized) return true;
-            log("YoctoLabview library init");
+            log(".NET Proxy library initialization");
             apiMutex.WaitOne();
 
             LibraryAPIInitialized = YAPI.InitAPI(YAPI.DETECT_NONE, ref errmsg) == YAPI.SUCCESS;
@@ -50,12 +54,12 @@ namespace YoctoProxyAPI
             apiMutex.ReleaseMutex();
             if (!silent)
             {
-                string msg = "Yoctopuce API initialization failed (" + errmsg + ")";
+                string msg = "Yoctopuce low-level API initialization failed (" + errmsg + ")";
                 throw new YoctoApiProxyException(msg);
             }
             if (LibraryAPIInitialized)
             {
-                InternalStuff.log("registering arrival/removal");
+                //InternalStuff.log("registering arrival/removal");
                 YAPI.RegisterDeviceArrivalCallback(YFunctionProxy.deviceArrival);
                 YAPI.RegisterDeviceRemovalCallback(YFunctionProxy.deviceRemoval);
             }
@@ -67,7 +71,7 @@ namespace YoctoProxyAPI
                 string err = "";
                 while (!InnerThreadMustStop)
                 {
-                    InternalStuff.log("YAPI processing...");
+                    //InternalStuff.log("YAPI processing...");
                     try
                     {
                         if (LibraryAPIInitialized) YAPI.UpdateDeviceList(ref err);
@@ -113,25 +117,31 @@ namespace YoctoProxyAPI
             InternalStuff.log("+---------------------+");
             InternalStuff.log("|       START         |");
             InternalStuff.log("+---------------------+");
-
             InternalStuff.log("DLL path is " + System.Reflection.Assembly.GetExecutingAssembly().Location);
             apiMutex = new Mutex();
         }
 
         public static void log(string str)
         {
-            //Console.WriteLine(str);
-            return;
-            /*
-            logMutex.WaitOne();
-            try
-            {
-              File.AppendAllText(@"c:\tmp\log.txt", DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff") + " : " + str + "\r\n");
-            }
-            catch (Exception ) { }
-            logMutex.ReleaseMutex();
-            */
+           string line = DateTime.Now.ToString("yyyyMMdd hh:mm:ss.fff ") + str.TrimEnd('\r', '\n');
+          logBuffer.Add(line);
+          
+           if (logBuffer.Count > LogBufferMaxCount) logBuffer.RemoveRange(0, logBuffer.Count - LogBufferMaxCount);
+
         }
+
+
+        public static string getLogLine(string lastline)
+        {
+          if (logBuffer.Count <= 0) return "";
+          if (lastline == "") return logBuffer[0];
+          if (lastline == logBuffer[logBuffer.Count - 1]) return "";
+          if ((logBuffer.Count>=2) && ( logBuffer[logBuffer.Count - 2]== lastline)) return logBuffer[logBuffer.Count - 1];
+          int index = logBuffer.LastIndexOf(lastline);
+          if (index < 0) return "";
+          return logBuffer[index+1];
+        }
+
 
         private static UInt16 hsl2rgbInt(UInt32 temp1, UInt32 temp2, UInt16 temp3)
         {
@@ -220,467 +230,539 @@ namespace YoctoProxyAPI
         }
     }
 
-
-
-    public abstract class YFunctionProxy
-    {
-        public const string _AdvertisedValue_INVALID = YAPI.INVALID_STRING;
-        protected YFunction _func;
-        protected String _hwdid = "";
-        protected bool _online = false;
-        protected YModule _m = null;
-        protected string _advertisedValue;
-        string _instantiationName;
-        string _logicalName = "";
-        static List<YFunctionProxy> _allProxies = new List<YFunctionProxy>();
-
-        public bool isUnknown { get { return _func == null; } }
-        int FctID = 0;
-        static int FctCount = 0;
-
-
-        public static void freeall()
-        {
-            _allProxies.Clear();
-        }
-
-        public static YFunctionProxy FindSimilarUnknownFunction(String className)
-        {
-            for (int i = 0; i < _allProxies.Count; i++)
-            {
-                string c = _allProxies[i].GetType().ToString();
-                if ((_allProxies[i].GetType().ToString() == InternalStuff.currentNameSpace + "." + className) && _allProxies[i].isUnknown)
-                {
-                    return _allProxies[i];
-                }
-            }
-            return null;
-        }
-
-        public static YFunctionProxy FindSimilarKnownFunction(String className)
-        {
-            for (int i = 0; i < _allProxies.Count; i++)
-            {
-                string c = _allProxies[i].GetType().ToString();
-                if ((_allProxies[i].GetType().ToString() == InternalStuff.currentNameSpace + "." + className) && !_allProxies[i].isUnknown)
-                {
-                    return _allProxies[i];
-                }
-            }
-            return null;
-        }
-
-
-        public static void deviceArrival(YModule m)
-        {
-            string ms = m.get_serialNumber();
-            InternalStuff.log("*** device arrival(" + m.get_serialNumber() + ")");
-            string key = ms + ".module";
-            string mynamespace = InternalStuff.currentNameSpace;
-
-            // try to find some unknown module proxy can be linked to the new arrival
-            InternalStuff.log("*** looking for existing Module proxies");
-            for (int j = 0; j < _allProxies.Count; j++)
-            {
-                if (_allProxies[j].isUnknown)
-                {
-                    if (_allProxies[j].GetType().ToString() == mynamespace + ".YModuleProxy")
-                    {
-                        InternalStuff.log(" found");
-                        _allProxies[j].linkToHardware(ms);
-                        _allProxies[j].arrival();
-                    }
-                }
-                else if (_allProxies[j].get_fullHardwareId() == key)
-                {
-                    _allProxies[j].linkToHardware(ms);
-                    _allProxies[j].arrival();
-                }
-            }
-
-            string myNameSpace = InternalStuff.currentNameSpace;
-
-            // try to find some unknown function proxy  can be linked to the new arrival
-            InternalStuff.log("*** looking for existing Function proxies");
-            for (int i = 0; i < m.functionCount(); i++)
-            {
-                string hwid = ms + "." + m.functionId(i);
-                string type = m.functionType(i);
-                string basetype = m.functionBaseType(i);
-
-                for (int j = 0; j < _allProxies.Count; j++)
-                {
-                    if (_allProxies[j].isUnknown)
-                    {
-                        string proxyType = _allProxies[j].GetType().ToString();
-                        if (proxyType == myNameSpace + ".Y" + type + "Proxy" || proxyType == myNameSpace + ".Y" + basetype + "Proxy")
-                        {
-                            InternalStuff.log(" found " + type);
-                            _allProxies[j].linkToHardware(hwid);
-                            _allProxies[j].arrival();
-                        }
-                    }
-                    else if (_allProxies[j].get_fullHardwareId() == hwid)
-                    {
-                        _allProxies[j].linkToHardware(hwid);
-                        _allProxies[j].arrival();
-                    }
-                }
-            }
-
-            m.registerConfigChangeCallback(configChangeCallback);
-            configChangeCallback(m); // not triggered automatically at register
-            InternalStuff.log("Arrival completed");
-        }
-
-        public static void deviceRemoval(YModule m)
-        {
-            string serial = m.get_serialNumber();
-            InternalStuff.log("device removal(" + serial + ")");
-
-            for (int j = 0; j < _allProxies.Count; j++)
-                if (_allProxies[j].Online)
-                    if (_allProxies[j].get_hardwareId().Substring(0, serial.Length) == serial)
-                        _allProxies[j].removal();
-        }
-
-        private static void configChangeCallback(YModule module)
-        {
-            string id = module.get_serialNumber();
-            InternalStuff.log(" Module " + id + " config change  ");
-            if (id == "") return;  // just in case
-            foreach (YFunctionProxy f in _allProxies)
-            {
-                if (f.HardwareId.Length>=id.Length)
-                if (f.HardwareId.Substring(0, id.Length) == id) f.moduleConfigHasChanged();
-            }
-        }
-
-        protected virtual void moduleConfigHasChanged()
-        {
-            _logicalName = _func.get_logicalName();
-        }
-
-        protected virtual void functionArrival()
-        {
-            moduleConfigHasChanged();
-            valueChangeCallback(_func, _func.get_advertisedValue());
-        }
-
-        protected virtual void valueChangeCallback(YFunction source, string value)
-        {
-            InternalStuff.log("new value (" + value + ")");
-            _advertisedValue = value;
-        }
-
-        // perform the initial setup that may be done without a YoctoAPI object (hwd can be null)
-        internal virtual void base_init(YFunction hwd, string instantiationName)
-        {
-            string errmsg = "";
-            _func = hwd;
-            _instantiationName = instantiationName;
-            InternalStuff.initYoctopuceLibrary(ref errmsg, true);
-            if (_func != null)
-            {
-                try
-                {
-                    _func.set_userData(this);
-                    _hwdid = _func.get_hardwareId();
-                    InternalStuff.log(" hwdID = " + _hwdid);
-                }
-                catch (Exception)
-                {
-                    InternalStuff.log("Failed to find out HwdID, device is probably offline ");
-                }
-            }
-
-        }
-
-        // link the instance to a real YoctoAPI object (in subclasses)
-        internal virtual void linkToHardware(string hwdName)
-        {
-            YFunction hwd = YFunction.FindFunction(hwdName);
-            base_init(hwd, hwdName);
-            init(hwd);
-        }
-
-        // perform the 2nd stage setup that requires YoctoAPI object
-        protected void init(YFunction hwd)
-        {
-            if (hwd == null) return;
-            _func = hwd;
-            TestOnline();
-        }
-
-        public YFunctionProxy(YFunction hwd, string instantiationName)
-        {
-            InternalStuff.log("Function constructor with " + instantiationName);
-
-            // integrity test
-            FctCount++;
-            FctID = FctCount;
-
-            base_init(hwd, instantiationName);
-            _allProxies.Add(this);
-        }
-
-        public void arrival()
-        {
-            InternalStuff.log(_hwdid + " comes online");
-            _online = true;
-            functionArrival();
-        }
-
-        public void removal()
-        {
-            _online = false;
-            InternalStuff.log(_hwdid + " has been removed");
-        }
-
-        public bool TestOnline()
-        {
-            if (_func == null) return false;
-            InternalStuff.log("test if " + _hwdid + "(" + _instantiationName + ")  is online");
-            if (!_func.isOnline())
-            {
-                InternalStuff.log(" Nope, " + _hwdid + "(" + _instantiationName + ") is still offline");
-                _online = false;
-                return false;
-            }
-            InternalStuff.log(" Yes, " + _hwdid + "(" + _instantiationName + ") is online");
-            _m = _func.get_module();
-            _hwdid = _func.get_hardwareId();
-
-            _online = true;
-            InternalStuff.log(_hwdid + " is online");
-            return true;
-        }
-
-        public virtual string get_hardwareId()
-        {
-            return _hwdid;
-        }
-
-        internal string get_fullHardwareId()
-        {
-            if (_func == null) return "";
-            string s = "";
-            try
-            {
-                s = _func.get_hardwareId();
-            }
-            catch (Exception) { return ""; }
-
-            return s;
-        }
-
-        // used for consistency checks, no use for the end user
-        public int FunctionID
-        {
-            get { return FctID; }
-        }
-
-        // Public properties
-        public string HardwareId
-        {
-            get
-            {
-                return _hwdid;
-            }
-        }
-
-        public bool Online
-        {
-            get
-            {
-                return _online;
-            }
-        }
-
-
-
-        public string AdvertisedValue
-        {
-            get
-            {
-                if (_func == null) return "";
-                return (_online ? _advertisedValue : "");
-            }
-        }
-
-        public string LogicalName
-        {
-            get
-            {
-                if (_func == null) return "";
-                return _logicalName;
-            }
-            set
-            {
-                if (!YAPI.CheckLogicalName(value)) throw new InvalidDataException("(" + value + ") is not a valid logical name.");
-                if (_func == null) return;
-                if (!_online) return;
-                if (value == _logicalName) return;
-                _func.set_logicalName(value);
-                _logicalName = value;
-            }
-
-
-        }
-
-        public virtual string[] GetSimilarFunctions()
-        {
-            return new string[0];
-        }
-
-    }
-
     // this is used in the LabVIEW Generator to force LabVIEW
     // to keep reference in the DLL and prevent it from 
     // unloading it unexpectedly.
 
     public class refKeeper
-     {
-       public string getDllActualPath()
-        {  return System.Reflection.Assembly.GetExecutingAssembly().Location; 
-
-        }
-     }
-
-    static public partial class YoctoProxyManager
     {
+        public string getDllActualPath()
+        {  
+            return System.Reflection.Assembly.GetExecutingAssembly().Location; 
+        }
+    }
 
-      public static refKeeper getRefKeeperObject()
-       {
-          return new refKeeper();
-       }
 
-      public static string DllPath
+    public class YAPIProxy
+    {
+        protected static string apiversion = "";
+        protected static string dllpath = "";
+        protected static string dllarch = "";
+     
+        /**
+         * <summary>
+         *   Returns the version identifier for the Yoctopuce library in use.
+         * <para>
+         *   The version is a string in the form <c>"Major.Minor.Build"</c>,
+         *   for instance <c>"1.01.5535"</c>. For languages using an external
+         *   DLL (for instance C#, VisualBasic or Delphi), the character string
+         *   includes as well the DLL version, for instance
+         *   <c>"1.01.5535 (1.01.5439)"</c>.
+         * </para>
+         * <para>
+         *   If you want to verify in your code that the library version is
+         *   compatible with the version that you have used during development,
+         *   verify that the major number is strictly equal and that the minor
+         *   number is greater or equal. The build number is not relevant
+         *   with respect to the library compatibility.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a character string describing the library version.
+         * </returns>
+         */
+        public static string GetAPIVersion()
         {
-            get
-            {
-                string DNPPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                string YAPIPath = YAPI.GetYAPIDllPath();
-                return "DotNetProxy=" + DNPPath + "; yapi=" + YAPIPath + ";";
-            }
+            return YoctoProxyManager.GetAPIVersion(); 
         }
 
-        public static string DllVersion
+        public static string APIVersion
         {
-            get
-            {
-                string version = default(string);
-                string date = default(string);
-                YAPI.apiGetAPIVersion(ref version, ref date);
-                return "PATCH_WITH_BUILD (" + version + ")";
-            }
+            get { 
+                if(apiversion == "") {
+                    apiversion = YoctoProxyManager.GetAPIVersion();
+                }
+                return apiversion; 
+            } 
+        }
+        
+        /**
+         * <summary>
+         *   Returns the paths of the DLLs for the Yoctopuce library in use.
+         * <para>
+         *   For architectures that require multiple DLLs, in particular when using
+         *   a .NET assembly DLL, the returned string takes the form
+         *   <c>"DotNetProxy=/...; yapi=/...;"</c>,
+         *   where the first path corresponds to the .NET assembly DLL and the
+         *   second path corresponds to the low-level communication library.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a character string describing the DLL path.
+         * </returns>
+         */
+        public static string GetDllPath()
+        {
+            return YoctoProxyManager.GetDllPath(); 
+        }
+
+        public static string DllPath
+        { 
+            get { 
+                if(dllpath == "") {
+                    dllpath = YoctoProxyManager.GetDllPath();
+                }
+                return dllpath; 
+            } 
+        }
+
+        /**
+         * <summary>
+         *   Returns the system architecture for the Yoctopuce communication library in use.
+         * <para>
+         *   On Windows, the architecture can be <c>"Win32"</c> or <c>"Win64"</c>.
+         *   On ARM machines, the architecture is <c>"Armhf32"</c> or <c>"Aarch64"</c>.
+         *   On other Linux machines, the architecture is <c>"Linux32"</c> or <c>"Linux64"</c>.
+         *   On MacOS, the architecture is <c>"MacOs32"</c> or <c>"MacOs64"</c>.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a character string describing the system architecture of the
+         *   low-level communication library.
+         * </returns>
+         */
+        public static string GetDllArchitecture()
+        {
+            return YoctoProxyManager.GetDllArchitecture(); 
         }
 
         public static string DllArchitecture
         {
-            get
-            {
-                return YAPI.GetDllArchitecture();
-            }
-        }
-
-        public static string CheckDllVersion(string expectedVersion)
-        {
-            string DNPPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string DNPVersion = "PATCH_WITH_BUILD";
-            string joker = "PATCH" + "_WITH_" + "BUILD"; // split to avoid auto-replacement
-            string msg;
-
-            // Disable all checks if DotNetProxy is a debug version
-            if (DNPVersion == joker || DNPVersion == "") return "";
-
-            // Check compatibility with applicative layer
-            if(DNPVersion != expectedVersion && expectedVersion != joker && expectedVersion != "")
-            {
-                msg = "DotNetProxy library version mismatch (expected " + expectedVersion + ", found " + DNPVersion + " in "+ DNPPath+")";
-                return msg;
-            }
-
-            // Check compatibility with YAPI layer
-            string YAPIVersion = default(string);
-            string YAPIDate = default(string);
-            try
-            {
-                YAPI.apiGetAPIVersion(ref YAPIVersion, ref YAPIDate);
-            }
-            catch (System.DllNotFoundException ex)
-            {
-                msg = "Unable to load YAPI library (" + ex.Message + ")";
-                return msg;
-            }
-            catch (System.BadImageFormatException)
-            {
-                if (IntPtr.Size == 4)
-                {
-                    msg = "YAPI library version mismatch (using 64 bits yapi.dll with 32 bit application)";
+            get { 
+                if(dllarch == "") {
+                    dllarch = YoctoProxyManager.GetDllArchitecture();
                 }
-                else
-                {
-                    msg = "YAPI library version mismatch (using 32 bits yapi.dll with 64 bit application)";
-                }
-                return msg;
-            }
-            if (DNPVersion != YAPIVersion && YAPIVersion != joker && YAPIVersion != "")
-            {
-                string YAPIPath = YAPI.GetYAPIDllPath();
-                msg = "YAPI library version mismatch (expected " + DNPVersion + ", found " + YAPIVersion + " in " + YAPIPath + ")";
-                return msg;
-            }
-
-            return "";
+                return dllarch; 
+            } 
+        }        
+        
+        /**
+         * <summary>
+         *   Setup the Yoctopuce library to use modules connected on a given machine.
+         * <para>
+         *   The
+         *   parameter will determine how the API will work. Use the following values:
+         * </para>
+         * <para>
+         *   <b>usb</b>: When the <c>usb</c> keyword is used, the API will work with
+         *   devices connected directly to the USB bus. Some programming languages such a JavaScript,
+         *   PHP, and Java don't provide direct access to USB hardware, so <c>usb</c> will
+         *   not work with these. In this case, use a VirtualHub or a networked YoctoHub (see below).
+         * </para>
+         * <para>
+         *   <b><i>x.x.x.x</i></b> or <b><i>hostname</i></b>: The API will use the devices connected to the
+         *   host with the given IP address or hostname. That host can be a regular computer
+         *   running a VirtualHub, or a networked YoctoHub such as YoctoHub-Ethernet or
+         *   YoctoHub-Wireless. If you want to use the VirtualHub running on you local
+         *   computer, use the IP address 127.0.0.1.
+         * </para>
+         * <para>
+         *   <b>callback</b>: that keyword make the API run in "<i>HTTP Callback</i>" mode.
+         *   This a special mode allowing to take control of Yoctopuce devices
+         *   through a NAT filter when using a VirtualHub or a networked YoctoHub. You only
+         *   need to configure your hub to call your server script on a regular basis.
+         *   This mode is currently available for PHP and Node.JS only.
+         * </para>
+         * <para>
+         *   Be aware that only one application can use direct USB access at a
+         *   given time on a machine. Multiple access would cause conflicts
+         *   while trying to access the USB modules. In particular, this means
+         *   that you must stop the VirtualHub software before starting
+         *   an application that uses direct USB access. The workaround
+         *   for this limitation is to setup the library to use the VirtualHub
+         *   rather than direct USB access.
+         * </para>
+         * <para>
+         *   If access control has been activated on the hub, virtual or not, you want to
+         *   reach, the URL parameter should look like:
+         * </para>
+         * <para>
+         *   <c>http://username:password@address:port</c>
+         * </para>
+         * <para>
+         *   You can call <i>RegisterHub</i> several times to connect to several machines.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="url">
+         *   a string containing either <c>"usb"</c>,<c>"callback"</c> or the
+         *   root URL of the hub to monitor
+         * </param>
+         * <param name="errmsg">
+         *   a string passed by reference to receive any error message.
+         * </param>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public static string RegisterHub(string url)
+        { 
+            return YoctoProxyManager.RegisterHub(url); 
+        }
+        
+        /**
+         * <summary>
+         *   Fault-tolerant alternative to <c>yRegisterHub()</c>.
+         * <para>
+         *   This function has the same
+         *   purpose and same arguments as <c>yRegisterHub()</c>, but does not trigger
+         *   an error when the selected hub is not available at the time of the function call.
+         *   This makes it possible to register a network hub independently of the current
+         *   connectivity, and to try to contact it only when a device is actively needed.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="url">
+         *   a string containing either <c>"usb"</c>,<c>"callback"</c> or the
+         *   root URL of the hub to monitor
+         * </param>
+         * <param name="errmsg">
+         *   a string passed by reference to receive any error message.
+         * </param>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public static string PreregisterHub(string url)
+        { 
+            return YoctoProxyManager.PreRegisterHub(url);
         }
 
-        public static string RegisterHub(string addr)
+        /**
+         * <summary>
+         *   Retrieves Yoctopuce low-level library diagnostic logs.
+         * <para>
+         *   This method allows to progessively retrieve API logs. The interface is line-based:
+         *   it must called it within a loop until the returned value is an empty string.
+         *   Make sure to exit the loop when an empty string is returned, as feeding an empty
+         *   string into the <c>lastLogLine</c> parameter for the next call would restart
+         *   enumerating logs from the oldest message available.
+         * </para>
+         * </summary>
+         * <param name="lastLogLine">
+         *   On first call, provide an empty string.
+         *   On subsequent calls, provide the last log line returned by <c>GetLog()</c>.
+         * </param>
+         * <returns>
+         *   a string with the log line immediately following the one given in argument,
+         *   if such line exist. Returns an empty string otherwise, when completed.
+         * </returns>
+         */
+        public static string GetLog(string lastLogLine)
         {
-            string errmsg = "";
-            if (!InternalStuff.initYoctopuceLibrary(ref errmsg, true))
-            {
-                string msg = addr + " Yoctopuce API init failed (" + errmsg + ")";
-                return msg;
-            }
-
-            InternalStuff.log("Registering Hub (" + addr + ") ...");
-            if (YAPI.RegisterHub(addr, ref errmsg) != YAPI.SUCCESS)
-            {
-                string msg = addr + " Hub registering failed (" + errmsg + ")";
-                return msg;
-            }
-
-            try { YAPI.UpdateDeviceList(ref errmsg); } catch (Exception) { }
-            return "";
+          return YoctoProxyManager.getLogLine(lastLogLine);
         }
 
-        public static string PreRegisterHub(string addr)
+        /**
+         * <summary>
+         *   Test if the hub is reachable.
+         * <para>
+         *   This method do not register the hub, it only test if the
+         *   hub is usable. The url parameter follow the same convention as the <c>yRegisterHub</c>
+         *   method. This method is useful to verify the authentication parameters for a hub. It
+         *   is possible to force this method to return after mstimeout milliseconds.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="url">
+         *   a string containing either <c>"usb"</c>,<c>"callback"</c> or the
+         *   root URL of the hub to monitor
+         * </param>
+         * <param name="mstimeout">
+         *   the number of millisecond available to test the connection.
+         * </param>
+         * <param name="errmsg">
+         *   a string passed by reference to receive any error message.
+         * </param>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure returns a negative error code.
+         * </para>
+         */
+        public static string TestHub(string url, int mstimeout)
         {
-            string errmsg = "";
-            InternalStuff.initYoctopuceLibrary(ref errmsg, true);
-
-            InternalStuff.log("Pre-registering Hub (" + addr + ") ...");
-            if (YAPI.PreregisterHub(addr, ref errmsg) != YAPI.SUCCESS)
-            {
-                string msg = addr + " Hub  asynch registering failed (" + errmsg + ")";
-                return msg;
-            }
-
-            try { YAPI.UpdateDeviceList(ref errmsg); } catch (Exception) { }
-            return "";
+            return YoctoProxyManager.TestHub(url, mstimeout);
         }
 
-
+        /**
+         * <summary>
+         *   Frees dynamically allocated memory blocks used by the Yoctopuce library.
+         * <para>
+         *   It is generally not required to call this function, unless you
+         *   want to free all dynamically allocated memory blocks in order to
+         *   track a memory leak for instance.
+         *   You should not call any other library function after calling
+         *   <c>yFreeAPI()</c>, or your program will crash.
+         * </para>
+         * </summary>
+         */
         public static void FreeAPI()
         {
-            InternalStuff.log("Freeing API...");
-            InternalStuff.FreeLibrary();
-            YFunctionProxy.freeall();
+            YoctoProxyManager.FreeAPI();
         }
 
+        /**
+         * <summary>
+         *   Modifies the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
+         * <para>
+         *   This delay impacts only the YoctoHubs and VirtualHub
+         *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
+         *   but depending or you network you may want to change this delay,
+         *   gor example if your network infrastructure is based on a GSM connection.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="networkMsTimeout">
+         *   the network connection delay in milliseconds.
+         * @noreturn
+         * </param>
+         */
+        public static void SetNetworkTimeout(int networkMsTimeout)
+        {
+            YAPIProxy.NetworkTimeout = networkMsTimeout;
+        }
+
+        /**
+         * <summary>
+         *   Returns the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
+         * <para>
+         *   This delay impacts only the YoctoHubs and VirtualHub
+         *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
+         *   but depending or you network you may want to change this delay,
+         *   for example if your network infrastructure is based on a GSM connection.
+         * </para>
+         * </summary>
+         * <returns>
+         *   the network connection delay in milliseconds.
+         * </returns>
+         */
+        public static int GetNetworkTimeout()
+        {
+            return YAPIProxy.NetworkTimeout;
+        }
+
+        public static int NetworkTimeout
+        {
+            get { 
+                return YoctoProxyManager.NetworkTimeout; 
+            }
+            set { 
+                YoctoProxyManager.NetworkTimeout = value; 
+            }
+        }
     }
 
+  static public partial class YoctoProxyManager
+  {
+    private static YAPIProxy proxyInterface = new YAPIProxy();
+
+    public static string getLogLine(string lastline)
+    {
+      return InternalStuff.getLogLine(lastline);
+    }
+
+    public static YAPIProxy GetAPIProxy()
+    {
+      return proxyInterface;
+    }
+
+    public static refKeeper getRefKeeperObject()
+    {
+      return new refKeeper();
+    }
+
+    public static string DllPath
+    {
+      get
+      {
+        string DNPPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        string YAPIPath = YAPI.GetYAPIDllPath();
+        return "DotNetProxy=" + DNPPath + "; yapi=" + YAPIPath + ";";
+      }
+    }
+
+    public static string DllVersion
+    {
+      get
+      {
+        string version = default(string);
+        string date = default(string);
+        YAPI.apiGetAPIVersion(ref version, ref date);
+        return "PATCH_WITH_BUILD (" + version + ")";
+      }
+    }
+
+    public static string DllArchitecture
+    {
+      get
+      {
+        return YAPI.GetDllArchitecture();
+      }
+    }
+
+    public static string CheckDllVersion(string expectedVersion)
+    {
+      string DNPPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+      string DNPVersion = "PATCH_WITH_BUILD";
+      string joker = "PATCH" + "_WITH_" + "BUILD"; // split to avoid auto-replacement
+      string msg;
+
+      // Disable all checks if DotNetProxy is a debug version
+      if (DNPVersion == joker || DNPVersion == "") return "";
+
+      // Check compatibility with applicative layer
+      if (DNPVersion != expectedVersion && expectedVersion != joker && expectedVersion != "")
+      {
+        msg = "DotNetProxy library version mismatch (expected " + expectedVersion + ", found " + DNPVersion + " in " + DNPPath + ")";
+        return msg;
+      }
+
+      // Check compatibility with YAPI layer
+      string YAPIVersion = default(string);
+      string YAPIDate = default(string);
+      try
+      {
+        YAPI.apiGetAPIVersion(ref YAPIVersion, ref YAPIDate);
+      }
+      catch (System.DllNotFoundException ex)
+      {
+        msg = "Unable to load YAPI library (" + ex.Message + ")";
+        return msg;
+      }
+      catch (System.BadImageFormatException)
+      {
+        if (IntPtr.Size == 4)
+        {
+          msg = "YAPI library version mismatch (using 64 bits yapi.dll with 32 bit application)";
+        }
+        else
+        {
+          msg = "YAPI library version mismatch (using 32 bits yapi.dll with 64 bit application)";
+        }
+        return msg;
+      }
+      if (DNPVersion != YAPIVersion && YAPIVersion != joker && YAPIVersion != "")
+      {
+        string YAPIPath = YAPI.GetYAPIDllPath();
+        msg = "YAPI library version mismatch (expected " + DNPVersion + ", found " + YAPIVersion + " in " + YAPIPath + ")";
+        return msg;
+      }
+
+      return "";
+    }
+
+    public static String GetAPIVersion()
+    {
+        string check = YoctoProxyManager.CheckDllVersion(""); 
+        if(check != "") {
+            return "ERROR: "+check;
+        }
+        return YAPI.GetAPIVersion();
+    }
+
+    public static String GetDllPath()
+    {
+        string check = YoctoProxyManager.CheckDllVersion(""); 
+        if(check != "") {
+            return "ERROR: "+check;
+        }
+        return YoctoProxyManager.DllPath;
+    }
+
+    public static String GetDllArchitecture()
+    {
+        string check = YoctoProxyManager.CheckDllVersion(""); 
+        if(check != "") {
+            return "ERROR: "+check;
+        }
+        return YoctoProxyManager.DllArchitecture;
+    }
+
+    public static string RegisterHub(string addr)
+    {
+      string errmsg = "";
+      if (!InternalStuff.initYoctopuceLibrary(ref errmsg, true))
+      {
+        string msg = addr + " Yoctopuce API init failed (" + errmsg + ")";
+        return msg;
+      }
+
+      InternalStuff.log("Registering Hub (" + addr + ") ...");
+      if (YAPI.RegisterHub(addr, ref errmsg) != YAPI.SUCCESS)
+      {
+        string msg = addr + " Hub registering failed (" + errmsg + ")";
+        return msg;
+      }
+
+      try { YAPI.UpdateDeviceList(ref errmsg); } catch (Exception) { }
+      return "";
+    }
+
+    public static string PreRegisterHub(string addr)
+    {
+      string errmsg = "";
+      InternalStuff.initYoctopuceLibrary(ref errmsg, true);
+
+      InternalStuff.log("Pre-registering Hub (" + addr + ") ...");
+      if (YAPI.PreregisterHub(addr, ref errmsg) != YAPI.SUCCESS)
+      {
+        string msg = addr + " Hub  asynch registering failed (" + errmsg + ")";
+        return msg;
+      }
+
+      try { YAPI.UpdateDeviceList(ref errmsg); } catch (Exception) { }
+      return "";
+    }
+
+    public static void FreeAPI()
+    {
+      InternalStuff.log("Freeing API...");
+      InternalStuff.FreeLibrary();
+      YFunctionProxy.freeall();
+    }
+
+    public static int NetworkTimeout
+    {
+      get { return YAPI.GetNetworkTimeout(); }
+      set { YAPI.SetNetworkTimeout(value); }
+    }
+
+    public static string TestHub(string url, int mstimeout)
+    {
+      string res = "";
+      YAPI.TestHub(url, mstimeout, ref res);
+      return res;
+    }
+
+  }
 
 
     public class YDataloggerContext
@@ -823,10 +905,6 @@ namespace YoctoProxyAPI
             YDataloggerContext ctx = new YDataloggerContext(s, start, stop);
             return ctx;
         }
-
-
-
-
     }
 
 

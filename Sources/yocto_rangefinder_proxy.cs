@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_rangefinder_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_rangefinder_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YRangeFinderProxy, the Proxy API for RangeFinder
  *
@@ -92,11 +92,10 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YRangeFinder class allows you to use and configure Yoctopuce range finder
- *   sensors, for instance using a Yocto-RangeFinder.
+ *   The <c>YRangeFinder</c> class allows you to read and configure Yoctopuce range finders.
  * <para>
- *   It inherits from the YSensor class the core functions to read measurements,
- *   register callback functions, access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to easily perform a one-point linear calibration
  *   to compensate the effect of a glass or filter placed in front of the sensor.
  * </para>
@@ -106,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YRangeFinderProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a range finder for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the range finder is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YRangeFinder.isOnline()</c> to test if the range finder is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a range finder by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the range finder, for instance
+         *   <c>YRNGFND1.rangeFinder1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YRangeFinder</c> object allowing you to drive the range finder.
+         * </returns>
+         */
+        public static YRangeFinderProxy FindRangeFinder(string func)
+        {
+            return YoctoProxyManager.FindRangeFinder(func);
+        }
         //--- (end of YRangeFinder class start)
         //--- (YRangeFinder definitions)
         public const int _IsPresent_INVALID = 0;
@@ -163,7 +216,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type RangeFinder available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YRangeFinder.FindRangeFinder</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YRangeFinder it = YRangeFinder.FirstRangeFinder();
@@ -253,12 +321,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YRangeFinder.RANGEFINDERMODE_DEFAULT</c>, <c>YRangeFinder.RANGEFINDERMODE_LONG_RANGE</c>,
-         *   <c>YRangeFinder.RANGEFINDERMODE_HIGH_ACCURACY</c> and <c>YRangeFinder.RANGEFINDERMODE_HIGH_SPEED</c>
+         *   a value among <c>rangefinder._Rangefindermode_DEFAULT</c>, <c>rangefinder._Rangefindermode_LONG_RANGE</c>,
+         *   <c>rangefinder._Rangefindermode_HIGH_ACCURACY</c> and <c>rangefinder._Rangefindermode_HIGH_SPEED</c>
          *   corresponding to the range finder running mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRangeFinder.RANGEFINDERMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>rangefinder._Rangefindermode_INVALID</c>.
          * </para>
          */
         public int get_rangeFinderMode()
@@ -283,8 +351,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YRangeFinder.RANGEFINDERMODE_DEFAULT</c>, <c>YRangeFinder.RANGEFINDERMODE_LONG_RANGE</c>,
-         *   <c>YRangeFinder.RANGEFINDERMODE_HIGH_ACCURACY</c> and <c>YRangeFinder.RANGEFINDERMODE_HIGH_SPEED</c>
+         *   a value among <c>rangefinder._Rangefindermode_DEFAULT</c>, <c>rangefinder._Rangefindermode_LONG_RANGE</c>,
+         *   <c>rangefinder._Rangefindermode_HIGH_ACCURACY</c> and <c>rangefinder._Rangefindermode_HIGH_SPEED</c>
          *   corresponding to the rangefinder running mode, allowing you to put priority on
          *   precision, speed or maximum range
          * </param>
@@ -351,7 +419,7 @@ namespace YoctoProxyAPI
          *   reliability
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRangeFinder.TIMEFRAME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>rangefinder._Timeframe_INVALID</c>.
          * </para>
          */
         public long get_timeFrame()
@@ -439,7 +507,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to a measure quality estimate, based on measured dispersion
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRangeFinder.QUALITY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>rangefinder._Quality_INVALID</c>.
          * </para>
          */
         public int get_quality()
@@ -466,7 +534,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current sensor temperature, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YRangeFinder.CURRENTTEMPERATURE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>rangefinder._Currenttemperature_INVALID</c>.
          * </para>
          */
         public double get_currentTemperature()

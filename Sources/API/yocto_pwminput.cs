@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_pwminput.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_pwminput.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindPwmInput(), the high-level API for PwmInput functions
  *
@@ -58,11 +58,10 @@ using YFUN_DESCR = System.Int32;
 //--- (YPwmInput class start)
 /**
  * <summary>
- *   The YPwmInput class allows you to read and configure Yoctopuce PWM
- *   sensors, for instance using a Yocto-PWM-Rx.
+ *   The <c>YPwmInput</c> class allows you to read and configure Yoctopuce PWM inputs.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to configure the signal parameter used to transmit
  *   information: the duty cycle, the frequency or the pulse width.
  * </para>
@@ -188,6 +187,7 @@ public class YPwmInput : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns the PWM duty cycle, in per cents.
@@ -216,6 +216,7 @@ public class YPwmInput : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -246,6 +247,7 @@ public class YPwmInput : YSensor
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the PWM frequency in Hz.
@@ -275,6 +277,7 @@ public class YPwmInput : YSensor
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the PWM period in milliseconds.
@@ -303,6 +306,7 @@ public class YPwmInput : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -345,6 +349,7 @@ public class YPwmInput : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns the timer of the pulses counter (ms).
@@ -373,6 +378,7 @@ public class YPwmInput : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -448,6 +454,7 @@ public class YPwmInput : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns the shortest expected pulse duration, in ms.
@@ -508,6 +515,7 @@ public class YPwmInput : YSensor
             return _setAttr("debouncePeriod", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -572,6 +580,7 @@ public class YPwmInput : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -609,6 +618,7 @@ public class YPwmInput : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackPwmInput != null) {
@@ -618,6 +628,7 @@ public class YPwmInput : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -632,7 +643,7 @@ public class YPwmInput : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -650,6 +661,7 @@ public class YPwmInput : YSensor
         return 0;
     }
 
+
     public override int _invokeTimedReportCallback(YMeasure value)
     {
         if (this._timedReportCallbackPwmInput != null) {
@@ -659,6 +671,7 @@ public class YPwmInput : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>

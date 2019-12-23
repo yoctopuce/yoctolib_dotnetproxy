@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_datalogger_proxy.cs 38545 2019-11-27 12:07:18Z mvuilleu $
+ *  $Id: yocto_datalogger_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YDataLoggerProxy, the Proxy API for DataLogger
  *
@@ -95,11 +95,11 @@ namespace YoctoProxyAPI
 /**
  * <summary>
  *   A non-volatile memory for storing ongoing measured data is available on most Yoctopuce
- *   sensors, for instance using a Yocto-3D-V2, a Yocto-Light-V3, a Yocto-Meteo-V2 or a Yocto-Watt.
+ *   sensors.
  * <para>
  *   Recording can happen automatically, without requiring a permanent
  *   connection to a computer.
- *   The YDataLogger class controls the global parameters of the internal data
+ *   The <c>YDataLogger</c> class controls the global parameters of the internal data
  *   logger. Recording control (start/stop) as well as data retreival is done at
  *   sensor objects level.
  * </para>
@@ -109,6 +109,60 @@ namespace YoctoProxyAPI
  */
     public class YDataLoggerProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a data logger for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the data logger is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YDataLogger.isOnline()</c> to test if the data logger is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a data logger by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the data logger, for instance
+         *   <c>Y3DMK002.dataLogger</c>.
+         * </param>
+         * <returns>
+         *   a <c>YDataLogger</c> object allowing you to drive the data logger.
+         * </returns>
+         */
+        public static YDataLoggerProxy FindDataLogger(string func)
+        {
+            return YoctoProxyManager.FindDataLogger(func);
+        }
         //--- (end of generated code: YDataLogger class start)
         //--- (generated code: YDataLogger definitions)
         public const int _CurrentRunIndex_INVALID = -1;
@@ -169,7 +223,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type DataLogger available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YDataLogger.FindDataLogger</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YDataLogger it = YDataLogger.FirstDataLogger();
@@ -209,7 +278,7 @@ namespace YoctoProxyAPI
          *   powered on with the dataLogger enabled at some point
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDataLogger.CURRENTRUNINDEX_INVALID</c>.
+         *   On failure, throws an exception or returns <c>datalogger._Currentrunindex_INVALID</c>.
          * </para>
          */
         public int get_currentRunIndex()
@@ -236,7 +305,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the Unix timestamp for current UTC time, if known
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDataLogger.TIMEUTC_INVALID</c>.
+         *   On failure, throws an exception or returns <c>datalogger._Timeutc_INVALID</c>.
          * </para>
          */
         public long get_timeUTC()
@@ -314,11 +383,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YDataLogger.RECORDING_OFF</c>, <c>YDataLogger.RECORDING_ON</c> and
-         *   <c>YDataLogger.RECORDING_PENDING</c> corresponding to the current activation state of the data logger
+         *   a value among <c>datalogger._Recording_OFF</c>, <c>datalogger._Recording_ON</c> and
+         *   <c>datalogger._Recording_PENDING</c> corresponding to the current activation state of the data logger
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDataLogger.RECORDING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>datalogger._Recording_INVALID</c>.
          * </para>
          */
         public int get_recording()
@@ -341,8 +410,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YDataLogger.RECORDING_OFF</c>, <c>YDataLogger.RECORDING_ON</c> and
-         *   <c>YDataLogger.RECORDING_PENDING</c> corresponding to the activation state of the data logger to
+         *   a value among <c>datalogger._Recording_OFF</c>, <c>datalogger._Recording_ON</c> and
+         *   <c>datalogger._Recording_PENDING</c> corresponding to the activation state of the data logger to
          *   start/stop recording data
          * </param>
          * <para>
@@ -388,11 +457,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YDataLogger.AUTOSTART_OFF</c> or <c>YDataLogger.AUTOSTART_ON</c>, according to the
+         *   either <c>datalogger._Autostart_OFF</c> or <c>datalogger._Autostart_ON</c>, according to the
          *   default activation state of the data logger on power up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDataLogger.AUTOSTART_INVALID</c>.
+         *   On failure, throws an exception or returns <c>datalogger._Autostart_INVALID</c>.
          * </para>
          */
         public int get_autoStart()
@@ -419,7 +488,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YDataLogger.AUTOSTART_OFF</c> or <c>YDataLogger.AUTOSTART_ON</c>, according to the
+         *   either <c>datalogger._Autostart_OFF</c> or <c>datalogger._Autostart_ON</c>, according to the
          *   default activation state of the data logger on power up
          * </param>
          * <para>
@@ -479,11 +548,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YDataLogger.BEACONDRIVEN_OFF</c> or <c>YDataLogger.BEACONDRIVEN_ON</c>, according to true
+         *   either <c>datalogger._Beacondriven_OFF</c> or <c>datalogger._Beacondriven_ON</c>, according to true
          *   if the data logger is synchronised with the localization beacon
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDataLogger.BEACONDRIVEN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>datalogger._Beacondriven_INVALID</c>.
          * </para>
          */
         public int get_beaconDriven()
@@ -508,7 +577,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YDataLogger.BEACONDRIVEN_OFF</c> or <c>YDataLogger.BEACONDRIVEN_ON</c>, according to the
+         *   either <c>datalogger._Beacondriven_OFF</c> or <c>datalogger._Beacondriven_ON</c>, according to the
          *   type of synchronisation of the data logger
          * </param>
          * <para>
@@ -571,7 +640,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the percentage of datalogger memory in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YDataLogger.USAGE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>datalogger._Usage_INVALID</c>.
          * </para>
          */
         public int get_usage()
@@ -612,33 +681,39 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns a list of YDataSet objects that can be used to retrieve
+         *   Returns a list of <c>YDataSet</c> objects that can be used to retrieve
          *   all measures stored by the data logger.
          * <para>
          * </para>
          * <para>
          *   This function only works if the device uses a recent firmware,
-         *   as YDataSet objects are not supported by firmwares older than
+         *   as <c>YDataSet</c> objects are not supported by firmwares older than
          *   version 13000.
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a list of YDataSet object.
+         *   a list of <c>YDataSet</c> object.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns an empty list.
          * </para>
          */
-        public virtual YDataSet[] get_dataSets()
+        public virtual YDataSetProxy[] get_dataSets()
         {
             if (_func == null)
             {
                 string msg = "No DataLogger connected";
                 throw new YoctoApiProxyException(msg);
             }
-            return _func.get_dataSets().ToArray();
+            int i = 0;
+            var std_res = _func.get_dataSets();
+            YDataSetProxy[] proxy_res = new YDataSetProxy[std_res.Count];
+            foreach (var record in std_res) {
+                proxy_res[i++] = new YDataSetProxy(record);
+            }
+            return proxy_res;
         }
     }
     //--- (end of generated code: YDataLogger implementation)

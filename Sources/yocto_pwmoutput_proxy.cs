@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmoutput_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_pwmoutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YPwmOutputProxy, the Proxy API for PwmOutput
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YPwmOutput class allows you to drive a PWM output, for instance using a Yocto-PWM-Tx.
+ *   The <c>YPwmOutput</c> class allows you to drive a pulse-width modulated output (PWM).
  * <para>
  *   You can configure the frequency as well as the duty cycle, and setup progressive
  *   transitions.
@@ -103,6 +103,60 @@ namespace YoctoProxyAPI
  */
     public class YPwmOutputProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a PWM generator for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the PWM generator is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YPwmOutput.isOnline()</c> to test if the PWM generator is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a PWM generator by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the PWM generator, for instance
+         *   <c>YPWMTX01.pwmOutput1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YPwmOutput</c> object allowing you to drive the PWM generator.
+         * </returns>
+         */
+        public static YPwmOutputProxy FindPwmOutput(string func)
+        {
+            return YoctoProxyManager.FindPwmOutput(func);
+        }
         //--- (end of YPwmOutput class start)
         //--- (YPwmOutput definitions)
         public const int _Enabled_INVALID = 0;
@@ -162,7 +216,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type PwmOutput available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YPwmOutput.FindPwmOutput</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YPwmOutput it = YPwmOutput.FirstPwmOutput();
@@ -193,17 +262,18 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the state of the PWMs.
+         *   Returns the state of the PWM generators.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YPwmOutput.ENABLED_FALSE</c> or <c>YPwmOutput.ENABLED_TRUE</c>, according to the state of the PWMs
+         *   either <c>pwmoutput._Enabled_FALSE</c> or <c>pwmoutput._Enabled_TRUE</c>, according to the state of
+         *   the PWM generators
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmOutput.ENABLED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmoutput._Enabled_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -226,7 +296,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YPwmOutput.ENABLED_FALSE</c> or <c>YPwmOutput.ENABLED_TRUE</c>
+         *   either <c>pwmoutput._Enabled_FALSE</c> or <c>pwmoutput._Enabled_TRUE</c>
          * </param>
          * <para>
          * </para>
@@ -338,7 +408,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM frequency in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmOutput.FREQUENCY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmoutput._Frequency_INVALID</c>.
          * </para>
          */
         public double get_frequency()
@@ -427,7 +497,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM period in milliseconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmOutput.PERIOD_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmoutput._Period_INVALID</c>.
          * </para>
          */
         public double get_period()
@@ -535,7 +605,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM duty cycle, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmOutput.DUTYCYCLE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmoutput._Dutycycle_INVALID</c>.
          * </para>
          */
         public double get_dutyCycle()
@@ -595,7 +665,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM pulse length in milliseconds, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmOutput.PULSEDURATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmoutput._Pulseduration_INVALID</c>.
          * </para>
          */
         public double get_pulseDuration()
@@ -619,11 +689,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YPwmOutput.ENABLEDATPOWERON_FALSE</c> or <c>YPwmOutput.ENABLEDATPOWERON_TRUE</c>,
+         *   either <c>pwmoutput._Enabledatpoweron_FALSE</c> or <c>pwmoutput._Enabledatpoweron_TRUE</c>,
          *   according to the state of the PWM at device power on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmOutput.ENABLEDATPOWERON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmoutput._Enabledatpoweron_INVALID</c>.
          * </para>
          */
         public int get_enabledAtPowerOn()
@@ -648,7 +718,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YPwmOutput.ENABLEDATPOWERON_FALSE</c> or <c>YPwmOutput.ENABLEDATPOWERON_TRUE</c>,
+         *   either <c>pwmoutput._Enabledatpoweron_FALSE</c> or <c>pwmoutput._Enabledatpoweron_TRUE</c>,
          *   according to the state of the PWM at device power on
          * </param>
          * <para>
@@ -760,18 +830,18 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the PWMs duty cycle at device power on as a floating point number between 0 and 100.
+         *   Returns the PWM generators duty cycle at device power on as a floating point number between 0 and 100.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a floating point number corresponding to the PWMs duty cycle at device power on as a floating point
-         *   number between 0 and 100
+         *   a floating point number corresponding to the PWM generators duty cycle at device power on as a
+         *   floating point number between 0 and 100
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPwmOutput.DUTYCYCLEATPOWERON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>pwmoutput._Dutycycleatpoweron_INVALID</c>.
          * </para>
          */
         public double get_dutyCycleAtPowerOn()

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellrecord_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_cellrecord_proxy.cs 38687 2019-12-04 18:22:46Z mvuilleu $
  *
  *  Implements YCellRecordProxy, the Proxy API for CellRecord
  *
@@ -72,7 +72,7 @@ namespace YoctoProxyAPI
         }
         /**
          * <summary>
-         *   Returns the name of the the cell operator.
+         *   Returns the name of the the cell operator, as received from the network.
          * <para>
          * </para>
          * </summary>
@@ -102,10 +102,11 @@ namespace YoctoProxyAPI
          * <summary>
          *   Returns the Mobile Country Code (MCC).
          * <para>
+         *   The MCC is a unique identifier for each country.
          * </para>
          * </summary>
          * <returns>
-         *   the Mobile Country Code (MCC).
+         *   an integer corresponding to the Mobile Country Code (MCC).
          * </returns>
          */
         public virtual int get_mobileCountryCode()
@@ -130,10 +131,12 @@ namespace YoctoProxyAPI
          * <summary>
          *   Returns the Mobile Network Code (MNC).
          * <para>
+         *   The MNC is a unique identifier for each phone
+         *   operator within a country.
          * </para>
          * </summary>
          * <returns>
-         *   the Mobile Network Code (MNC).
+         *   an integer corresponding to the Mobile Network Code (MNC).
          * </returns>
          */
         public virtual int get_mobileNetworkCode()
@@ -158,10 +161,12 @@ namespace YoctoProxyAPI
          * <summary>
          *   Returns the Location Area Code (LAC).
          * <para>
+         *   The LAC is a unique identifier for each
+         *   place within a country.
          * </para>
          * </summary>
          * <returns>
-         *   the Location Area Code (LAC).
+         *   an integer corresponding to the Location Area Code (LAC).
          * </returns>
          */
         public virtual int get_locationAreaCode()
@@ -184,12 +189,14 @@ namespace YoctoProxyAPI
         }
         /**
          * <summary>
-         *   Returns the Cell Id.
+         *   Returns the Cell ID.
          * <para>
+         *   The Cell ID is a unique identifier for each
+         *   base transmission station within a LAC.
          * </para>
          * </summary>
          * <returns>
-         *   the Cell Id.
+         *   an integer corresponding to the Cell Id.
          * </returns>
          */
         public virtual int get_cellId()
@@ -212,12 +219,12 @@ namespace YoctoProxyAPI
         }
         /**
          * <summary>
-         *   Returns the signal strength.
+         *   Returns the signal strength, measured in dBm.
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   the signal strength.
+         *   an integer corresponding to the signal strength.
          * </returns>
          */
         public virtual int get_signalStrength()
@@ -242,10 +249,13 @@ namespace YoctoProxyAPI
          * <summary>
          *   Returns the Timing Advance (TA).
          * <para>
+         *   The TA corresponds to the time necessary
+         *   for the signal to reach the base station from the device.
+         *   Each increment corresponds about to 550m of distance.
          * </para>
          * </summary>
          * <returns>
-         *   the Timing Advance (TA).
+         *   an integer corresponding to the Timing Advance (TA).
          * </returns>
          */
         public virtual int get_timingAdvance()

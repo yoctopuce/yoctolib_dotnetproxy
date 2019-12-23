@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_proximity_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_proximity_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YProximityProxy, the Proxy API for Proximity
  *
@@ -92,13 +92,12 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YProximity class allows you to use and configure Yoctopuce proximity
- *   sensors, for instance using a Yocto-Proximity.
+ *   The <c>YProximity</c> class allows you to read and configure Yoctopuce proximity sensors.
  * <para>
- *   It inherits from the YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
- *   This class adds the ability to easily perform a one-point linear calibration
- *   to compensate the effect of a glass or filter placed in front of the sensor.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
+ *   This class adds the ability to setup a detection threshold and to count the
+ *   number of detected state changes.
  * </para>
  * <para>
  * </para>
@@ -106,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YProximityProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a proximity sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the proximity sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YProximity.isOnline()</c> to test if the proximity sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a proximity sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the proximity sensor, for instance
+         *   <c>YPROXIM1.proximity1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YProximity</c> object allowing you to drive the proximity sensor.
+         * </returns>
+         */
+        public static YProximityProxy FindProximity(string func)
+        {
+            return YoctoProxyManager.FindProximity(func);
+        }
         //--- (end of YProximity class start)
         //--- (YProximity definitions)
         public const double _SignalValue_INVALID = Double.NaN;
@@ -168,7 +221,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Proximity available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YProximity.FindProximity</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YProximity it = YProximity.FirstProximity();
@@ -208,7 +276,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current value of signal measured by the proximity sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.SIGNALVALUE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Signalvalue_INVALID</c>.
          * </para>
          */
         public double get_signalValue()
@@ -238,7 +306,7 @@ namespace YoctoProxyAPI
          *   as a binary input (on/off)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.DETECTIONTHRESHOLD_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Detectionthreshold_INVALID</c>.
          * </para>
          */
         public int get_detectionThreshold()
@@ -329,7 +397,7 @@ namespace YoctoProxyAPI
          *   as a binary input (on/off)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.DETECTIONHYSTERESIS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Detectionhysteresis_INVALID</c>.
          * </para>
          */
         public int get_detectionHysteresis()
@@ -419,7 +487,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minimal detection duration before signalling a presence event
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.PRESENCEMINTIME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Presencemintime_INVALID</c>.
          * </para>
          */
         public int get_presenceMinTime()
@@ -508,7 +576,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minimal detection duration before signalling a removal event
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.REMOVALMINTIME_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Removalmintime_INVALID</c>.
          * </para>
          */
         public int get_removalMinTime()
@@ -592,12 +660,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YProximity.ISPRESENT_FALSE</c> or <c>YProximity.ISPRESENT_TRUE</c>, according to true if
+         *   either <c>proximity._Ispresent_FALSE</c> or <c>proximity._Ispresent_TRUE</c>, according to true if
          *   the input (considered as binary) is active (detection value is smaller than the specified
          *   <c>threshold</c>), and false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.ISPRESENT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Ispresent_INVALID</c>.
          * </para>
          */
         public int get_isPresent()
@@ -625,7 +693,7 @@ namespace YoctoProxyAPI
          *   detection (the input contact transitioned from absent to present)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.LASTTIMEAPPROACHED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Lasttimeapproached_INVALID</c>.
          * </para>
          */
         public long get_lastTimeApproached()
@@ -652,7 +720,7 @@ namespace YoctoProxyAPI
          *   detection (the input contact transitioned from present to absent)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.LASTTIMEREMOVED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Lasttimeremoved_INVALID</c>.
          * </para>
          */
         public long get_lastTimeRemoved()
@@ -680,7 +748,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the pulse counter value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.PULSECOUNTER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Pulsecounter_INVALID</c>.
          * </para>
          */
         public long get_pulseCounter()
@@ -707,7 +775,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the timer of the pulse counter (ms)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.PULSETIMER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Pulsetimer_INVALID</c>.
          * </para>
          */
         public long get_pulseTimer()
@@ -729,13 +797,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YProximity.PROXIMITYREPORTMODE_NUMERIC</c>,
-         *   <c>YProximity.PROXIMITYREPORTMODE_PRESENCE</c> and <c>YProximity.PROXIMITYREPORTMODE_PULSECOUNT</c>
+         *   a value among <c>proximity._Proximityreportmode_NUMERIC</c>,
+         *   <c>proximity._Proximityreportmode_PRESENCE</c> and <c>proximity._Proximityreportmode_PULSECOUNT</c>
          *   corresponding to the parameter (sensor value, presence or pulse count) returned by the
          *   get_currentValue function and callbacks
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YProximity.PROXIMITYREPORTMODE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>proximity._Proximityreportmode_INVALID</c>.
          * </para>
          */
         public int get_proximityReportMode()
@@ -761,8 +829,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YProximity.PROXIMITYREPORTMODE_NUMERIC</c>,
-         *   <c>YProximity.PROXIMITYREPORTMODE_PRESENCE</c> and <c>YProximity.PROXIMITYREPORTMODE_PULSECOUNT</c>
+         *   a value among <c>proximity._Proximityreportmode_NUMERIC</c>,
+         *   <c>proximity._Proximityreportmode_PRESENCE</c> and <c>proximity._Proximityreportmode_PULSECOUNT</c>
          *   corresponding to the  parameter  type (sensor value, presence or pulse count) returned by the
          *   get_currentValue function and callbacks
          * </param>

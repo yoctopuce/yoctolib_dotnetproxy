@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_wakeupmonitor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YWakeUpMonitorProxy, the Proxy API for WakeUpMonitor
  *
@@ -92,8 +92,8 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YWakeUpMonitor class handles globally all wake-up sources, as well
- *   as automated sleep mode, for instance using a YoctoHub-GSM-3G-EU, a YoctoHub-GSM-3G-NA, a YoctoHub-Wireless-SR or a YoctoHub-Wireless-g.
+ *   The <c>YWakeUpMonitor</c> class handles globally all wake-up sources, as well
+ *   as automated sleep mode.
  * <para>
  * </para>
  * <para>
@@ -102,6 +102,60 @@ namespace YoctoProxyAPI
  */
     public class YWakeUpMonitorProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a wake-up monitor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the wake-up monitor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YWakeUpMonitor.isOnline()</c> to test if the wake-up monitor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a wake-up monitor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the wake-up monitor, for instance
+         *   <c>YHUBGSM3.wakeUpMonitor</c>.
+         * </param>
+         * <returns>
+         *   a <c>YWakeUpMonitor</c> object allowing you to drive the wake-up monitor.
+         * </returns>
+         */
+        public static YWakeUpMonitorProxy FindWakeUpMonitor(string func)
+        {
+            return YoctoProxyManager.FindWakeUpMonitor(func);
+        }
         //--- (end of YWakeUpMonitor class start)
         //--- (YWakeUpMonitor definitions)
         public const int _PowerDuration_INVALID = -1;
@@ -159,7 +213,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type WakeUpMonitor available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YWakeUpMonitor.FindWakeUpMonitor</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YWakeUpMonitor it = YWakeUpMonitor.FirstWakeUpMonitor();
@@ -194,7 +263,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximal wake up time (in seconds) before automatically going to sleep
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpMonitor.POWERDURATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupmonitor._Powerduration_INVALID</c>.
          * </para>
          */
         public int get_powerDuration()
@@ -280,7 +349,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the delay before the  next sleep period
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpMonitor.SLEEPCOUNTDOWN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupmonitor._Sleepcountdown_INVALID</c>.
          * </para>
          */
         public int get_sleepCountdown()
@@ -359,7 +428,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the next scheduled wake up date/time (UNIX format)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpMonitor.NEXTWAKEUP_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupmonitor._Nextwakeup_INVALID</c>.
          * </para>
          */
         public long get_nextWakeUp()
@@ -426,13 +495,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YWakeUpMonitor.WAKEUPREASON_USBPOWER</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTPOWER</c>,
-         *   <c>YWakeUpMonitor.WAKEUPREASON_ENDOFSLEEP</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTSIG1</c>,
-         *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c> and <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c>
+         *   a value among <c>wakeupmonitor._Wakeupreason_USBPOWER</c>, <c>wakeupmonitor._Wakeupreason_EXTPOWER</c>,
+         *   <c>wakeupmonitor._Wakeupreason_ENDOFSLEEP</c>, <c>wakeupmonitor._Wakeupreason_EXTSIG1</c>,
+         *   <c>wakeupmonitor._Wakeupreason_SCHEDULE1</c> and <c>wakeupmonitor._Wakeupreason_SCHEDULE2</c>
          *   corresponding to the latest wake up reason
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPREASON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupmonitor._Wakeupreason_INVALID</c>.
          * </para>
          */
         public int get_wakeUpReason()
@@ -455,11 +524,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YWakeUpMonitor.WAKEUPSTATE_SLEEPING</c> or <c>YWakeUpMonitor.WAKEUPSTATE_AWAKE</c>,
+         *   either <c>wakeupmonitor._Wakeupstate_SLEEPING</c> or <c>wakeupmonitor._Wakeupstate_AWAKE</c>,
          *   according to  the current state of the monitor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>wakeupmonitor._Wakeupstate_INVALID</c>.
          * </para>
          */
         public int get_wakeUpState()

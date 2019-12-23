@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_watchdog_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_watchdog_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YWatchdogProxy, the Proxy API for Watchdog
  *
@@ -92,14 +92,14 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YWatchdog class allows you to drive a Yoctopuce watchdog, for instance using a Yocto-WatchdogDC.
+ *   The <c>YWatchdog</c> class allows you to drive a Yoctopuce watchdog.
  * <para>
  *   A watchdog works like a relay, with an extra timer that can automatically
  *   trigger a brief power cycle to an appliance after a preset delay, to force this
  *   appliance to reset if a problem occurs. During normal use, the watchdog timer
  *   is reset periodically by the application to prevent the automated power cycle.
  *   Whenever the application dies, the watchdog will automatically trigger the power cycle.
- *   The watchdog can also be driven directly with <i>pulse</i> and <i>delayedPulse</i>
+ *   The watchdog can also be driven directly with <c>pulse</c> and <c>delayedPulse</c>
  *   methods to switch off an appliance for a given duration.
  * </para>
  * <para>
@@ -108,6 +108,60 @@ namespace YoctoProxyAPI
  */
     public class YWatchdogProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a watchdog for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the watchdog is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YWatchdog.isOnline()</c> to test if the watchdog is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a watchdog by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the watchdog, for instance
+         *   <c>WDOGDC01.watchdog1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YWatchdog</c> object allowing you to drive the watchdog.
+         * </returns>
+         */
+        public static YWatchdogProxy FindWatchdog(string func)
+        {
+            return YoctoProxyManager.FindWatchdog(func);
+        }
         //--- (end of YWatchdog class start)
         //--- (YWatchdog definitions)
         public const int _State_INVALID = 0;
@@ -179,7 +233,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type Watchdog available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YWatchdog.FindWatchdog</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YWatchdog it = YWatchdog.FirstWatchdog();
@@ -241,11 +310,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YWatchdog.STATE_A</c> or <c>YWatchdog.STATE_B</c>, according to the state of the watchdog
+         *   either <c>watchdog._State_A</c> or <c>watchdog._State_B</c>, according to the state of the watchdog
          *   (A for the idle position, B for the active position)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.STATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._State_INVALID</c>.
          * </para>
          */
         public int get_state()
@@ -268,7 +337,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YWatchdog.STATE_A</c> or <c>YWatchdog.STATE_B</c>, according to the state of the watchdog
+         *   either <c>watchdog._State_A</c> or <c>watchdog._State_B</c>, according to the state of the watchdog
          *   (A for the idle position, B for the active position)
          * </param>
          * <para>
@@ -307,19 +376,21 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the state of the watchdog at device startup (A for the idle position, B for the active position, UNCHANGED for no change).
+         *   Returns the state of the watchdog at device startup (A for the idle position,
+         *   B for the active position, UNCHANGED to leave the relay state as is).
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YWatchdog.STATEATPOWERON_UNCHANGED</c>, <c>YWatchdog.STATEATPOWERON_A</c> and
-         *   <c>YWatchdog.STATEATPOWERON_B</c> corresponding to the state of the watchdog at device startup (A
-         *   for the idle position, B for the active position, UNCHANGED for no change)
+         *   a value among <c>watchdog._Stateatpoweron_UNCHANGED</c>, <c>watchdog._Stateatpoweron_A</c> and
+         *   <c>watchdog._Stateatpoweron_B</c> corresponding to the state of the watchdog at device startup (A
+         *   for the idle position,
+         *   B for the active position, UNCHANGED to leave the relay state as is)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.STATEATPOWERON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Stateatpoweron_INVALID</c>.
          * </para>
          */
         public int get_stateAtPowerOn()
@@ -336,7 +407,7 @@ namespace YoctoProxyAPI
         /**
          * <summary>
          *   Changes the state of the watchdog at device startup (A for the idle position,
-         *   B for the active position, UNCHANGED for no modification).
+         *   B for the active position, UNCHANGED to leave the relay state as is).
          * <para>
          *   Remember to call the matching module <c>saveToFlash()</c>
          *   method, otherwise this call will have no effect.
@@ -345,10 +416,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YWatchdog.STATEATPOWERON_UNCHANGED</c>, <c>YWatchdog.STATEATPOWERON_A</c> and
-         *   <c>YWatchdog.STATEATPOWERON_B</c> corresponding to the state of the watchdog at device startup (A
+         *   a value among <c>watchdog._Stateatpoweron_UNCHANGED</c>, <c>watchdog._Stateatpoweron_A</c> and
+         *   <c>watchdog._Stateatpoweron_B</c> corresponding to the state of the watchdog at device startup (A
          *   for the idle position,
-         *   B for the active position, UNCHANGED for no modification)
+         *   B for the active position, UNCHANGED to leave the relay state as is)
          * </param>
          * <para>
          * </para>
@@ -400,7 +471,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state
+         *   Returns the maximum time (ms) allowed for the watchdog to stay in state
          *   A before automatically switching back in to B state.
          * <para>
          *   Zero means no time limit.
@@ -409,11 +480,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state
+         *   an integer corresponding to the maximum time (ms) allowed for the watchdog to stay in state
          *   A before automatically switching back in to B state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.MAXTIMEONSTATEA_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Maxtimeonstatea_INVALID</c>.
          * </para>
          */
         public long get_maxTimeOnStateA()
@@ -428,7 +499,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state A
+         *   Changes the maximum time (ms) allowed for the watchdog to stay in state A
          *   before automatically switching back in to B state.
          * <para>
          *   Use zero for no time limit.
@@ -439,7 +510,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   an integer corresponding to the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state A
+         *   an integer corresponding to the maximum time (ms) allowed for the watchdog to stay in state A
          *   before automatically switching back in to B state
          * </param>
          * <para>
@@ -490,7 +561,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Retourne the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state B
+         *   Retourne the maximum time (ms) allowed for the watchdog to stay in state B
          *   before automatically switching back in to A state.
          * <para>
          *   Zero means no time limit.
@@ -502,7 +573,7 @@ namespace YoctoProxyAPI
          *   an integer
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.MAXTIMEONSTATEB_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Maxtimeonstateb_INVALID</c>.
          * </para>
          */
         public long get_maxTimeOnStateB()
@@ -517,7 +588,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state B before
+         *   Changes the maximum time (ms) allowed for the watchdog to stay in state B before
          *   automatically switching back in to A state.
          * <para>
          *   Use zero for no time limit.
@@ -528,7 +599,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   an integer corresponding to the maximum time (ms) allowed for $THEFUNCTIONS$ to stay in state B before
+         *   an integer corresponding to the maximum time (ms) allowed for the watchdog to stay in state B before
          *   automatically switching back in to A state
          * </param>
          * <para>
@@ -586,11 +657,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YWatchdog.OUTPUT_OFF</c> or <c>YWatchdog.OUTPUT_ON</c>, according to the output state of
+         *   either <c>watchdog._Output_OFF</c> or <c>watchdog._Output_ON</c>, according to the output state of
          *   the watchdog, when used as a simple switch (single throw)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.OUTPUT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Output_INVALID</c>.
          * </para>
          */
         public int get_output()
@@ -613,7 +684,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YWatchdog.OUTPUT_OFF</c> or <c>YWatchdog.OUTPUT_ON</c>, according to the output state of
+         *   either <c>watchdog._Output_OFF</c> or <c>watchdog._Output_ON</c>, according to the output state of
          *   the watchdog, when used as a simple switch (single throw)
          * </param>
          * <para>
@@ -654,7 +725,7 @@ namespace YoctoProxyAPI
          *   (state A), during a measured pulse generation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.PULSETIMER_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Pulsetimer_INVALID</c>.
          * </para>
          */
         public long get_pulseTimer()
@@ -745,7 +816,7 @@ namespace YoctoProxyAPI
          *   When there is no scheduled pulse, returns zero
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.COUNTDOWN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Countdown_INVALID</c>.
          * </para>
          */
         public long get_countdown()
@@ -767,11 +838,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YWatchdog.AUTOSTART_OFF</c> or <c>YWatchdog.AUTOSTART_ON</c>, according to the watchdog
+         *   either <c>watchdog._Autostart_OFF</c> or <c>watchdog._Autostart_ON</c>, according to the watchdog
          *   running state at module power on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.AUTOSTART_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Autostart_INVALID</c>.
          * </para>
          */
         public int get_autoStart()
@@ -796,7 +867,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YWatchdog.AUTOSTART_OFF</c> or <c>YWatchdog.AUTOSTART_ON</c>, according to the watchdog
+         *   either <c>watchdog._Autostart_OFF</c> or <c>watchdog._Autostart_ON</c>, according to the watchdog
          *   running state at module power on
          * </param>
          * <para>
@@ -856,10 +927,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YWatchdog.RUNNING_OFF</c> or <c>YWatchdog.RUNNING_ON</c>, according to the watchdog running state
+         *   either <c>watchdog._Running_OFF</c> or <c>watchdog._Running_ON</c>, according to the watchdog running state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.RUNNING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Running_INVALID</c>.
          * </para>
          */
         public int get_running()
@@ -882,7 +953,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YWatchdog.RUNNING_OFF</c> or <c>YWatchdog.RUNNING_ON</c>, according to the running state
+         *   either <c>watchdog._Running_OFF</c> or <c>watchdog._Running_ON</c>, according to the running state
          *   of the watchdog
          * </param>
          * <para>
@@ -974,7 +1045,7 @@ namespace YoctoProxyAPI
          *   watchdog, in milliseconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.TRIGGERDELAY_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Triggerdelay_INVALID</c>.
          * </para>
          */
         public long get_triggerDelay()
@@ -1060,7 +1131,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the duration of resets caused by the watchdog, in milliseconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YWatchdog.TRIGGERDURATION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>watchdog._Triggerduration_INVALID</c>.
          * </para>
          */
         public long get_triggerDuration()

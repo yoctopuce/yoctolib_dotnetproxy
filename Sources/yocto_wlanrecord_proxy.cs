@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wlanrecord_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_wlanrecord_proxy.cs 38687 2019-12-04 18:22:46Z mvuilleu $
  *
  *  Implements YWlanRecordProxy, the Proxy API for WlanRecord
  *
@@ -100,12 +100,12 @@ namespace YoctoProxyAPI
         }
         /**
          * <summary>
-         *   Returns the 802.11 channel.
+         *   Returns the 802.11 b/g/n channel number used by this network.
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   the 802.11 channel.
+         *   an integer corresponding to the channel.
          * </returns>
          */
         public virtual int get_channel()
@@ -130,6 +130,7 @@ namespace YoctoProxyAPI
          * <summary>
          *   Returns the security algorithm used by the wireless network.
          * <para>
+         *   If the network implements to security, the value is <c>"OPEN"</c>.
          * </para>
          * </summary>
          * <returns>
@@ -161,7 +162,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   the quality of the wireless network link, in per cents.
+         *   an integer between 0 and 100 corresponding to the signal quality.
          * </returns>
          */
         public virtual int get_linkQuality()

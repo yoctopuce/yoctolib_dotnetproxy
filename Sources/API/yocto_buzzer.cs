@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_buzzer.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_buzzer.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindBuzzer(), the high-level API for Buzzer functions
  *
@@ -58,7 +58,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YBuzzer class start)
 /**
  * <summary>
- *   The YBuzzer class allows you to drive a buzzer, for instance using a Yocto-Buzzer.
+ *   The <c>YBuzzer</c> class allows you to drive a buzzer.
  * <para>
  *   You can
  *   choose the frequency and the volume at which the buzzer must sound.
@@ -159,6 +159,7 @@ public class YBuzzer : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the  frequency of the signal sent to the buzzer/speaker.
@@ -187,6 +188,7 @@ public class YBuzzer : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -248,6 +250,7 @@ public class YBuzzer : YFunction
         }
     }
 
+
     /**
      * <summary>
      *   Returns the current length of the playing sequence.
@@ -277,6 +280,7 @@ public class YBuzzer : YFunction
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the maximum length of the playing sequence.
@@ -305,6 +309,7 @@ public class YBuzzer : YFunction
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -339,6 +344,7 @@ public class YBuzzer : YFunction
         return res;
     }
 
+
     public string get_command()
     {
         string res;
@@ -361,6 +367,7 @@ public class YBuzzer : YFunction
             return _setAttr("command", rest_val);
         }
     }
+
 
     /**
      * <summary>
@@ -425,6 +432,7 @@ public class YBuzzer : YFunction
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -462,6 +470,7 @@ public class YBuzzer : YFunction
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackBuzzer != null) {
@@ -472,10 +481,12 @@ public class YBuzzer : YFunction
         return 0;
     }
 
+
     public virtual int sendCommand(string command)
     {
         return this.set_command(command);
     }
+
 
     /**
      * <summary>
@@ -499,6 +510,7 @@ public class YBuzzer : YFunction
         return this.sendCommand("A"+Convert.ToString(freq)+","+Convert.ToString(msDelay));
     }
 
+
     /**
      * <summary>
      *   Adds a pulse to the playing sequence.
@@ -520,6 +532,7 @@ public class YBuzzer : YFunction
     {
         return this.sendCommand("B"+Convert.ToString(freq)+","+Convert.ToString(msDuration));
     }
+
 
     /**
      * <summary>
@@ -546,6 +559,7 @@ public class YBuzzer : YFunction
     {
         return this.sendCommand("C"+Convert.ToString(volume)+","+Convert.ToString(msDuration));
     }
+
 
     /**
      * <summary>
@@ -727,6 +741,7 @@ public class YBuzzer : YFunction
         return YAPI.SUCCESS;
     }
 
+
     /**
      * <summary>
      *   Starts the preprogrammed playing sequence.
@@ -746,6 +761,7 @@ public class YBuzzer : YFunction
         return this.sendCommand("S");
     }
 
+
     /**
      * <summary>
      *   Stops the preprogrammed playing sequence and sets the frequency to zero.
@@ -761,6 +777,7 @@ public class YBuzzer : YFunction
     {
         return this.sendCommand("X");
     }
+
 
     /**
      * <summary>
@@ -778,6 +795,7 @@ public class YBuzzer : YFunction
         return this.sendCommand("Z");
     }
 
+
     /**
      * <summary>
      *   Starts the preprogrammed playing sequence and run it once only.
@@ -793,6 +811,7 @@ public class YBuzzer : YFunction
     {
         return this.sendCommand("s");
     }
+
 
     /**
      * <summary>
@@ -810,6 +829,7 @@ public class YBuzzer : YFunction
         return this.sendCommand("W");
     }
 
+
     /**
      * <summary>
      *   Reloads the preprogrammed playing sequence from the flash memory.
@@ -825,6 +845,7 @@ public class YBuzzer : YFunction
     {
         return this.sendCommand("R");
     }
+
 
     /**
      * <summary>
@@ -850,6 +871,7 @@ public class YBuzzer : YFunction
         return this.set_command("P"+Convert.ToString(frequency)+","+Convert.ToString(duration));
     }
 
+
     /**
      * <summary>
      *   Makes the buzzer frequency change over a period of time.
@@ -874,6 +896,7 @@ public class YBuzzer : YFunction
         return this.set_command("F"+Convert.ToString(frequency)+","+Convert.ToString(duration));
     }
 
+
     /**
      * <summary>
      *   Makes the buzzer volume change over a period of time, frequency  stays untouched.
@@ -897,6 +920,7 @@ public class YBuzzer : YFunction
     {
         return this.set_command("V"+Convert.ToString(volume)+","+Convert.ToString(duration));
     }
+
 
     /**
      * <summary>

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_power.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_power.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindPower(), the high-level API for Power functions
  *
@@ -58,11 +58,10 @@ using YFUN_DESCR = System.Int32;
 //--- (YPower class start)
 /**
  * <summary>
- *   The YPower class allows you to read and configure Yoctopuce power
- *   sensors, for instance using a Yocto-Watt.
+ *   The <c>YPower</c> class allows you to read and configure Yoctopuce electrical power sensors.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to access the energy counter and the power factor.
  * </para>
  * <para>
@@ -113,6 +112,7 @@ public class YPower : YSensor
         base._parseAttr(json_val);
     }
 
+
     /**
      * <summary>
      *   Returns the power factor (the ratio between the real power consumed,
@@ -153,6 +153,7 @@ public class YPower : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time.
@@ -184,6 +185,7 @@ public class YPower : YSensor
         return res;
     }
 
+
     /**
      * <summary>
      *   Returns the elapsed time since last energy counter reset, in seconds.
@@ -212,6 +214,7 @@ public class YPower : YSensor
         }
         return res;
     }
+
 
     /**
      * <summary>
@@ -276,6 +279,7 @@ public class YPower : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -313,6 +317,7 @@ public class YPower : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackPower != null) {
@@ -322,6 +327,7 @@ public class YPower : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -336,7 +342,7 @@ public class YPower : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -354,6 +360,7 @@ public class YPower : YSensor
         return 0;
     }
 
+
     public override int _invokeTimedReportCallback(YMeasure value)
     {
         if (this._timedReportCallbackPower != null) {
@@ -363,6 +370,7 @@ public class YPower : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_steppermotor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_steppermotor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YStepperMotorProxy, the Proxy API for StepperMotor
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YStepperMotor class allows you to drive a stepper motor.
+ *   The <c>YStepperMotor</c> class allows you to drive a stepper motor.
  * <para>
  * </para>
  * <para>
@@ -101,6 +101,60 @@ namespace YoctoProxyAPI
  */
     public class YStepperMotorProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves a stepper motor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the stepper motor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YStepperMotor.isOnline()</c> to test if the stepper motor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   a stepper motor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the stepper motor, for instance
+         *   <c>MyDevice.stepperMotor1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YStepperMotor</c> object allowing you to drive the stepper motor.
+         * </returns>
+         */
+        public static YStepperMotorProxy FindStepperMotor(string func)
+        {
+            return YoctoProxyManager.FindStepperMotor(func);
+        }
         //--- (end of YStepperMotor class start)
         //--- (YStepperMotor definitions)
         public const int _MotorState_INVALID = 0;
@@ -168,7 +222,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type StepperMotor available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YStepperMotor.FindStepperMotor</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YStepperMotor it = YStepperMotor.FirstStepperMotor();
@@ -199,13 +268,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YStepperMotor.MOTORSTATE_ABSENT</c>, <c>YStepperMotor.MOTORSTATE_ALERT</c>,
-         *   <c>YStepperMotor.MOTORSTATE_HI_Z</c>, <c>YStepperMotor.MOTORSTATE_STOP</c>,
-         *   <c>YStepperMotor.MOTORSTATE_RUN</c> and <c>YStepperMotor.MOTORSTATE_BATCH</c> corresponding to the
+         *   a value among <c>steppermotor._Motorstate_ABSENT</c>, <c>steppermotor._Motorstate_ALERT</c>,
+         *   <c>steppermotor._Motorstate_HI_Z</c>, <c>steppermotor._Motorstate_STOP</c>,
+         *   <c>steppermotor._Motorstate_RUN</c> and <c>steppermotor._Motorstate_BATCH</c> corresponding to the
          *   motor working state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.MOTORSTATE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Motorstate_INVALID</c>.
          * </para>
          */
         public int get_motorState()
@@ -231,7 +300,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the stepper motor controller diagnostics, as a bitmap
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.DIAGS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Diags_INVALID</c>.
          * </para>
          */
         public int get_diags()
@@ -296,7 +365,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current logical motor position, measured in steps
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.STEPPOS_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Steppos_INVALID</c>.
          * </para>
          */
         public double get_stepPos()
@@ -324,7 +393,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to current motor speed, measured in steps per second
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.SPEED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Speed_INVALID</c>.
          * </para>
          */
         public double get_speed()
@@ -385,7 +454,7 @@ namespace YoctoProxyAPI
          *   measured in steps per second
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.PULLINSPEED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Pullinspeed_INVALID</c>.
          * </para>
          */
         public double get_pullinSpeed()
@@ -444,7 +513,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the maximal motor acceleration, measured in steps per second^2
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.MAXACCEL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Maxaccel_INVALID</c>.
          * </para>
          */
         public double get_maxAccel()
@@ -503,7 +572,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the maximal motor speed, measured in steps per second
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.MAXSPEED_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Maxspeed_INVALID</c>.
          * </para>
          */
         public double get_maxSpeed()
@@ -527,12 +596,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YStepperMotor.STEPPING_MICROSTEP16</c>, <c>YStepperMotor.STEPPING_MICROSTEP8</c>,
-         *   <c>YStepperMotor.STEPPING_MICROSTEP4</c>, <c>YStepperMotor.STEPPING_HALFSTEP</c> and
-         *   <c>YStepperMotor.STEPPING_FULLSTEP</c> corresponding to the stepping mode used to drive the motor
+         *   a value among <c>steppermotor._Stepping_MICROSTEP16</c>, <c>steppermotor._Stepping_MICROSTEP8</c>,
+         *   <c>steppermotor._Stepping_MICROSTEP4</c>, <c>steppermotor._Stepping_HALFSTEP</c> and
+         *   <c>steppermotor._Stepping_FULLSTEP</c> corresponding to the stepping mode used to drive the motor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.STEPPING_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Stepping_INVALID</c>.
          * </para>
          */
         public int get_stepping()
@@ -555,9 +624,9 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YStepperMotor.STEPPING_MICROSTEP16</c>, <c>YStepperMotor.STEPPING_MICROSTEP8</c>,
-         *   <c>YStepperMotor.STEPPING_MICROSTEP4</c>, <c>YStepperMotor.STEPPING_HALFSTEP</c> and
-         *   <c>YStepperMotor.STEPPING_FULLSTEP</c> corresponding to the stepping mode used to drive the motor
+         *   a value among <c>steppermotor._Stepping_MICROSTEP16</c>, <c>steppermotor._Stepping_MICROSTEP8</c>,
+         *   <c>steppermotor._Stepping_MICROSTEP4</c>, <c>steppermotor._Stepping_HALFSTEP</c> and
+         *   <c>steppermotor._Stepping_FULLSTEP</c> corresponding to the stepping mode used to drive the motor
          * </param>
          * <para>
          * </para>
@@ -593,7 +662,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the overcurrent alert and emergency stop threshold, measured in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.OVERCURRENT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Overcurrent_INVALID</c>.
          * </para>
          */
         public int get_overcurrent()
@@ -652,7 +721,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the torque regulation current when the motor is stopped, measured in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.TCURRSTOP_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Tcurrstop_INVALID</c>.
          * </para>
          */
         public int get_tCurrStop()
@@ -711,7 +780,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the torque regulation current when the motor is running, measured in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.TCURRRUN_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Tcurrrun_INVALID</c>.
          * </para>
          */
         public int get_tCurrRun()
@@ -770,7 +839,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current value of the signal generated on the auxiliary output
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YStepperMotor.AUXSIGNAL_INVALID</c>.
+         *   On failure, throws an exception or returns <c>steppermotor._Auxsignal_INVALID</c>.
          * </para>
          */
         public int get_auxSignal()

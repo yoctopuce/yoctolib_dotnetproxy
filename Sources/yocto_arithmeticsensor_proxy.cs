@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_arithmeticsensor_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_arithmeticsensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YArithmeticSensorProxy, the Proxy API for ArithmeticSensor
  *
@@ -92,12 +92,12 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YArithmeticSensor class allows some Yoctopuce devices to compute in real-time
+ *   The <c>YArithmeticSensor</c> class allows some Yoctopuce devices to compute in real-time
  *   values based on an arithmetic formula involving one or more measured signals as
  *   well as the temperature.
  * <para>
- *   This functionality is only available on specific
- *   Yoctopuce devices, for instance using a Yocto-MaxiMicroVolt-Rx.
+ *   As for any physical sensor, the computed values can be
+ *   read by callback and stored in the built-in datalogger.
  * </para>
  * <para>
  * </para>
@@ -105,6 +105,60 @@ namespace YoctoProxyAPI
  */
     public class YArithmeticSensorProxy : YSensorProxy
     {
+        /**
+         * <summary>
+         *   Retrieves an arithmetic sensor for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the arithmetic sensor is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YArithmeticSensor.isOnline()</c> to test if the arithmetic sensor is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   an arithmetic sensor by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the arithmetic sensor, for instance
+         *   <c>RXUVOLT1.arithmeticSensor1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YArithmeticSensor</c> object allowing you to drive the arithmetic sensor.
+         * </returns>
+         */
+        public static YArithmeticSensorProxy FindArithmeticSensor(string func)
+        {
+            return YoctoProxyManager.FindArithmeticSensor(func);
+        }
         //--- (end of YArithmeticSensor class start)
         //--- (YArithmeticSensor definitions)
         public const string _Description_INVALID = YAPI.INVALID_STRING;
@@ -148,7 +202,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type ArithmeticSensor available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YArithmeticSensor.FindArithmeticSensor</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YArithmeticSensor it = YArithmeticSensor.FirstArithmeticSensor();
@@ -216,7 +285,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to a short informative description of the formula
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YArithmeticSensor.DESCRIPTION_INVALID</c>.
+         *   On failure, throws an exception or returns <c>arithmeticsensor._Description_INVALID</c>.
          * </para>
          */
         public string get_description()

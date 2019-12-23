@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorled_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_colorled_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
  *
  *  Implements YColorLedProxy, the Proxy API for ColorLed
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The YColorLed class allows you to drive a color LED, for instance using a Yocto-Color-V2 or a Yocto-PowerColor.
+ *   The <c>ColorLed</c> class allows you to drive a color LED.
  * <para>
  *   The color can be specified using RGB coordinates as well as HSL coordinates.
  *   The module performs all conversions form RGB to HSL automatically. It is then
@@ -106,6 +106,60 @@ namespace YoctoProxyAPI
  */
     public class YColorLedProxy : YFunctionProxy
     {
+        /**
+         * <summary>
+         *   Retrieves an RGB LED for a given identifier.
+         * <para>
+         *   The identifier can be specified using several formats:
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   - FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleSerialNumber.FunctionLogicalName
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionIdentifier
+         * </para>
+         * <para>
+         *   - ModuleLogicalName.FunctionLogicalName
+         * </para>
+         * <para>
+         * </para>
+         * <para>
+         *   This function does not require that the RGB LED is online at the time
+         *   it is invoked. The returned object is nevertheless valid.
+         *   Use the method <c>YColorLed.isOnline()</c> to test if the RGB LED is
+         *   indeed online at a given time. In case of ambiguity when looking for
+         *   an RGB LED by logical name, no error is notified: the first instance
+         *   found is returned. The search is performed first by hardware name,
+         *   then by logical name.
+         * </para>
+         * <para>
+         *   If a call to this object's is_online() method returns FALSE although
+         *   you are certain that the matching device is plugged, make sure that you did
+         *   call registerHub() at application initialization time.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="func">
+         *   a string that uniquely characterizes the RGB LED, for instance
+         *   <c>YRGBLED2.colorLed1</c>.
+         * </param>
+         * <returns>
+         *   a <c>YColorLed</c> object allowing you to drive the RGB LED.
+         * </returns>
+         */
+        public static YColorLedProxy FindColorLed(string func)
+        {
+            return YoctoProxyManager.FindColorLed(func);
+        }
         //--- (end of YColorLed class start)
         //--- (YColorLed definitions)
         public const int _RgbColor_INVALID = -1;
@@ -158,7 +212,22 @@ namespace YoctoProxyAPI
             _func.registerValueCallback(valueChangeCallback);
         }
 
-        public override string[] GetSimilarFunctions()
+        /**
+         * <summary>
+         *   Enumerates all functions of type ColorLed available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
+         * <para>
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YColorLed.FindColorLed</c> to obtain an object that can control the
+         *   corresponding device.
+         * </para>
+         * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
+         */
+        public static new string[] GetSimilarFunctions()
         {
             List<string> res = new List<string>();
             YColorLed it = YColorLed.FirstColorLed();
@@ -230,7 +299,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current RGB color of the LED
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLed.RGBCOLOR_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorled._Rgbcolor_INVALID</c>.
          * </para>
          */
         public int get_rgbColor()
@@ -301,7 +370,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current HSL color of the LED
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLed.HSLCOLOR_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorled._Hslcolor_INVALID</c>.
          * </para>
          */
         public int get_hslColor()
@@ -438,7 +507,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the configured color to be displayed when the module is turned on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLed.RGBCOLORATPOWERON_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorled._Rgbcoloratpoweron_INVALID</c>.
          * </para>
          */
         public int get_rgbColorAtPowerOn()
@@ -524,7 +593,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current length of the blinking sequence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLed.BLINKSEQSIZE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorled._Blinkseqsize_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqSize()
@@ -561,7 +630,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum length of the blinking sequence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLed.BLINKSEQMAXSIZE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorled._Blinkseqmaxsize_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqMaxSize()
@@ -592,7 +661,7 @@ namespace YoctoProxyAPI
          *   an integer
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YColorLed.BLINKSEQSIGNATURE_INVALID</c>.
+         *   On failure, throws an exception or returns <c>colorled._Blinkseqsignature_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqSignature()

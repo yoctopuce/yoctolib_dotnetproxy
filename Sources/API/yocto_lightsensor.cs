@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_lightsensor.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_lightsensor.cs 38899 2019-12-20 17:21:03Z mvuilleu $
  *
  *  Implements yFindLightSensor(), the high-level API for LightSensor functions
  *
@@ -58,11 +58,10 @@ using YFUN_DESCR = System.Int32;
 //--- (YLightSensor class start)
 /**
  * <summary>
- *   The YLightSensor class allows you to read and configure Yoctopuce light
- *   sensors, for instance using a Yocto-Light-V3, a Yocto-Proximity or a Yocto-RangeFinder.
+ *   The <c>YLightSensor</c> class allows you to read and configure Yoctopuce light sensors.
  * <para>
- *   It inherits from YSensor class the core functions to read measurements,
- *   to register callback functions, to access the autonomous datalogger.
+ *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   to register callback functions, and to access the autonomous datalogger.
  *   This class adds the ability to easily perform a one-point linear calibration
  *   to compensate the effect of a glass or filter placed in front of the sensor.
  *   For some light sensors with several working modes, this class can select the
@@ -150,6 +149,7 @@ public class YLightSensor : YSensor
         return _setAttr("currentValue", rest_val);
     }
 
+
     /**
      * <summary>
      *   Returns the type of light measure.
@@ -217,6 +217,7 @@ public class YLightSensor : YSensor
         }
     }
 
+
     /**
      * <summary>
      *   Retrieves a light sensor for a given identifier.
@@ -280,6 +281,7 @@ public class YLightSensor : YSensor
         return obj;
     }
 
+
     /**
      * <summary>
      *   Registers the callback function that is invoked on every change of advertised value.
@@ -317,6 +319,7 @@ public class YLightSensor : YSensor
         return 0;
     }
 
+
     public override int _invokeValueCallback(string value)
     {
         if (this._valueCallbackLightSensor != null) {
@@ -326,6 +329,7 @@ public class YLightSensor : YSensor
         }
         return 0;
     }
+
 
     /**
      * <summary>
@@ -340,7 +344,7 @@ public class YLightSensor : YSensor
      * </summary>
      * <param name="callback">
      *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the function object of which the value has changed, and an YMeasure object describing
+     *   arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
      *   the new advertised value.
      * @noreturn
      * </param>
@@ -357,6 +361,7 @@ public class YLightSensor : YSensor
         this._timedReportCallbackLightSensor = callback;
         return 0;
     }
+
 
     public override int _invokeTimedReportCallback(YMeasure value)
     {
