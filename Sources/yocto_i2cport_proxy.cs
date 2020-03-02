@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_i2cport_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_i2cport_proxy.cs 39333 2020-01-30 10:05:40Z mvuilleu $
  *
  *  Implements YI2cPortProxy, the Proxy API for I2cPort
  *
@@ -827,7 +827,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the SPI port communication parameters, as a string such as
+         *   Returns the I2C port communication parameters, as a string such as
          *   "400kbps,2000ms,NoRestart".
          * <para>
          *   The string includes the baud rate, the
@@ -839,7 +839,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a string corresponding to the SPI port communication parameters, as a string such as
+         *   a string corresponding to the I2C port communication parameters, as a string such as
          *   "400kbps,2000ms,NoRestart"
          * </returns>
          * <para>
@@ -858,7 +858,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the SPI port communication parameters, with a string such as
+         *   Changes the I2C port communication parameters, with a string such as
          *   "400kbps,2000ms".
          * <para>
          *   The string includes the baud rate, the
@@ -872,7 +872,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a string corresponding to the SPI port communication parameters, with a string such as
+         *   a string corresponding to the I2C port communication parameters, with a string such as
          *   "400kbps,2000ms"
          * </param>
          * <para>
@@ -1089,6 +1089,38 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException(msg);
             }
             return _func.queryLine(query, maxWait);
+        }
+
+        /**
+         * <summary>
+         *   Sends a binary message to the serial port, and reads the reply, if any.
+         * <para>
+         *   This function is intended to be used when the serial port is configured for
+         *   Frame-based protocol.
+         * </para>
+         * </summary>
+         * <param name="hexString">
+         *   the message to send, coded in hexadecimal
+         * </param>
+         * <param name="maxWait">
+         *   the maximum number of milliseconds to wait for a reply.
+         * </param>
+         * <returns>
+         *   the next frame received after sending the message, as a hex string.
+         *   Additional frames can be obtained by calling readHex or readMessages.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns an empty string.
+         * </para>
+         */
+        public virtual string queryHex(string hexString, int maxWait)
+        {
+            if (_func == null)
+            {
+                string msg = "No I2cPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            return _func.queryHex(hexString, maxWait);
         }
 
         /**

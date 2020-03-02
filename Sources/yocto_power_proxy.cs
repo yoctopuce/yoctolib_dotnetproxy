@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_power_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_power_proxy.cs 38969 2019-12-26 16:31:16Z mvuilleu $
  *
  *  Implements YPowerProxy, the Proxy API for Power
  *
@@ -160,7 +160,6 @@ namespace YoctoProxyAPI
         }
         //--- (end of YPower class start)
         //--- (YPower definitions)
-        public const int _ShutdownCountdown_INVALID = -1;
         public const double _CosPhi_INVALID = Double.NaN;
         public const double _Meter_INVALID = Double.NaN;
         public const int _MeterTimer_INVALID = -1;

@@ -419,19 +419,19 @@ namespace YoctoProxyAPI
         public static void deviceArrival(YModule m)
         {
             string ms = m.get_serialNumber();
-            InternalStuff.log("*** device arrival(" + m.get_serialNumber() + ")");
+            //InternalStuff.log("*** device arrival(" + m.get_serialNumber() + ")");
             string key = ms + ".module";
             string mynamespace = InternalStuff.currentNameSpace;
 
             // try to find some unknown module proxy can be linked to the new arrival
-            InternalStuff.log("*** looking for existing Module proxies");
+            //InternalStuff.log("*** looking for existing Module proxies");
             for (int j = 0; j < _allProxies.Count; j++)
             {
                 if (_allProxies[j].IsUnknown)
                 {
                     if (_allProxies[j].GetType().ToString() == mynamespace + ".YModuleProxy")
                     {
-                        InternalStuff.log(" found");
+                        //InternalStuff.log(" found");
                         _allProxies[j].linkToHardware(ms);
                         _allProxies[j].arrival();
                     }
@@ -446,7 +446,7 @@ namespace YoctoProxyAPI
             string myNameSpace = InternalStuff.currentNameSpace;
 
             // try to find some unknown function proxy  can be linked to the new arrival
-            InternalStuff.log("*** looking for existing Function proxies");
+            //InternalStuff.log("*** looking for existing Function proxies");
             for (int i = 0; i < m.functionCount(); i++)
             {
                 string hwid = ms + "." + m.functionId(i);
@@ -460,7 +460,7 @@ namespace YoctoProxyAPI
                         string proxyType = _allProxies[j].GetType().ToString();
                         if (proxyType == myNameSpace + ".Y" + type + "Proxy" || proxyType == myNameSpace + ".Y" + basetype + "Proxy")
                         {
-                            InternalStuff.log(" found " + type);
+                            //InternalStuff.log(" found " + type);
                             _allProxies[j].linkToHardware(hwid);
                             _allProxies[j].arrival();
                         }
@@ -485,7 +485,7 @@ namespace YoctoProxyAPI
         public static void deviceRemoval(YModule m)
         {
             string serial = m.get_serialNumber();
-            InternalStuff.log("device removal(" + serial + ")");
+            //InternalStuff.log("device removal(" + serial + ")");
 
             for (int j = 0; j < _allProxies.Count; j++)
                 if (_allProxies[j].Online)
@@ -496,7 +496,7 @@ namespace YoctoProxyAPI
         private static void configChangeCallback(YModule module)
         {
             string id = module.get_serialNumber();
-            InternalStuff.log(" Module " + id + " config change  ");
+            //InternalStuff.log(" Module " + id + " config change  ");
             if (id == "") return;  // just in case
             foreach (YFunctionProxy f in _allProxies)
             {
@@ -507,7 +507,7 @@ namespace YoctoProxyAPI
 
         protected virtual void valueChangeCallback(YFunction source, string value)
         {
-            InternalStuff.log("new value (" + value + ")");
+            //InternalStuff.log("new value (" + value + ")");
             _advertisedValue = value;
         }
 
@@ -522,7 +522,7 @@ namespace YoctoProxyAPI
 
         public void arrival()
         {
-            InternalStuff.log(_hwdid + " comes online");
+            //InternalStuff.log(_hwdid + " comes online");
             _online = true;
             functionArrival();
         }
@@ -530,20 +530,20 @@ namespace YoctoProxyAPI
         public void removal()
         {
             _online = false;
-            InternalStuff.log(_hwdid + " has been removed");
+            //InternalStuff.log(_hwdid + " has been removed");
         }
 
         public bool TestOnline()
         {
             if (_func == null) return false;
-            InternalStuff.log("test if " + _hwdid + "(" + _instantiationName + ")  is online");
+            //InternalStuff.log("test if " + _hwdid + "(" + _instantiationName + ")  is online");
             if (!_func.isOnline())
             {
-                InternalStuff.log(" Nope, " + _hwdid + "(" + _instantiationName + ") is still offline");
+                //InternalStuff.log(" Nope, " + _hwdid + "(" + _instantiationName + ") is still offline");
                 _online = false;
                 return false;
             }
-            InternalStuff.log(" Yes, " + _hwdid + "(" + _instantiationName + ") is online");
+            //InternalStuff.log(" Yes, " + _hwdid + "(" + _instantiationName + ") is online");
             _m = _func.get_module();
             _hwdid = _func.get_hardwareId();
             _serialNumber = _func.get_serialNumber();
@@ -551,7 +551,7 @@ namespace YoctoProxyAPI
             _friendlyName = _func.get_friendlyName();
 
             _online = true;
-            InternalStuff.log(_hwdid + " is online");
+            //InternalStuff.log(_hwdid + " is online");
             return true;
         }
 
@@ -568,11 +568,11 @@ namespace YoctoProxyAPI
                 {
                     _func.set_userData(this);
                     _hwdid = _func.get_hardwareId();
-                    InternalStuff.log(" hwdID = " + _hwdid);
+                    //InternalStuff.log(" hwdID = " + _hwdid);
                 }
                 catch (Exception)
                 {
-                    InternalStuff.log("Failed to find out HwdID, device is probably offline ");
+                    //InternalStuff.log("Failed to find out HwdID, device is probably offline ");
                 }
             }
 

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_serialport_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_serialport_proxy.cs 39333 2020-01-30 10:05:40Z mvuilleu $
  *
  *  Implements YSerialPortProxy, the Proxy API for SerialPort
  *
@@ -1139,6 +1139,38 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException(msg);
             }
             return _func.queryLine(query, maxWait);
+        }
+
+        /**
+         * <summary>
+         *   Sends a binary message to the serial port, and reads the reply, if any.
+         * <para>
+         *   This function is intended to be used when the serial port is configured for
+         *   Frame-based protocol.
+         * </para>
+         * </summary>
+         * <param name="hexString">
+         *   the message to send, coded in hexadecimal
+         * </param>
+         * <param name="maxWait">
+         *   the maximum number of milliseconds to wait for a reply.
+         * </param>
+         * <returns>
+         *   the next frame received after sending the message, as a hex string.
+         *   Additional frames can be obtained by calling readHex or readMessages.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns an empty string.
+         * </para>
+         */
+        public virtual string queryHex(string hexString, int maxWait)
+        {
+            if (_func == null)
+            {
+                string msg = "No SerialPort connected";
+                throw new YoctoApiProxyException(msg);
+            }
+            return _func.queryHex(hexString, maxWait);
         }
 
         /**
