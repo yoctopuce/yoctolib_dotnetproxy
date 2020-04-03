@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata minClientVersion="3.3.0">
+    <id>Yoctopuce.NetProxy</id>
+    <version>1.10.39863</version>
+    <authors>Yoctopuce Dev Team</authors>
+    <owners>Yoctopuce Dev Team</owners>
+    <projectUrl>https://www.yoctopuce.com/EN/libraries.php</projectUrl>
+    <iconUrl>http://www.yoctopuce.com/img/yoctopuce_nuget_logo.png</iconUrl>
+    <repository type="git" url="https://github.com/yoctopuce/yoctolib_dotnetproxy.git" />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright (C) 2011 and beyond by Yoctopuce Sarl, Switzerland.</copyright>
+    <licenseUrl>https://raw.githubusercontent.com/yoctopuce/yoctolib_dotnetproxy/master/licence.txt</licenseUrl>
+    <summary>Yoctopuce .NET Proxy Library, provided as a .NET Assembly.</summary>
+    <description>This library makes it possible to leverage all features of Yoctopuce devices from any environment supporting dynamic loading of .NET Assemblies, like for instance MATLAB, WINDEV or Microsoft PowerShell.
+
+Supported platforms:
+- .NET Framework 4.5+
+- .NET Standard 2.0+
+- .NET Core 2.0+
+</description>
+    <contentFiles>
+        <files include="**/*.so" buildAction="None" copyToOutput="true" flatten="false"/>
+        <files include="**/*.dylib" buildAction="None" copyToOutput="true" flatten="false"/>
+        <files include="**/yapi.dll" buildAction="None" copyToOutput="true" flatten="false"/>
+    </contentFiles>
+  </metadata>
+  <files>
+
+     <!-- add .net core managed lib   -->
+     <file src="lib\netstandard2.0\*.*" target="lib\netstandard2.0" />
+
+     <!-- add .net 4.5e managed lib  -->
+     <file src="lib\net45\*.*" target="lib\net45" />
+
+     <!-- add yapi to lib folder (should be removed) -->
+     <!--
+     <file src="ydll\*.*" target="lib\netstandard2.0" />
+     <file src="ydll\amd64\*.*" target="lib\netstandard2.0\amd64" />
+      -->
+
+     <!-- add yapi to lib contentFiles  -->
+     <file src="ydll\*.*" target="contentFiles\any\any" />
+     <file src="ydll\amd64\*.*" target="contentFiles\any\any\amd64" />
+     <!-- add yapi to lib contentFiles (should be removed as allread taged in any) -->
+
+     <file src="ydll\*.*" target="contentFiles\any\netstandard2.0" />
+     <file src="ydll\amd64\*.*" target="contentFiles\any\netstandard2.0\amd64" />
+     <file src="ydll\*.*" target="contentFiles\any\portable-net45" />
+     <file src="ydll\amd64\*.*" target="contentFiles\any\portable-net45\amd64" />
+
+     <!-- add yapi to runtime only for .net core -->
+     <file src="lib\netstandard2.0\*.*" target="runtimes\any\lib\netstandard2.0" />
+     <file src="ydll\*.*" target="runtimes\any\lib\netstandard2.0" />
+     <file src="ydll\amd64*.*" target="runtimes\any\lib\netstandard2.0\amd64" />
+
+
+
+     <file src="ydll\*.*" target="build" />
+     <file src="ydll\amd64\*.*" target="build\amd64" />
+     <file src="Yoctopuce.NetProxy.targets" target="build" />
+
+
+
+  </files>
+</package>

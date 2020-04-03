@@ -1,0 +1,11 @@
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\bin\Release\netstandard2.0\Yoctopuce.NetProxy.deps.json
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\bin\Release\netstandard2.0\Yoctopuce.NetProxy.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\bin\Release\netstandard2.0\Yoctopuce.NetProxy.pdb
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\bin\Release\netstandard2.0\Yoctopuce.NetProxy.xml
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\obj\Release\netstandard2.0\Yoctopuce.NetProxy.csprojAssemblyReference.cache
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\obj\Release\netstandard2.0\Yoctopuce.NetProxy.csproj.CoreCompileInputs.cache
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\obj\Release\netstandard2.0\Yoctopuce.NetProxy.AssemblyInfoInputs.cache
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\obj\Release\netstandard2.0\Yoctopuce.NetProxy.AssemblyInfo.cs
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\obj\Release\netstandard2.0\Yoctopuce.NetProxy.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\obj\Release\netstandard2.0\Yoctopuce.NetProxy.xml
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\obj\Release\netstandard2.0\Yoctopuce.NetProxy.pdb

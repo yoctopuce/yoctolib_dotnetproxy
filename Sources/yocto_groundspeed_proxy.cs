@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_groundspeed_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_groundspeed_proxy.cs 39658 2020-03-12 15:36:29Z seb $
  *
  *  Implements YGroundSpeedProxy, the Proxy API for GroundSpeed
  *
@@ -147,7 +147,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the ground speed sensor, for instance
-         *   <c>YGNSSMK1.groundSpeed</c>.
+         *   <c>YGNSSMK2.groundSpeed</c>.
          * </param>
          * <returns>
          *   a <c>YGroundSpeed</c> object allowing you to drive the ground speed sensor.

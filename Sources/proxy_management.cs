@@ -125,7 +125,7 @@ namespace YoctoProxyAPI
         {
            string line = DateTime.Now.ToString("yyyyMMdd hh:mm:ss.fff ") + str.TrimEnd('\r', '\n');
           logBuffer.Add(line);
-          
+
            if (logBuffer.Count > LogBufferMaxCount) logBuffer.RemoveRange(0, logBuffer.Count - LogBufferMaxCount);
 
         }
@@ -231,14 +231,14 @@ namespace YoctoProxyAPI
     }
 
     // this is used in the LabVIEW Generator to force LabVIEW
-    // to keep reference in the DLL and prevent it from 
+    // to keep reference in the DLL and prevent it from
     // unloading it unexpectedly.
 
     public class refKeeper
     {
         public string getDllActualPath()
-        {  
-            return System.Reflection.Assembly.GetExecutingAssembly().Location; 
+        {
+            return System.Reflection.Assembly.GetExecutingAssembly().Location;
         }
     }
 
@@ -248,7 +248,7 @@ namespace YoctoProxyAPI
         protected static string apiversion = "";
         protected static string dllpath = "";
         protected static string dllarch = "";
-     
+
         /**
          * <summary>
          *   Returns the version identifier for the Yoctopuce library in use.
@@ -275,19 +275,19 @@ namespace YoctoProxyAPI
          */
         public static string GetAPIVersion()
         {
-            return YoctoProxyManager.GetAPIVersion(); 
+            return YoctoProxyManager.GetAPIVersion();
         }
 
         public static string APIVersion
         {
-            get { 
+            get {
                 if(apiversion == "") {
                     apiversion = YoctoProxyManager.GetAPIVersion();
                 }
-                return apiversion; 
-            } 
+                return apiversion;
+            }
         }
-        
+
         /**
          * <summary>
          *   Returns the paths of the DLLs for the Yoctopuce library in use.
@@ -307,17 +307,17 @@ namespace YoctoProxyAPI
          */
         public static string GetDllPath()
         {
-            return YoctoProxyManager.GetDllPath(); 
+            return YoctoProxyManager.GetDllPath();
         }
 
         public static string DllPath
-        { 
-            get { 
+        {
+            get {
                 if(dllpath == "") {
                     dllpath = YoctoProxyManager.GetDllPath();
                 }
-                return dllpath; 
-            } 
+                return dllpath;
+            }
         }
 
         /**
@@ -339,19 +339,19 @@ namespace YoctoProxyAPI
          */
         public static string GetDllArchitecture()
         {
-            return YoctoProxyManager.GetDllArchitecture(); 
+            return YoctoProxyManager.GetDllArchitecture();
         }
 
         public static string DllArchitecture
         {
-            get { 
+            get {
                 if(dllarch == "") {
                     dllarch = YoctoProxyManager.GetDllArchitecture();
                 }
-                return dllarch; 
-            } 
-        }        
-        
+                return dllarch;
+            }
+        }
+
         /**
          * <summary>
          *   Setup the Yoctopuce library to use modules connected on a given machine.
@@ -405,9 +405,6 @@ namespace YoctoProxyAPI
          *   a string containing either <c>"usb"</c>,<c>"callback"</c> or the
          *   root URL of the hub to monitor
          * </param>
-         * <param name="errmsg">
-         *   a string passed by reference to receive any error message.
-         * </param>
          * <returns>
          *   <c>YAPI.SUCCESS</c> when the call succeeds.
          * </returns>
@@ -416,10 +413,10 @@ namespace YoctoProxyAPI
          * </para>
          */
         public static string RegisterHub(string url)
-        { 
-            return YoctoProxyManager.RegisterHub(url); 
+        {
+            return YoctoProxyManager.RegisterHub(url);
         }
-        
+
         /**
          * <summary>
          *   Fault-tolerant alternative to <c>yRegisterHub()</c>.
@@ -437,9 +434,6 @@ namespace YoctoProxyAPI
          *   a string containing either <c>"usb"</c>,<c>"callback"</c> or the
          *   root URL of the hub to monitor
          * </param>
-         * <param name="errmsg">
-         *   a string passed by reference to receive any error message.
-         * </param>
          * <returns>
          *   <c>YAPI.SUCCESS</c> when the call succeeds.
          * </returns>
@@ -448,7 +442,7 @@ namespace YoctoProxyAPI
          * </para>
          */
         public static string PreregisterHub(string url)
-        { 
+        {
             return YoctoProxyManager.PreRegisterHub(url);
         }
 
@@ -495,9 +489,6 @@ namespace YoctoProxyAPI
          * </param>
          * <param name="mstimeout">
          *   the number of millisecond available to test the connection.
-         * </param>
-         * <param name="errmsg">
-         *   a string passed by reference to receive any error message.
          * </param>
          * <returns>
          *   <c>YAPI.SUCCESS</c> when the call succeeds.
@@ -571,11 +562,11 @@ namespace YoctoProxyAPI
 
         public static int NetworkTimeout
         {
-            get { 
-                return YoctoProxyManager.NetworkTimeout; 
+            get {
+                return YoctoProxyManager.NetworkTimeout;
             }
-            set { 
-                YoctoProxyManager.NetworkTimeout = value; 
+            set {
+                YoctoProxyManager.NetworkTimeout = value;
             }
         }
     }
@@ -681,7 +672,7 @@ namespace YoctoProxyAPI
 
     public static String GetAPIVersion()
     {
-        string check = YoctoProxyManager.CheckDllVersion(""); 
+        string check = YoctoProxyManager.CheckDllVersion("");
         if(check != "") {
             return "ERROR: "+check;
         }
@@ -690,7 +681,7 @@ namespace YoctoProxyAPI
 
     public static String GetDllPath()
     {
-        string check = YoctoProxyManager.CheckDllVersion(""); 
+        string check = YoctoProxyManager.CheckDllVersion("");
         if(check != "") {
             return "ERROR: "+check;
         }
@@ -699,7 +690,7 @@ namespace YoctoProxyAPI
 
     public static String GetDllArchitecture()
     {
-        string check = YoctoProxyManager.CheckDllVersion(""); 
+        string check = YoctoProxyManager.CheckDllVersion("");
         if(check != "") {
             return "ERROR: "+check;
         }

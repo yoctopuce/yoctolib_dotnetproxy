@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_groundspeed.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_groundspeed.cs 39658 2020-03-12 15:36:29Z seb $
  *
  *  Implements yFindGroundSpeed(), the high-level API for GroundSpeed functions
  *
@@ -138,7 +138,7 @@ public class YGroundSpeed : YSensor
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the ground speed sensor, for instance
-     *   <c>YGNSSMK1.groundSpeed</c>.
+     *   <c>YGNSSMK2.groundSpeed</c>.
      * </param>
      * <returns>
      *   a <c>YGroundSpeed</c> object allowing you to drive the ground speed sensor.

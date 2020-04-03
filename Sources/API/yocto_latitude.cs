@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_latitude.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_latitude.cs 39658 2020-03-12 15:36:29Z seb $
  *
  *  Implements yFindLatitude(), the high-level API for Latitude functions
  *
@@ -138,7 +138,7 @@ public class YLatitude : YSensor
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the latitude sensor, for instance
-     *   <c>YGNSSMK1.latitude</c>.
+     *   <c>YGNSSMK2.latitude</c>.
      * </param>
      * <returns>
      *   a <c>YLatitude</c> object allowing you to drive the latitude sensor.

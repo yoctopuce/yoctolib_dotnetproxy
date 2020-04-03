@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_temperature_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_temperature_proxy.cs 39648 2020-03-12 13:56:10Z mvuilleu $
  *
  *  Implements YTemperatureProxy, the Proxy API for Temperature
  *
@@ -179,6 +179,7 @@ namespace YoctoProxyAPI
         public const int _SensorType_RES_INTERNAL = 15;
         public const int _SensorType_IR = 16;
         public const int _SensorType_RES_PT1000 = 17;
+        public const int _SensorType_CHANNEL_OFF = 18;
         public const double _SignalValue_INVALID = Double.NaN;
         public const string _SignalUnit_INVALID = YAPI.INVALID_STRING;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
@@ -320,8 +321,9 @@ namespace YoctoProxyAPI
          *   <c>temperature._Sensortype_PT100_4WIRES</c>, <c>temperature._Sensortype_PT100_3WIRES</c>,
          *   <c>temperature._Sensortype_PT100_2WIRES</c>, <c>temperature._Sensortype_RES_OHM</c>,
          *   <c>temperature._Sensortype_RES_NTC</c>, <c>temperature._Sensortype_RES_LINEAR</c>,
-         *   <c>temperature._Sensortype_RES_INTERNAL</c>, <c>temperature._Sensortype_IR</c> and
-         *   <c>temperature._Sensortype_RES_PT1000</c> corresponding to the temperature sensor type
+         *   <c>temperature._Sensortype_RES_INTERNAL</c>, <c>temperature._Sensortype_IR</c>,
+         *   <c>temperature._Sensortype_RES_PT1000</c> and <c>temperature._Sensortype_CHANNEL_OFF</c>
+         *   corresponding to the temperature sensor type
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>temperature._Sensortype_INVALID</c>.
@@ -359,8 +361,9 @@ namespace YoctoProxyAPI
          *   <c>temperature._Sensortype_PT100_4WIRES</c>, <c>temperature._Sensortype_PT100_3WIRES</c>,
          *   <c>temperature._Sensortype_PT100_2WIRES</c>, <c>temperature._Sensortype_RES_OHM</c>,
          *   <c>temperature._Sensortype_RES_NTC</c>, <c>temperature._Sensortype_RES_LINEAR</c>,
-         *   <c>temperature._Sensortype_RES_INTERNAL</c>, <c>temperature._Sensortype_IR</c> and
-         *   <c>temperature._Sensortype_RES_PT1000</c> corresponding to the temperature sensor type
+         *   <c>temperature._Sensortype_RES_INTERNAL</c>, <c>temperature._Sensortype_IR</c>,
+         *   <c>temperature._Sensortype_RES_PT1000</c> and <c>temperature._Sensortype_CHANNEL_OFF</c>
+         *   corresponding to the temperature sensor type
          * </param>
          * <para>
          * </para>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_longitude_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_longitude_proxy.cs 39658 2020-03-12 15:36:29Z seb $
  *
  *  Implements YLongitudeProxy, the Proxy API for Longitude
  *
@@ -147,7 +147,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the longitude sensor, for instance
-         *   <c>YGNSSMK1.longitude</c>.
+         *   <c>YGNSSMK2.longitude</c>.
          * </param>
          * <returns>
          *   a <c>YLongitude</c> object allowing you to drive the longitude sensor.

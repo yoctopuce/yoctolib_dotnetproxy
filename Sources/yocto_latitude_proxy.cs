@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_latitude_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_latitude_proxy.cs 39658 2020-03-12 15:36:29Z seb $
  *
  *  Implements YLatitudeProxy, the Proxy API for Latitude
  *
@@ -147,7 +147,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the latitude sensor, for instance
-         *   <c>YGNSSMK1.latitude</c>.
+         *   <c>YGNSSMK2.latitude</c>.
          * </param>
          * <returns>
          *   a <c>YLatitude</c> object allowing you to drive the latitude sensor.

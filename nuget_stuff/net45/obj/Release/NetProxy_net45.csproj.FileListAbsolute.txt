@@ -1,0 +1,7 @@
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\net45\bin\Release\Yoctopuce.NetProxy.xml
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\net45\bin\Release\Yoctopuce.NetProxy.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\net45\bin\Release\Yoctopuce.NetProxy.pdb
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\net45\obj\Release\NetProxy_net45.csprojAssemblyReference.cache
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\net45\obj\Release\NetProxy_net45.csproj.CoreCompileInputs.cache
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\net45\obj\Release\Yoctopuce.NetProxy.dll
+c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\net45\obj\Release\Yoctopuce.NetProxy.pdb

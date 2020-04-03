@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gps_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_gps_proxy.cs 39658 2020-03-12 15:36:29Z seb $
  *
  *  Implements YGpsProxy, the Proxy API for Gps
  *
@@ -151,7 +151,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the geolocalization module, for instance
-         *   <c>YGNSSMK1.gps</c>.
+         *   <c>YGNSSMK2.gps</c>.
          * </param>
          * <returns>
          *   a <c>YGps</c> object allowing you to drive the geolocalization module.

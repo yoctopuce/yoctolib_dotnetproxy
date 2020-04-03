@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_network_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_network_proxy.cs 39573 2020-03-10 17:20:22Z seb $
  *
  *  Implements YNetworkProxy, the Proxy API for Network
  *
@@ -194,6 +194,7 @@ namespace YoctoProxyAPI
         public const int _CallbackEncoding_MQTT = 10;
         public const int _CallbackEncoding_YOCTO_API_JZON = 11;
         public const int _CallbackEncoding_PRTG = 12;
+        public const int _CallbackEncoding_INFLUXDB_V2 = 13;
         public const string _CallbackCredentials_INVALID = YAPI.INVALID_STRING;
         public const int _CallbackInitialDelay_INVALID = -1;
         public const string _CallbackSchedule_INVALID = YAPI.INVALID_STRING;
@@ -1526,8 +1527,9 @@ namespace YoctoProxyAPI
          *   <c>network._Callbackencoding_YOCTO_API</c>, <c>network._Callbackencoding_JSON_NUM</c>,
          *   <c>network._Callbackencoding_EMONCMS</c>, <c>network._Callbackencoding_AZURE</c>,
          *   <c>network._Callbackencoding_INFLUXDB</c>, <c>network._Callbackencoding_MQTT</c>,
-         *   <c>network._Callbackencoding_YOCTO_API_JZON</c> and <c>network._Callbackencoding_PRTG</c>
-         *   corresponding to the encoding standard to use for representing notification values
+         *   <c>network._Callbackencoding_YOCTO_API_JZON</c>, <c>network._Callbackencoding_PRTG</c> and
+         *   <c>network._Callbackencoding_INFLUXDB_V2</c> corresponding to the encoding standard to use for
+         *   representing notification values
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>network._Callbackencoding_INVALID</c>.
@@ -1560,8 +1562,9 @@ namespace YoctoProxyAPI
          *   <c>network._Callbackencoding_YOCTO_API</c>, <c>network._Callbackencoding_JSON_NUM</c>,
          *   <c>network._Callbackencoding_EMONCMS</c>, <c>network._Callbackencoding_AZURE</c>,
          *   <c>network._Callbackencoding_INFLUXDB</c>, <c>network._Callbackencoding_MQTT</c>,
-         *   <c>network._Callbackencoding_YOCTO_API_JZON</c> and <c>network._Callbackencoding_PRTG</c>
-         *   corresponding to the encoding standard to use for representing notification values
+         *   <c>network._Callbackencoding_YOCTO_API_JZON</c>, <c>network._Callbackencoding_PRTG</c> and
+         *   <c>network._Callbackencoding_INFLUXDB_V2</c> corresponding to the encoding standard to use for
+         *   representing notification values
          * </param>
          * <para>
          * </para>
