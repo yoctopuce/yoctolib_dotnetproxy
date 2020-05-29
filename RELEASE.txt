@@ -1,5 +1,3 @@
-DotNetProxy v1.10.40758
+DotNetProxy v1.10.40785
 
-- Fix get_display function in displaylayer to return proxy object
-- Fix beacon property handling
-- Add LinkQuality property to Cellular class
+- Add LinkQuality and CellOperator properties to Cellular class

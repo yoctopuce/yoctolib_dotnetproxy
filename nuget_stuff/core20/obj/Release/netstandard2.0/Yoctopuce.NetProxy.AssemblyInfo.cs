@@ -12,8 +12,8 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("This library makes it possible to leverage all features of Yoctopuce devices from" +
 " any environment supporting dynamic loading of .NET Assemblies, like for instanc" +
 "e MATLAB, WINDEV or Microsoft PowerShell.")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.10.40758.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.10.40758")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.10.40785.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.10.40785")]
 [assembly: System.Reflection.AssemblyProductAttribute("Yoctopuce.NetProxy")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Yoctopuce.NetProxy")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.10.40758.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.10.40785.0")]
