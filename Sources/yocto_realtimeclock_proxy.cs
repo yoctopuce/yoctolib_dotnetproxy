@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_realtimeclock_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *
@@ -162,6 +162,7 @@ namespace YoctoProxyAPI
         }
         //--- (end of YRealTimeClock class start)
         //--- (YRealTimeClock definitions)
+        public const string _Clock_INVALID = YAPI.INVALID_STRING;
         public const long _UnixTime_INVALID = YAPI.INVALID_LONG;
         public const string _DateTime_INVALID = YAPI.INVALID_STRING;
         public const int _UtcOffset_INVALID = YAPI.INVALID_INT;
@@ -172,6 +173,7 @@ namespace YoctoProxyAPI
         // reference to real YoctoAPI object
         protected new YRealTimeClock _func;
         // property cache
+        protected string _clock = _Clock_INVALID;
         protected int _utcOffset = _UtcOffset_INVALID;
         //--- (end of YRealTimeClock definitions)
 
@@ -251,8 +253,8 @@ namespace YoctoProxyAPI
         {
             get
             {
-                if (_func == null) return _AdvertisedValue_INVALID;
-                return (_online ? _advertisedValue : _AdvertisedValue_INVALID);
+                if (_func == null) return _Clock_INVALID;
+                return (_online ? _advertisedValue : _Clock_INVALID);
             }
         }
 
@@ -273,13 +275,14 @@ namespace YoctoProxyAPI
          */
         public long get_unixTime()
         {
-            if (_func == null)
-            {
-                string msg = "No RealTimeClock connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
             }
-            long res = _func.get_unixTime();
-            if (res == YAPI.INVALID_INT) res = _UnixTime_INVALID;
+            res = _func.get_unixTime();
+            if (res == YAPI.INVALID_INT) {
+                res = _UnixTime_INVALID;
+            }
             return res;
         }
 
@@ -306,15 +309,14 @@ namespace YoctoProxyAPI
          */
         public int set_unixTime(long newval)
         {
-            if (_func == null)
-            {
-                string msg = "No RealTimeClock connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
             }
-            if (newval == _UnixTime_INVALID) return YAPI.SUCCESS;
+            if (newval == _UnixTime_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unixTime(newval);
         }
-
 
         /**
          * <summary>
@@ -333,10 +335,8 @@ namespace YoctoProxyAPI
          */
         public string get_dateTime()
         {
-            if (_func == null)
-            {
-                string msg = "No RealTimeClock connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
             }
             return _func.get_dateTime();
         }
@@ -358,10 +358,8 @@ namespace YoctoProxyAPI
          */
         public int get_utcOffset()
         {
-            if (_func == null)
-            {
-                string msg = "No RealTimeClock connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
             }
             return _func.get_utcOffset();
         }
@@ -391,23 +389,28 @@ namespace YoctoProxyAPI
          */
         public int set_utcOffset(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No RealTimeClock connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
             }
-            if (newval == _UtcOffset_INVALID) return YAPI.SUCCESS;
+            if (newval == _UtcOffset_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_utcOffset(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Number of seconds between current time and UTC time (time zone).</value>
         public int UtcOffset
         {
             get
             {
-                if (_func == null) return _UtcOffset_INVALID;
-                return (_online ? _utcOffset : _UtcOffset_INVALID);
+                if (_func == null) {
+                    return _UtcOffset_INVALID;
+                }
+                if (_online) {
+                    return _utcOffset;
+                }
+                return _UtcOffset_INVALID;
             }
             set
             {
@@ -418,10 +421,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_utcOffset(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _UtcOffset_INVALID) return;
-            if (newval == _utcOffset) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _UtcOffset_INVALID) {
+                return;
+            }
+            if (newval == _utcOffset) {
+                return;
+            }
             _func.set_utcOffset(newval);
             _utcOffset = newval;
         }
@@ -444,10 +455,8 @@ namespace YoctoProxyAPI
          */
         public int get_timeSet()
         {
-            if (_func == null)
-            {
-                string msg = "No RealTimeClock connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_timeSet()+1;

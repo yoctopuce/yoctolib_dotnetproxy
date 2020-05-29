@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_bluetoothlink_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_bluetoothlink_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YBluetoothLinkProxy, the Proxy API for BluetoothLink
  *
@@ -257,7 +257,6 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
             _pairingPin = _func.get_pairingPin();
             _remoteAddress = _func.get_remoteAddress();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _mute = _func.get_mute()+1;
             _preAmplifier = _func.get_preAmplifier();
         }
@@ -280,10 +279,8 @@ namespace YoctoProxyAPI
          */
         public string get_ownAddress()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             return _func.get_ownAddress();
         }
@@ -309,10 +306,8 @@ namespace YoctoProxyAPI
          */
         public string get_pairingPin()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             return _func.get_pairingPin();
         }
@@ -341,23 +336,28 @@ namespace YoctoProxyAPI
          */
         public int set_pairingPin(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            if (newval == _PairingPin_INVALID) return YAPI.SUCCESS;
+            if (newval == _PairingPin_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_pairingPin(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>N opaque string if a PIN code has been configured in the device to access</value>
         public string PairingPin
         {
             get
             {
-                if (_func == null) return _PairingPin_INVALID;
-                return (_online ? _pairingPin : _PairingPin_INVALID);
+                if (_func == null) {
+                    return _PairingPin_INVALID;
+                }
+                if (_online) {
+                    return _pairingPin;
+                }
+                return _PairingPin_INVALID;
             }
             set
             {
@@ -368,10 +368,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_pairingPin(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PairingPin_INVALID) return;
-            if (newval == _pairingPin) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PairingPin_INVALID) {
+                return;
+            }
+            if (newval == _pairingPin) {
+                return;
+            }
             _func.set_pairingPin(newval);
             _pairingPin = newval;
         }
@@ -393,10 +401,8 @@ namespace YoctoProxyAPI
          */
         public string get_remoteAddress()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             return _func.get_remoteAddress();
         }
@@ -425,23 +431,28 @@ namespace YoctoProxyAPI
          */
         public int set_remoteAddress(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            if (newval == _RemoteAddress_INVALID) return YAPI.SUCCESS;
+            if (newval == _RemoteAddress_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_remoteAddress(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>MAC-48 address of the remote device to connect to.</value>
         public string RemoteAddress
         {
             get
             {
-                if (_func == null) return _RemoteAddress_INVALID;
-                return (_online ? _remoteAddress : _RemoteAddress_INVALID);
+                if (_func == null) {
+                    return _RemoteAddress_INVALID;
+                }
+                if (_online) {
+                    return _remoteAddress;
+                }
+                return _RemoteAddress_INVALID;
             }
             set
             {
@@ -452,10 +463,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_remoteAddress(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _RemoteAddress_INVALID) return;
-            if (newval == _remoteAddress) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _RemoteAddress_INVALID) {
+                return;
+            }
+            if (newval == _remoteAddress) {
+                return;
+            }
             _func.set_remoteAddress(newval);
             _remoteAddress = newval;
         }
@@ -477,10 +496,8 @@ namespace YoctoProxyAPI
          */
         public string get_remoteName()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             return _func.get_remoteName();
         }
@@ -503,10 +520,8 @@ namespace YoctoProxyAPI
          */
         public int get_mute()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_mute()+1;
@@ -537,24 +552,29 @@ namespace YoctoProxyAPI
          */
         public int set_mute(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            if (newval == _Mute_INVALID) return YAPI.SUCCESS;
+            if (newval == _Mute_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_mute(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>State of the mute function.</value>
         public int Mute
         {
             get
             {
-                if (_func == null) return _Mute_INVALID;
-                return (_online ? _mute : _Mute_INVALID);
+                if (_func == null) {
+                    return _Mute_INVALID;
+                }
+                if (_online) {
+                    return _mute;
+                }
+                return _Mute_INVALID;
             }
             set
             {
@@ -565,10 +585,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_mute(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Mute_INVALID) return;
-            if (newval == _mute) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Mute_INVALID) {
+                return;
+            }
+            if (newval == _mute) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_mute(newval-1);
             _mute = newval;
@@ -591,13 +619,14 @@ namespace YoctoProxyAPI
          */
         public int get_preAmplifier()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            int res = _func.get_preAmplifier();
-            if (res == YAPI.INVALID_INT) res = _PreAmplifier_INVALID;
+            res = _func.get_preAmplifier();
+            if (res == YAPI.INVALID_INT) {
+                res = _PreAmplifier_INVALID;
+            }
             return res;
         }
 
@@ -625,23 +654,28 @@ namespace YoctoProxyAPI
          */
         public int set_preAmplifier(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            if (newval == _PreAmplifier_INVALID) return YAPI.SUCCESS;
+            if (newval == _PreAmplifier_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_preAmplifier(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Audio pre-amplifier volume, in per cents.</value>
         public int PreAmplifier
         {
             get
             {
-                if (_func == null) return _PreAmplifier_INVALID;
-                return (_online ? _preAmplifier : _PreAmplifier_INVALID);
+                if (_func == null) {
+                    return _PreAmplifier_INVALID;
+                }
+                if (_online) {
+                    return _preAmplifier;
+                }
+                return _PreAmplifier_INVALID;
             }
             set
             {
@@ -652,10 +686,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_preAmplifier(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PreAmplifier_INVALID) return;
-            if (newval == _preAmplifier) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PreAmplifier_INVALID) {
+                return;
+            }
+            if (newval == _preAmplifier) {
+                return;
+            }
             _func.set_preAmplifier(newval);
             _preAmplifier = newval;
         }
@@ -677,13 +719,14 @@ namespace YoctoProxyAPI
          */
         public int get_volume()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            int res = _func.get_volume();
-            if (res == YAPI.INVALID_INT) res = _Volume_INVALID;
+            res = _func.get_volume();
+            if (res == YAPI.INVALID_INT) {
+                res = _Volume_INVALID;
+            }
             return res;
         }
 
@@ -709,15 +752,14 @@ namespace YoctoProxyAPI
          */
         public int set_volume(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            if (newval == _Volume_INVALID) return YAPI.SUCCESS;
+            if (newval == _Volume_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_volume(newval);
         }
-
 
         /**
          * <summary>
@@ -739,30 +781,11 @@ namespace YoctoProxyAPI
          */
         public int get_linkState()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_linkState()+1;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int LinkQuality
-        {
-            get
-            {
-                if (_func == null) return _LinkQuality_INVALID;
-                return (_online ? _linkQuality : _LinkQuality_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            value = Regex.Replace(value,"[^-0-9]","");
-            Int32.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _linkQuality);
         }
 
         /**
@@ -783,14 +806,38 @@ namespace YoctoProxyAPI
          */
         public int get_linkQuality()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
-            int res = _func.get_linkQuality();
-            if (res == YAPI.INVALID_INT) res = _LinkQuality_INVALID;
+            res = _func.get_linkQuality();
+            if (res == YAPI.INVALID_INT) {
+                res = _LinkQuality_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Bluetooth receiver signal strength, in pourcents, or 0 if no connection is established.</value>
+        public int LinkQuality
+        {
+            get
+            {
+                if (_func == null) {
+                    return _LinkQuality_INVALID;
+                }
+                if (_online) {
+                    return _linkQuality;
+                }
+                return _LinkQuality_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            value = (YAPI._atoi(value)).ToString();
+            _linkQuality = YAPI._atoi(value);
         }
 
         /**
@@ -810,10 +857,8 @@ namespace YoctoProxyAPI
          */
         public virtual int connect()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             return _func.connect();
         }
@@ -835,10 +880,8 @@ namespace YoctoProxyAPI
          */
         public virtual int disconnect()
         {
-            if (_func == null)
-            {
-                string msg = "No BluetoothLink connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No BluetoothLink connected");
             }
             return _func.disconnect();
         }

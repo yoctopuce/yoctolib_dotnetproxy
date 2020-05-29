@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_carbondioxide_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_carbondioxide_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YCarbonDioxideProxy, the Proxy API for CarbonDioxide
  *
@@ -259,13 +259,14 @@ namespace YoctoProxyAPI
          */
         public int get_abcPeriod()
         {
-            if (_func == null)
-            {
-                string msg = "No CarbonDioxide connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CarbonDioxide connected");
             }
-            int res = _func.get_abcPeriod();
-            if (res == YAPI.INVALID_INT) res = _AbcPeriod_INVALID;
+            res = _func.get_abcPeriod();
+            if (res == YAPI.INVALID_INT) {
+                res = _AbcPeriod_INVALID;
+            }
             return res;
         }
 
@@ -296,23 +297,28 @@ namespace YoctoProxyAPI
          */
         public int set_abcPeriod(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No CarbonDioxide connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CarbonDioxide connected");
             }
-            if (newval == _AbcPeriod_INVALID) return YAPI.SUCCESS;
+            if (newval == _AbcPeriod_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_abcPeriod(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Automatic Baseline Calibration period, in hours. A negative value</value>
         public int AbcPeriod
         {
             get
             {
-                if (_func == null) return _AbcPeriod_INVALID;
-                return (_online ? _abcPeriod : _AbcPeriod_INVALID);
+                if (_func == null) {
+                    return _AbcPeriod_INVALID;
+                }
+                if (_online) {
+                    return _abcPeriod;
+                }
+                return _AbcPeriod_INVALID;
             }
             set
             {
@@ -323,10 +329,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_abcPeriod(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _AbcPeriod_INVALID) return;
-            if (newval == _abcPeriod) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _AbcPeriod_INVALID) {
+                return;
+            }
+            if (newval == _abcPeriod) {
+                return;
+            }
             _func.set_abcPeriod(newval);
             _abcPeriod = newval;
         }
@@ -355,10 +369,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerBaselineCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No CarbonDioxide connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CarbonDioxide connected");
             }
             return _func.triggerBaselineCalibration();
         }
@@ -389,10 +401,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerZeroCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No CarbonDioxide connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CarbonDioxide connected");
             }
             return _func.triggerZeroCalibration();
         }

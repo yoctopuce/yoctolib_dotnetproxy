@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_motor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_motor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YMotorProxy, the Proxy API for Motor
  *
@@ -266,29 +266,6 @@ namespace YoctoProxyAPI
             _failSafeTimeout = _func.get_failSafeTimeout();
         }
 
-        // property with cached value for instant access (advertised value)
-        public int MotorStatus
-        {
-            get
-            {
-                if (_func == null) return _MotorStatus_INVALID;
-                return (_online ? _motorStatus : _MotorStatus_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "IDLE") _motorStatus = 1;
-            if (value == "BRAKE") _motorStatus = 2;
-            if (value == "FORWD") _motorStatus = 3;
-            if (value == "BACKWD") _motorStatus = 4;
-            if (value == "LOVOLT") _motorStatus = 5;
-            if (value == "HICURR") _motorStatus = 6;
-            if (value == "HIHEAT") _motorStatus = 7;
-            if (value == "FAILSF") _motorStatus = 8;
-        }
-
         /**
          * <summary>
          *   Return the controller state.
@@ -322,13 +299,80 @@ namespace YoctoProxyAPI
          */
         public int get_motorStatus()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_motorStatus()+1;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Return the controller state. Possible states are:</value>
+        public int MotorStatus
+        {
+            get
+            {
+                if (_func == null) {
+                    return _MotorStatus_INVALID;
+                }
+                if (_online) {
+                    return _motorStatus;
+                }
+                return _MotorStatus_INVALID;
+            }
+            set
+            {
+                setprop_motorStatus(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_motorStatus(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MotorStatus_INVALID) {
+                return;
+            }
+            if (newval == _motorStatus) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_motorStatus(newval-1);
+            _motorStatus = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "IDLE") {
+                _motorStatus = 1;
+            }
+            if (value == "BRAKE") {
+                _motorStatus = 2;
+            }
+            if (value == "FORWD") {
+                _motorStatus = 3;
+            }
+            if (value == "BACKWD") {
+                _motorStatus = 4;
+            }
+            if (value == "LOVOLT") {
+                _motorStatus = 5;
+            }
+            if (value == "HICURR") {
+                _motorStatus = 6;
+            }
+            if (value == "HIHEAT") {
+                _motorStatus = 7;
+            }
+            if (value == "FAILSF") {
+                _motorStatus = 8;
+            }
         }
 
         /**
@@ -358,15 +402,14 @@ namespace YoctoProxyAPI
          */
         public int set_drivingForce(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _DrivingForce_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_drivingForce(newval);
         }
-
 
         /**
          * <summary>
@@ -385,13 +428,14 @@ namespace YoctoProxyAPI
          */
         public double get_drivingForce()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            double res = _func.get_drivingForce();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_drivingForce();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -419,15 +463,14 @@ namespace YoctoProxyAPI
          */
         public int set_brakingForce(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _BrakingForce_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_brakingForce(newval);
         }
-
 
         /**
          * <summary>
@@ -447,13 +490,14 @@ namespace YoctoProxyAPI
          */
         public double get_brakingForce()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            double res = _func.get_brakingForce();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_brakingForce();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -488,39 +532,13 @@ namespace YoctoProxyAPI
          */
         public int set_cutOffVoltage(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _CutOffVoltage_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_cutOffVoltage(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double CutOffVoltage
-        {
-            get
-            {
-                if (_func == null) return _CutOffVoltage_INVALID;
-                return (_online ? _cutOffVoltage : _CutOffVoltage_INVALID);
-            }
-            set
-            {
-                setprop_cutOffVoltage(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_cutOffVoltage(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _cutOffVoltage) return;
-            _func.set_cutOffVoltage(newval);
-            _cutOffVoltage = newval;
         }
 
         /**
@@ -545,14 +563,54 @@ namespace YoctoProxyAPI
          */
         public double get_cutOffVoltage()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            double res = _func.get_cutOffVoltage();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_cutOffVoltage();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Threshold voltage under which the controller automatically switches to error state</value>
+        public double CutOffVoltage
+        {
+            get
+            {
+                if (_func == null) {
+                    return _CutOffVoltage_INVALID;
+                }
+                if (_online) {
+                    return _cutOffVoltage;
+                }
+                return _CutOffVoltage_INVALID;
+            }
+            set
+            {
+                setprop_cutOffVoltage(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_cutOffVoltage(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CutOffVoltage_INVALID) {
+                return;
+            }
+            if (newval == _cutOffVoltage) {
+                return;
+            }
+            _func.set_cutOffVoltage(newval);
+            _cutOffVoltage = newval;
         }
 
         /**
@@ -575,13 +633,14 @@ namespace YoctoProxyAPI
          */
         public int get_overCurrentLimit()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            int res = _func.get_overCurrentLimit();
-            if (res == YAPI.INVALID_INT) res = _OverCurrentLimit_INVALID;
+            res = _func.get_overCurrentLimit();
+            if (res == YAPI.INVALID_INT) {
+                res = _OverCurrentLimit_INVALID;
+            }
             return res;
         }
 
@@ -613,23 +672,28 @@ namespace YoctoProxyAPI
          */
         public int set_overCurrentLimit(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            if (newval == _OverCurrentLimit_INVALID) return YAPI.SUCCESS;
+            if (newval == _OverCurrentLimit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_overCurrentLimit(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Current threshold (in mA) above which the controller automatically</value>
         public int OverCurrentLimit
         {
             get
             {
-                if (_func == null) return _OverCurrentLimit_INVALID;
-                return (_online ? _overCurrentLimit : _OverCurrentLimit_INVALID);
+                if (_func == null) {
+                    return _OverCurrentLimit_INVALID;
+                }
+                if (_online) {
+                    return _overCurrentLimit;
+                }
+                return _OverCurrentLimit_INVALID;
             }
             set
             {
@@ -640,10 +704,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_overCurrentLimit(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _OverCurrentLimit_INVALID) return;
-            if (newval == _overCurrentLimit) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _OverCurrentLimit_INVALID) {
+                return;
+            }
+            if (newval == _overCurrentLimit) {
+                return;
+            }
             _func.set_overCurrentLimit(newval);
             _overCurrentLimit = newval;
         }
@@ -675,39 +747,13 @@ namespace YoctoProxyAPI
          */
         public int set_frequency(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Frequency_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_frequency(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double Frequency
-        {
-            get
-            {
-                if (_func == null) return _Frequency_INVALID;
-                return (_online ? _frequency : _Frequency_INVALID);
-            }
-            set
-            {
-                setprop_frequency(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_frequency(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _frequency) return;
-            _func.set_frequency(newval);
-            _frequency = newval;
         }
 
         /**
@@ -727,14 +773,54 @@ namespace YoctoProxyAPI
          */
         public double get_frequency()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            double res = _func.get_frequency();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_frequency();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>PWM frequency used to control the motor.</value>
+        public double Frequency
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Frequency_INVALID;
+                }
+                if (_online) {
+                    return _frequency;
+                }
+                return _Frequency_INVALID;
+            }
+            set
+            {
+                setprop_frequency(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_frequency(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Frequency_INVALID) {
+                return;
+            }
+            if (newval == _frequency) {
+                return;
+            }
+            _func.set_frequency(newval);
+            _frequency = newval;
         }
 
         /**
@@ -756,13 +842,14 @@ namespace YoctoProxyAPI
          */
         public int get_starterTime()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            int res = _func.get_starterTime();
-            if (res == YAPI.INVALID_INT) res = _StarterTime_INVALID;
+            res = _func.get_starterTime();
+            if (res == YAPI.INVALID_INT) {
+                res = _StarterTime_INVALID;
+            }
             return res;
         }
 
@@ -792,23 +879,28 @@ namespace YoctoProxyAPI
          */
         public int set_starterTime(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            if (newval == _StarterTime_INVALID) return YAPI.SUCCESS;
+            if (newval == _StarterTime_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_starterTime(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Duration (in ms) during which the motor is driven at low frequency to help</value>
         public int StarterTime
         {
             get
             {
-                if (_func == null) return _StarterTime_INVALID;
-                return (_online ? _starterTime : _StarterTime_INVALID);
+                if (_func == null) {
+                    return _StarterTime_INVALID;
+                }
+                if (_online) {
+                    return _starterTime;
+                }
+                return _StarterTime_INVALID;
             }
             set
             {
@@ -819,10 +911,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_starterTime(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _StarterTime_INVALID) return;
-            if (newval == _starterTime) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _StarterTime_INVALID) {
+                return;
+            }
+            if (newval == _starterTime) {
+                return;
+            }
             _func.set_starterTime(newval);
             _starterTime = newval;
         }
@@ -849,13 +949,14 @@ namespace YoctoProxyAPI
          */
         public int get_failSafeTimeout()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            int res = _func.get_failSafeTimeout();
-            if (res == YAPI.INVALID_INT) res = _FailSafeTimeout_INVALID;
+            res = _func.get_failSafeTimeout();
+            if (res == YAPI.INVALID_INT) {
+                res = _FailSafeTimeout_INVALID;
+            }
             return res;
         }
 
@@ -888,23 +989,28 @@ namespace YoctoProxyAPI
          */
         public int set_failSafeTimeout(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
-            if (newval == _FailSafeTimeout_INVALID) return YAPI.SUCCESS;
+            if (newval == _FailSafeTimeout_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_failSafeTimeout(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Delay in milliseconds allowed for the controller to run autonomously without</value>
         public int FailSafeTimeout
         {
             get
             {
-                if (_func == null) return _FailSafeTimeout_INVALID;
-                return (_online ? _failSafeTimeout : _FailSafeTimeout_INVALID);
+                if (_func == null) {
+                    return _FailSafeTimeout_INVALID;
+                }
+                if (_online) {
+                    return _failSafeTimeout;
+                }
+                return _FailSafeTimeout_INVALID;
             }
             set
             {
@@ -915,10 +1021,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_failSafeTimeout(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _FailSafeTimeout_INVALID) return;
-            if (newval == _failSafeTimeout) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _FailSafeTimeout_INVALID) {
+                return;
+            }
+            if (newval == _failSafeTimeout) {
+                return;
+            }
             _func.set_failSafeTimeout(newval);
             _failSafeTimeout = newval;
         }
@@ -936,10 +1050,8 @@ namespace YoctoProxyAPI
          */
         public virtual int keepALive()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
             return _func.keepALive();
         }
@@ -955,10 +1067,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetStatus()
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
             return _func.resetStatus();
         }
@@ -984,10 +1094,8 @@ namespace YoctoProxyAPI
          */
         public virtual int drivingForceMove(double targetPower, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
             return _func.drivingForceMove(targetPower, delay);
         }
@@ -1013,10 +1121,8 @@ namespace YoctoProxyAPI
          */
         public virtual int brakingForceMove(double targetPower, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No Motor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Motor connected");
             }
             return _func.brakingForceMove(targetPower, delay);
         }

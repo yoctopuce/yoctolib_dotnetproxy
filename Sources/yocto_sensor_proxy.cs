@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_sensor_proxy.cs 40661 2020-05-25 14:42:04Z mvuilleu $
  *
  *  Implements YSensorProxy, the Proxy API for Sensor
  *
@@ -199,6 +199,7 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access
+        /// <value>Last measurement reported by the sensor, according to the update policy specified by UpdateFrequency</value>
         public virtual Double CurrentValue
         {
             get
@@ -209,6 +210,7 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access
+        /// <value>Measuring unit for the sensor</value>
         public virtual string Unit
         {
             get
@@ -220,6 +222,7 @@ namespace YoctoProxyAPI
 
         protected string _updateFrequency = "";
 
+        /// <value>Update policy for the sensor: "auto" for an update at every change, "x/s" for an update x time per second with the instant value, "x/m" or "x/h" for an update x times per minute (resp. hour) with the average value over the latest period.</value>
         public virtual string UpdateFrequency
         {
             get
@@ -355,7 +358,6 @@ namespace YoctoProxyAPI
             if (_updateFrequency == "OFF") _updateFrequency = "auto";
             _logFrequency = _func.get_logFrequency();
             _reportFrequency = _func.get_reportFrequency();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _advMode = _func.get_advMode()+1;
             _resolution = _func.get_resolution();
         }
@@ -377,10 +379,8 @@ namespace YoctoProxyAPI
          */
         public string get_unit()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.get_unit();
         }
@@ -411,13 +411,14 @@ namespace YoctoProxyAPI
          */
         public double get_currentValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            double res = _func.get_currentValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_currentValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -445,15 +446,14 @@ namespace YoctoProxyAPI
          */
         public int set_lowestValue(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _LowestValue_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_lowestValue(newval);
         }
-
 
         /**
          * <summary>
@@ -473,13 +473,14 @@ namespace YoctoProxyAPI
          */
         public double get_lowestValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            double res = _func.get_lowestValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_lowestValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -507,15 +508,14 @@ namespace YoctoProxyAPI
          */
         public int set_highestValue(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _HighestValue_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_highestValue(newval);
         }
-
 
         /**
          * <summary>
@@ -535,13 +535,14 @@ namespace YoctoProxyAPI
          */
         public double get_highestValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            double res = _func.get_highestValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_highestValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -564,13 +565,14 @@ namespace YoctoProxyAPI
          */
         public double get_currentRawValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            double res = _func.get_currentRawValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_currentRawValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -593,10 +595,8 @@ namespace YoctoProxyAPI
          */
         public string get_logFrequency()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.get_logFrequency();
         }
@@ -630,23 +630,28 @@ namespace YoctoProxyAPI
          */
         public int set_logFrequency(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            if (newval == _LogFrequency_INVALID) return YAPI.SUCCESS;
+            if (newval == _LogFrequency_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_logFrequency(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Datalogger recording frequency for this function, or "OFF"</value>
         public string LogFrequency
         {
             get
             {
-                if (_func == null) return _LogFrequency_INVALID;
-                return (_online ? _logFrequency : _LogFrequency_INVALID);
+                if (_func == null) {
+                    return _LogFrequency_INVALID;
+                }
+                if (_online) {
+                    return _logFrequency;
+                }
+                return _LogFrequency_INVALID;
             }
             set
             {
@@ -657,10 +662,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_logFrequency(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _LogFrequency_INVALID) return;
-            if (newval == _logFrequency) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _LogFrequency_INVALID) {
+                return;
+            }
+            if (newval == _logFrequency) {
+                return;
+            }
             _func.set_logFrequency(newval);
             _logFrequency = newval;
         }
@@ -684,10 +697,8 @@ namespace YoctoProxyAPI
          */
         public string get_reportFrequency()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.get_reportFrequency();
         }
@@ -722,23 +733,28 @@ namespace YoctoProxyAPI
          */
         public int set_reportFrequency(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            if (newval == _ReportFrequency_INVALID) return YAPI.SUCCESS;
+            if (newval == _ReportFrequency_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_reportFrequency(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Timed value notification frequency, or "OFF" if timed</value>
         public string ReportFrequency
         {
             get
             {
-                if (_func == null) return _ReportFrequency_INVALID;
-                return (_online ? _reportFrequency : _ReportFrequency_INVALID);
+                if (_func == null) {
+                    return _ReportFrequency_INVALID;
+                }
+                if (_online) {
+                    return _reportFrequency;
+                }
+                return _ReportFrequency_INVALID;
             }
             set
             {
@@ -749,10 +765,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_reportFrequency(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _ReportFrequency_INVALID) return;
-            if (newval == _reportFrequency) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _ReportFrequency_INVALID) {
+                return;
+            }
+            if (newval == _reportFrequency) {
+                return;
+            }
             _func.set_reportFrequency(newval);
             _reportFrequency = newval;
         }
@@ -776,10 +800,8 @@ namespace YoctoProxyAPI
          */
         public int get_advMode()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_advMode()+1;
@@ -810,24 +832,29 @@ namespace YoctoProxyAPI
          */
         public int set_advMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            if (newval == _AdvMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _AdvMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_advMode(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Measuring mode used for the advertised value pushed to the parent hub.</value>
         public int AdvMode
         {
             get
             {
-                if (_func == null) return _AdvMode_INVALID;
-                return (_online ? _advMode : _AdvMode_INVALID);
+                if (_func == null) {
+                    return _AdvMode_INVALID;
+                }
+                if (_online) {
+                    return _advMode;
+                }
+                return _AdvMode_INVALID;
             }
             set
             {
@@ -838,10 +865,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_advMode(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _AdvMode_INVALID) return;
-            if (newval == _advMode) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _AdvMode_INVALID) {
+                return;
+            }
+            if (newval == _advMode) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_advMode(newval-1);
             _advMode = newval;
@@ -872,39 +907,13 @@ namespace YoctoProxyAPI
          */
         public int set_resolution(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Resolution_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_resolution(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double Resolution
-        {
-            get
-            {
-                if (_func == null) return _Resolution_INVALID;
-                return (_online ? _resolution : _Resolution_INVALID);
-            }
-            set
-            {
-                setprop_resolution(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_resolution(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _resolution) return;
-            _func.set_resolution(newval);
-            _resolution = newval;
         }
 
         /**
@@ -927,14 +936,54 @@ namespace YoctoProxyAPI
          */
         public double get_resolution()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            double res = _func.get_resolution();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_resolution();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Resolution of the measured values. The resolution corresponds to the numerical precision</value>
+        public double Resolution
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Resolution_INVALID;
+                }
+                if (_online) {
+                    return _resolution;
+                }
+                return _Resolution_INVALID;
+            }
+            set
+            {
+                setprop_resolution(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_resolution(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Resolution_INVALID) {
+                return;
+            }
+            if (newval == _resolution) {
+                return;
+            }
+            _func.set_resolution(newval);
+            _resolution = newval;
         }
 
         /**
@@ -956,10 +1005,8 @@ namespace YoctoProxyAPI
          */
         public int get_sensorState()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.get_sensorState();
         }
@@ -981,10 +1028,8 @@ namespace YoctoProxyAPI
          */
         public virtual bool isSensorReady()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.isSensorReady();
         }
@@ -1006,12 +1051,10 @@ namespace YoctoProxyAPI
          */
         public virtual YDataLoggerProxy get_dataLogger()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
-            return YoctoProxyManager.FindDataLogger(_func.get_dataLogger().get_serialNumber());
+            return YDataLoggerProxy.FindDataLogger(_func.get_dataLogger().get_serialNumber());
         }
 
         /**
@@ -1029,10 +1072,8 @@ namespace YoctoProxyAPI
          */
         public virtual int startDataLogger()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.startDataLogger();
         }
@@ -1049,10 +1090,8 @@ namespace YoctoProxyAPI
          */
         public virtual int stopDataLogger()
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.stopDataLogger();
         }
@@ -1097,10 +1136,8 @@ namespace YoctoProxyAPI
          */
         public virtual YDataSetProxy get_recordedData(double startTime, double endTime)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return new YDataSetProxy(_func.get_recordedData(startTime, endTime));
         }
@@ -1141,46 +1178,10 @@ namespace YoctoProxyAPI
          */
         public virtual int calibrateFromPoints(double[] rawValues, double[] refValues)
         {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sensor connected");
             }
             return _func.calibrateFromPoints(new List<double>(rawValues), new List<double>(refValues));
-        }
-
-        /**
-         * <summary>
-         *   Retrieves error correction data points previously entered using the method
-         *   <c>calibrateFromPoints</c>.
-         * <para>
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="rawValues">
-         *   array of floating point numbers, that will be filled by the
-         *   function with the raw sensor values for the correction points.
-         * </param>
-         * <param name="refValues">
-         *   array of floating point numbers, that will be filled by the
-         *   function with the desired values for the correction points.
-         * </param>
-         * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public virtual int loadCalibrationPoints(double[] rawValues, double[] refValues)
-        {
-            if (_func == null)
-            {
-                string msg = "No Sensor connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.loadCalibrationPoints(new List<double>(rawValues), new List<double>(refValues));
         }
     }
     //--- (end of generated code: YSensor implementation)

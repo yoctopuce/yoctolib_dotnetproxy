@@ -194,11 +194,27 @@
         </member>
         <member name="M:YoctoProxyAPI.YAPIProxy.FreeAPI">
             <summary>
-              Frees dynamically allocated memory blocks used by the Yoctopuce library.
+              Waits for all pending communications with Yoctopuce devices to be
+              completed then frees dynamically allocated resources used by
+              the Yoctopuce library.
             <para>
-              It is generally not required to call this function, unless you
-              want to free all dynamically allocated memory blocks in order to
-              track a memory leak for instance.
+            </para>
+            <para>
+              From an operating system standpoint, it is generally not required to call
+              this function since the OS will automatically free allocated resources
+              once your program is completed. However there are two situations when
+              you may really want to use that function:
+            </para>
+            <para>
+              - Free all dynamically allocated memory blocks in order to
+              track a memory leak.
+            </para>
+            <para>
+              - Send commands to devices right before the end
+              of the program. Since commands are sent in an asynchronous way
+              the program could exit before all commands are effectively sent.
+            </para>
+            <para>
               You should not call any other library function after calling
               <c>yFreeAPI()</c>, or your program will crash.
             </para>
@@ -302,6 +318,9 @@
               On failure, throws an exception or returns <c>module._Productname_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YModuleProxy.ProductName">
+            <value>Commercial name of the module, as set by the factory.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YModuleProxy.get_productId">
             <summary>
               Returns the USB device identifier of the module.
@@ -316,6 +335,9 @@
             <para>
               On failure, throws an exception or returns <c>module._Productid_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YModuleProxy.ProductId">
+            <value>USB device identifier of the module.</value>
         </member>
         <member name="M:YoctoProxyAPI.YModuleProxy.get_productRelease">
             <summary>
@@ -333,6 +355,9 @@
               On failure, throws an exception or returns <c>module._Productrelease_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YModuleProxy.ProductRelease">
+            <value>Release number of the module hardware, preprogrammed at the factory.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YModuleProxy.get_firmwareRelease">
             <summary>
               Returns the version of the firmware embedded in the module.
@@ -347,6 +372,9 @@
             <para>
               On failure, throws an exception or returns <c>module._Firmwarerelease_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YModuleProxy.FirmwareRelease">
+            <value>Version of the firmware embedded in the module.</value>
         </member>
         <member name="M:YoctoProxyAPI.YModuleProxy.get_persistentSettings">
             <summary>
@@ -402,6 +430,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YModuleProxy.Luminosity">
+            <value>Luminosity of the  module informative LEDs (from 0 to 100).</value>
         </member>
         <member name="M:YoctoProxyAPI.YModuleProxy.get_beacon">
             <summary>
@@ -933,6 +964,15 @@
               a <c>YSensor</c> object allowing you to drive the sensor.
             </returns>
         </member>
+        <member name="P:YoctoProxyAPI.YSensorProxy.CurrentValue">
+            <value>Last measurement reported by the sensor, according to the update policy specified by UpdateFrequency</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YSensorProxy.Unit">
+            <value>Measuring unit for the sensor</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YSensorProxy.UpdateFrequency">
+            <value>Update policy for the sensor: "auto" for an update at every change, "x/s" for an update x time per second with the instant value, "x/m" or "x/h" for an update x times per minute (resp. hour) with the average value over the latest period.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSensorProxy.GetSimilarFunctions">
             <summary>
               Enumerates all functions of type Sensor available on the devices
@@ -1124,6 +1164,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSensorProxy.LogFrequency">
+            <value>Datalogger recording frequency for this function, or "OFF"</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSensorProxy.get_reportFrequency">
             <summary>
               Returns the timed value notification frequency, or "OFF" if timed
@@ -1169,6 +1212,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSensorProxy.ReportFrequency">
+            <value>Timed value notification frequency, or "OFF" if timed</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSensorProxy.get_advMode">
             <summary>
               Returns the measuring mode used for the advertised value pushed to the parent hub.
@@ -1208,6 +1254,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSensorProxy.AdvMode">
+            <value>Measuring mode used for the advertised value pushed to the parent hub.</value>
         </member>
         <member name="M:YoctoProxyAPI.YSensorProxy.set_resolution(System.Double)">
             <summary>
@@ -1249,6 +1298,9 @@
             <para>
               On failure, throws an exception or returns <c>sensor._Resolution_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSensorProxy.Resolution">
+            <value>Resolution of the measured values. The resolution corresponds to the numerical precision</value>
         </member>
         <member name="M:YoctoProxyAPI.YSensorProxy.get_sensorState">
             <summary>
@@ -1391,300 +1443,6 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
-        </member>
-        <member name="M:YoctoProxyAPI.YSensorProxy.loadCalibrationPoints(System.Double[],System.Double[])">
-            <summary>
-              Retrieves error correction data points previously entered using the method
-              <c>calibrateFromPoints</c>.
-            <para>
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="rawValues">
-              array of floating point numbers, that will be filled by the
-              function with the raw sensor values for the correction points.
-            </param>
-            <param name="refValues">
-              array of floating point numbers, that will be filled by the
-              function with the desired values for the correction points.
-            </param>
-            <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.Init(System.String,System.Double,System.Double)">
-            <summary>
-              Retrieves a <c>YDataSet</c> object holding historical data for a
-              sensor given by its name or hardware identifier, for a specified time interval.
-            <para>
-              The measures will be retrieved from the data logger, which must have been turned
-              on at the desired time. Methods of the <c>YDataSet</c>
-              class makes it possible to get an overview of the
-              recorded data, and to load progressively a large set
-              of measures from the data logger.
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="sensorName">
-              logical name or hardware identifier of the sensor
-              for which data logger records are requested.
-            </param>
-            <param name="startTime">
-              the start of the desired measure time interval,
-              as a Unix timestamp, i.e. the number of seconds since
-              January 1, 1970 UTC. The special value 0 can be used
-              to include any measure, without initial limit.
-            </param>
-            <param name="endTime">
-              the end of the desired measure time interval,
-              as a Unix timestamp, i.e. the number of seconds since
-              January 1, 1970 UTC. The special value 0 can be used
-              to include any measure, without ending limit.
-            </param>
-            <returns>
-              an instance of <c>YDataSet</c>, providing access to historical
-              data. Past measures can be loaded progressively
-              using methods from the <c>YDataSet</c> object.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_summaryStartTime">
-            <summary>
-              Returns the start time of the first measure in the data set,
-              relative to the Jan 1, 1970 UTC (Unix timestamp).
-            <para>
-              When the recording rate is higher then 1 sample
-              per second, the timestamp may have a fractional part.
-            </para>
-            </summary>
-            <returns>
-              a floating point number corresponding to the number of seconds
-              between the Jan 1, 1970 UTC and the beginning of this measure.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_summaryEndTime">
-            <summary>
-              Returns the end time of the last measure in the data set,
-              relative to the Jan 1, 1970 UTC (Unix timestamp).
-            <para>
-              When the recording rate is higher then 1 sample
-              per second, the timestamp may have a fractional part.
-            </para>
-            </summary>
-            <returns>
-              a floating point number corresponding to the number of seconds
-              between the Jan 1, 1970 UTC and the beginning of this measure.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_summaryMin">
-            <summary>
-              Returns the smallest value observed during the time interval
-              covered by this data set.
-            <para>
-            </para>
-            </summary>
-            <returns>
-              a floating-point number corresponding to the smallest value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_summaryAvg">
-            <summary>
-              Returns the average value observed during the time interval
-              covered by this data set.
-            <para>
-            </para>
-            </summary>
-            <returns>
-              a floating-point number corresponding to the average value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_summaryMax">
-            <summary>
-              Returns the largest value observed during the time interval
-              covered by this data set.
-            <para>
-            </para>
-            </summary>
-            <returns>
-              a floating-point number corresponding to the largest value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_previewRecordCount">
-            <summary>
-              Returns the number of entries in the preview summarizing this data set
-            </summary>
-            <returns>
-              an integer number corresponding to the number of entries.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_previewStartTimeAt(System.Int32)">
-            <summary>
-              Returns the start time of the specified entry in the preview,
-              relative to the Jan 1, 1970 UTC (Unix timestamp).
-            <para>
-              When the recording rate is higher then 1 sample
-              per second, the timestamp may have a fractional part.
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>PreviewRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating point number corresponding to the number of seconds
-              between the Jan 1, 1970 UTC and the beginning of this measure.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_previewEndTimeAt(System.Int32)">
-            <summary>
-              Returns the end time of the specified entry in the preview,
-              relative to the Jan 1, 1970 UTC (Unix timestamp).
-            <para>
-              When the recording rate is higher then 1 sample
-              per second, the timestamp may have a fractional part.
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>PreviewRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating point number corresponding to the number of seconds
-              between the Jan 1, 1970 UTC and the beginning of this measure.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_previewMinAt(System.Int32)">
-            <summary>
-              Returns the smallest value observed during the time interval
-              covered by the specified entry in the preview.
-            <para>
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>PreviewRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating-point number corresponding to the smallest value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_previewAvgAt(System.Int32)">
-            <summary>
-              Returns the average value observed during the time interval
-              covered by the specified entry in the preview.
-            <para>
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>PreviewRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating-point number corresponding to the average value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_previewMaxAt(System.Int32)">
-            <summary>
-              Returns the largest value observed during the time interval
-              covered by the specified entry in the preview.
-            <para>
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>PreviewRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating-point number corresponding to the largest value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_measuresRecordCount">
-            <summary>
-              Returns the number of measurements currently loaded for this data set.
-            <para>
-              The total number of record is only known when the data set is fully loaded,
-              i.e. when <c>loadMore()</c> has been invoked until the progresss indicator
-              returns 100.
-            </para>
-            </summary>
-            <returns>
-              an integer number corresponding to the number of entries loaded.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_measuresStartTimeAt(System.Int32)">
-            <summary>
-              Returns the start time of the specified entry in the preview,
-              relative to the Jan 1, 1970 UTC (Unix timestamp).
-            <para>
-              When the recording rate is higher then 1 sample
-              per second, the timestamp may have a fractional part.
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>MeasuresRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating point number corresponding to the number of seconds
-              between the Jan 1, 1970 UTC and the beginning of this measure.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_measuresEndTimeAt(System.Int32)">
-            <summary>
-              Returns the end time of the specified entry in the preview,
-              relative to the Jan 1, 1970 UTC (Unix timestamp).
-            <para>
-              When the recording rate is higher then 1 sample
-              per second, the timestamp may have a fractional part.
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>MeasuresRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating point number corresponding to the number of seconds
-              between the Jan 1, 1970 UTC and the beginning of this measure.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_measuresMinAt(System.Int32)">
-            <summary>
-              Returns the smallest value observed during the time interval
-              covered by the specified entry in the preview.
-            <para>
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>MeasuresRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating-point number corresponding to the smallest value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_measuresAvgAt(System.Int32)">
-            <summary>
-              Returns the average value observed during the time interval
-              covered by the specified entry in the preview.
-            <para>
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>MeasuresRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating-point number corresponding to the average value observed.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YDataSetProxy.get_measuresMaxAt(System.Int32)">
-            <summary>
-              Returns the largest value observed during the time interval
-              covered by the specified entry in the preview.
-            <para>
-            </para>
-            </summary>
-            <param name="index">
-              an integer index in the range [<c>0</c>...<c>MeasuresRecordCount</c>-1].
-            </param>
-            <returns>
-              a floating-point number corresponding to the largest value observed.
-            </returns>
         </member>
         <member name="M:YoctoProxyAPI.YDataSetProxy.get_hardwareId">
             <summary>
@@ -1922,63 +1680,6 @@
               On failure, throws an exception or returns an empty array.
             </para>
         </member>
-        <member name="M:YoctoProxyAPI.YConsolidatedDataSetProxy.Init(System.String[],System.Double,System.Double)">
-            <summary>
-              Returns an object holding historical data for multiple
-              sensors, for a specified time interval.
-            <para>
-              The measures will be retrieved from the data logger, which must have been turned
-              on at the desired time. The resulting object makes it possible to load progressively
-              a large set of measures from multiple sensors, consolidating data on the fly
-              to align records based on measurement timestamps.
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="sensorNames">
-              array of logical names or hardware identifiers of the sensors
-              for which data must be loaded from their data logger.
-            </param>
-            <param name="startTime">
-              the start of the desired measure time interval,
-              as a Unix timestamp, i.e. the number of seconds since
-              January 1, 1970 UTC. The special value 0 can be used
-              to include any measure, without initial limit.
-            </param>
-            <param name="endTime">
-              the end of the desired measure time interval,
-              as a Unix timestamp, i.e. the number of seconds since
-              January 1, 1970 UTC. The special value 0 can be used
-              to include any measure, without ending limit.
-            </param>
-            <returns>
-              an instance of <c>YConsolidatedDataSet</c>, providing access to
-              consolidated historical data. Records can be loaded progressively
-              using the <c>YConsolidatedDataSet.nextRecord()</c> method.
-            </returns>
-        </member>
-        <member name="M:YoctoProxyAPI.YConsolidatedDataSetProxy.nextRecord(System.Double[])">
-            <summary>
-              Extracts the next data record from the data logger of all sensors linked to this
-              object.
-            <para>
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="datarec">
-              array of floating point numbers, that will be filled by the
-              function with the timestamp of the measure in first position,
-              followed by the measured value in next positions.
-            </param>
-            <returns>
-              an integer in the range 0 to 100 (percentage of completion),
-              or a negative error code in case of failure.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
         <member name="T:YoctoProxyAPI.YAccelerometerProxy">
             <summary>
               The <c>YAccelerometer</c> class allows you to read and configure Yoctopuce accelerometers.
@@ -2095,6 +1796,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YAccelerometerProxy.Bandwidth">
+            <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
         </member>
         <member name="M:YoctoProxyAPI.YAccelerometerProxy.get_xValue">
             <summary>
@@ -2287,6 +1991,9 @@
               On failure, throws an exception or returns <c>altitude._Qnh_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAltitudeProxy.Qnh">
+            <value>Barometric pressure adjusted to sea level used to compute</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAltitudeProxy.get_technology">
             <summary>
               Returns the technology used by the sesnor to compute
@@ -2400,6 +2107,12 @@
               On failure, throws an exception or returns <c>anbutton._Calibratedvalue_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAnButtonProxy.CalibratedValue">
+            <value>Current calibrated input value (between 0 and 1000, included).</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YAnButtonProxy.IsPressed">
+            <value>True if the input (considered as binary) is active (closed contact), and false otherwise.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAnButtonProxy.get_rawValue">
             <summary>
               Returns the current measured input value as-is (between 0 and 4095, included).
@@ -2452,6 +2165,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAnButtonProxy.AnalogCalibration">
+            <value>Tells if a calibration process is currently ongoing.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAnButtonProxy.get_calibrationMax">
             <summary>
               Returns the maximal value measured during the calibration (between 0 and 4095, included).
@@ -2491,6 +2207,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YAnButtonProxy.CalibrationMax">
+            <value>Maximal value measured during the calibration (between 0 and 4095, included).</value>
         </member>
         <member name="M:YoctoProxyAPI.YAnButtonProxy.get_calibrationMin">
             <summary>
@@ -2532,6 +2251,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAnButtonProxy.CalibrationMin">
+            <value>Minimal value measured during the calibration (between 0 and 4095, included).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAnButtonProxy.get_sensitivity">
             <summary>
               Returns the sensibility for the input (between 1 and 1000) for triggering user callbacks.
@@ -2571,6 +2293,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YAnButtonProxy.Sensitivity">
+            <value>Sensibility for the input (between 1 and 1000) for triggering user callbacks.</value>
         </member>
         <member name="M:YoctoProxyAPI.YAnButtonProxy.get_isPressed">
             <summary>
@@ -2848,31 +2573,6 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
-        <member name="M:YoctoProxyAPI.YArithmeticSensorProxy.loadAuxiliaryFunction(System.String,System.Double[],System.Double[])">
-            <summary>
-              Retrieves the reference points table defining an auxiliary function previously
-              configured using the <c>defineAuxiliaryFunction</c> function.
-            <para>
-            </para>
-            </summary>
-            <param name="name">
-              auxiliary function name, up to 16 characters.
-            </param>
-            <param name="inputValues">
-              array of floating point numbers, that is filled by the function
-              with all the function reference input value.
-            </param>
-            <param name="outputValues">
-              array of floating point numbers, that is filled by the function
-              output value for each of the input value, index by index.
-            </param>
-            <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
         <member name="T:YoctoProxyAPI.YAudioInProxy">
             <summary>
               The <c>YAudioIn</c> class allows you to configure the volume of an audio input.
@@ -2984,6 +2684,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAudioInProxy.Volume">
+            <value>Udio input gain, in per cents.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAudioInProxy.get_mute">
             <summary>
               Returns the state of the mute function.
@@ -3021,6 +2724,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAudioInProxy.Mute">
+            <value>State of the mute function.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAudioInProxy.get_volumeRange">
             <summary>
               Returns the supported volume range.
@@ -3054,6 +2760,9 @@
             <para>
               On failure, throws an exception or returns <c>audioin._Signal_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YAudioInProxy.Signal">
+            <value>Detected input signal level.</value>
         </member>
         <member name="M:YoctoProxyAPI.YAudioInProxy.get_noSignalFor">
             <summary>
@@ -3181,6 +2890,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAudioOutProxy.Volume">
+            <value>Udio output volume, in per cents.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAudioOutProxy.get_mute">
             <summary>
               Returns the state of the mute function.
@@ -3218,6 +2930,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YAudioOutProxy.Mute">
+            <value>State of the mute function.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAudioOutProxy.get_volumeRange">
             <summary>
               Returns the supported volume range.
@@ -3251,6 +2966,9 @@
             <para>
               On failure, throws an exception or returns <c>audioout._Signal_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YAudioOutProxy.Signal">
+            <value>Detected output current level.</value>
         </member>
         <member name="M:YoctoProxyAPI.YAudioOutProxy.get_noSignalFor">
             <summary>
@@ -3399,6 +3117,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YBluetoothLinkProxy.PairingPin">
+            <value>N opaque string if a PIN code has been configured in the device to access</value>
+        </member>
         <member name="M:YoctoProxyAPI.YBluetoothLinkProxy.get_remoteAddress">
             <summary>
               Returns the MAC-48 address of the remote device to connect to.
@@ -3435,6 +3156,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YBluetoothLinkProxy.RemoteAddress">
+            <value>MAC-48 address of the remote device to connect to.</value>
         </member>
         <member name="M:YoctoProxyAPI.YBluetoothLinkProxy.get_remoteName">
             <summary>
@@ -3490,6 +3214,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YBluetoothLinkProxy.Mute">
+            <value>State of the mute function.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YBluetoothLinkProxy.get_preAmplifier">
             <summary>
               Returns the audio pre-amplifier volume, in per cents.
@@ -3526,6 +3253,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YBluetoothLinkProxy.PreAmplifier">
+            <value>Audio pre-amplifier volume, in per cents.</value>
         </member>
         <member name="M:YoctoProxyAPI.YBluetoothLinkProxy.get_volume">
             <summary>
@@ -3595,6 +3325,9 @@
             <para>
               On failure, throws an exception or returns <c>bluetoothlink._Linkquality_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YBluetoothLinkProxy.LinkQuality">
+            <value>Bluetooth receiver signal strength, in pourcents, or 0 if no connection is established.</value>
         </member>
         <member name="M:YoctoProxyAPI.YBluetoothLinkProxy.connect">
             <summary>
@@ -3739,6 +3472,9 @@
               On failure, throws an exception or returns <c>buzzer._Frequency_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YBuzzerProxy.Frequency">
+            <value>Frequency of the signal sent to the buzzer/speaker.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YBuzzerProxy.get_volume">
             <summary>
               Returns the volume of the signal sent to the buzzer/speaker.
@@ -3776,6 +3512,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YBuzzerProxy.Volume">
+            <value>Volume of the signal sent to the buzzer/speaker.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YBuzzerProxy.get_playSeqSize">
             <summary>
               Returns the current length of the playing sequence.
@@ -3805,6 +3544,9 @@
             <para>
               On failure, throws an exception or returns <c>buzzer._Playseqmaxsize_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YBuzzerProxy.PlaySeqMaxSize">
+            <value>Maximum length of the playing sequence.</value>
         </member>
         <member name="M:YoctoProxyAPI.YBuzzerProxy.get_playSeqSignature">
             <summary>
@@ -4165,6 +3907,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YCarbonDioxideProxy.AbcPeriod">
+            <value>Automatic Baseline Calibration period, in hours. A negative value</value>
+        </member>
         <member name="M:YoctoProxyAPI.YCarbonDioxideProxy.triggerBaselineCalibration">
             <summary>
               Triggers a baseline calibration at standard CO2 ambiant level (400ppm).
@@ -4302,6 +4047,12 @@
               On failure, throws an exception or returns <c>cellular._Linkquality_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.LinkQuality">
+            <value>Link quality, expressed in percent.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.CellOperator">
+            <value>Cell operator currently in use.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.get_cellOperator">
             <summary>
               Returns the name of the cell operator currently in use.
@@ -4342,8 +4093,9 @@
             </summary>
             <returns>
               a value among <c>cellular._Celltype_GPRS</c>, <c>cellular._Celltype_EGPRS</c>,
-              <c>cellular._Celltype_WCDMA</c>, <c>cellular._Celltype_HSDPA</c>, <c>cellular._Celltype_NONE</c>
-              and <c>cellular._Celltype_CDMA</c>
+              <c>cellular._Celltype_WCDMA</c>, <c>cellular._Celltype_HSDPA</c>, <c>cellular._Celltype_NONE</c>,
+              <c>cellular._Celltype_CDMA</c>, <c>cellular._Celltype_LTE_M</c>, <c>cellular._Celltype_NB_IOT</c>
+              and <c>cellular._Celltype_EC_GSM_IOT</c>
             </returns>
             <para>
               On failure, throws an exception or returns <c>cellular._Celltype_INVALID</c>.
@@ -4351,18 +4103,19 @@
         </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.get_imsi">
             <summary>
-              Returns an opaque string if a PIN code has been configured in the device to access
-              the SIM card, or an empty string if none has been configured or if the code provided
-              was rejected by the SIM card.
+              Returns the International Mobile Subscriber Identity (MSI) that uniquely identifies
+              the SIM card.
             <para>
+              The first 3 digits represent the mobile country code (MCC), which
+              is followed by the mobile network code (MNC), either 2-digit (European standard)
+              or 3-digit (North American standard)
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a string corresponding to an opaque string if a PIN code has been configured in the device to access
-              the SIM card, or an empty string if none has been configured or if the code provided
-              was rejected by the SIM card
+              a string corresponding to the International Mobile Subscriber Identity (MSI) that uniquely identifies
+              the SIM card
             </returns>
             <para>
               On failure, throws an exception or returns <c>cellular._Imsi_INVALID</c>.
@@ -4433,6 +4186,59 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.Pin">
+            <value>N opaque string if a PIN code has been configured in the device to access</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YCellularProxy.get_radioConfig">
+            <summary>
+              Returns the type of protocol used over the serial line, as a string.
+            <para>
+              Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "Frame:[timeout]ms" for binary messages separated by a delay time,
+              "Char" for a continuous ASCII stream or
+              "Byte" for a continuous binary stream.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the type of protocol used over the serial line, as a string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>cellular._Radioconfig_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YCellularProxy.set_radioConfig(System.String)">
+            <summary>
+              Changes the type of protocol used over the serial line.
+            <para>
+              Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "Frame:[timeout]ms" for binary messages separated by a delay time,
+              "Char" for a continuous ASCII stream or
+              "Byte" for a continuous binary stream.
+              The suffix "/[wait]ms" can be added to reduce the transmit rate so that there
+              is always at lest the specified number of milliseconds between each bytes sent.
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a string corresponding to the type of protocol used over the serial line
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.RadioConfig">
+            <value>Type of protocol used over the serial line, as a string.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.get_lockedOperator">
             <summary>
               Returns the name of the only cell operator to use if automatic choice is disabled,
@@ -4476,6 +4282,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.LockedOperator">
+            <value>Name of the only cell operator to use if automatic choice is disabled,</value>
         </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.get_airplaneMode">
             <summary>
@@ -4562,6 +4371,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.EnableData">
+            <value>Condition for enabling IP data services (GPRS).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.get_apn">
             <summary>
               Returns the Access Point Name (APN) to be used, if needed.
@@ -4600,6 +4412,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.Apn">
+            <value>Access Point Name (APN) to be used, if needed.</value>
         </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.get_apnSecret">
             <summary>
@@ -4655,6 +4470,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YCellularProxy.PingInterval">
+            <value>Automated connectivity check interval, in seconds.</value>
         </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.get_dataSent">
             <summary>
@@ -4950,6 +4768,12 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YColorLedProxy.RgbColor">
+            <value>Current RGB color of the LED.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorLedProxy.HslColor">
+            <value>Current HSL color of the LED.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YColorLedProxy.get_hslColor">
             <summary>
               Returns the current HSL color of the LED.
@@ -5069,6 +4893,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YColorLedProxy.RgbColorAtPowerOn">
+            <value>Configured color to be displayed when the module is turned on.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YColorLedProxy.get_blinkSeqSize">
             <summary>
               Returns the current length of the blinking sequence.
@@ -5098,6 +4925,9 @@
             <para>
               On failure, throws an exception or returns <c>colorled._Blinkseqmaxsize_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorLedProxy.BlinkSeqMaxSize">
+            <value>Maximum length of the blinking sequence.</value>
         </member>
         <member name="M:YoctoProxyAPI.YColorLedProxy.get_blinkSeqSignature">
             <summary>
@@ -5309,6 +5139,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YColorLedClusterProxy.ActiveLedCount">
+            <value>Number of LEDs currently handled by the device.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YColorLedClusterProxy.get_ledType">
             <summary>
               Returns the RGB LED type currently handled by the device.
@@ -5348,6 +5181,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YColorLedClusterProxy.LedType">
+            <value>RGB LED type currently handled by the device.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YColorLedClusterProxy.get_maxLedCount">
             <summary>
               Returns the maximum number of LEDs that the device can handle.
@@ -5362,6 +5198,9 @@
             <para>
               On failure, throws an exception or returns <c>colorledcluster._Maxledcount_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorLedClusterProxy.MaxLedCount">
+            <value>Maximum number of LEDs that the device can handle.</value>
         </member>
         <member name="M:YoctoProxyAPI.YColorLedClusterProxy.get_blinkSeqMaxCount">
             <summary>
@@ -5378,6 +5217,9 @@
               On failure, throws an exception or returns <c>colorledcluster._Blinkseqmaxcount_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YColorLedClusterProxy.BlinkSeqMaxCount">
+            <value>Maximum number of sequences that the device can handle.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YColorLedClusterProxy.get_blinkSeqMaxSize">
             <summary>
               Returns the maximum length of sequences.
@@ -5392,6 +5234,9 @@
             <para>
               On failure, throws an exception or returns <c>colorledcluster._Blinkseqmaxsize_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorLedClusterProxy.BlinkSeqMaxSize">
+            <value>Maximum length of sequences.</value>
         </member>
         <member name="M:YoctoProxyAPI.YColorLedClusterProxy.set_rgbColor(System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -6354,6 +6199,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YCompassProxy.Bandwidth">
+            <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YCompassProxy.get_magneticHeading">
             <summary>
               Returns the magnetic heading, regardless of the configured bearing.
@@ -6488,6 +6336,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YCurrentProxy.Enabled">
+            <value>Activation state of this input.</value>
+        </member>
         <member name="T:YoctoProxyAPI.YCurrentLoopOutputProxy">
             <summary>
               The <c>YCurrentLoopOutput</c> class allows you to drive a 4-20mA output
@@ -6602,6 +6453,12 @@
               On failure, throws an exception or returns <c>currentloopoutput._Current_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YCurrentLoopOutputProxy.Current">
+            <value>Loop current set point in mA.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YCurrentLoopOutputProxy.LoopPower">
+            <value>POWEROK when the loop is powered, NOPWR when the loop is not powered, LOWPWR when the loop is not powered enough to maintain requested current.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YCurrentLoopOutputProxy.set_currentAtStartUp(System.Double)">
             <summary>
               Changes the loop current at device start up.
@@ -6638,6 +6495,9 @@
             <para>
               On failure, throws an exception or returns <c>currentloopoutput._Currentatstartup_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YCurrentLoopOutputProxy.CurrentAtStartUp">
+            <value>Current in the loop at device startup, in mA.</value>
         </member>
         <member name="M:YoctoProxyAPI.YCurrentLoopOutputProxy.get_loopPower">
             <summary>
@@ -6824,6 +6684,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDaisyChainProxy.RequiredChildCount">
+            <value>Number of child nodes expected in normal conditions.</value>
+        </member>
         <member name="T:YoctoProxyAPI.YDataLoggerProxy">
             <summary>
               A non-volatile memory for storing ongoing measured data is available on most Yoctopuce
@@ -6994,6 +6857,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDataLoggerProxy.Recording">
+            <value>Current activation state of the data logger.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDataLoggerProxy.get_autoStart">
             <summary>
               Returns the default activation state of the data logger on power up.
@@ -7035,6 +6901,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDataLoggerProxy.AutoStart">
+            <value>Default activation state of the data logger on power up.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDataLoggerProxy.get_beaconDriven">
             <summary>
               Returns true if the data logger is synchronised with the localization beacon.
@@ -7073,6 +6942,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDataLoggerProxy.BeaconDriven">
+            <value>True if the data logger is synchronised with the localization beacon.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDataLoggerProxy.get_usage">
             <summary>
@@ -7259,6 +7131,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDigitalIOProxy.PortState">
+            <value>Digital IO port state as an integer with each bit</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDigitalIOProxy.get_portDirection">
             <summary>
               Returns the I/O direction of all channels of the port (bitmap): 0 makes a bit an input, 1 makes it an output.
@@ -7296,6 +7171,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDigitalIOProxy.PortDirection">
+            <value>I/O direction of all channels of the port (bitmap): 0 makes a bit an input, 1 makes it an output.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDigitalIOProxy.get_portOpenDrain">
             <summary>
@@ -7336,6 +7214,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDigitalIOProxy.PortOpenDrain">
+            <value>Electrical interface for each bit of the port. For each bit set to 0  the matching I/O works in the regular,</value>
         </member>
         <member name="M:YoctoProxyAPI.YDigitalIOProxy.get_portPolarity">
             <summary>
@@ -7378,6 +7259,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDigitalIOProxy.PortPolarity">
+            <value>Polarity of all the bits of the port.  For each bit set to 0, the matching I/O works the regular,</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDigitalIOProxy.get_portDiags">
             <summary>
               Returns the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only).
@@ -7411,6 +7295,9 @@
             <para>
               On failure, throws an exception or returns <c>digitalio._Portsize_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDigitalIOProxy.PortSize">
+            <value>Number of bits (i.e. channels)implemented in the I/O port.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDigitalIOProxy.get_outputVoltage">
             <summary>
@@ -7449,6 +7336,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDigitalIOProxy.OutputVoltage">
+            <value>Voltage source used to drive output bits.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDigitalIOProxy.set_bitState(System.Int32,System.Int32)">
             <summary>
@@ -7734,25 +7624,6 @@
               a <c>YDisplay</c> object allowing you to drive the display.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YDisplayProxy.get_displayLayer(System.Int32)">
-            <summary>
-              Returns a YDisplayLayer object that can be used to draw on the specified
-              layer.
-            <para>
-              The content is displayed only when the layer is active on the
-              screen (and not masked by other overlapping layers).
-            </para>
-            </summary>
-            <param name="layerId">
-              the identifier of the layer (a number in range 0..layerCount-1)
-            </param>
-            <returns>
-              an <c>YDisplayLayer</c> object
-            </returns>
-            <para>
-              On failure, throws an exception or returns <c>null</c>.
-            </para>
-        </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.GetSimilarFunctions">
             <summary>
               Enumerates all functions of type Display available on the devices
@@ -7842,6 +7713,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.StartupSeq">
+            <value>Name of the sequence to play when the displayed is powered on.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_brightness">
             <summary>
               Returns the luminosity of the  module informative LEDs (from 0 to 100).
@@ -7879,6 +7753,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.Brightness">
+            <value>Luminosity of the  module informative LEDs (from 0 to 100).</value>
         </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_orientation">
             <summary>
@@ -7920,6 +7797,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.Orientation">
+            <value>Currently selected display orientation.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_displayWidth">
             <summary>
               Returns the display width, in pixels.
@@ -7935,6 +7815,9 @@
               On failure, throws an exception or returns <c>display._Displaywidth_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.DisplayWidth">
+            <value>Display width, in pixels.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_displayHeight">
             <summary>
               Returns the display height, in pixels.
@@ -7949,6 +7832,9 @@
             <para>
               On failure, throws an exception or returns <c>display._Displayheight_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.DisplayHeight">
+            <value>Display height, in pixels.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_displayType">
             <summary>
@@ -7966,6 +7852,9 @@
               On failure, throws an exception or returns <c>display._Displaytype_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.DisplayType">
+            <value>Display type: monochrome, gray levels or full color.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_layerWidth">
             <summary>
               Returns the width of the layers to draw on, in pixels.
@@ -7980,6 +7869,9 @@
             <para>
               On failure, throws an exception or returns <c>display._Layerwidth_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.LayerWidth">
+            <value>Width of the layers to draw on, in pixels.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_layerHeight">
             <summary>
@@ -7996,6 +7888,9 @@
               On failure, throws an exception or returns <c>display._Layerheight_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.LayerHeight">
+            <value>Height of the layers to draw on, in pixels.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.get_layerCount">
             <summary>
               Returns the number of available layers to draw on.
@@ -8010,6 +7905,9 @@
             <para>
               On failure, throws an exception or returns <c>display._Layercount_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDisplayProxy.LayerCount">
+            <value>Number of available layers to draw on.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDisplayProxy.resetAll">
             <summary>
@@ -8301,6 +8199,9 @@
               On failure, throws an exception or returns <c>dualpower._Powerstate_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YDualPowerProxy.PowerState">
+            <value>Current power source for module functions that require lots of current.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YDualPowerProxy.get_powerControl">
             <summary>
               Returns the selected power source for module functions that require lots of current.
@@ -8340,6 +8241,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YDualPowerProxy.PowerControl">
+            <value>Selected power source for module functions that require lots of current.</value>
         </member>
         <member name="M:YoctoProxyAPI.YDualPowerProxy.get_extVoltage">
             <summary>
@@ -8419,20 +8323,6 @@
               a <c>YFiles</c> object allowing you to drive the filesystem.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YFilesProxy.get_filenames">
-            <summary>
-              Returns an array of strings that lists files currently loaded
-              in the filesystem.
-            <para>
-            </para>
-            </summary>
-            <returns>
-              an array of <c>string</c> objects, containing the file names.
-            </returns>
-            <para>
-              On failure, throws an exception.
-            </para>
-        </member>
         <member name="M:YoctoProxyAPI.YFilesProxy.GetSimilarFunctions">
             <summary>
               Enumerates all functions of type Files available on the devices
@@ -8462,6 +8352,9 @@
             <para>
               On failure, throws an exception or returns <c>files._Filescount_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YFilesProxy.FilesCount">
+            <value>Number of files currently loaded in the filesystem.</value>
         </member>
         <member name="M:YoctoProxyAPI.YFilesProxy.get_freeSpace">
             <summary>
@@ -8716,6 +8609,9 @@
               On failure, throws an exception or returns <c>genericsensor._Signalunit_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YGenericSensorProxy.SignalUnit">
+            <value>Measuring unit of the electrical signal used by the sensor.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YGenericSensorProxy.get_signalRange">
             <summary>
               Returns the input signal range used by the sensor.
@@ -8764,6 +8660,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YGenericSensorProxy.SignalRange">
+            <value>Input signal range used by the sensor.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YGenericSensorProxy.get_valueRange">
             <summary>
               Returns the physical value range measured by the sensor.
@@ -8809,6 +8708,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YGenericSensorProxy.ValueRange">
+            <value>Physical value range measured by the sensor.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YGenericSensorProxy.set_signalBias(System.Double)">
             <summary>
               Changes the electric signal bias for zero shift adjustment.
@@ -8849,6 +8751,9 @@
             <para>
               On failure, throws an exception or returns <c>genericsensor._Signalbias_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YGenericSensorProxy.SignalBias">
+            <value>Electric signal bias for zero shift adjustment.</value>
         </member>
         <member name="M:YoctoProxyAPI.YGenericSensorProxy.get_signalSampling">
             <summary>
@@ -8903,6 +8808,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YGenericSensorProxy.SignalSampling">
+            <value>Electric signal sampling method to use.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YGenericSensorProxy.get_enabled">
             <summary>
               Returns the activation state of this input.
@@ -8944,6 +8852,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YGenericSensorProxy.Enabled">
+            <value>Activation state of this input.</value>
         </member>
         <member name="M:YoctoProxyAPI.YGenericSensorProxy.zeroAdjust">
             <summary>
@@ -9072,6 +8983,12 @@
               On failure, throws an exception or returns <c>gps._Satcount_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YGpsProxy.SatCount">
+            <value>Total count of satellites used to compute GPS position.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YGpsProxy.IsFixed">
+            <value>True if the receiver has found enough satellites to work.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YGpsProxy.get_satPerConst">
             <summary>
               Returns the count of visible satellites per constellation encoded
@@ -9145,6 +9062,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YGpsProxy.CoordSystem">
+            <value>Representation system used for positioning data.</value>
         </member>
         <member name="M:YoctoProxyAPI.YGpsProxy.get_constellation">
             <summary>
@@ -9360,6 +9280,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YGpsProxy.UtcOffset">
+            <value>Number of seconds between current time and UTC time (time zone).</value>
+        </member>
         <member name="T:YoctoProxyAPI.YGroundSpeedProxy">
             <summary>
               The <c>YGroundSpeed</c> class allows you to read and configure Yoctopuce ground speed sensors.
@@ -9553,6 +9476,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YGyroProxy.Bandwidth">
+            <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
         </member>
         <member name="M:YoctoProxyAPI.YGyroProxy.get_xValue">
             <summary>
@@ -9859,6 +9785,12 @@
             <para>
               On failure, throws an exception or returns <c>hubport._Portstate_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YHubPortProxy.PortState">
+            <value>Current state of the YoctoHub port.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YHubPortProxy.Enabled">
+            <value>True if the port output is enabled.</value>
         </member>
         <member name="M:YoctoProxyAPI.YHubPortProxy.get_baudRate">
             <summary>
@@ -10253,6 +10185,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YI2cPortProxy.StartupJob">
+            <value>Job file to use when the device is powered on.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.get_jobMaxTask">
             <summary>
               Returns the maximum number of tasks in a job that the device can handle.
@@ -10268,6 +10203,9 @@
               On failure, throws an exception or returns <c>i2cport._Jobmaxtask_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YI2cPortProxy.JobMaxTask">
+            <value>Maximum number of tasks in a job that the device can handle.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.get_jobMaxSize">
             <summary>
               Returns maximum size allowed for job files.
@@ -10282,6 +10220,9 @@
             <para>
               On failure, throws an exception or returns <c>i2cport._Jobmaxsize_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YI2cPortProxy.JobMaxSize">
+            <value>Maximum size allowed for job files.</value>
         </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.get_protocol">
             <summary>
@@ -10328,6 +10269,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YI2cPortProxy.Protocol">
+            <value>Type of protocol used to send I2C messages, as a string.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.get_i2cVoltageLevel">
             <summary>
               Returns the voltage level used on the I2C bus.
@@ -10366,6 +10310,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YI2cPortProxy.I2cVoltageLevel">
+            <value>Voltage level used on the I2C bus.</value>
         </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.get_i2cMode">
             <summary>
@@ -10415,6 +10362,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YI2cPortProxy.I2cMode">
+            <value>I2C port communication parameters, as a string such as</value>
         </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.readLine">
             <summary>
@@ -11042,6 +10992,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YLedProxy.Luminosity">
+            <value>Current LED intensity (in per cent).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YLedProxy.get_blinking">
             <summary>
               Returns the current LED signaling mode.
@@ -11080,6 +11033,12 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YLedProxy.Blinking">
+            <value>Current LED signaling mode.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YLedProxy.Power">
+            <value>Current LED state.</value>
         </member>
         <member name="T:YoctoProxyAPI.YLightSensorProxy">
             <summary>
@@ -11229,6 +11188,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YLightSensorProxy.MeasureType">
+            <value>Type of light measure.</value>
         </member>
         <member name="T:YoctoProxyAPI.YLongitudeProxy">
             <summary>
@@ -11428,6 +11390,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YMagnetometerProxy.Bandwidth">
+            <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YMagnetometerProxy.get_xValue">
             <summary>
               Returns the X component of the magnetic field, as a floating point number.
@@ -11562,6 +11527,9 @@
             <para>
               On failure, throws an exception or returns <c>messagebox._Slotsinuse_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMessageBoxProxy.SlotsInUse">
+            <value>Number of message storage slots currently in use.</value>
         </member>
         <member name="M:YoctoProxyAPI.YMessageBoxProxy.get_slotsCount">
             <summary>
@@ -11854,6 +11822,9 @@
               On failure, throws an exception or returns <c>motor._Motorstatus_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YMotorProxy.MotorStatus">
+            <value>Return the controller state. Possible states are:</value>
+        </member>
         <member name="M:YoctoProxyAPI.YMotorProxy.set_drivingForce(System.Double)">
             <summary>
               Changes immediately the power sent to the motor.
@@ -11981,6 +11952,9 @@
               On failure, throws an exception or returns <c>motor._Cutoffvoltage_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YMotorProxy.CutOffVoltage">
+            <value>Threshold voltage under which the controller automatically switches to error state</value>
+        </member>
         <member name="M:YoctoProxyAPI.YMotorProxy.get_overCurrentLimit">
             <summary>
               Returns the current threshold (in mA) above which the controller automatically
@@ -12025,6 +11999,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YMotorProxy.OverCurrentLimit">
+            <value>Current threshold (in mA) above which the controller automatically</value>
+        </member>
         <member name="M:YoctoProxyAPI.YMotorProxy.set_frequency(System.Double)">
             <summary>
               Changes the PWM frequency used to control the motor.
@@ -12064,6 +12041,9 @@
             <para>
               On failure, throws an exception or returns <c>motor._Frequency_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMotorProxy.Frequency">
+            <value>PWM frequency used to control the motor.</value>
         </member>
         <member name="M:YoctoProxyAPI.YMotorProxy.get_starterTime">
             <summary>
@@ -12105,6 +12085,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMotorProxy.StarterTime">
+            <value>Duration (in ms) during which the motor is driven at low frequency to help</value>
         </member>
         <member name="M:YoctoProxyAPI.YMotorProxy.get_failSafeTimeout">
             <summary>
@@ -12152,6 +12135,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMotorProxy.FailSafeTimeout">
+            <value>Delay in milliseconds allowed for the controller to run autonomously without</value>
         </member>
         <member name="M:YoctoProxyAPI.YMotorProxy.keepALive">
             <summary>
@@ -12583,6 +12569,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YMultiCellWeighScaleProxy.CellCount">
+            <value>Number of load cells in use.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YMultiCellWeighScaleProxy.get_excitation">
             <summary>
               Returns the current load cell bridge excitation method.
@@ -12621,6 +12610,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMultiCellWeighScaleProxy.Excitation">
+            <value>Current load cell bridge excitation method.</value>
         </member>
         <member name="M:YoctoProxyAPI.YMultiCellWeighScaleProxy.set_tempAvgAdaptRatio(System.Double)">
             <summary>
@@ -12667,6 +12659,9 @@
               On failure, throws an exception or returns <c>multicellweighscale._Tempavgadaptratio_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YMultiCellWeighScaleProxy.TempAvgAdaptRatio">
+            <value>Averaged temperature update rate, in per mille.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YMultiCellWeighScaleProxy.set_tempChgAdaptRatio(System.Double)">
             <summary>
               Changes the temperature change update rate, in per mille.
@@ -12709,6 +12704,9 @@
             <para>
               On failure, throws an exception or returns <c>multicellweighscale._Tempchgadaptratio_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMultiCellWeighScaleProxy.TempChgAdaptRatio">
+            <value>Temperature change update rate, in per mille.</value>
         </member>
         <member name="M:YoctoProxyAPI.YMultiCellWeighScaleProxy.get_compTempAvg">
             <summary>
@@ -12797,6 +12795,9 @@
             <para>
               On failure, throws an exception or returns <c>multicellweighscale._Zerotracking_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMultiCellWeighScaleProxy.ZeroTracking">
+            <value>Zero tracking threshold value. When this threshold is larger than</value>
         </member>
         <member name="M:YoctoProxyAPI.YMultiCellWeighScaleProxy.tare">
             <summary>
@@ -12950,6 +12951,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMultiSensControllerProxy.NSensors">
+            <value>Number of sensors to poll.</value>
         </member>
         <member name="M:YoctoProxyAPI.YMultiSensControllerProxy.get_maxSensors">
             <summary>
@@ -13126,6 +13130,12 @@
               On failure, throws an exception or returns <c>network._Readiness_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.Readiness">
+            <value>Current established working mode of the network interface.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.IpAddress">
+            <value>IP address currently in use by the device.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_macAddress">
             <summary>
               Returns the MAC address of the network interface.
@@ -13142,6 +13152,9 @@
             <para>
               On failure, throws an exception or returns <c>network._Macaddress_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.MacAddress">
+            <value>MAC address of the network interface. The MAC address is also available on a sticker</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_ipAddress">
             <summary>
@@ -13256,6 +13269,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.PrimaryDNS">
+            <value>IP address of the primary name server to be used by the module.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_secondaryDNS">
             <summary>
               Returns the IP address of the secondary name server to be used by the module.
@@ -13292,6 +13308,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.SecondaryDNS">
+            <value>IP address of the secondary name server to be used by the module.</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_ntpServer">
             <summary>
@@ -13330,6 +13349,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.NtpServer">
+            <value>IP address of the NTP server to be used by the device.</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_userPassword">
             <summary>
@@ -13373,6 +13395,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.UserPassword">
+            <value>Hash string if a password has been set for "user" user,</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_adminPassword">
             <summary>
               Returns a hash string if a password has been set for user "admin",
@@ -13415,6 +13440,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.AdminPassword">
+            <value>Hash string if a password has been set for user "admin",</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_httpPort">
             <summary>
               Returns the TCP port used to serve the hub web UI.
@@ -13455,6 +13483,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.HttpPort">
+            <value>TCP port used to serve the hub web UI.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_defaultPage">
             <summary>
               Returns the HTML page to serve for the URL "/"" of the hub.
@@ -13494,6 +13525,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.DefaultPage">
+            <value>HTML page to serve for the URL "/"" of the hub.</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_discoverable">
             <summary>
@@ -13537,6 +13571,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.Discoverable">
+            <value>Activation state of the multicast announce protocols to allow easy</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_wwwWatchdogDelay">
             <summary>
@@ -13583,6 +13620,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.WwwWatchdogDelay">
+            <value>Allowed downtime of the WWW link (in seconds) before triggering an automated</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackUrl">
             <summary>
               Returns the callback URL to notify of significant state changes.
@@ -13619,6 +13659,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackUrl">
+            <value>Callback URL to notify of significant state changes.</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackMethod">
             <summary>
@@ -13660,6 +13703,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackMethod">
+            <value>HTTP method used to notify callbacks for significant state changes.</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackEncoding">
             <summary>
@@ -13712,6 +13758,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackEncoding">
+            <value>Encoding standard to use for representing notification values.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackCredentials">
             <summary>
               Returns a hashed version of the notification callback credentials if set,
@@ -13757,6 +13806,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackCredentials">
+            <value>Hashed version of the notification callback credentials if set,</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.callbackLogin(System.String,System.String)">
             <summary>
@@ -13821,6 +13873,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackInitialDelay">
+            <value>Initial waiting time before first callback notifications, in seconds.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackSchedule">
             <summary>
               Returns the HTTP callback schedule strategy, as a text string.
@@ -13858,6 +13913,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackSchedule">
+            <value>HTTP callback schedule strategy, as a text string.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackMinDelay">
             <summary>
               Returns the minimum waiting time between two HTTP callbacks, in seconds.
@@ -13894,6 +13952,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackMinDelay">
+            <value>Minimum waiting time between two HTTP callbacks, in seconds.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackMaxDelay">
             <summary>
               Returns the waiting time between two HTTP callbacks when there is nothing new.
@@ -13929,6 +13990,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackMaxDelay">
+            <value>Waiting time between two HTTP callbacks when there is nothing new.</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_poeCurrent">
             <summary>
@@ -14437,6 +14501,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YPowerOutputProxy.Voltage">
+            <value>Voltage on the power output featured by the module.</value>
+        </member>
         <member name="T:YoctoProxyAPI.YPowerSupplyProxy">
             <summary>
               The <c>YPowerSupply</c> class allows you to drive a Yoctopuce power supply.
@@ -14769,6 +14836,9 @@
               On failure, throws an exception or returns <c>powersupply._Voltageatstartup_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YPowerSupplyProxy.VoltageAtStartUp">
+            <value>Selected voltage set point at device startup, in V.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YPowerSupplyProxy.set_currentAtStartUp(System.Double)">
             <summary>
               Changes the current limit at device start up.
@@ -14805,6 +14875,9 @@
             <para>
               On failure, throws an exception or returns <c>powersupply._Currentatstartup_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YPowerSupplyProxy.CurrentAtStartUp">
+            <value>Selected current limit at device startup, in mA.</value>
         </member>
         <member name="M:YoctoProxyAPI.YPowerSupplyProxy.voltageMove(System.Double,System.Int32)">
             <summary>
@@ -15036,6 +15109,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YProximityProxy.DetectionThreshold">
+            <value>Threshold used to determine the logical state of the proximity sensor, when considered</value>
+        </member>
         <member name="M:YoctoProxyAPI.YProximityProxy.get_detectionHysteresis">
             <summary>
               Returns the hysteresis used to determine the logical state of the proximity sensor, when considered
@@ -15078,6 +15154,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YProximityProxy.DetectionHysteresis">
+            <value>Hysteresis used to determine the logical state of the proximity sensor, when considered</value>
+        </member>
         <member name="M:YoctoProxyAPI.YProximityProxy.get_presenceMinTime">
             <summary>
               Returns the minimal detection duration before signalling a presence event.
@@ -15118,6 +15197,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YProximityProxy.PresenceMinTime">
+            <value>Minimal detection duration before signalling a presence event. Any shorter detection is</value>
+        </member>
         <member name="M:YoctoProxyAPI.YProximityProxy.get_removalMinTime">
             <summary>
               Returns the minimal detection duration before signalling a removal event.
@@ -15157,6 +15239,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YProximityProxy.RemovalMinTime">
+            <value>Minimal detection duration before signalling a removal event. Any shorter detection is</value>
         </member>
         <member name="M:YoctoProxyAPI.YProximityProxy.get_isPresent">
             <summary>
@@ -15285,6 +15370,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YProximityProxy.ProximityReportMode">
+            <value>Parameter (sensor value, presence or pulse count) returned by the get_currentValue function and callbacks.</value>
         </member>
         <member name="M:YoctoProxyAPI.YProximityProxy.resetCounter">
             <summary>
@@ -15546,6 +15634,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YPwmInputProxy.PwmReportMode">
+            <value>Parameter (frequency/duty cycle, pulse width, edges count) returned by the get_currentValue function and callbacks. Attention</value>
+        </member>
         <member name="M:YoctoProxyAPI.YPwmInputProxy.get_debouncePeriod">
             <summary>
               Returns the shortest expected pulse duration, in ms.
@@ -15583,6 +15674,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YPwmInputProxy.DebouncePeriod">
+            <value>Shortest expected pulse duration, in ms. Any shorter pulse will be automatically ignored (debounce).</value>
         </member>
         <member name="M:YoctoProxyAPI.YPwmInputProxy.resetCounter">
             <summary>
@@ -15751,6 +15845,9 @@
               On failure, throws an exception or returns <c>pwmoutput._Frequency_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YPwmOutputProxy.Frequency">
+            <value>PWM frequency in Hz.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YPwmOutputProxy.set_period(System.Double)">
             <summary>
               Changes the PWM period in milliseconds.
@@ -15791,6 +15888,9 @@
               On failure, throws an exception or returns <c>pwmoutput._Period_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YPwmOutputProxy.Period">
+            <value>PWM period in milliseconds.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YPwmOutputProxy.set_dutyCycle(System.Double)">
             <summary>
               Changes the PWM duty cycle, in per cents.
@@ -15825,6 +15925,12 @@
             <para>
               On failure, throws an exception or returns <c>pwmoutput._Dutycycle_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YPwmOutputProxy.DutyCycle">
+            <value>PWM duty cycle, in per cents.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YPwmOutputProxy.Enabled">
+            <value>True if the port output is enabled.</value>
         </member>
         <member name="M:YoctoProxyAPI.YPwmOutputProxy.set_pulseDuration(System.Double)">
             <summary>
@@ -15901,6 +16007,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YPwmOutputProxy.EnabledAtPowerOn">
+            <value>State of the PWM at device power on.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YPwmOutputProxy.set_dutyCycleAtPowerOn(System.Double)">
             <summary>
               Changes the PWM duty cycle at device power on.
@@ -15938,6 +16047,9 @@
             <para>
               On failure, throws an exception or returns <c>pwmoutput._Dutycycleatpoweron_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YPwmOutputProxy.DutyCycleAtPowerOn">
+            <value>PWM generators duty cycle at device power on as a floating point number between 0 and 100.</value>
         </member>
         <member name="M:YoctoProxyAPI.YPwmOutputProxy.pulseDurationMove(System.Double,System.Int32)">
             <summary>
@@ -16208,6 +16320,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YPwmPowerSourceProxy.PowerMode">
+            <value>Selected power source for the PWM on the same device.</value>
+        </member>
         <member name="T:YoctoProxyAPI.YQtProxy">
             <summary>
               The <c>YQt</c> class provides direct access to the 3D attitude estimation
@@ -16439,6 +16554,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YQuadratureDecoderProxy.Decoding">
+            <value>Current activation state of the quadrature decoder.</value>
+        </member>
         <member name="T:YoctoProxyAPI.YRangeFinderProxy">
             <summary>
               The <c>YRangeFinder</c> class allows you to read and configure Yoctopuce range finders.
@@ -16517,6 +16635,9 @@
               of a device function currently connected.
             </returns>
         </member>
+        <member name="P:YoctoProxyAPI.YRangeFinderProxy.IsPresent">
+            <value>True if the sensor detected an object</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRangeFinderProxy.set_unit(System.String)">
             <summary>
               Changes the measuring unit for the measured range.
@@ -16586,6 +16707,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YRangeFinderProxy.RangeFinderMode">
+            <value>Range finder running mode. The rangefinder running mode</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRangeFinderProxy.get_timeFrame">
             <summary>
               Returns the time frame used to measure the distance and estimate the measure
@@ -16629,6 +16753,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YRangeFinderProxy.TimeFrame">
+            <value>Time frame used to measure the distance and estimate the measure</value>
         </member>
         <member name="M:YoctoProxyAPI.YRangeFinderProxy.get_quality">
             <summary>
@@ -16919,6 +17046,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YRealTimeClockProxy.UtcOffset">
+            <value>Number of seconds between current time and UTC time (time zone).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRealTimeClockProxy.get_timeSet">
             <summary>
               Returns true if the clock has been set, and false otherwise.
@@ -17069,6 +17199,9 @@
               On failure, throws an exception or returns <c>refframe._Bearing_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YRefFrameProxy.Bearing">
+            <value>Reference bearing used by the compass. The relative bearing</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRefFrameProxy.get_fusionMode">
             <summary>
               Returns the BNO055 fusion mode.
@@ -17109,6 +17242,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YRefFrameProxy.FusionMode">
+            <value>BNO055 fusion mode. Note this feature is only availabe on Yocto-3D-V2.</value>
         </member>
         <member name="M:YoctoProxyAPI.YRefFrameProxy.get_mountPosition">
             <summary>
@@ -17462,6 +17598,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YRelayProxy.State">
+            <value>State of the relays (A for the idle position, B for the active position).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRelayProxy.get_stateAtPowerOn">
             <summary>
               Returns the state of the relays at device startup (A for the idle position,
@@ -17507,6 +17646,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YRelayProxy.StateAtPowerOn">
+            <value>State of the relays at device startup (A for the idle position,</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRelayProxy.get_maxTimeOnStateA">
             <summary>
               Returns the maximum time (ms) allowed for the relay to stay in state
@@ -17550,6 +17692,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YRelayProxy.MaxTimeOnStateA">
+            <value>Maximum time (ms) allowed for the relay to stay in state</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRelayProxy.get_maxTimeOnStateB">
             <summary>
               Retourne the maximum time (ms) allowed for the relay to stay in state B
@@ -17591,6 +17736,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YRelayProxy.MaxTimeOnStateB">
+            <value>The maximum time (ms) allowed for the relay to stay in state B</value>
         </member>
         <member name="M:YoctoProxyAPI.YRelayProxy.get_output">
             <summary>
@@ -18072,6 +18220,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSerialPortProxy.StartupJob">
+            <value>Job file to use when the device is powered on.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.get_jobMaxTask">
             <summary>
               Returns the maximum number of tasks in a job that the device can handle.
@@ -18087,6 +18238,9 @@
               On failure, throws an exception or returns <c>serialport._Jobmaxtask_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSerialPortProxy.JobMaxTask">
+            <value>Maximum number of tasks in a job that the device can handle.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.get_jobMaxSize">
             <summary>
               Returns maximum size allowed for job files.
@@ -18101,6 +18255,9 @@
             <para>
               On failure, throws an exception or returns <c>serialport._Jobmaxsize_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSerialPortProxy.JobMaxSize">
+            <value>Maximum size allowed for job files.</value>
         </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.get_protocol">
             <summary>
@@ -18157,6 +18314,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSerialPortProxy.Protocol">
+            <value>Type of protocol used over the serial line, as a string.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.get_voltageLevel">
             <summary>
               Returns the voltage level used on the serial line.
@@ -18206,6 +18366,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSerialPortProxy.VoltageLevel">
+            <value>Voltage level used on the serial line.</value>
         </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.get_serialMode">
             <summary>
@@ -18257,6 +18420,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSerialPortProxy.SerialMode">
+            <value>Serial port communication parameters, as a string such as</value>
         </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.readLine">
             <summary>
@@ -19058,6 +19224,12 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YServoProxy.Position">
+            <value>Current servo position.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YServoProxy.Enabled">
+            <value>True if the port output is enabled.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YServoProxy.get_enabled">
             <summary>
               Returns the state of the RC servo motors.
@@ -19134,6 +19306,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YServoProxy.Range">
+            <value>Current range of use of the servo.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YServoProxy.get_neutral">
             <summary>
               Returns the duration in microseconds of a neutral pulse for the servo.
@@ -19173,6 +19348,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YServoProxy.Neutral">
+            <value>Duration in microseconds of a neutral pulse for the servo.</value>
         </member>
         <member name="M:YoctoProxyAPI.YServoProxy.move(System.Int32,System.Int32)">
             <summary>
@@ -19234,6 +19412,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YServoProxy.PositionAtPowerOn">
+            <value>Servo position at device power up.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YServoProxy.get_enabledAtPowerOn">
             <summary>
               Returns the servo signal generator state at power up.
@@ -19271,6 +19452,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YServoProxy.EnabledAtPowerOn">
+            <value>Servo signal generator state at power up.</value>
         </member>
         <member name="T:YoctoProxyAPI.YSpiPortProxy">
             <summary>
@@ -19514,6 +19698,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.StartupJob">
+            <value>Job file to use when the device is powered on.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.get_jobMaxTask">
             <summary>
               Returns the maximum number of tasks in a job that the device can handle.
@@ -19529,6 +19716,9 @@
               On failure, throws an exception or returns <c>spiport._Jobmaxtask_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.JobMaxTask">
+            <value>Maximum number of tasks in a job that the device can handle.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.get_jobMaxSize">
             <summary>
               Returns maximum size allowed for job files.
@@ -19543,6 +19733,9 @@
             <para>
               On failure, throws an exception or returns <c>spiport._Jobmaxsize_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.JobMaxSize">
+            <value>Maximum size allowed for job files.</value>
         </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.get_protocol">
             <summary>
@@ -19590,6 +19783,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.Protocol">
+            <value>Type of protocol used over the serial line, as a string.</value>
         </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.get_voltageLevel">
             <summary>
@@ -19641,6 +19837,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.VoltageLevel">
+            <value>Voltage level used on the serial line.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.get_spiMode">
             <summary>
               Returns the SPI port communication parameters, as a string such as
@@ -19686,6 +19885,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.SpiMode">
+            <value>SPI port communication parameters, as a string such as</value>
+        </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.get_ssPolarity">
             <summary>
               Returns the SS line polarity.
@@ -19724,6 +19926,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.SsPolarity">
+            <value>SS line polarity.</value>
         </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.get_shiftSampling">
             <summary>
@@ -19766,6 +19971,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YSpiPortProxy.ShiftSampling">
+            <value>True when the SDI line phase is shifted with regards to the SDO line.</value>
         </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.readLine">
             <summary>
@@ -20944,6 +21152,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YTemperatureProxy.SensorType">
+            <value>Temperature sensor type.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YTemperatureProxy.get_signalValue">
             <summary>
               Returns the current value of the electrical signal measured by the sensor.
@@ -20973,6 +21184,9 @@
             <para>
               On failure, throws an exception or returns <c>temperature._Signalunit_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YTemperatureProxy.SignalUnit">
+            <value>Measuring unit of the electrical signal used by the sensor.</value>
         </member>
         <member name="M:YoctoProxyAPI.YTemperatureProxy.set_ntcParameters(System.Double,System.Double)">
             <summary>
@@ -21019,34 +21233,6 @@
               array of floating point numbers, corresponding to the resistance
               values (in Ohms) for each of the temperature included in the first
               argument, index by index.
-            </param>
-            <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
-        <member name="M:YoctoProxyAPI.YTemperatureProxy.loadThermistorResponseTable(System.Double[],System.Double[])">
-            <summary>
-              Retrieves the thermistor response table previously configured using the
-              <c>set_thermistorResponseTable</c> function.
-            <para>
-              This function can only be used with a
-              temperature sensor based on thermistors.
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="tempValues">
-              array of floating point numbers, that is filled by the function
-              with all temperatures (in degrees Celsius) for which the resistance
-              of the thermistor is specified.
-            </param>
-            <param name="resValues">
-              array of floating point numbers, that is filled by the function
-              with the value (in Ohms) for each of the temperature included in the
-              first argument, index by index.
             </param>
             <returns>
               <c>YAPI.SUCCESS</c> if the call succeeds.
@@ -21176,6 +21362,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YTiltProxy.Bandwidth">
+            <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
         </member>
         <member name="T:YoctoProxyAPI.YTvocProxy">
             <summary>
@@ -21448,6 +21637,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YVoltageProxy.Enabled">
+            <value>Activation state of this input.</value>
+        </member>
         <member name="T:YoctoProxyAPI.YVoltageOutputProxy">
             <summary>
               The <c>YVoltageOutput</c> class allows you to drive a voltage output.
@@ -21558,6 +21750,9 @@
               On failure, throws an exception or returns <c>voltageoutput._Currentvoltage_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YVoltageOutputProxy.CurrentVoltage">
+            <value>Output voltage set point, in V.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YVoltageOutputProxy.set_voltageAtStartUp(System.Double)">
             <summary>
               Changes the output voltage at device start up.
@@ -21594,6 +21789,9 @@
             <para>
               On failure, throws an exception or returns <c>voltageoutput._Voltageatstartup_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YVoltageOutputProxy.VoltageAtStartUp">
+            <value>Selected voltage output at device startup, in V.</value>
         </member>
         <member name="M:YoctoProxyAPI.YVoltageOutputProxy.voltageMove(System.Double,System.Int32)">
             <summary>
@@ -21726,6 +21924,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWakeUpMonitorProxy.PowerDuration">
+            <value>Maximal wake up time (in seconds) before automatically going to sleep.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWakeUpMonitorProxy.get_sleepCountdown">
             <summary>
               Returns the delay before the  next sleep period.
@@ -21795,6 +21996,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWakeUpMonitorProxy.NextWakeUp">
+            <value>Next scheduled wake up date/time (UNIX format).</value>
         </member>
         <member name="M:YoctoProxyAPI.YWakeUpMonitorProxy.get_wakeUpReason">
             <summary>
@@ -22023,6 +22227,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWakeUpScheduleProxy.MinutesA">
+            <value>Minutes in the 00-29 interval of each hour scheduled for wake up.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWakeUpScheduleProxy.get_minutesB">
             <summary>
               Returns the minutes in the 30-59 interval of each hour scheduled for wake up.
@@ -22059,6 +22266,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWakeUpScheduleProxy.MinutesB">
+            <value>Minutes in the 30-59 interval of each hour scheduled for wake up.</value>
         </member>
         <member name="M:YoctoProxyAPI.YWakeUpScheduleProxy.get_hours">
             <summary>
@@ -22097,6 +22307,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWakeUpScheduleProxy.Hours">
+            <value>Hours scheduled for wake up.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWakeUpScheduleProxy.get_weekDays">
             <summary>
               Returns the days of the week scheduled for wake up.
@@ -22133,6 +22346,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWakeUpScheduleProxy.WeekDays">
+            <value>Days of the week scheduled for wake up.</value>
         </member>
         <member name="M:YoctoProxyAPI.YWakeUpScheduleProxy.get_monthDays">
             <summary>
@@ -22171,6 +22387,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWakeUpScheduleProxy.MonthDays">
+            <value>Days of the month scheduled for wake up.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWakeUpScheduleProxy.get_months">
             <summary>
               Returns the months scheduled for wake up.
@@ -22208,6 +22427,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWakeUpScheduleProxy.Months">
+            <value>Months scheduled for wake up.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWakeUpScheduleProxy.get_nextOccurence">
             <summary>
               Returns the date/time (seconds) of the next wake up occurrence.
@@ -22222,6 +22444,9 @@
             <para>
               On failure, throws an exception or returns <c>wakeupschedule._Nextoccurence_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWakeUpScheduleProxy.NextOccurence">
+            <value>Date/time (seconds) of the next wake up occurrence.</value>
         </member>
         <member name="M:YoctoProxyAPI.YWakeUpScheduleProxy.get_minutes">
             <summary>
@@ -22364,6 +22589,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.State">
+            <value>State of the watchdog (A for the idle position, B for the active position).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.get_stateAtPowerOn">
             <summary>
               Returns the state of the watchdog at device startup (A for the idle position,
@@ -22409,6 +22637,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.StateAtPowerOn">
+            <value>State of the watchdog at device startup (A for the idle position,</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.get_maxTimeOnStateA">
             <summary>
               Returns the maximum time (ms) allowed for the watchdog to stay in state
@@ -22452,6 +22683,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.MaxTimeOnStateA">
+            <value>Maximum time (ms) allowed for the watchdog to stay in state</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.get_maxTimeOnStateB">
             <summary>
               Retourne the maximum time (ms) allowed for the watchdog to stay in state B
@@ -22493,6 +22727,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.MaxTimeOnStateB">
+            <value>The maximum time (ms) allowed for the watchdog to stay in state B</value>
         </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.get_output">
             <summary>
@@ -22650,6 +22887,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.AutoStart">
+            <value>Watchdog running state at module power on.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.get_running">
             <summary>
               Returns the watchdog running state.
@@ -22685,6 +22925,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.Running">
+            <value>Watchdog running state.</value>
         </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.resetWatchdog">
             <summary>
@@ -22744,6 +22987,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.TriggerDelay">
+            <value>Waiting duration before a reset is automatically triggered by the watchdog, in milliseconds.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.get_triggerDuration">
             <summary>
               Returns the duration of resets caused by the watchdog, in milliseconds.
@@ -22780,6 +23026,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWatchdogProxy.TriggerDuration">
+            <value>Duration of resets caused by the watchdog, in milliseconds.</value>
         </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.toggle">
             <summary>
@@ -22933,6 +23182,9 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWeighScaleProxy.Excitation">
+            <value>Current load cell bridge excitation method.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWeighScaleProxy.set_tempAvgAdaptRatio(System.Double)">
             <summary>
               Changes the averaged temperature update rate, in per mille.
@@ -22978,6 +23230,9 @@
               On failure, throws an exception or returns <c>weighscale._Tempavgadaptratio_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWeighScaleProxy.TempAvgAdaptRatio">
+            <value>Averaged temperature update rate, in per mille.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWeighScaleProxy.set_tempChgAdaptRatio(System.Double)">
             <summary>
               Changes the temperature change update rate, in per mille.
@@ -23020,6 +23275,9 @@
             <para>
               On failure, throws an exception or returns <c>weighscale._Tempchgadaptratio_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWeighScaleProxy.TempChgAdaptRatio">
+            <value>Temperature change update rate, in per mille.</value>
         </member>
         <member name="M:YoctoProxyAPI.YWeighScaleProxy.get_compTempAvg">
             <summary>
@@ -23109,6 +23367,9 @@
               On failure, throws an exception or returns <c>weighscale._Zerotracking_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YWeighScaleProxy.ZeroTracking">
+            <value>Zero tracking threshold value. When this threshold is larger than</value>
+        </member>
         <member name="M:YoctoProxyAPI.YWeighScaleProxy.tare">
             <summary>
               Adapts the load cell signal bias (stored in the corresponding genericSensor)
@@ -23173,32 +23434,6 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
-        <member name="M:YoctoProxyAPI.YWeighScaleProxy.loadOffsetAvgCompensationTable(System.Double[],System.Double[])">
-            <summary>
-              Retrieves the weight offset thermal compensation table previously configured using the
-              <c>set_offsetAvgCompensationTable</c> function.
-            <para>
-              The weight correction is applied by linear interpolation between specified points.
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="tempValues">
-              array of floating point numbers, that is filled by the function
-              with all averaged temperatures for which an offset correction is specified.
-            </param>
-            <param name="compValues">
-              array of floating point numbers, that is filled by the function
-              with the offset correction applied for each of the temperature
-              included in the first argument, index by index.
-            </param>
-            <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
         <member name="M:YoctoProxyAPI.YWeighScaleProxy.set_offsetChgCompensationTable(System.Double[],System.Double[])">
             <summary>
               Records a weight offset thermal compensation table, in order to automatically correct the
@@ -23217,32 +23452,6 @@
               array of floating point numbers, corresponding to the offset correction
               to apply for each of the temperature variation included in the first
               argument, index by index.
-            </param>
-            <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
-        <member name="M:YoctoProxyAPI.YWeighScaleProxy.loadOffsetChgCompensationTable(System.Double[],System.Double[])">
-            <summary>
-              Retrieves the weight offset thermal compensation table previously configured using the
-              <c>set_offsetChgCompensationTable</c> function.
-            <para>
-              The weight correction is applied by linear interpolation between specified points.
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="tempValues">
-              array of floating point numbers, that is filled by the function
-              with all temperature variations for which an offset correction is specified.
-            </param>
-            <param name="compValues">
-              array of floating point numbers, that is filled by the function
-              with the offset correction applied for each of the temperature
-              variation included in the first argument, index by index.
             </param>
             <returns>
               <c>YAPI.SUCCESS</c> if the call succeeds.
@@ -23277,32 +23486,6 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
-        <member name="M:YoctoProxyAPI.YWeighScaleProxy.loadSpanAvgCompensationTable(System.Double[],System.Double[])">
-            <summary>
-              Retrieves the weight span thermal compensation table previously configured using the
-              <c>set_spanAvgCompensationTable</c> function.
-            <para>
-              The weight correction is applied by linear interpolation between specified points.
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="tempValues">
-              array of floating point numbers, that is filled by the function
-              with all averaged temperatures for which an span correction is specified.
-            </param>
-            <param name="compValues">
-              array of floating point numbers, that is filled by the function
-              with the span correction applied for each of the temperature
-              included in the first argument, index by index.
-            </param>
-            <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
         <member name="M:YoctoProxyAPI.YWeighScaleProxy.set_spanChgCompensationTable(System.Double[],System.Double[])">
             <summary>
               Records a weight span thermal compensation table, in order to automatically correct the
@@ -23321,32 +23504,6 @@
               array of floating point numbers, corresponding to the span correction
               (in percents) to apply for each of the temperature variation included
               in the first argument, index by index.
-            </param>
-            <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
-            </returns>
-            <para>
-              On failure, throws an exception or returns a negative error code.
-            </para>
-        </member>
-        <member name="M:YoctoProxyAPI.YWeighScaleProxy.loadSpanChgCompensationTable(System.Double[],System.Double[])">
-            <summary>
-              Retrieves the weight span thermal compensation table previously configured using the
-              <c>set_spanChgCompensationTable</c> function.
-            <para>
-              The weight correction is applied by linear interpolation between specified points.
-            </para>
-            <para>
-            </para>
-            </summary>
-            <param name="tempValues">
-              array of floating point numbers, that is filled by the function
-              with all variation of temperature for which an span correction is specified.
-            </param>
-            <param name="compValues">
-              array of floating point numbers, that is filled by the function
-              with the span correction applied for each of variation of temperature
-              included in the first argument, index by index.
             </param>
             <returns>
               <c>YAPI.SUCCESS</c> if the call succeeds.
@@ -23445,6 +23602,12 @@
             <para>
               On failure, throws an exception or returns <c>wireless._Linkquality_INVALID</c>.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YWirelessProxy.LinkQuality">
+            <value>Link quality, expressed in percent.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YWirelessProxy.Ssid">
+            <value>Wireless network name (SSID).</value>
         </member>
         <member name="M:YoctoProxyAPI.YWirelessProxy.get_ssid">
             <summary>
@@ -23864,6 +24027,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YFunctionProxy.LogicalName">
+            <value>Logical name of the function.</value>
         </member>
         <member name="M:YoctoProxyAPI.YFunctionProxy.get_advertisedValue">
             <summary>
@@ -25034,11 +25200,27 @@
         </member>
         <member name="M:YoctoLib.YAPI.FreeAPI">
             <summary>
-              Frees dynamically allocated memory blocks used by the Yoctopuce library.
+              Waits for all pending communications with Yoctopuce devices to be
+              completed then frees dynamically allocated resources used by
+              the Yoctopuce library.
             <para>
-              It is generally not required to call this function, unless you
-              want to free all dynamically allocated memory blocks in order to
-              track a memory leak for instance.
+            </para>
+            <para>
+              From an operating system standpoint, it is generally not required to call
+              this function since the OS will automatically free allocated resources
+              once your program is completed. However there are two situations when
+              you may really want to use that function:
+            </para>
+            <para>
+              - Free all dynamically allocated memory blocks in order to
+              track a memory leak.
+            </para>
+            <para>
+              - Send commands to devices right before the end
+              of the program. Since commands are sent in an asynchronous way
+              the program could exit before all commands are effectively sent.
+            </para>
+            <para>
               You should not call any other library function after calling
               <c>yFreeAPI()</c>, or your program will crash.
             </para>
@@ -31241,8 +31423,9 @@
             </summary>
             <returns>
               a value among <c>YCellular.CELLTYPE_GPRS</c>, <c>YCellular.CELLTYPE_EGPRS</c>,
-              <c>YCellular.CELLTYPE_WCDMA</c>, <c>YCellular.CELLTYPE_HSDPA</c>, <c>YCellular.CELLTYPE_NONE</c>
-              and <c>YCellular.CELLTYPE_CDMA</c>
+              <c>YCellular.CELLTYPE_WCDMA</c>, <c>YCellular.CELLTYPE_HSDPA</c>, <c>YCellular.CELLTYPE_NONE</c>,
+              <c>YCellular.CELLTYPE_CDMA</c>, <c>YCellular.CELLTYPE_LTE_M</c>, <c>YCellular.CELLTYPE_NB_IOT</c>
+              and <c>YCellular.CELLTYPE_EC_GSM_IOT</c>
             </returns>
             <para>
               On failure, throws an exception or returns <c>YCellular.CELLTYPE_INVALID</c>.
@@ -31250,18 +31433,19 @@
         </member>
         <member name="M:YoctoLib.YCellular.get_imsi">
             <summary>
-              Returns an opaque string if a PIN code has been configured in the device to access
-              the SIM card, or an empty string if none has been configured or if the code provided
-              was rejected by the SIM card.
+              Returns the International Mobile Subscriber Identity (MSI) that uniquely identifies
+              the SIM card.
             <para>
+              The first 3 digits represent the mobile country code (MCC), which
+              is followed by the mobile network code (MNC), either 2-digit (European standard)
+              or 3-digit (North American standard)
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a string corresponding to an opaque string if a PIN code has been configured in the device to access
-              the SIM card, or an empty string if none has been configured or if the code provided
-              was rejected by the SIM card
+              a string corresponding to the International Mobile Subscriber Identity (MSI) that uniquely identifies
+              the SIM card
             </returns>
             <para>
               On failure, throws an exception or returns <c>YCellular.IMSI_INVALID</c>.
@@ -31322,6 +31506,53 @@
             </summary>
             <param name="newval">
               a string corresponding to the PIN code used by the module to access the SIM card
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YCellular.get_radioConfig">
+            <summary>
+              Returns the type of protocol used over the serial line, as a string.
+            <para>
+              Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "Frame:[timeout]ms" for binary messages separated by a delay time,
+              "Char" for a continuous ASCII stream or
+              "Byte" for a continuous binary stream.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the type of protocol used over the serial line, as a string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YCellular.RADIOCONFIG_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YCellular.set_radioConfig(System.String)">
+            <summary>
+              Changes the type of protocol used over the serial line.
+            <para>
+              Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "Frame:[timeout]ms" for binary messages separated by a delay time,
+              "Char" for a continuous ASCII stream or
+              "Byte" for a continuous binary stream.
+              The suffix "/[wait]ms" can be added to reduce the transmit rate so that there
+              is always at lest the specified number of milliseconds between each bytes sent.
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a string corresponding to the type of protocol used over the serial line
             </param>
             <para>
             </para>

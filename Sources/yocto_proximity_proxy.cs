@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_proximity_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_proximity_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YProximityProxy, the Proxy API for Proximity
  *
@@ -260,7 +260,6 @@ namespace YoctoProxyAPI
             _detectionHysteresis = _func.get_detectionHysteresis();
             _presenceMinTime = _func.get_presenceMinTime();
             _removalMinTime = _func.get_removalMinTime();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _proximityReportMode = _func.get_proximityReportMode()+1;
         }
 
@@ -281,13 +280,14 @@ namespace YoctoProxyAPI
          */
         public double get_signalValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            double res = _func.get_signalValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_signalValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -311,13 +311,14 @@ namespace YoctoProxyAPI
          */
         public int get_detectionThreshold()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            int res = _func.get_detectionThreshold();
-            if (res == YAPI.INVALID_INT) res = _DetectionThreshold_INVALID;
+            res = _func.get_detectionThreshold();
+            if (res == YAPI.INVALID_INT) {
+                res = _DetectionThreshold_INVALID;
+            }
             return res;
         }
 
@@ -347,23 +348,28 @@ namespace YoctoProxyAPI
          */
         public int set_detectionThreshold(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            if (newval == _DetectionThreshold_INVALID) return YAPI.SUCCESS;
+            if (newval == _DetectionThreshold_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_detectionThreshold(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Threshold used to determine the logical state of the proximity sensor, when considered</value>
         public int DetectionThreshold
         {
             get
             {
-                if (_func == null) return _DetectionThreshold_INVALID;
-                return (_online ? _detectionThreshold : _DetectionThreshold_INVALID);
+                if (_func == null) {
+                    return _DetectionThreshold_INVALID;
+                }
+                if (_online) {
+                    return _detectionThreshold;
+                }
+                return _DetectionThreshold_INVALID;
             }
             set
             {
@@ -374,10 +380,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_detectionThreshold(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _DetectionThreshold_INVALID) return;
-            if (newval == _detectionThreshold) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _DetectionThreshold_INVALID) {
+                return;
+            }
+            if (newval == _detectionThreshold) {
+                return;
+            }
             _func.set_detectionThreshold(newval);
             _detectionThreshold = newval;
         }
@@ -402,13 +416,14 @@ namespace YoctoProxyAPI
          */
         public int get_detectionHysteresis()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            int res = _func.get_detectionHysteresis();
-            if (res == YAPI.INVALID_INT) res = _DetectionHysteresis_INVALID;
+            res = _func.get_detectionHysteresis();
+            if (res == YAPI.INVALID_INT) {
+                res = _DetectionHysteresis_INVALID;
+            }
             return res;
         }
 
@@ -438,23 +453,28 @@ namespace YoctoProxyAPI
          */
         public int set_detectionHysteresis(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            if (newval == _DetectionHysteresis_INVALID) return YAPI.SUCCESS;
+            if (newval == _DetectionHysteresis_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_detectionHysteresis(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Hysteresis used to determine the logical state of the proximity sensor, when considered</value>
         public int DetectionHysteresis
         {
             get
             {
-                if (_func == null) return _DetectionHysteresis_INVALID;
-                return (_online ? _detectionHysteresis : _DetectionHysteresis_INVALID);
+                if (_func == null) {
+                    return _DetectionHysteresis_INVALID;
+                }
+                if (_online) {
+                    return _detectionHysteresis;
+                }
+                return _DetectionHysteresis_INVALID;
             }
             set
             {
@@ -465,10 +485,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_detectionHysteresis(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _DetectionHysteresis_INVALID) return;
-            if (newval == _detectionHysteresis) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _DetectionHysteresis_INVALID) {
+                return;
+            }
+            if (newval == _detectionHysteresis) {
+                return;
+            }
             _func.set_detectionHysteresis(newval);
             _detectionHysteresis = newval;
         }
@@ -492,13 +520,14 @@ namespace YoctoProxyAPI
          */
         public int get_presenceMinTime()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            int res = _func.get_presenceMinTime();
-            if (res == YAPI.INVALID_INT) res = _PresenceMinTime_INVALID;
+            res = _func.get_presenceMinTime();
+            if (res == YAPI.INVALID_INT) {
+                res = _PresenceMinTime_INVALID;
+            }
             return res;
         }
 
@@ -527,23 +556,28 @@ namespace YoctoProxyAPI
          */
         public int set_presenceMinTime(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            if (newval == _PresenceMinTime_INVALID) return YAPI.SUCCESS;
+            if (newval == _PresenceMinTime_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_presenceMinTime(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Minimal detection duration before signalling a presence event. Any shorter detection is</value>
         public int PresenceMinTime
         {
             get
             {
-                if (_func == null) return _PresenceMinTime_INVALID;
-                return (_online ? _presenceMinTime : _PresenceMinTime_INVALID);
+                if (_func == null) {
+                    return _PresenceMinTime_INVALID;
+                }
+                if (_online) {
+                    return _presenceMinTime;
+                }
+                return _PresenceMinTime_INVALID;
             }
             set
             {
@@ -554,10 +588,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_presenceMinTime(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PresenceMinTime_INVALID) return;
-            if (newval == _presenceMinTime) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PresenceMinTime_INVALID) {
+                return;
+            }
+            if (newval == _presenceMinTime) {
+                return;
+            }
             _func.set_presenceMinTime(newval);
             _presenceMinTime = newval;
         }
@@ -581,13 +623,14 @@ namespace YoctoProxyAPI
          */
         public int get_removalMinTime()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            int res = _func.get_removalMinTime();
-            if (res == YAPI.INVALID_INT) res = _RemovalMinTime_INVALID;
+            res = _func.get_removalMinTime();
+            if (res == YAPI.INVALID_INT) {
+                res = _RemovalMinTime_INVALID;
+            }
             return res;
         }
 
@@ -616,23 +659,28 @@ namespace YoctoProxyAPI
          */
         public int set_removalMinTime(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            if (newval == _RemovalMinTime_INVALID) return YAPI.SUCCESS;
+            if (newval == _RemovalMinTime_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_removalMinTime(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Minimal detection duration before signalling a removal event. Any shorter detection is</value>
         public int RemovalMinTime
         {
             get
             {
-                if (_func == null) return _RemovalMinTime_INVALID;
-                return (_online ? _removalMinTime : _RemovalMinTime_INVALID);
+                if (_func == null) {
+                    return _RemovalMinTime_INVALID;
+                }
+                if (_online) {
+                    return _removalMinTime;
+                }
+                return _RemovalMinTime_INVALID;
             }
             set
             {
@@ -643,10 +691,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_removalMinTime(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _RemovalMinTime_INVALID) return;
-            if (newval == _removalMinTime) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _RemovalMinTime_INVALID) {
+                return;
+            }
+            if (newval == _removalMinTime) {
+                return;
+            }
             _func.set_removalMinTime(newval);
             _removalMinTime = newval;
         }
@@ -670,10 +726,8 @@ namespace YoctoProxyAPI
          */
         public int get_isPresent()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_isPresent()+1;
@@ -698,10 +752,8 @@ namespace YoctoProxyAPI
          */
         public long get_lastTimeApproached()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
             return _func.get_lastTimeApproached();
         }
@@ -725,10 +777,8 @@ namespace YoctoProxyAPI
          */
         public long get_lastTimeRemoved()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
             return _func.get_lastTimeRemoved();
         }
@@ -753,13 +803,14 @@ namespace YoctoProxyAPI
          */
         public long get_pulseCounter()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            long res = _func.get_pulseCounter();
-            if (res == YAPI.INVALID_INT) res = _PulseCounter_INVALID;
+            res = _func.get_pulseCounter();
+            if (res == YAPI.INVALID_INT) {
+                res = _PulseCounter_INVALID;
+            }
             return res;
         }
 
@@ -780,10 +831,8 @@ namespace YoctoProxyAPI
          */
         public long get_pulseTimer()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
             return _func.get_pulseTimer();
         }
@@ -808,10 +857,8 @@ namespace YoctoProxyAPI
          */
         public int get_proximityReportMode()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_proximityReportMode()+1;
@@ -845,24 +892,29 @@ namespace YoctoProxyAPI
          */
         public int set_proximityReportMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
-            if (newval == _ProximityReportMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _ProximityReportMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_proximityReportMode(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Parameter (sensor value, presence or pulse count) returned by the get_currentValue function and callbacks.</value>
         public int ProximityReportMode
         {
             get
             {
-                if (_func == null) return _ProximityReportMode_INVALID;
-                return (_online ? _proximityReportMode : _ProximityReportMode_INVALID);
+                if (_func == null) {
+                    return _ProximityReportMode_INVALID;
+                }
+                if (_online) {
+                    return _proximityReportMode;
+                }
+                return _ProximityReportMode_INVALID;
             }
             set
             {
@@ -873,10 +925,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_proximityReportMode(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _ProximityReportMode_INVALID) return;
-            if (newval == _proximityReportMode) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _ProximityReportMode_INVALID) {
+                return;
+            }
+            if (newval == _proximityReportMode) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_proximityReportMode(newval-1);
             _proximityReportMode = newval;
@@ -897,10 +957,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetCounter()
         {
-            if (_func == null)
-            {
-                string msg = "No Proximity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Proximity connected");
             }
             return _func.resetCounter();
         }

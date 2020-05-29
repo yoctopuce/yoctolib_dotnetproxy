@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_temperature_proxy.cs 39648 2020-03-12 13:56:10Z mvuilleu $
+ *  $Id: yocto_temperature_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YTemperatureProxy, the Proxy API for Temperature
  *
@@ -260,7 +260,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _sensorType = _func.get_sensorType()+1;
         }
 
@@ -295,15 +294,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Temperature connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -331,10 +329,8 @@ namespace YoctoProxyAPI
          */
         public int get_sensorType()
         {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Temperature connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_sensorType()+1;
@@ -376,24 +372,29 @@ namespace YoctoProxyAPI
          */
         public int set_sensorType(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Temperature connected");
             }
-            if (newval == _SensorType_INVALID) return YAPI.SUCCESS;
+            if (newval == _SensorType_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_sensorType(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Temperature sensor type.</value>
         public int SensorType
         {
             get
             {
-                if (_func == null) return _SensorType_INVALID;
-                return (_online ? _sensorType : _SensorType_INVALID);
+                if (_func == null) {
+                    return _SensorType_INVALID;
+                }
+                if (_online) {
+                    return _sensorType;
+                }
+                return _SensorType_INVALID;
             }
             set
             {
@@ -404,10 +405,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_sensorType(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _SensorType_INVALID) return;
-            if (newval == _sensorType) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _SensorType_INVALID) {
+                return;
+            }
+            if (newval == _sensorType) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_sensorType(newval-1);
             _sensorType = newval;
@@ -430,24 +439,15 @@ namespace YoctoProxyAPI
          */
         public double get_signalValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Temperature connected");
             }
-            double res = _func.get_signalValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_signalValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
-        }
-
-        // property with cached value for instant access (constant value)
-        public string SignalUnit
-        {
-            get
-            {
-                if (_func == null) return _SignalUnit_INVALID;
-                return (_online ? _signalUnit : _SignalUnit_INVALID);
-            }
         }
 
         /**
@@ -467,12 +467,26 @@ namespace YoctoProxyAPI
          */
         public string get_signalUnit()
         {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Temperature connected");
             }
             return _func.get_signalUnit();
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Measuring unit of the electrical signal used by the sensor.</value>
+        public string SignalUnit
+        {
+            get
+            {
+                if (_func == null) {
+                    return _SignalUnit_INVALID;
+                }
+                if (_online) {
+                    return _signalUnit;
+                }
+                return _SignalUnit_INVALID;
+            }
         }
 
         /**
@@ -502,10 +516,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_ntcParameters(double res25, double beta)
         {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Temperature connected");
             }
             return _func.set_ntcParameters(res25, beta);
         }
@@ -540,50 +552,10 @@ namespace YoctoProxyAPI
          */
         public virtual int set_thermistorResponseTable(double[] tempValues, double[] resValues)
         {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Temperature connected");
             }
             return _func.set_thermistorResponseTable(new List<double>(tempValues), new List<double>(resValues));
-        }
-
-        /**
-         * <summary>
-         *   Retrieves the thermistor response table previously configured using the
-         *   <c>set_thermistorResponseTable</c> function.
-         * <para>
-         *   This function can only be used with a
-         *   temperature sensor based on thermistors.
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="tempValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with all temperatures (in degrees Celsius) for which the resistance
-         *   of the thermistor is specified.
-         * </param>
-         * <param name="resValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with the value (in Ohms) for each of the temperature included in the
-         *   first argument, index by index.
-         * </param>
-         * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public virtual int loadThermistorResponseTable(double[] tempValues, double[] resValues)
-        {
-            if (_func == null)
-            {
-                string msg = "No Temperature connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.loadThermistorResponseTable(new List<double>(tempValues), new List<double>(resValues));
         }
     }
     //--- (end of YTemperature implementation)

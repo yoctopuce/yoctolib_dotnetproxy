@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmpowersource_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_pwmpowersource_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YPwmPowerSourceProxy, the Proxy API for PwmPowerSource
  *
@@ -238,7 +238,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _powerMode = _func.get_powerMode()+1;
         }
 
@@ -261,10 +260,8 @@ namespace YoctoProxyAPI
          */
         public int get_powerMode()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmPowerSource connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmPowerSource connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_powerMode()+1;
@@ -301,24 +298,29 @@ namespace YoctoProxyAPI
          */
         public int set_powerMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmPowerSource connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmPowerSource connected");
             }
-            if (newval == _PowerMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _PowerMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_powerMode(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Selected power source for the PWM on the same device.</value>
         public int PowerMode
         {
             get
             {
-                if (_func == null) return _PowerMode_INVALID;
-                return (_online ? _powerMode : _PowerMode_INVALID);
+                if (_func == null) {
+                    return _PowerMode_INVALID;
+                }
+                if (_online) {
+                    return _powerMode;
+                }
+                return _PowerMode_INVALID;
             }
             set
             {
@@ -329,10 +331,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_powerMode(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PowerMode_INVALID) return;
-            if (newval == _powerMode) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PowerMode_INVALID) {
+                return;
+            }
+            if (newval == _powerMode) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_powerMode(newval-1);
             _powerMode = newval;

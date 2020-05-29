@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_voltageoutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_voltageoutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YVoltageOutputProxy, the Proxy API for VoltageOutput
  *
@@ -262,45 +262,13 @@ namespace YoctoProxyAPI
          */
         public int set_currentVoltage(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No VoltageOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No VoltageOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _CurrentVoltage_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_currentVoltage(newval);
-        }
-
-
-        // property with cached value for instant access (advertised value)
-        public double CurrentVoltage
-        {
-            get
-            {
-                if (_func == null) return _CurrentVoltage_INVALID;
-                return (_online ? _currentVoltage : _CurrentVoltage_INVALID);
-            }
-            set
-            {
-                setprop_currentVoltage(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture,out _currentVoltage);
-        }
-
-        // private helper for magic property
-        private void setprop_currentVoltage(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _currentVoltage) return;
-            _func.set_currentVoltage(newval);
-            _currentVoltage = newval;
         }
 
         /**
@@ -320,14 +288,60 @@ namespace YoctoProxyAPI
          */
         public double get_currentVoltage()
         {
-            if (_func == null)
-            {
-                string msg = "No VoltageOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No VoltageOutput connected");
             }
-            double res = _func.get_currentVoltage();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_currentVoltage();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Output voltage set point, in V.</value>
+        public double CurrentVoltage
+        {
+            get
+            {
+                if (_func == null) {
+                    return _CurrentVoltage_INVALID;
+                }
+                if (_online) {
+                    return _currentVoltage;
+                }
+                return _CurrentVoltage_INVALID;
+            }
+            set
+            {
+                setprop_currentVoltage(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_currentVoltage(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CurrentVoltage_INVALID) {
+                return;
+            }
+            if (newval == _currentVoltage) {
+                return;
+            }
+            _func.set_currentVoltage(newval);
+            _currentVoltage = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _currentVoltage = YAPI._atof(value);
         }
 
         /**
@@ -354,39 +368,13 @@ namespace YoctoProxyAPI
          */
         public int set_voltageAtStartUp(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No VoltageOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No VoltageOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _VoltageAtStartUp_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_voltageAtStartUp(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double VoltageAtStartUp
-        {
-            get
-            {
-                if (_func == null) return _VoltageAtStartUp_INVALID;
-                return (_online ? _voltageAtStartUp : _VoltageAtStartUp_INVALID);
-            }
-            set
-            {
-                setprop_voltageAtStartUp(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_voltageAtStartUp(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _voltageAtStartUp) return;
-            _func.set_voltageAtStartUp(newval);
-            _voltageAtStartUp = newval;
         }
 
         /**
@@ -406,14 +394,54 @@ namespace YoctoProxyAPI
          */
         public double get_voltageAtStartUp()
         {
-            if (_func == null)
-            {
-                string msg = "No VoltageOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No VoltageOutput connected");
             }
-            double res = _func.get_voltageAtStartUp();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_voltageAtStartUp();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Selected voltage output at device startup, in V.</value>
+        public double VoltageAtStartUp
+        {
+            get
+            {
+                if (_func == null) {
+                    return _VoltageAtStartUp_INVALID;
+                }
+                if (_online) {
+                    return _voltageAtStartUp;
+                }
+                return _VoltageAtStartUp_INVALID;
+            }
+            set
+            {
+                setprop_voltageAtStartUp(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_voltageAtStartUp(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _VoltageAtStartUp_INVALID) {
+                return;
+            }
+            if (newval == _voltageAtStartUp) {
+                return;
+            }
+            _func.set_voltageAtStartUp(newval);
+            _voltageAtStartUp = newval;
         }
 
         /**
@@ -437,10 +465,8 @@ namespace YoctoProxyAPI
          */
         public virtual int voltageMove(double V_target, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No VoltageOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No VoltageOutput connected");
             }
             return _func.voltageMove(V_target, ms_duration);
         }

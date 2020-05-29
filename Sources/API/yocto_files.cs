@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_files.cs 38934 2019-12-23 09:29:53Z seb $
+ * $Id: yocto_files.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  * Implements yFindFiles(), the high-level API for Files functions
  *
@@ -389,7 +389,10 @@ public class YFiles : YFunction
         string res;
         json = this.sendCommand("format");
         res = this._json_get_key(json, "res");
-        if (!(res == "ok")) { this._throw( YAPI.IO_ERROR, "format failed"); return YAPI.IO_ERROR; }
+        if (!(res == "ok")) {
+            this._throw(YAPI.IO_ERROR, "format failed");
+            return YAPI.IO_ERROR;
+        }
         return YAPI.SUCCESS;
     }
 
@@ -536,7 +539,10 @@ public class YFiles : YFunction
         string res;
         json = this.sendCommand("del&f="+pathname);
         res  = this._json_get_key(json, "res");
-        if (!(res == "ok")) { this._throw( YAPI.IO_ERROR, "unable to remove file"); return YAPI.IO_ERROR; }
+        if (!(res == "ok")) {
+            this._throw(YAPI.IO_ERROR, "unable to remove file");
+            return YAPI.IO_ERROR;
+        }
         return YAPI.SUCCESS;
     }
 

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_weighscale_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_weighscale_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YWeighScaleProxy, the Proxy API for WeighScale
  *
@@ -250,7 +250,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _excitation = _func.get_excitation()+1;
             _tempAvgAdaptRatio = _func.get_tempAvgAdaptRatio();
             _tempChgAdaptRatio = _func.get_tempChgAdaptRatio();
@@ -281,15 +280,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -309,10 +307,8 @@ namespace YoctoProxyAPI
          */
         public int get_excitation()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_excitation()+1;
@@ -343,24 +339,29 @@ namespace YoctoProxyAPI
          */
         public int set_excitation(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            if (newval == _Excitation_INVALID) return YAPI.SUCCESS;
+            if (newval == _Excitation_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_excitation(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Current load cell bridge excitation method.</value>
         public int Excitation
         {
             get
             {
-                if (_func == null) return _Excitation_INVALID;
-                return (_online ? _excitation : _Excitation_INVALID);
+                if (_func == null) {
+                    return _Excitation_INVALID;
+                }
+                if (_online) {
+                    return _excitation;
+                }
+                return _Excitation_INVALID;
             }
             set
             {
@@ -371,10 +372,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_excitation(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Excitation_INVALID) return;
-            if (newval == _excitation) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Excitation_INVALID) {
+                return;
+            }
+            if (newval == _excitation) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_excitation(newval-1);
             _excitation = newval;
@@ -408,39 +417,13 @@ namespace YoctoProxyAPI
          */
         public int set_tempAvgAdaptRatio(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _TempAvgAdaptRatio_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_tempAvgAdaptRatio(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double TempAvgAdaptRatio
-        {
-            get
-            {
-                if (_func == null) return _TempAvgAdaptRatio_INVALID;
-                return (_online ? _tempAvgAdaptRatio : _TempAvgAdaptRatio_INVALID);
-            }
-            set
-            {
-                setprop_tempAvgAdaptRatio(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_tempAvgAdaptRatio(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _tempAvgAdaptRatio) return;
-            _func.set_tempAvgAdaptRatio(newval);
-            _tempAvgAdaptRatio = newval;
         }
 
         /**
@@ -464,14 +447,54 @@ namespace YoctoProxyAPI
          */
         public double get_tempAvgAdaptRatio()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            double res = _func.get_tempAvgAdaptRatio();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_tempAvgAdaptRatio();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Averaged temperature update rate, in per mille.</value>
+        public double TempAvgAdaptRatio
+        {
+            get
+            {
+                if (_func == null) {
+                    return _TempAvgAdaptRatio_INVALID;
+                }
+                if (_online) {
+                    return _tempAvgAdaptRatio;
+                }
+                return _TempAvgAdaptRatio_INVALID;
+            }
+            set
+            {
+                setprop_tempAvgAdaptRatio(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_tempAvgAdaptRatio(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _TempAvgAdaptRatio_INVALID) {
+                return;
+            }
+            if (newval == _tempAvgAdaptRatio) {
+                return;
+            }
+            _func.set_tempAvgAdaptRatio(newval);
+            _tempAvgAdaptRatio = newval;
         }
 
         /**
@@ -501,39 +524,13 @@ namespace YoctoProxyAPI
          */
         public int set_tempChgAdaptRatio(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _TempChgAdaptRatio_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_tempChgAdaptRatio(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double TempChgAdaptRatio
-        {
-            get
-            {
-                if (_func == null) return _TempChgAdaptRatio_INVALID;
-                return (_online ? _tempChgAdaptRatio : _TempChgAdaptRatio_INVALID);
-            }
-            set
-            {
-                setprop_tempChgAdaptRatio(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_tempChgAdaptRatio(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _tempChgAdaptRatio) return;
-            _func.set_tempChgAdaptRatio(newval);
-            _tempChgAdaptRatio = newval;
         }
 
         /**
@@ -556,14 +553,54 @@ namespace YoctoProxyAPI
          */
         public double get_tempChgAdaptRatio()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            double res = _func.get_tempChgAdaptRatio();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_tempChgAdaptRatio();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Temperature change update rate, in per mille.</value>
+        public double TempChgAdaptRatio
+        {
+            get
+            {
+                if (_func == null) {
+                    return _TempChgAdaptRatio_INVALID;
+                }
+                if (_online) {
+                    return _tempChgAdaptRatio;
+                }
+                return _TempChgAdaptRatio_INVALID;
+            }
+            set
+            {
+                setprop_tempChgAdaptRatio(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_tempChgAdaptRatio(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _TempChgAdaptRatio_INVALID) {
+                return;
+            }
+            if (newval == _tempChgAdaptRatio) {
+                return;
+            }
+            _func.set_tempChgAdaptRatio(newval);
+            _tempChgAdaptRatio = newval;
         }
 
         /**
@@ -583,13 +620,14 @@ namespace YoctoProxyAPI
          */
         public double get_compTempAvg()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            double res = _func.get_compTempAvg();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_compTempAvg();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -610,13 +648,14 @@ namespace YoctoProxyAPI
          */
         public double get_compTempChg()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            double res = _func.get_compTempChg();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_compTempChg();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -637,13 +676,14 @@ namespace YoctoProxyAPI
          */
         public double get_compensation()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            double res = _func.get_compensation();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_compensation();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -674,39 +714,13 @@ namespace YoctoProxyAPI
          */
         public int set_zeroTracking(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _ZeroTracking_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_zeroTracking(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double ZeroTracking
-        {
-            get
-            {
-                if (_func == null) return _ZeroTracking_INVALID;
-                return (_online ? _zeroTracking : _ZeroTracking_INVALID);
-            }
-            set
-            {
-                setprop_zeroTracking(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_zeroTracking(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _zeroTracking) return;
-            _func.set_zeroTracking(newval);
-            _zeroTracking = newval;
         }
 
         /**
@@ -729,14 +743,54 @@ namespace YoctoProxyAPI
          */
         public double get_zeroTracking()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
-            double res = _func.get_zeroTracking();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_zeroTracking();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Zero tracking threshold value. When this threshold is larger than</value>
+        public double ZeroTracking
+        {
+            get
+            {
+                if (_func == null) {
+                    return _ZeroTracking_INVALID;
+                }
+                if (_online) {
+                    return _zeroTracking;
+                }
+                return _ZeroTracking_INVALID;
+            }
+            set
+            {
+                setprop_zeroTracking(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_zeroTracking(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _ZeroTracking_INVALID) {
+                return;
+            }
+            if (newval == _zeroTracking) {
+                return;
+            }
+            _func.set_zeroTracking(newval);
+            _zeroTracking = newval;
         }
 
         /**
@@ -757,10 +811,8 @@ namespace YoctoProxyAPI
          */
         public virtual int tare()
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
             return _func.tare();
         }
@@ -789,10 +841,8 @@ namespace YoctoProxyAPI
          */
         public virtual int setupSpan(double currWeight, double maxWeight)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
             return _func.setupSpan(currWeight, maxWeight);
         }
@@ -825,48 +875,10 @@ namespace YoctoProxyAPI
          */
         public virtual int set_offsetAvgCompensationTable(double[] tempValues, double[] compValues)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
             return _func.set_offsetAvgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
-        }
-
-        /**
-         * <summary>
-         *   Retrieves the weight offset thermal compensation table previously configured using the
-         *   <c>set_offsetAvgCompensationTable</c> function.
-         * <para>
-         *   The weight correction is applied by linear interpolation between specified points.
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="tempValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with all averaged temperatures for which an offset correction is specified.
-         * </param>
-         * <param name="compValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with the offset correction applied for each of the temperature
-         *   included in the first argument, index by index.
-         * </param>
-         * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public virtual int loadOffsetAvgCompensationTable(double[] tempValues, double[] compValues)
-        {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.loadOffsetAvgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
         }
 
         /**
@@ -897,48 +909,10 @@ namespace YoctoProxyAPI
          */
         public virtual int set_offsetChgCompensationTable(double[] tempValues, double[] compValues)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
             return _func.set_offsetChgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
-        }
-
-        /**
-         * <summary>
-         *   Retrieves the weight offset thermal compensation table previously configured using the
-         *   <c>set_offsetChgCompensationTable</c> function.
-         * <para>
-         *   The weight correction is applied by linear interpolation between specified points.
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="tempValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with all temperature variations for which an offset correction is specified.
-         * </param>
-         * <param name="compValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with the offset correction applied for each of the temperature
-         *   variation included in the first argument, index by index.
-         * </param>
-         * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public virtual int loadOffsetChgCompensationTable(double[] tempValues, double[] compValues)
-        {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.loadOffsetChgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
         }
 
         /**
@@ -969,48 +943,10 @@ namespace YoctoProxyAPI
          */
         public virtual int set_spanAvgCompensationTable(double[] tempValues, double[] compValues)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
             return _func.set_spanAvgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
-        }
-
-        /**
-         * <summary>
-         *   Retrieves the weight span thermal compensation table previously configured using the
-         *   <c>set_spanAvgCompensationTable</c> function.
-         * <para>
-         *   The weight correction is applied by linear interpolation between specified points.
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="tempValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with all averaged temperatures for which an span correction is specified.
-         * </param>
-         * <param name="compValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with the span correction applied for each of the temperature
-         *   included in the first argument, index by index.
-         * </param>
-         * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public virtual int loadSpanAvgCompensationTable(double[] tempValues, double[] compValues)
-        {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.loadSpanAvgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
         }
 
         /**
@@ -1041,48 +977,10 @@ namespace YoctoProxyAPI
          */
         public virtual int set_spanChgCompensationTable(double[] tempValues, double[] compValues)
         {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WeighScale connected");
             }
             return _func.set_spanChgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
-        }
-
-        /**
-         * <summary>
-         *   Retrieves the weight span thermal compensation table previously configured using the
-         *   <c>set_spanChgCompensationTable</c> function.
-         * <para>
-         *   The weight correction is applied by linear interpolation between specified points.
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="tempValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with all variation of temperature for which an span correction is specified.
-         * </param>
-         * <param name="compValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with the span correction applied for each of variation of temperature
-         *   included in the first argument, index by index.
-         * </param>
-         * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public virtual int loadSpanChgCompensationTable(double[] tempValues, double[] compValues)
-        {
-            if (_func == null)
-            {
-                string msg = "No WeighScale connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.loadSpanChgCompensationTable(new List<double>(tempValues), new List<double>(compValues));
         }
     }
     //--- (end of YWeighScale implementation)

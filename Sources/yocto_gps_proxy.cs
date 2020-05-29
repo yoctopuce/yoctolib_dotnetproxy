@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gps_proxy.cs 39658 2020-03-12 15:36:29Z seb $
+ *  $Id: yocto_gps_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YGpsProxy, the Proxy API for Gps
  *
@@ -264,14 +264,12 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _isFixed = _func.get_isFixed()+1;
         }
 
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _coordSystem = _func.get_coordSystem()+1;
             _utcOffset = _func.get_utcOffset();
         }
@@ -294,42 +292,11 @@ namespace YoctoProxyAPI
          */
         public int get_isFixed()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_isFixed()+1;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public long SatCount
-        {
-            get
-            {
-                if (_func == null) return _SatCount_INVALID;
-                return (_online ? _satCount : _SatCount_INVALID);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int IsFixed
-        {
-            get
-            {
-                if (_func == null) return _IsFixed_INVALID;
-                return (_online ? _isFixed : _IsFixed_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "Fixing") _isFixed = _IsFixed_FALSE;
-            else _isFixed = _IsFixed_TRUE;
-            value = Regex.Replace(value,"[^-0-9]","");
-            Int64.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _satCount);
         }
 
         /**
@@ -349,14 +316,59 @@ namespace YoctoProxyAPI
          */
         public long get_satCount()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            long res = _func.get_satCount();
-            if (res == YAPI.INVALID_INT) res = _SatCount_INVALID;
+            res = _func.get_satCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _SatCount_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Total count of satellites used to compute GPS position.</value>
+        public long SatCount
+        {
+            get
+            {
+                if (_func == null) {
+                    return _SatCount_INVALID;
+                }
+                if (_online) {
+                    return _satCount;
+                }
+                return _SatCount_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "Fixing") {
+                _isFixed = _IsFixed_FALSE;
+            } else {
+                _isFixed = _IsFixed_TRUE;
+            }
+            value = (YAPI._atoi(value)).ToString();
+            _satCount = YAPI._atol(value);
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>True if the receiver has found enough satellites to work.</value>
+        public int IsFixed
+        {
+            get
+            {
+                if (_func == null) {
+                    return _IsFixed_INVALID;
+                }
+                if (_online) {
+                    return _isFixed;
+                }
+                return _IsFixed_INVALID;
+            }
         }
 
         /**
@@ -380,13 +392,14 @@ namespace YoctoProxyAPI
          */
         public long get_satPerConst()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            long res = _func.get_satPerConst();
-            if (res == YAPI.INVALID_INT) res = _SatPerConst_INVALID;
+            res = _func.get_satPerConst();
+            if (res == YAPI.INVALID_INT) {
+                res = _SatPerConst_INVALID;
+            }
             return res;
         }
 
@@ -408,13 +421,14 @@ namespace YoctoProxyAPI
          */
         public double get_gpsRefreshRate()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            double res = _func.get_gpsRefreshRate();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_gpsRefreshRate();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -436,10 +450,8 @@ namespace YoctoProxyAPI
          */
         public int get_coordSystem()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_coordSystem()+1;
@@ -470,24 +482,29 @@ namespace YoctoProxyAPI
          */
         public int set_coordSystem(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            if (newval == _CoordSystem_INVALID) return YAPI.SUCCESS;
+            if (newval == _CoordSystem_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_coordSystem(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Representation system used for positioning data.</value>
         public int CoordSystem
         {
             get
             {
-                if (_func == null) return _CoordSystem_INVALID;
-                return (_online ? _coordSystem : _CoordSystem_INVALID);
+                if (_func == null) {
+                    return _CoordSystem_INVALID;
+                }
+                if (_online) {
+                    return _coordSystem;
+                }
+                return _CoordSystem_INVALID;
             }
             set
             {
@@ -498,10 +515,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_coordSystem(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CoordSystem_INVALID) return;
-            if (newval == _coordSystem) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CoordSystem_INVALID) {
+                return;
+            }
+            if (newval == _coordSystem) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_coordSystem(newval-1);
             _coordSystem = newval;
@@ -529,10 +554,8 @@ namespace YoctoProxyAPI
          */
         public int get_constellation()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_constellation()+1;
@@ -567,16 +590,15 @@ namespace YoctoProxyAPI
          */
         public int set_constellation(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            if (newval == _Constellation_INVALID) return YAPI.SUCCESS;
+            if (newval == _Constellation_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_constellation(newval-1);
         }
-
 
         /**
          * <summary>
@@ -595,10 +617,8 @@ namespace YoctoProxyAPI
          */
         public string get_latitude()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
             return _func.get_latitude();
         }
@@ -620,10 +640,8 @@ namespace YoctoProxyAPI
          */
         public string get_longitude()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
             return _func.get_longitude();
         }
@@ -647,13 +665,14 @@ namespace YoctoProxyAPI
          */
         public double get_dilution()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            double res = _func.get_dilution();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_dilution();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -676,13 +695,14 @@ namespace YoctoProxyAPI
          */
         public double get_altitude()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            double res = _func.get_altitude();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_altitude();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -703,13 +723,14 @@ namespace YoctoProxyAPI
          */
         public double get_groundSpeed()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            double res = _func.get_groundSpeed();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_groundSpeed();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -732,13 +753,14 @@ namespace YoctoProxyAPI
          */
         public double get_direction()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            double res = _func.get_direction();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_direction();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -761,13 +783,14 @@ namespace YoctoProxyAPI
          */
         public long get_unixTime()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            long res = _func.get_unixTime();
-            if (res == YAPI.INVALID_INT) res = _UnixTime_INVALID;
+            res = _func.get_unixTime();
+            if (res == YAPI.INVALID_INT) {
+                res = _UnixTime_INVALID;
+            }
             return res;
         }
 
@@ -788,10 +811,8 @@ namespace YoctoProxyAPI
          */
         public string get_dateTime()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
             return _func.get_dateTime();
         }
@@ -813,10 +834,8 @@ namespace YoctoProxyAPI
          */
         public int get_utcOffset()
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
             return _func.get_utcOffset();
         }
@@ -847,23 +866,28 @@ namespace YoctoProxyAPI
          */
         public int set_utcOffset(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Gps connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gps connected");
             }
-            if (newval == _UtcOffset_INVALID) return YAPI.SUCCESS;
+            if (newval == _UtcOffset_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_utcOffset(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Number of seconds between current time and UTC time (time zone).</value>
         public int UtcOffset
         {
             get
             {
-                if (_func == null) return _UtcOffset_INVALID;
-                return (_online ? _utcOffset : _UtcOffset_INVALID);
+                if (_func == null) {
+                    return _UtcOffset_INVALID;
+                }
+                if (_online) {
+                    return _utcOffset;
+                }
+                return _UtcOffset_INVALID;
             }
             set
             {
@@ -874,10 +898,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_utcOffset(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _UtcOffset_INVALID) return;
-            if (newval == _utcOffset) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _UtcOffset_INVALID) {
+                return;
+            }
+            if (newval == _utcOffset) {
+                return;
+            }
             _func.set_utcOffset(newval);
             _utcOffset = newval;
         }

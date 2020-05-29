@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupschedule_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_wakeupschedule_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YWakeUpScheduleProxy, the Proxy API for WakeUpSchedule
  *
@@ -273,13 +273,14 @@ namespace YoctoProxyAPI
          */
         public int get_minutesA()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            int res = _func.get_minutesA();
-            if (res == YAPI.INVALID_INT) res = _MinutesA_INVALID;
+            res = _func.get_minutesA();
+            if (res == YAPI.INVALID_INT) {
+                res = _MinutesA_INVALID;
+            }
             return res;
         }
 
@@ -307,23 +308,28 @@ namespace YoctoProxyAPI
          */
         public int set_minutesA(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            if (newval == _MinutesA_INVALID) return YAPI.SUCCESS;
+            if (newval == _MinutesA_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_minutesA(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Minutes in the 00-29 interval of each hour scheduled for wake up.</value>
         public int MinutesA
         {
             get
             {
-                if (_func == null) return _MinutesA_INVALID;
-                return (_online ? _minutesA : _MinutesA_INVALID);
+                if (_func == null) {
+                    return _MinutesA_INVALID;
+                }
+                if (_online) {
+                    return _minutesA;
+                }
+                return _MinutesA_INVALID;
             }
             set
             {
@@ -334,10 +340,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_minutesA(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _MinutesA_INVALID) return;
-            if (newval == _minutesA) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MinutesA_INVALID) {
+                return;
+            }
+            if (newval == _minutesA) {
+                return;
+            }
             _func.set_minutesA(newval);
             _minutesA = newval;
         }
@@ -359,13 +373,14 @@ namespace YoctoProxyAPI
          */
         public int get_minutesB()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            int res = _func.get_minutesB();
-            if (res == YAPI.INVALID_INT) res = _MinutesB_INVALID;
+            res = _func.get_minutesB();
+            if (res == YAPI.INVALID_INT) {
+                res = _MinutesB_INVALID;
+            }
             return res;
         }
 
@@ -393,23 +408,28 @@ namespace YoctoProxyAPI
          */
         public int set_minutesB(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            if (newval == _MinutesB_INVALID) return YAPI.SUCCESS;
+            if (newval == _MinutesB_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_minutesB(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Minutes in the 30-59 interval of each hour scheduled for wake up.</value>
         public int MinutesB
         {
             get
             {
-                if (_func == null) return _MinutesB_INVALID;
-                return (_online ? _minutesB : _MinutesB_INVALID);
+                if (_func == null) {
+                    return _MinutesB_INVALID;
+                }
+                if (_online) {
+                    return _minutesB;
+                }
+                return _MinutesB_INVALID;
             }
             set
             {
@@ -420,10 +440,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_minutesB(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _MinutesB_INVALID) return;
-            if (newval == _minutesB) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MinutesB_INVALID) {
+                return;
+            }
+            if (newval == _minutesB) {
+                return;
+            }
             _func.set_minutesB(newval);
             _minutesB = newval;
         }
@@ -445,13 +473,14 @@ namespace YoctoProxyAPI
          */
         public int get_hours()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            int res = _func.get_hours();
-            if (res == YAPI.INVALID_INT) res = _Hours_INVALID;
+            res = _func.get_hours();
+            if (res == YAPI.INVALID_INT) {
+                res = _Hours_INVALID;
+            }
             return res;
         }
 
@@ -479,23 +508,28 @@ namespace YoctoProxyAPI
          */
         public int set_hours(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            if (newval == _Hours_INVALID) return YAPI.SUCCESS;
+            if (newval == _Hours_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_hours(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Hours scheduled for wake up.</value>
         public int Hours
         {
             get
             {
-                if (_func == null) return _Hours_INVALID;
-                return (_online ? _hours : _Hours_INVALID);
+                if (_func == null) {
+                    return _Hours_INVALID;
+                }
+                if (_online) {
+                    return _hours;
+                }
+                return _Hours_INVALID;
             }
             set
             {
@@ -506,10 +540,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_hours(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Hours_INVALID) return;
-            if (newval == _hours) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Hours_INVALID) {
+                return;
+            }
+            if (newval == _hours) {
+                return;
+            }
             _func.set_hours(newval);
             _hours = newval;
         }
@@ -531,13 +573,14 @@ namespace YoctoProxyAPI
          */
         public int get_weekDays()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            int res = _func.get_weekDays();
-            if (res == YAPI.INVALID_INT) res = _WeekDays_INVALID;
+            res = _func.get_weekDays();
+            if (res == YAPI.INVALID_INT) {
+                res = _WeekDays_INVALID;
+            }
             return res;
         }
 
@@ -565,23 +608,28 @@ namespace YoctoProxyAPI
          */
         public int set_weekDays(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            if (newval == _WeekDays_INVALID) return YAPI.SUCCESS;
+            if (newval == _WeekDays_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_weekDays(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Days of the week scheduled for wake up.</value>
         public int WeekDays
         {
             get
             {
-                if (_func == null) return _WeekDays_INVALID;
-                return (_online ? _weekDays : _WeekDays_INVALID);
+                if (_func == null) {
+                    return _WeekDays_INVALID;
+                }
+                if (_online) {
+                    return _weekDays;
+                }
+                return _WeekDays_INVALID;
             }
             set
             {
@@ -592,10 +640,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_weekDays(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _WeekDays_INVALID) return;
-            if (newval == _weekDays) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _WeekDays_INVALID) {
+                return;
+            }
+            if (newval == _weekDays) {
+                return;
+            }
             _func.set_weekDays(newval);
             _weekDays = newval;
         }
@@ -617,13 +673,14 @@ namespace YoctoProxyAPI
          */
         public int get_monthDays()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            int res = _func.get_monthDays();
-            if (res == YAPI.INVALID_INT) res = _MonthDays_INVALID;
+            res = _func.get_monthDays();
+            if (res == YAPI.INVALID_INT) {
+                res = _MonthDays_INVALID;
+            }
             return res;
         }
 
@@ -651,23 +708,28 @@ namespace YoctoProxyAPI
          */
         public int set_monthDays(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            if (newval == _MonthDays_INVALID) return YAPI.SUCCESS;
+            if (newval == _MonthDays_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_monthDays(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Days of the month scheduled for wake up.</value>
         public int MonthDays
         {
             get
             {
-                if (_func == null) return _MonthDays_INVALID;
-                return (_online ? _monthDays : _MonthDays_INVALID);
+                if (_func == null) {
+                    return _MonthDays_INVALID;
+                }
+                if (_online) {
+                    return _monthDays;
+                }
+                return _MonthDays_INVALID;
             }
             set
             {
@@ -678,10 +740,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_monthDays(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _MonthDays_INVALID) return;
-            if (newval == _monthDays) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MonthDays_INVALID) {
+                return;
+            }
+            if (newval == _monthDays) {
+                return;
+            }
             _func.set_monthDays(newval);
             _monthDays = newval;
         }
@@ -703,13 +773,14 @@ namespace YoctoProxyAPI
          */
         public int get_months()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            int res = _func.get_months();
-            if (res == YAPI.INVALID_INT) res = _Months_INVALID;
+            res = _func.get_months();
+            if (res == YAPI.INVALID_INT) {
+                res = _Months_INVALID;
+            }
             return res;
         }
 
@@ -737,23 +808,28 @@ namespace YoctoProxyAPI
          */
         public int set_months(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            if (newval == _Months_INVALID) return YAPI.SUCCESS;
+            if (newval == _Months_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_months(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Months scheduled for wake up.</value>
         public int Months
         {
             get
             {
-                if (_func == null) return _Months_INVALID;
-                return (_online ? _months : _Months_INVALID);
+                if (_func == null) {
+                    return _Months_INVALID;
+                }
+                if (_online) {
+                    return _months;
+                }
+                return _Months_INVALID;
             }
             set
             {
@@ -764,28 +840,20 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_months(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Months_INVALID) return;
-            if (newval == _months) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Months_INVALID) {
+                return;
+            }
+            if (newval == _months) {
+                return;
+            }
             _func.set_months(newval);
             _months = newval;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public long NextOccurence
-        {
-            get
-            {
-                if (_func == null) return _NextOccurence_INVALID;
-                return (_online ? _nextOccurence : _NextOccurence_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int64.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture,out _nextOccurence);
         }
 
         /**
@@ -805,14 +873,37 @@ namespace YoctoProxyAPI
          */
         public long get_nextOccurence()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
-            long res = _func.get_nextOccurence();
-            if (res == YAPI.INVALID_INT) res = _NextOccurence_INVALID;
+            res = _func.get_nextOccurence();
+            if (res == YAPI.INVALID_INT) {
+                res = _NextOccurence_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Date/time (seconds) of the next wake up occurrence.</value>
+        public long NextOccurence
+        {
+            get
+            {
+                if (_func == null) {
+                    return _NextOccurence_INVALID;
+                }
+                if (_online) {
+                    return _nextOccurence;
+                }
+                return _NextOccurence_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _nextOccurence = YAPI._hexStrToLong(value);
         }
 
         /**
@@ -824,10 +915,8 @@ namespace YoctoProxyAPI
          */
         public virtual long get_minutes()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
             return _func.get_minutes();
         }
@@ -850,10 +939,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_minutes(long bitmap)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpSchedule connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
             }
             return _func.set_minutes(bitmap);
         }

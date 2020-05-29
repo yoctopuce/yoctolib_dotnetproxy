@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_segmenteddisplay_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_segmenteddisplay_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YSegmentedDisplayProxy, the Proxy API for SegmentedDisplay
  *
@@ -256,10 +256,8 @@ namespace YoctoProxyAPI
          */
         public string get_displayedText()
         {
-            if (_func == null)
-            {
-                string msg = "No SegmentedDisplay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SegmentedDisplay connected");
             }
             return _func.get_displayedText();
         }
@@ -286,15 +284,14 @@ namespace YoctoProxyAPI
          */
         public int set_displayedText(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No SegmentedDisplay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SegmentedDisplay connected");
             }
-            if (newval == _DisplayedText_INVALID) return YAPI.SUCCESS;
+            if (newval == _DisplayedText_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_displayedText(newval);
         }
-
     }
     //--- (end of YSegmentedDisplay implementation)
 }

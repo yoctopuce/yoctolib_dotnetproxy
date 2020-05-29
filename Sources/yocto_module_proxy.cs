@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_module_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_module_proxy.cs 40752 2020-05-28 13:32:54Z mvuilleu $
  *
  *  Implements YModuleProxy, the Proxy API for Module
  *
@@ -169,27 +169,51 @@ namespace YoctoProxyAPI
         protected int _productRelease = _ProductRelease_INVALID;
         protected int _luminosity = _Luminosity_INVALID;
         //--- (end of generated code: YModule definitions)
-		protected int _beacon = _Beacon_INVALID;
+        protected string _firmwareRelease = _FirmwareRelease_INVALID;
+        protected int _beacon = _Beacon_INVALID;
 		
     	private void beaconChangeCallback(YModule module, int beacon)
     	{
             InternalStuff.log("beacon callback: " + beacon.ToString());
-            _beacon = beacon;
+            _beacon = beacon+1;
     	}
 
-    	public int Beacon
+        // property with cached value for instant access (configuration)
+        public int Beacon
     	{
       		get
       		{
-        		if (_func == null) return _Beacon_INVALID;
-        		if (!_online) return _Beacon_INVALID;
-        		return _beacon;
+                if (_func == null)
+                {
+                    return _Beacon_INVALID;
+                }
+                if (_online)
+                {
+                    return _beacon;
+                }
+        		return _Beacon_INVALID;
       		}
       		set
       		{
-        		if (_func == null) return;
-        		if (!_online) return;
-        		if ((value != _beacon) && (value == (_Beacon_ON) || value == (_Beacon_OFF))) _func.set_beacon(value);
+                if (_func == null)
+                {
+                    return;
+                }
+                if (!(_online))
+                {
+                    return;
+                }
+                if (value == _Beacon_INVALID)
+                {
+                    return;
+                }
+                if (value == _beacon)
+                {
+                    return;
+                }
+                // our enums start at 0 instead of the 'usual' -1 for invalid
+                _func.set_beacon(value - 1);
+                _beacon = value;
       		}
     	}
 
@@ -255,22 +279,13 @@ namespace YoctoProxyAPI
             _productName = _func.get_productName();
             _productId = _func.get_productId();
             _productRelease = _func.get_productRelease();
+            _firmwareRelease = _func.get_firmwareRelease();
         }
 
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
             _luminosity = _func.get_luminosity();
-        }
-
-        // property with cached value for instant access (constant value)
-        public string ProductName
-        {
-            get
-            {
-                if (_func == null) return _ProductName_INVALID;
-                return (_online ? _productName : _ProductName_INVALID);
-            }
         }
 
         /**
@@ -290,21 +305,25 @@ namespace YoctoProxyAPI
          */
         public string get_productName()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_productName();
         }
 
         // property with cached value for instant access (constant value)
-        public int ProductId
+        /// <value>Commercial name of the module, as set by the factory.</value>
+        public string ProductName
         {
             get
             {
-                if (_func == null) return _ProductId_INVALID;
-                return (_online ? _productId : _ProductId_INVALID);
+                if (_func == null) {
+                    return _ProductName_INVALID;
+                }
+                if (_online) {
+                    return _productName;
+                }
+                return _ProductName_INVALID;
             }
         }
 
@@ -325,23 +344,30 @@ namespace YoctoProxyAPI
          */
         public int get_productId()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
-            int res = _func.get_productId();
-            if (res == YAPI.INVALID_INT) res = _ProductId_INVALID;
+            res = _func.get_productId();
+            if (res == YAPI.INVALID_INT) {
+                res = _ProductId_INVALID;
+            }
             return res;
         }
 
         // property with cached value for instant access (constant value)
-        public int ProductRelease
+        /// <value>USB device identifier of the module.</value>
+        public int ProductId
         {
             get
             {
-                if (_func == null) return _ProductRelease_INVALID;
-                return (_online ? _productRelease : _ProductRelease_INVALID);
+                if (_func == null) {
+                    return _ProductId_INVALID;
+                }
+                if (_online) {
+                    return _productId;
+                }
+                return _ProductId_INVALID;
             }
         }
 
@@ -363,14 +389,31 @@ namespace YoctoProxyAPI
          */
         public int get_productRelease()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
-            int res = _func.get_productRelease();
-            if (res == YAPI.INVALID_INT) res = _ProductRelease_INVALID;
+            res = _func.get_productRelease();
+            if (res == YAPI.INVALID_INT) {
+                res = _ProductRelease_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Release number of the module hardware, preprogrammed at the factory.</value>
+        public int ProductRelease
+        {
+            get
+            {
+                if (_func == null) {
+                    return _ProductRelease_INVALID;
+                }
+                if (_online) {
+                    return _productRelease;
+                }
+                return _ProductRelease_INVALID;
+            }
         }
 
         /**
@@ -390,12 +433,26 @@ namespace YoctoProxyAPI
          */
         public string get_firmwareRelease()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_firmwareRelease();
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Version of the firmware embedded in the module.</value>
+        public string FirmwareRelease
+        {
+            get
+            {
+                if (_func == null) {
+                    return _FirmwareRelease_INVALID;
+                }
+                if (_online) {
+                    return _firmwareRelease;
+                }
+                return _FirmwareRelease_INVALID;
+            }
         }
 
         /**
@@ -416,10 +473,8 @@ namespace YoctoProxyAPI
          */
         public int get_persistentSettings()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_persistentSettings()+1;
@@ -442,13 +497,14 @@ namespace YoctoProxyAPI
          */
         public int get_luminosity()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
-            int res = _func.get_luminosity();
-            if (res == YAPI.INVALID_INT) res = _Luminosity_INVALID;
+            res = _func.get_luminosity();
+            if (res == YAPI.INVALID_INT) {
+                res = _Luminosity_INVALID;
+            }
             return res;
         }
 
@@ -478,23 +534,28 @@ namespace YoctoProxyAPI
          */
         public int set_luminosity(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
-            if (newval == _Luminosity_INVALID) return YAPI.SUCCESS;
+            if (newval == _Luminosity_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_luminosity(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Luminosity of the  module informative LEDs (from 0 to 100).</value>
         public int Luminosity
         {
             get
             {
-                if (_func == null) return _Luminosity_INVALID;
-                return (_online ? _luminosity : _Luminosity_INVALID);
+                if (_func == null) {
+                    return _Luminosity_INVALID;
+                }
+                if (_online) {
+                    return _luminosity;
+                }
+                return _Luminosity_INVALID;
             }
             set
             {
@@ -505,10 +566,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_luminosity(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Luminosity_INVALID) return;
-            if (newval == _luminosity) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Luminosity_INVALID) {
+                return;
+            }
+            if (newval == _luminosity) {
+                return;
+            }
             _func.set_luminosity(newval);
             _luminosity = newval;
         }
@@ -530,10 +599,8 @@ namespace YoctoProxyAPI
          */
         public int get_beacon()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_beacon()+1;
@@ -561,16 +628,15 @@ namespace YoctoProxyAPI
          */
         public int set_beacon(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
-            if (newval == _Beacon_INVALID) return YAPI.SUCCESS;
+            if (newval == _Beacon_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_beacon(newval-1);
         }
-
 
         /**
          * <summary>
@@ -589,10 +655,8 @@ namespace YoctoProxyAPI
          */
         public long get_upTime()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_upTime();
         }
@@ -614,13 +678,14 @@ namespace YoctoProxyAPI
          */
         public int get_usbCurrent()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
-            int res = _func.get_usbCurrent();
-            if (res == YAPI.INVALID_INT) res = _UsbCurrent_INVALID;
+            res = _func.get_usbCurrent();
+            if (res == YAPI.INVALID_INT) {
+                res = _UsbCurrent_INVALID;
+            }
             return res;
         }
 
@@ -643,10 +708,8 @@ namespace YoctoProxyAPI
          */
         public int get_rebootCountdown()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_rebootCountdown();
         }
@@ -669,10 +732,8 @@ namespace YoctoProxyAPI
          */
         public int get_userVar()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_userVar();
         }
@@ -702,15 +763,14 @@ namespace YoctoProxyAPI
          */
         public int set_userVar(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
-            if (newval == _UserVar_INVALID) return YAPI.SUCCESS;
+            if (newval == _UserVar_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_userVar(newval);
         }
-
 
         /**
          * <summary>
@@ -729,10 +789,8 @@ namespace YoctoProxyAPI
          */
         public virtual int saveToFlash()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.saveToFlash();
         }
@@ -753,10 +811,8 @@ namespace YoctoProxyAPI
          */
         public virtual int revertFromFlash()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.revertFromFlash();
         }
@@ -779,10 +835,8 @@ namespace YoctoProxyAPI
          */
         public virtual int reboot(int secBeforeReboot)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.reboot(secBeforeReboot);
         }
@@ -805,10 +859,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerFirmwareUpdate(int secBeforeReboot)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.triggerFirmwareUpdate(secBeforeReboot);
         }
@@ -822,10 +874,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerConfigChangeCallback()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.triggerConfigChangeCallback();
         }
@@ -861,10 +911,8 @@ namespace YoctoProxyAPI
          */
         public virtual string checkFirmware(string path, bool onlynew)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.checkFirmware(path, onlynew);
         }
@@ -891,10 +939,8 @@ namespace YoctoProxyAPI
          */
         public virtual YFirmwareUpdateProxy updateFirmwareEx(string path, bool force)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return new YFirmwareUpdateProxy(_func.updateFirmwareEx(path, force));
         }
@@ -918,10 +964,8 @@ namespace YoctoProxyAPI
          */
         public virtual YFirmwareUpdateProxy updateFirmware(string path)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return new YFirmwareUpdateProxy(_func.updateFirmware(path));
         }
@@ -945,10 +989,8 @@ namespace YoctoProxyAPI
          */
         public virtual byte[] get_allSettings()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_allSettings();
         }
@@ -977,10 +1019,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_allSettingsAndFiles(byte[] settings)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.set_allSettingsAndFiles(settings);
         }
@@ -1004,10 +1044,8 @@ namespace YoctoProxyAPI
          */
         public virtual bool hasFunction(string funcId)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.hasFunction(funcId);
         }
@@ -1029,10 +1067,8 @@ namespace YoctoProxyAPI
          */
         public virtual string[] get_functionIds(string funType)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_functionIds(funType).ToArray();
         }
@@ -1060,10 +1096,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_allSettings(byte[] settings)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.set_allSettings(settings);
         }
@@ -1084,10 +1118,8 @@ namespace YoctoProxyAPI
          */
         public override string get_hardwareId()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_hardwareId();
         }
@@ -1110,10 +1142,8 @@ namespace YoctoProxyAPI
          */
         public virtual byte[] download(string pathname)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.download(pathname);
         }
@@ -1135,10 +1165,8 @@ namespace YoctoProxyAPI
          */
         public virtual byte[] get_icon2d()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_icon2d();
         }
@@ -1160,10 +1188,8 @@ namespace YoctoProxyAPI
          */
         public virtual string get_lastLogs()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_lastLogs();
         }
@@ -1189,10 +1215,8 @@ namespace YoctoProxyAPI
          */
         public virtual int log(string text)
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.log(text);
         }
@@ -1211,10 +1235,8 @@ namespace YoctoProxyAPI
          */
         public virtual string[] get_subDevices()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_subDevices().ToArray();
         }
@@ -1233,10 +1255,8 @@ namespace YoctoProxyAPI
          */
         public virtual string get_parentHub()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_parentHub();
         }
@@ -1255,10 +1275,8 @@ namespace YoctoProxyAPI
          */
         public virtual string get_url()
         {
-            if (_func == null)
-            {
-                string msg = "No Module connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
             }
             return _func.get_url();
         }

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_currentloopoutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_currentloopoutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YCurrentLoopOutputProxy, the Proxy API for CurrentLoopOutput
  *
@@ -238,7 +238,6 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _loopPower = _func.get_loopPower()+1;
         }
 
@@ -273,59 +272,13 @@ namespace YoctoProxyAPI
          */
         public int set_current(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No CurrentLoopOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CurrentLoopOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Current_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_current(newval);
-        }
-
-
-        // property with cached value for instant access (advertised value)
-        public double Current
-        {
-            get
-            {
-                if (_func == null) return _Current_INVALID;
-                return (_online ? _current : _Current_INVALID);
-            }
-            set
-            {
-                setprop_current(value);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int LoopPower
-        {
-            get
-            {
-                if (_func == null) return _LoopPower_INVALID;
-                return (_online ? _loopPower : _LoopPower_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "NOPWR") _loopPower = _LoopPower_NOPWR;
-            else if (value == "LOWPWR") _loopPower = _LoopPower_LOWPWR;
-            else _loopPower = _LoopPower_POWEROK;
-            if (_loopPower == _LoopPower_POWEROK) // then parse numeric value
-            Double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture,out _current);
-        }
-
-        // private helper for magic property
-        private void setprop_current(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _current) return;
-            _func.set_current(newval);
-            _current = newval;
         }
 
         /**
@@ -345,14 +298,85 @@ namespace YoctoProxyAPI
          */
         public double get_current()
         {
-            if (_func == null)
-            {
-                string msg = "No CurrentLoopOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CurrentLoopOutput connected");
             }
-            double res = _func.get_current();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_current();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Loop current set point in mA.</value>
+        public double Current
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Current_INVALID;
+                }
+                if (_online) {
+                    return _current;
+                }
+                return _Current_INVALID;
+            }
+            set
+            {
+                setprop_current(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_current(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Current_INVALID) {
+                return;
+            }
+            if (newval == _current) {
+                return;
+            }
+            _func.set_current(newval);
+            _current = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "NOPWR") {
+                _loopPower = _LoopPower_NOPWR;
+            } else {
+                if (value == "LOWPWR") {
+                    _loopPower = _LoopPower_LOWPWR;
+                } else {
+                    _loopPower = _LoopPower_POWEROK;
+                    _current = YAPI._atof(value);
+                }
+            }
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>POWEROK when the loop is powered, NOPWR when the loop is not powered, LOWPWR when the loop is not powered enough to maintain requested current.</value>
+        public int LoopPower
+        {
+            get
+            {
+                if (_func == null) {
+                    return _LoopPower_INVALID;
+                }
+                if (_online) {
+                    return _loopPower;
+                }
+                return _LoopPower_INVALID;
+            }
         }
 
         /**
@@ -379,39 +403,13 @@ namespace YoctoProxyAPI
          */
         public int set_currentAtStartUp(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No CurrentLoopOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CurrentLoopOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _CurrentAtStartUp_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_currentAtStartUp(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double CurrentAtStartUp
-        {
-            get
-            {
-                if (_func == null) return _CurrentAtStartUp_INVALID;
-                return (_online ? _currentAtStartUp : _CurrentAtStartUp_INVALID);
-            }
-            set
-            {
-                setprop_currentAtStartUp(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_currentAtStartUp(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _currentAtStartUp) return;
-            _func.set_currentAtStartUp(newval);
-            _currentAtStartUp = newval;
         }
 
         /**
@@ -431,14 +429,54 @@ namespace YoctoProxyAPI
          */
         public double get_currentAtStartUp()
         {
-            if (_func == null)
-            {
-                string msg = "No CurrentLoopOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CurrentLoopOutput connected");
             }
-            double res = _func.get_currentAtStartUp();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_currentAtStartUp();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Current in the loop at device startup, in mA.</value>
+        public double CurrentAtStartUp
+        {
+            get
+            {
+                if (_func == null) {
+                    return _CurrentAtStartUp_INVALID;
+                }
+                if (_online) {
+                    return _currentAtStartUp;
+                }
+                return _CurrentAtStartUp_INVALID;
+            }
+            set
+            {
+                setprop_currentAtStartUp(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_currentAtStartUp(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CurrentAtStartUp_INVALID) {
+                return;
+            }
+            if (newval == _currentAtStartUp) {
+                return;
+            }
+            _func.set_currentAtStartUp(newval);
+            _currentAtStartUp = newval;
         }
 
         /**
@@ -462,10 +500,8 @@ namespace YoctoProxyAPI
          */
         public int get_loopPower()
         {
-            if (_func == null)
-            {
-                string msg = "No CurrentLoopOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CurrentLoopOutput connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_loopPower()+1;
@@ -492,10 +528,8 @@ namespace YoctoProxyAPI
          */
         public virtual int currentMove(double mA_target, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No CurrentLoopOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No CurrentLoopOutput connected");
             }
             return _func.currentMove(mA_target, ms_duration);
         }

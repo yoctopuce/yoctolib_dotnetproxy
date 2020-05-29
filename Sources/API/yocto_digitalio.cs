@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_digitalio.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_digitalio.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements yFindDigitalIO(), the high-level API for DigitalIO functions
  *
@@ -703,8 +703,14 @@ public class YDigitalIO : YFunction
      */
     public virtual int set_bitState(int bitno, int bitstate)
     {
-        if (!(bitstate >= 0)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid bit state"); return YAPI.INVALID_ARGUMENT; }
-        if (!(bitstate <= 1)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid bit state"); return YAPI.INVALID_ARGUMENT; }
+        if (!(bitstate >= 0)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid bit state");
+            return YAPI.INVALID_ARGUMENT;
+        }
+        if (!(bitstate <= 1)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid bit state");
+            return YAPI.INVALID_ARGUMENT;
+        }
         return this.set_command(""+((char)(82+bitstate)).ToString()+""+Convert.ToString(bitno));
     }
 
@@ -780,8 +786,14 @@ public class YDigitalIO : YFunction
      */
     public virtual int set_bitDirection(int bitno, int bitdirection)
     {
-        if (!(bitdirection >= 0)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid direction"); return YAPI.INVALID_ARGUMENT; }
-        if (!(bitdirection <= 1)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid direction"); return YAPI.INVALID_ARGUMENT; }
+        if (!(bitdirection >= 0)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid direction");
+            return YAPI.INVALID_ARGUMENT;
+        }
+        if (!(bitdirection <= 1)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid direction");
+            return YAPI.INVALID_ARGUMENT;
+        }
         return this.set_command(""+((char)(73+6*bitdirection)).ToString()+""+Convert.ToString(bitno));
     }
 
@@ -833,8 +845,14 @@ public class YDigitalIO : YFunction
      */
     public virtual int set_bitPolarity(int bitno, int bitpolarity)
     {
-        if (!(bitpolarity >= 0)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid bit polarity"); return YAPI.INVALID_ARGUMENT; }
-        if (!(bitpolarity <= 1)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid bit polarity"); return YAPI.INVALID_ARGUMENT; }
+        if (!(bitpolarity >= 0)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid bit polarity");
+            return YAPI.INVALID_ARGUMENT;
+        }
+        if (!(bitpolarity <= 1)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid bit polarity");
+            return YAPI.INVALID_ARGUMENT;
+        }
         return this.set_command(""+((char)(110+4*bitpolarity)).ToString()+""+Convert.ToString(bitno));
     }
 
@@ -886,8 +904,14 @@ public class YDigitalIO : YFunction
      */
     public virtual int set_bitOpenDrain(int bitno, int opendrain)
     {
-        if (!(opendrain >= 0)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid state"); return YAPI.INVALID_ARGUMENT; }
-        if (!(opendrain <= 1)) { this._throw( YAPI.INVALID_ARGUMENT, "invalid state"); return YAPI.INVALID_ARGUMENT; }
+        if (!(opendrain >= 0)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid state");
+            return YAPI.INVALID_ARGUMENT;
+        }
+        if (!(opendrain <= 1)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "invalid state");
+            return YAPI.INVALID_ARGUMENT;
+        }
         return this.set_command(""+((char)(100-32*opendrain)).ToString()+""+Convert.ToString(bitno));
     }
 

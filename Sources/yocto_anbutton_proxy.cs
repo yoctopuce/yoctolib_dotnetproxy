@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_anbutton_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_anbutton_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YAnButtonProxy, the Proxy API for AnButton
  *
@@ -253,46 +253,16 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _isPressed = _func.get_isPressed()+1;
         }
 
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _analogCalibration = _func.get_analogCalibration()+1;
             _calibrationMax = _func.get_calibrationMax();
             _calibrationMin = _func.get_calibrationMin();
             _sensitivity = _func.get_sensitivity();
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int CalibratedValue
-        {
-            get
-            {
-                if (_func == null) return _CalibratedValue_INVALID;
-                return (_online ? _calibratedValue : _CalibratedValue_INVALID);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int IsPressed
-        {
-            get
-            {
-                if (_func == null) return _IsPressed_INVALID;
-                return (_online ? _isPressed : _IsPressed_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int32.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _calibratedValue);
-            if (_calibratedValue < 350) _isPressed = _IsPressed_TRUE;
-            if (_calibratedValue > 650) _isPressed = _IsPressed_FALSE;
         }
 
         /**
@@ -312,14 +282,59 @@ namespace YoctoProxyAPI
          */
         public int get_calibratedValue()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            int res = _func.get_calibratedValue();
-            if (res == YAPI.INVALID_INT) res = _CalibratedValue_INVALID;
+            res = _func.get_calibratedValue();
+            if (res == YAPI.INVALID_INT) {
+                res = _CalibratedValue_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Current calibrated input value (between 0 and 1000, included).</value>
+        public int CalibratedValue
+        {
+            get
+            {
+                if (_func == null) {
+                    return _CalibratedValue_INVALID;
+                }
+                if (_online) {
+                    return _calibratedValue;
+                }
+                return _CalibratedValue_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _calibratedValue = YAPI._atoi(value);
+            if (_calibratedValue < 350) {
+                _isPressed = _IsPressed_TRUE;
+            }
+            if (_calibratedValue > 650) {
+                _isPressed = _IsPressed_FALSE;
+            }
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>True if the input (considered as binary) is active (closed contact), and false otherwise.</value>
+        public int IsPressed
+        {
+            get
+            {
+                if (_func == null) {
+                    return _IsPressed_INVALID;
+                }
+                if (_online) {
+                    return _isPressed;
+                }
+                return _IsPressed_INVALID;
+            }
         }
 
         /**
@@ -339,13 +354,14 @@ namespace YoctoProxyAPI
          */
         public int get_rawValue()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            int res = _func.get_rawValue();
-            if (res == YAPI.INVALID_INT) res = _RawValue_INVALID;
+            res = _func.get_rawValue();
+            if (res == YAPI.INVALID_INT) {
+                res = _RawValue_INVALID;
+            }
             return res;
         }
 
@@ -366,10 +382,8 @@ namespace YoctoProxyAPI
          */
         public int get_analogCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_analogCalibration()+1;
@@ -399,24 +413,29 @@ namespace YoctoProxyAPI
          */
         public int set_analogCalibration(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            if (newval == _AnalogCalibration_INVALID) return YAPI.SUCCESS;
+            if (newval == _AnalogCalibration_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_analogCalibration(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Tells if a calibration process is currently ongoing.</value>
         public int AnalogCalibration
         {
             get
             {
-                if (_func == null) return _AnalogCalibration_INVALID;
-                return (_online ? _analogCalibration : _AnalogCalibration_INVALID);
+                if (_func == null) {
+                    return _AnalogCalibration_INVALID;
+                }
+                if (_online) {
+                    return _analogCalibration;
+                }
+                return _AnalogCalibration_INVALID;
             }
             set
             {
@@ -427,10 +446,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_analogCalibration(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _AnalogCalibration_INVALID) return;
-            if (newval == _analogCalibration) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _AnalogCalibration_INVALID) {
+                return;
+            }
+            if (newval == _analogCalibration) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_analogCalibration(newval-1);
             _analogCalibration = newval;
@@ -453,13 +480,14 @@ namespace YoctoProxyAPI
          */
         public int get_calibrationMax()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            int res = _func.get_calibrationMax();
-            if (res == YAPI.INVALID_INT) res = _CalibrationMax_INVALID;
+            res = _func.get_calibrationMax();
+            if (res == YAPI.INVALID_INT) {
+                res = _CalibrationMax_INVALID;
+            }
             return res;
         }
 
@@ -490,23 +518,28 @@ namespace YoctoProxyAPI
          */
         public int set_calibrationMax(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            if (newval == _CalibrationMax_INVALID) return YAPI.SUCCESS;
+            if (newval == _CalibrationMax_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_calibrationMax(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Maximal value measured during the calibration (between 0 and 4095, included).</value>
         public int CalibrationMax
         {
             get
             {
-                if (_func == null) return _CalibrationMax_INVALID;
-                return (_online ? _calibrationMax : _CalibrationMax_INVALID);
+                if (_func == null) {
+                    return _CalibrationMax_INVALID;
+                }
+                if (_online) {
+                    return _calibrationMax;
+                }
+                return _CalibrationMax_INVALID;
             }
             set
             {
@@ -517,10 +550,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_calibrationMax(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CalibrationMax_INVALID) return;
-            if (newval == _calibrationMax) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CalibrationMax_INVALID) {
+                return;
+            }
+            if (newval == _calibrationMax) {
+                return;
+            }
             _func.set_calibrationMax(newval);
             _calibrationMax = newval;
         }
@@ -542,13 +583,14 @@ namespace YoctoProxyAPI
          */
         public int get_calibrationMin()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            int res = _func.get_calibrationMin();
-            if (res == YAPI.INVALID_INT) res = _CalibrationMin_INVALID;
+            res = _func.get_calibrationMin();
+            if (res == YAPI.INVALID_INT) {
+                res = _CalibrationMin_INVALID;
+            }
             return res;
         }
 
@@ -579,23 +621,28 @@ namespace YoctoProxyAPI
          */
         public int set_calibrationMin(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            if (newval == _CalibrationMin_INVALID) return YAPI.SUCCESS;
+            if (newval == _CalibrationMin_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_calibrationMin(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Minimal value measured during the calibration (between 0 and 4095, included).</value>
         public int CalibrationMin
         {
             get
             {
-                if (_func == null) return _CalibrationMin_INVALID;
-                return (_online ? _calibrationMin : _CalibrationMin_INVALID);
+                if (_func == null) {
+                    return _CalibrationMin_INVALID;
+                }
+                if (_online) {
+                    return _calibrationMin;
+                }
+                return _CalibrationMin_INVALID;
             }
             set
             {
@@ -606,10 +653,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_calibrationMin(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CalibrationMin_INVALID) return;
-            if (newval == _calibrationMin) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CalibrationMin_INVALID) {
+                return;
+            }
+            if (newval == _calibrationMin) {
+                return;
+            }
             _func.set_calibrationMin(newval);
             _calibrationMin = newval;
         }
@@ -631,13 +686,14 @@ namespace YoctoProxyAPI
          */
         public int get_sensitivity()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            int res = _func.get_sensitivity();
-            if (res == YAPI.INVALID_INT) res = _Sensitivity_INVALID;
+            res = _func.get_sensitivity();
+            if (res == YAPI.INVALID_INT) {
+                res = _Sensitivity_INVALID;
+            }
             return res;
         }
 
@@ -668,23 +724,28 @@ namespace YoctoProxyAPI
          */
         public int set_sensitivity(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            if (newval == _Sensitivity_INVALID) return YAPI.SUCCESS;
+            if (newval == _Sensitivity_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_sensitivity(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Sensibility for the input (between 1 and 1000) for triggering user callbacks.</value>
         public int Sensitivity
         {
             get
             {
-                if (_func == null) return _Sensitivity_INVALID;
-                return (_online ? _sensitivity : _Sensitivity_INVALID);
+                if (_func == null) {
+                    return _Sensitivity_INVALID;
+                }
+                if (_online) {
+                    return _sensitivity;
+                }
+                return _Sensitivity_INVALID;
             }
             set
             {
@@ -695,10 +756,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_sensitivity(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Sensitivity_INVALID) return;
-            if (newval == _sensitivity) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Sensitivity_INVALID) {
+                return;
+            }
+            if (newval == _sensitivity) {
+                return;
+            }
             _func.set_sensitivity(newval);
             _sensitivity = newval;
         }
@@ -721,10 +790,8 @@ namespace YoctoProxyAPI
          */
         public int get_isPressed()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_isPressed()+1;
@@ -749,10 +816,8 @@ namespace YoctoProxyAPI
          */
         public long get_lastTimePressed()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
             return _func.get_lastTimePressed();
         }
@@ -776,10 +841,8 @@ namespace YoctoProxyAPI
          */
         public long get_lastTimeReleased()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
             return _func.get_lastTimeReleased();
         }
@@ -804,13 +867,14 @@ namespace YoctoProxyAPI
          */
         public long get_pulseCounter()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
-            long res = _func.get_pulseCounter();
-            if (res == YAPI.INVALID_INT) res = _PulseCounter_INVALID;
+            res = _func.get_pulseCounter();
+            if (res == YAPI.INVALID_INT) {
+                res = _PulseCounter_INVALID;
+            }
             return res;
         }
 
@@ -831,10 +895,8 @@ namespace YoctoProxyAPI
          */
         public long get_pulseTimer()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
             return _func.get_pulseTimer();
         }
@@ -854,10 +916,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetCounter()
         {
-            if (_func == null)
-            {
-                string msg = "No AnButton connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
             }
             return _func.resetCounter();
         }

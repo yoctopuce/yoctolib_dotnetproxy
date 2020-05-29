@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwminput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_pwminput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YPwmInputProxy, the Proxy API for PwmInput
  *
@@ -255,7 +255,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _pwmReportMode = _func.get_pwmReportMode()+1;
             _debouncePeriod = _func.get_debouncePeriod();
         }
@@ -287,15 +286,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -314,13 +312,14 @@ namespace YoctoProxyAPI
          */
         public double get_dutyCycle()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            double res = _func.get_dutyCycle();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_dutyCycle();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -341,13 +340,14 @@ namespace YoctoProxyAPI
          */
         public double get_pulseDuration()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            double res = _func.get_pulseDuration();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_pulseDuration();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -368,13 +368,14 @@ namespace YoctoProxyAPI
          */
         public double get_frequency()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            double res = _func.get_frequency();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_frequency();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -395,13 +396,14 @@ namespace YoctoProxyAPI
          */
         public double get_period()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            double res = _func.get_period();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_period();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -425,13 +427,14 @@ namespace YoctoProxyAPI
          */
         public long get_pulseCounter()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            long res = _func.get_pulseCounter();
-            if (res == YAPI.INVALID_INT) res = _PulseCounter_INVALID;
+            res = _func.get_pulseCounter();
+            if (res == YAPI.INVALID_INT) {
+                res = _PulseCounter_INVALID;
+            }
             return res;
         }
 
@@ -452,10 +455,8 @@ namespace YoctoProxyAPI
          */
         public long get_pulseTimer()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
             return _func.get_pulseTimer();
         }
@@ -484,10 +485,8 @@ namespace YoctoProxyAPI
          */
         public int get_pwmReportMode()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_pwmReportMode()+1;
@@ -524,24 +523,29 @@ namespace YoctoProxyAPI
          */
         public int set_pwmReportMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            if (newval == _PwmReportMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _PwmReportMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_pwmReportMode(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Parameter (frequency/duty cycle, pulse width, edges count) returned by the get_currentValue function and callbacks. Attention</value>
         public int PwmReportMode
         {
             get
             {
-                if (_func == null) return _PwmReportMode_INVALID;
-                return (_online ? _pwmReportMode : _PwmReportMode_INVALID);
+                if (_func == null) {
+                    return _PwmReportMode_INVALID;
+                }
+                if (_online) {
+                    return _pwmReportMode;
+                }
+                return _PwmReportMode_INVALID;
             }
             set
             {
@@ -552,10 +556,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_pwmReportMode(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PwmReportMode_INVALID) return;
-            if (newval == _pwmReportMode) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PwmReportMode_INVALID) {
+                return;
+            }
+            if (newval == _pwmReportMode) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_pwmReportMode(newval-1);
             _pwmReportMode = newval;
@@ -579,13 +591,14 @@ namespace YoctoProxyAPI
          */
         public int get_debouncePeriod()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            int res = _func.get_debouncePeriod();
-            if (res == YAPI.INVALID_INT) res = _DebouncePeriod_INVALID;
+            res = _func.get_debouncePeriod();
+            if (res == YAPI.INVALID_INT) {
+                res = _DebouncePeriod_INVALID;
+            }
             return res;
         }
 
@@ -613,23 +626,28 @@ namespace YoctoProxyAPI
          */
         public int set_debouncePeriod(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
-            if (newval == _DebouncePeriod_INVALID) return YAPI.SUCCESS;
+            if (newval == _DebouncePeriod_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_debouncePeriod(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Shortest expected pulse duration, in ms. Any shorter pulse will be automatically ignored (debounce).</value>
         public int DebouncePeriod
         {
             get
             {
-                if (_func == null) return _DebouncePeriod_INVALID;
-                return (_online ? _debouncePeriod : _DebouncePeriod_INVALID);
+                if (_func == null) {
+                    return _DebouncePeriod_INVALID;
+                }
+                if (_online) {
+                    return _debouncePeriod;
+                }
+                return _DebouncePeriod_INVALID;
             }
             set
             {
@@ -640,10 +658,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_debouncePeriod(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _DebouncePeriod_INVALID) return;
-            if (newval == _debouncePeriod) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _DebouncePeriod_INVALID) {
+                return;
+            }
+            if (newval == _debouncePeriod) {
+                return;
+            }
             _func.set_debouncePeriod(newval);
             _debouncePeriod = newval;
         }
@@ -663,10 +689,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetCounter()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmInput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
             }
             return _func.resetCounter();
         }

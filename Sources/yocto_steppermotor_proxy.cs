@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_steppermotor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_steppermotor_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YStepperMotorProxy, the Proxy API for StepperMotor
  *
@@ -279,10 +279,8 @@ namespace YoctoProxyAPI
          */
         public int get_motorState()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_motorState()+1;
@@ -305,13 +303,14 @@ namespace YoctoProxyAPI
          */
         public int get_diags()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            int res = _func.get_diags();
-            if (res == YAPI.INVALID_INT) res = _Diags_INVALID;
+            res = _func.get_diags();
+            if (res == YAPI.INVALID_INT) {
+                res = _Diags_INVALID;
+            }
             return res;
         }
 
@@ -342,15 +341,14 @@ namespace YoctoProxyAPI
          */
         public int set_stepPos(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _StepPos_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_stepPos(newval);
         }
-
 
         /**
          * <summary>
@@ -370,13 +368,14 @@ namespace YoctoProxyAPI
          */
         public double get_stepPos()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            double res = _func.get_stepPos();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_stepPos();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -398,13 +397,14 @@ namespace YoctoProxyAPI
          */
         public double get_speed()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            double res = _func.get_speed();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_speed();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -431,15 +431,14 @@ namespace YoctoProxyAPI
          */
         public int set_pullinSpeed(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _PullinSpeed_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_pullinSpeed(newval);
         }
-
 
         /**
          * <summary>
@@ -459,13 +458,14 @@ namespace YoctoProxyAPI
          */
         public double get_pullinSpeed()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            double res = _func.get_pullinSpeed();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_pullinSpeed();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -491,15 +491,14 @@ namespace YoctoProxyAPI
          */
         public int set_maxAccel(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _MaxAccel_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_maxAccel(newval);
         }
-
 
         /**
          * <summary>
@@ -518,13 +517,14 @@ namespace YoctoProxyAPI
          */
         public double get_maxAccel()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            double res = _func.get_maxAccel();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_maxAccel();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -550,15 +550,14 @@ namespace YoctoProxyAPI
          */
         public int set_maxSpeed(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _MaxSpeed_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_maxSpeed(newval);
         }
-
 
         /**
          * <summary>
@@ -577,13 +576,14 @@ namespace YoctoProxyAPI
          */
         public double get_maxSpeed()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            double res = _func.get_maxSpeed();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_maxSpeed();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -606,10 +606,8 @@ namespace YoctoProxyAPI
          */
         public int get_stepping()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_stepping()+1;
@@ -639,16 +637,15 @@ namespace YoctoProxyAPI
          */
         public int set_stepping(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (newval == _Stepping_INVALID) return YAPI.SUCCESS;
+            if (newval == _Stepping_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_stepping(newval-1);
         }
-
 
         /**
          * <summary>
@@ -667,13 +664,14 @@ namespace YoctoProxyAPI
          */
         public int get_overcurrent()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            int res = _func.get_overcurrent();
-            if (res == YAPI.INVALID_INT) res = _Overcurrent_INVALID;
+            res = _func.get_overcurrent();
+            if (res == YAPI.INVALID_INT) {
+                res = _Overcurrent_INVALID;
+            }
             return res;
         }
 
@@ -699,15 +697,14 @@ namespace YoctoProxyAPI
          */
         public int set_overcurrent(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (newval == _Overcurrent_INVALID) return YAPI.SUCCESS;
+            if (newval == _Overcurrent_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_overcurrent(newval);
         }
-
 
         /**
          * <summary>
@@ -726,13 +723,14 @@ namespace YoctoProxyAPI
          */
         public int get_tCurrStop()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            int res = _func.get_tCurrStop();
-            if (res == YAPI.INVALID_INT) res = _TCurrStop_INVALID;
+            res = _func.get_tCurrStop();
+            if (res == YAPI.INVALID_INT) {
+                res = _TCurrStop_INVALID;
+            }
             return res;
         }
 
@@ -758,15 +756,14 @@ namespace YoctoProxyAPI
          */
         public int set_tCurrStop(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (newval == _TCurrStop_INVALID) return YAPI.SUCCESS;
+            if (newval == _TCurrStop_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_tCurrStop(newval);
         }
-
 
         /**
          * <summary>
@@ -785,13 +782,14 @@ namespace YoctoProxyAPI
          */
         public int get_tCurrRun()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            int res = _func.get_tCurrRun();
-            if (res == YAPI.INVALID_INT) res = _TCurrRun_INVALID;
+            res = _func.get_tCurrRun();
+            if (res == YAPI.INVALID_INT) {
+                res = _TCurrRun_INVALID;
+            }
             return res;
         }
 
@@ -817,15 +815,14 @@ namespace YoctoProxyAPI
          */
         public int set_tCurrRun(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (newval == _TCurrRun_INVALID) return YAPI.SUCCESS;
+            if (newval == _TCurrRun_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_tCurrRun(newval);
         }
-
 
         /**
          * <summary>
@@ -844,10 +841,8 @@ namespace YoctoProxyAPI
          */
         public int get_auxSignal()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.get_auxSignal();
         }
@@ -875,15 +870,14 @@ namespace YoctoProxyAPI
          */
         public int set_auxSignal(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
-            if (newval == _AuxSignal_INVALID) return YAPI.SUCCESS;
+            if (newval == _AuxSignal_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_auxSignal(newval);
         }
-
 
         /**
          * <summary>
@@ -898,10 +892,8 @@ namespace YoctoProxyAPI
          */
         public virtual int reset()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.reset();
         }
@@ -922,10 +914,8 @@ namespace YoctoProxyAPI
          */
         public virtual int findHomePosition(double speed)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.findHomePosition(speed);
         }
@@ -949,10 +939,8 @@ namespace YoctoProxyAPI
          */
         public virtual int changeSpeed(double speed)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.changeSpeed(speed);
         }
@@ -976,10 +964,8 @@ namespace YoctoProxyAPI
          */
         public virtual int moveTo(double absPos)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.moveTo(absPos);
         }
@@ -1003,10 +989,8 @@ namespace YoctoProxyAPI
          */
         public virtual int moveRel(double relPos)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.moveRel(relPos);
         }
@@ -1033,10 +1017,8 @@ namespace YoctoProxyAPI
          */
         public virtual int moveRelSlow(double relPos, double maxSpeed)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.moveRelSlow(relPos, maxSpeed);
         }
@@ -1057,10 +1039,8 @@ namespace YoctoProxyAPI
          */
         public virtual int pause(int waitMs)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.pause(waitMs);
         }
@@ -1078,10 +1058,8 @@ namespace YoctoProxyAPI
          */
         public virtual int emergencyStop()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.emergencyStop();
         }
@@ -1101,10 +1079,8 @@ namespace YoctoProxyAPI
          */
         public virtual int alertStepOut()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.alertStepOut();
         }
@@ -1127,10 +1103,8 @@ namespace YoctoProxyAPI
          */
         public virtual int alertStepDir(int dir)
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.alertStepDir(dir);
         }
@@ -1148,10 +1122,8 @@ namespace YoctoProxyAPI
          */
         public virtual int abortAndBrake()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.abortAndBrake();
         }
@@ -1169,10 +1141,8 @@ namespace YoctoProxyAPI
          */
         public virtual int abortAndHiZ()
         {
-            if (_func == null)
-            {
-                string msg = "No StepperMotor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No StepperMotor connected");
             }
             return _func.abortAndHiZ();
         }

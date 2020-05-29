@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_arithmeticsensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_arithmeticsensor_proxy.cs 40347 2020-05-06 09:29:33Z seb $
  *
  *  Implements YArithmeticSensorProxy, the Proxy API for ArithmeticSensor
  *
@@ -263,15 +263,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No ArithmeticSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ArithmeticSensor connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -290,10 +289,8 @@ namespace YoctoProxyAPI
          */
         public string get_description()
         {
-            if (_func == null)
-            {
-                string msg = "No ArithmeticSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ArithmeticSensor connected");
             }
             return _func.get_description();
         }
@@ -322,13 +319,14 @@ namespace YoctoProxyAPI
          */
         public virtual double defineExpression(string expr, string descr)
         {
-            if (_func == null)
-            {
-                string msg = "No ArithmeticSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ArithmeticSensor connected");
             }
-            double res = _func.defineExpression(expr, descr);
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.defineExpression(expr, descr);
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -348,10 +346,8 @@ namespace YoctoProxyAPI
          */
         public virtual string loadExpression()
         {
-            if (_func == null)
-            {
-                string msg = "No ArithmeticSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ArithmeticSensor connected");
             }
             return _func.loadExpression();
         }
@@ -387,47 +383,10 @@ namespace YoctoProxyAPI
          */
         public virtual int defineAuxiliaryFunction(string name, double[] inputValues, double[] outputValues)
         {
-            if (_func == null)
-            {
-                string msg = "No ArithmeticSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ArithmeticSensor connected");
             }
             return _func.defineAuxiliaryFunction(name, new List<double>(inputValues), new List<double>(outputValues));
-        }
-
-        /**
-         * <summary>
-         *   Retrieves the reference points table defining an auxiliary function previously
-         *   configured using the <c>defineAuxiliaryFunction</c> function.
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="name">
-         *   auxiliary function name, up to 16 characters.
-         * </param>
-         * <param name="inputValues">
-         *   array of floating point numbers, that is filled by the function
-         *   with all the function reference input value.
-         * </param>
-         * <param name="outputValues">
-         *   array of floating point numbers, that is filled by the function
-         *   output value for each of the input value, index by index.
-         * </param>
-         * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public virtual int loadAuxiliaryFunction(string name, double[] inputValues, double[] outputValues)
-        {
-            if (_func == null)
-            {
-                string msg = "No ArithmeticSensor connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _func.loadAuxiliaryFunction(name, new List<double>(inputValues), new List<double>(outputValues));
         }
     }
     //--- (end of YArithmeticSensor implementation)

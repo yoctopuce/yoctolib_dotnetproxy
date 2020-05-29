@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wlanrecord_proxy.cs 38687 2019-12-04 18:22:46Z mvuilleu $
+ *  $Id: yocto_wlanrecord_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YWlanRecordProxy, the Proxy API for WlanRecord
  *
@@ -49,7 +49,7 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YWlanRecord class start)
+    //--- (YWlanRecord class start)
     public class YWlanRecordProxy
     {
         private YWlanRecord _objref;
@@ -57,19 +57,11 @@ namespace YoctoProxyAPI
         {
              _objref = objref;
         }
-        //--- (end of generated code: YWlanRecord class start)
-        //--- (generated code: YWlanRecord definitions)
-        //--- (end of generated code: YWlanRecord definitions)
-        //--- (generated code: YWlanRecord implementation)
+        //--- (end of YWlanRecord class start)
+        //--- (YWlanRecord definitions)
+        //--- (end of YWlanRecord definitions)
+        //--- (YWlanRecord implementation)
 
-        // property with cached value for instant access
-        public string Ssid
-        {
-            get
-            {
-                return this.get_ssid();
-            }
-        }
         /**
          * <summary>
          *   Returns the name of the wireless network (SSID).
@@ -82,22 +74,18 @@ namespace YoctoProxyAPI
          */
         public virtual string get_ssid()
         {
-            if (_objref == null)
-            {
-                string msg = "No WlanRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_ssid();
         }
 
-        // property with cached value for instant access
-        public int Channel
+        // property with cached value for instant access (storage object)
+        public string Ssid
         {
             get
             {
-                return this.get_channel();
+                return this.get_ssid();
             }
         }
+
         /**
          * <summary>
          *   Returns the 802.11 b/g/n channel number used by this network.
@@ -110,22 +98,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_channel()
         {
-            if (_objref == null)
-            {
-                string msg = "No WlanRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_channel();
         }
 
-        // property with cached value for instant access
-        public string Security
+        // property with cached value for instant access (storage object)
+        public int Channel
         {
             get
             {
-                return this.get_security();
+                return this.get_channel();
             }
         }
+
         /**
          * <summary>
          *   Returns the security algorithm used by the wireless network.
@@ -139,22 +123,18 @@ namespace YoctoProxyAPI
          */
         public virtual string get_security()
         {
-            if (_objref == null)
-            {
-                string msg = "No WlanRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_security();
         }
 
-        // property with cached value for instant access
-        public int LinkQuality
+        // property with cached value for instant access (storage object)
+        public string Security
         {
             get
             {
-                return this.get_linkQuality();
+                return this.get_security();
             }
         }
+
         /**
          * <summary>
          *   Returns the quality of the wireless network link, in per cents.
@@ -167,14 +147,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_linkQuality()
         {
-            if (_objref == null)
-            {
-                string msg = "No WlanRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_linkQuality();
         }
+
+        // property with cached value for instant access (storage object)
+        public int LinkQuality
+        {
+            get
+            {
+                return this.get_linkQuality();
+            }
+        }
     }
-    //--- (end of generated code: YWlanRecord implementation)
+    //--- (end of YWlanRecord implementation)
 }
 

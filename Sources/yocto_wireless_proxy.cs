@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wireless_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_wireless_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YWirelessProxy, the Proxy API for Wireless
  *
@@ -40,16 +40,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YWireless class start)
+    //--- (YWireless class start)
     static public partial class YoctoProxyManager
     {
         public static YWirelessProxy FindWireless(string name)
@@ -157,8 +157,8 @@ namespace YoctoProxyAPI
         {
             return YoctoProxyManager.FindWireless(func);
         }
-        //--- (end of generated code: YWireless class start)
-        //--- (generated code: YWireless definitions)
+        //--- (end of YWireless class start)
+        //--- (YWireless definitions)
         public const int _LinkQuality_INVALID = -1;
         public const string _Ssid_INVALID = YAPI.INVALID_STRING;
         public const int _Channel_INVALID = -1;
@@ -181,9 +181,9 @@ namespace YoctoProxyAPI
         // property cache
         protected int _linkQuality = _LinkQuality_INVALID;
         protected string _ssid = _Ssid_INVALID;
-        //--- (end of generated code: YWireless definitions)
+        //--- (end of YWireless definitions)
 
-        //--- (generated code: YWireless implementation)
+        //--- (YWireless implementation)
         internal YWirelessProxy(YWireless hwd, string instantiationName) : base(hwd, instantiationName)
         {
             InternalStuff.log("Wireless " + instantiationName + " instantiation");
@@ -255,33 +255,6 @@ namespace YoctoProxyAPI
             _ssid = _func.get_ssid();
         }
 
-        // property with cached value for instant access (advertised value)
-        public int LinkQuality
-        {
-            get
-            {
-                if (_func == null) return _LinkQuality_INVALID;
-                return (_online ? _linkQuality : _LinkQuality_INVALID);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public string Ssid
-        {
-            get
-            {
-                if (_func == null) return _Ssid_INVALID;
-                return (_online ? _ssid : _Ssid_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            value = Regex.Replace(value,"[^-0-9]","");
-            Int32.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _linkQuality);
-        }
-
         /**
          * <summary>
          *   Returns the link quality, expressed in percent.
@@ -299,14 +272,54 @@ namespace YoctoProxyAPI
          */
         public int get_linkQuality()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
-            int res = _func.get_linkQuality();
-            if (res == YAPI.INVALID_INT) res = _LinkQuality_INVALID;
+            res = _func.get_linkQuality();
+            if (res == YAPI.INVALID_INT) {
+                res = _LinkQuality_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Link quality, expressed in percent.</value>
+        public int LinkQuality
+        {
+            get
+            {
+                if (_func == null) {
+                    return _LinkQuality_INVALID;
+                }
+                if (_online) {
+                    return _linkQuality;
+                }
+                return _LinkQuality_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            value = (YAPI._atoi(value)).ToString();
+            _linkQuality = YAPI._atoi(value);
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>Wireless network name (SSID).</value>
+        public string Ssid
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Ssid_INVALID;
+                }
+                if (_online) {
+                    return _ssid;
+                }
+                return _Ssid_INVALID;
+            }
         }
 
         /**
@@ -326,10 +339,8 @@ namespace YoctoProxyAPI
          */
         public string get_ssid()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             return _func.get_ssid();
         }
@@ -351,13 +362,14 @@ namespace YoctoProxyAPI
          */
         public int get_channel()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
-            int res = _func.get_channel();
-            if (res == YAPI.INVALID_INT) res = _Channel_INVALID;
+            res = _func.get_channel();
+            if (res == YAPI.INVALID_INT) {
+                res = _Channel_INVALID;
+            }
             return res;
         }
 
@@ -380,10 +392,8 @@ namespace YoctoProxyAPI
          */
         public int get_security()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_security()+1;
@@ -406,10 +416,8 @@ namespace YoctoProxyAPI
          */
         public string get_message()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             return _func.get_message();
         }
@@ -446,10 +454,8 @@ namespace YoctoProxyAPI
          */
         public int get_wlanState()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_wlanState()+1;
@@ -474,10 +480,8 @@ namespace YoctoProxyAPI
          */
         public virtual int startWlanScan()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             return _func.startWlanScan();
         }
@@ -505,10 +509,8 @@ namespace YoctoProxyAPI
          */
         public virtual int joinNetwork(string ssid, string securityKey)
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             return _func.joinNetwork(ssid, securityKey);
         }
@@ -547,10 +549,8 @@ namespace YoctoProxyAPI
          */
         public virtual int adhocNetwork(string ssid, string securityKey)
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             return _func.adhocNetwork(ssid, securityKey);
         }
@@ -592,10 +592,8 @@ namespace YoctoProxyAPI
          */
         public virtual int softAPNetwork(string ssid, string securityKey)
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
             return _func.softAPNetwork(ssid, securityKey);
         }
@@ -621,20 +619,24 @@ namespace YoctoProxyAPI
          */
         public virtual YWlanRecordProxy[] get_detectedWlans()
         {
-            if (_func == null)
-            {
-                string msg = "No Wireless connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Wireless connected");
             }
-            int i = 0;
-            var std_res = _func.get_detectedWlans();
-            YWlanRecordProxy[] proxy_res = new YWlanRecordProxy[std_res.Count];
-            foreach (var record in std_res) {
-                proxy_res[i++] = new YWlanRecordProxy(record);
+            int i;
+            int arrlen;
+            YWlanRecord[] std_res;
+            YWlanRecordProxy[] proxy_res;
+            std_res = _func.get_detectedWlans().ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YWlanRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YWlanRecordProxy(std_res[i]);
+                i = i + 1;
             }
             return proxy_res;
         }
     }
-    //--- (end of generated code: YWireless implementation)
+    //--- (end of YWireless implementation)
 }
 

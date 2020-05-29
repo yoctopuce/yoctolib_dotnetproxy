@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorled_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_colorled_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YColorLedProxy, the Proxy API for ColorLed
  *
@@ -252,41 +252,6 @@ namespace YoctoProxyAPI
             _rgbColorAtPowerOn = _func.get_rgbColorAtPowerOn();
         }
 
-        // property with cached value for instant access (advertised value)
-        public int RgbColor
-        {
-            get
-            {
-                if (_func == null) return _RgbColor_INVALID;
-                return (_online ? _rgbColor : _RgbColor_INVALID);
-            }
-            set
-            {
-                setprop_rgbColor(value);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int HslColor
-        {
-            get
-            {
-                if (_func == null) return _HslColor_INVALID;
-                return (_online ? _hslColor : _HslColor_INVALID);
-            }
-            set
-            {
-                setprop_hslColor(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int32.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture,out _rgbColor);
-            InternalStuff.rgb2hsl(_rgbColor, ref _hslColor);
-        }
-
         /**
          * <summary>
          *   Returns the current RGB color of the LED.
@@ -304,13 +269,14 @@ namespace YoctoProxyAPI
          */
         public int get_rgbColor()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            int res = _func.get_rgbColor();
-            if (res == YAPI.INVALID_INT) res = _RgbColor_INVALID;
+            res = _func.get_rgbColor();
+            if (res == YAPI.INVALID_INT) {
+                res = _RgbColor_INVALID;
+            }
             return res;
         }
 
@@ -337,25 +303,98 @@ namespace YoctoProxyAPI
          */
         public int set_rgbColor(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            if (newval == _RgbColor_INVALID) return YAPI.SUCCESS;
+            if (newval == _RgbColor_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_rgbColor(newval);
         }
 
+        // property with cached value for instant access (advertised value)
+        /// <value>Current RGB color of the LED.</value>
+        public int RgbColor
+        {
+            get
+            {
+                if (_func == null) {
+                    return _RgbColor_INVALID;
+                }
+                if (_online) {
+                    return _rgbColor;
+                }
+                return _RgbColor_INVALID;
+            }
+            set
+            {
+                setprop_rgbColor(value);
+            }
+        }
 
         // private helper for magic property
         private void setprop_rgbColor(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _RgbColor_INVALID) return;
-            if (newval == _rgbColor) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _RgbColor_INVALID) {
+                return;
+            }
+            if (newval == _rgbColor) {
+                return;
+            }
             _func.set_rgbColor(newval);
             _rgbColor = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _rgbColor = YAPI._hexStrToInt(value);
+            _hslColor = InternalStuff.rgb2hsl(_rgbColor, _hslColor);
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>Current HSL color of the LED.</value>
+        public int HslColor
+        {
+            get
+            {
+                if (_func == null) {
+                    return _HslColor_INVALID;
+                }
+                if (_online) {
+                    return _hslColor;
+                }
+                return _HslColor_INVALID;
+            }
+            set
+            {
+                setprop_hslColor(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_hslColor(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _HslColor_INVALID) {
+                return;
+            }
+            if (newval == _hslColor) {
+                return;
+            }
+            _func.set_hslColor(newval);
+            _hslColor = newval;
         }
 
         /**
@@ -375,13 +414,14 @@ namespace YoctoProxyAPI
          */
         public int get_hslColor()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            int res = _func.get_hslColor();
-            if (res == YAPI.INVALID_INT) res = _HslColor_INVALID;
+            res = _func.get_hslColor();
+            if (res == YAPI.INVALID_INT) {
+                res = _HslColor_INVALID;
+            }
             return res;
         }
 
@@ -408,25 +448,13 @@ namespace YoctoProxyAPI
          */
         public int set_hslColor(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            if (newval == _HslColor_INVALID) return YAPI.SUCCESS;
+            if (newval == _HslColor_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_hslColor(newval);
-        }
-
-
-        // private helper for magic property
-        private void setprop_hslColor(int newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _HslColor_INVALID) return;
-            if (newval == _hslColor) return;
-            _func.set_hslColor(newval);
-            _hslColor = newval;
         }
 
         /**
@@ -454,10 +482,8 @@ namespace YoctoProxyAPI
          */
         public int rgbMove(int rgb_target,int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.rgbMove(rgb_target, ms_duration);
         }
@@ -487,10 +513,8 @@ namespace YoctoProxyAPI
          */
         public int hslMove(int hsl_target,int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.hslMove(hsl_target, ms_duration);
         }
@@ -512,13 +536,14 @@ namespace YoctoProxyAPI
          */
         public int get_rgbColorAtPowerOn()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            int res = _func.get_rgbColorAtPowerOn();
-            if (res == YAPI.INVALID_INT) res = _RgbColorAtPowerOn_INVALID;
+            res = _func.get_rgbColorAtPowerOn();
+            if (res == YAPI.INVALID_INT) {
+                res = _RgbColorAtPowerOn_INVALID;
+            }
             return res;
         }
 
@@ -546,23 +571,28 @@ namespace YoctoProxyAPI
          */
         public int set_rgbColorAtPowerOn(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            if (newval == _RgbColorAtPowerOn_INVALID) return YAPI.SUCCESS;
+            if (newval == _RgbColorAtPowerOn_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_rgbColorAtPowerOn(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Configured color to be displayed when the module is turned on.</value>
         public int RgbColorAtPowerOn
         {
             get
             {
-                if (_func == null) return _RgbColorAtPowerOn_INVALID;
-                return (_online ? _rgbColorAtPowerOn : _RgbColorAtPowerOn_INVALID);
+                if (_func == null) {
+                    return _RgbColorAtPowerOn_INVALID;
+                }
+                if (_online) {
+                    return _rgbColorAtPowerOn;
+                }
+                return _RgbColorAtPowerOn_INVALID;
             }
             set
             {
@@ -573,10 +603,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_rgbColorAtPowerOn(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _RgbColorAtPowerOn_INVALID) return;
-            if (newval == _rgbColorAtPowerOn) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _RgbColorAtPowerOn_INVALID) {
+                return;
+            }
+            if (newval == _rgbColorAtPowerOn) {
+                return;
+            }
             _func.set_rgbColorAtPowerOn(newval);
             _rgbColorAtPowerOn = newval;
         }
@@ -598,24 +636,15 @@ namespace YoctoProxyAPI
          */
         public int get_blinkSeqSize()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            int res = _func.get_blinkSeqSize();
-            if (res == YAPI.INVALID_INT) res = _BlinkSeqSize_INVALID;
+            res = _func.get_blinkSeqSize();
+            if (res == YAPI.INVALID_INT) {
+                res = _BlinkSeqSize_INVALID;
+            }
             return res;
-        }
-
-        // property with cached value for instant access (constant value)
-        public int BlinkSeqMaxSize
-        {
-            get
-            {
-                if (_func == null) return _BlinkSeqMaxSize_INVALID;
-                return (_online ? _blinkSeqMaxSize : _BlinkSeqMaxSize_INVALID);
-            }
         }
 
         /**
@@ -635,14 +664,31 @@ namespace YoctoProxyAPI
          */
         public int get_blinkSeqMaxSize()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            int res = _func.get_blinkSeqMaxSize();
-            if (res == YAPI.INVALID_INT) res = _BlinkSeqMaxSize_INVALID;
+            res = _func.get_blinkSeqMaxSize();
+            if (res == YAPI.INVALID_INT) {
+                res = _BlinkSeqMaxSize_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Maximum length of the blinking sequence.</value>
+        public int BlinkSeqMaxSize
+        {
+            get
+            {
+                if (_func == null) {
+                    return _BlinkSeqMaxSize_INVALID;
+                }
+                if (_online) {
+                    return _blinkSeqMaxSize;
+                }
+                return _BlinkSeqMaxSize_INVALID;
+            }
         }
 
         /**
@@ -666,13 +712,14 @@ namespace YoctoProxyAPI
          */
         public int get_blinkSeqSignature()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
-            int res = _func.get_blinkSeqSignature();
-            if (res == YAPI.INVALID_INT) res = _BlinkSeqSignature_INVALID;
+            res = _func.get_blinkSeqSignature();
+            if (res == YAPI.INVALID_INT) {
+                res = _BlinkSeqSignature_INVALID;
+            }
             return res;
         }
 
@@ -696,10 +743,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addHslMoveToBlinkSeq(int HSLcolor, int msDelay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.addHslMoveToBlinkSeq(HSLcolor, msDelay);
         }
@@ -724,10 +769,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addRgbMoveToBlinkSeq(int RGBcolor, int msDelay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.addRgbMoveToBlinkSeq(RGBcolor, msDelay);
         }
@@ -748,10 +791,8 @@ namespace YoctoProxyAPI
          */
         public virtual int startBlinkSeq()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.startBlinkSeq();
         }
@@ -769,10 +810,8 @@ namespace YoctoProxyAPI
          */
         public virtual int stopBlinkSeq()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.stopBlinkSeq();
         }
@@ -790,10 +829,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetBlinkSeq()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLed connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.resetBlinkSeq();
         }

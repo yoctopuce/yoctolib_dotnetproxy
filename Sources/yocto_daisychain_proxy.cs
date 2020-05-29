@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_daisychain_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_daisychain_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YDaisyChainProxy, the Proxy API for DaisyChain
  *
@@ -264,10 +264,8 @@ namespace YoctoProxyAPI
          */
         public int get_daisyState()
         {
-            if (_func == null)
-            {
-                string msg = "No DaisyChain connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DaisyChain connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_daisyState()+1;
@@ -290,13 +288,14 @@ namespace YoctoProxyAPI
          */
         public int get_childCount()
         {
-            if (_func == null)
-            {
-                string msg = "No DaisyChain connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DaisyChain connected");
             }
-            int res = _func.get_childCount();
-            if (res == YAPI.INVALID_INT) res = _ChildCount_INVALID;
+            res = _func.get_childCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _ChildCount_INVALID;
+            }
             return res;
         }
 
@@ -317,13 +316,14 @@ namespace YoctoProxyAPI
          */
         public int get_requiredChildCount()
         {
-            if (_func == null)
-            {
-                string msg = "No DaisyChain connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DaisyChain connected");
             }
-            int res = _func.get_requiredChildCount();
-            if (res == YAPI.INVALID_INT) res = _RequiredChildCount_INVALID;
+            res = _func.get_requiredChildCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _RequiredChildCount_INVALID;
+            }
             return res;
         }
 
@@ -353,23 +353,28 @@ namespace YoctoProxyAPI
          */
         public int set_requiredChildCount(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DaisyChain connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DaisyChain connected");
             }
-            if (newval == _RequiredChildCount_INVALID) return YAPI.SUCCESS;
+            if (newval == _RequiredChildCount_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_requiredChildCount(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Number of child nodes expected in normal conditions.</value>
         public int RequiredChildCount
         {
             get
             {
-                if (_func == null) return _RequiredChildCount_INVALID;
-                return (_online ? _requiredChildCount : _RequiredChildCount_INVALID);
+                if (_func == null) {
+                    return _RequiredChildCount_INVALID;
+                }
+                if (_online) {
+                    return _requiredChildCount;
+                }
+                return _RequiredChildCount_INVALID;
             }
             set
             {
@@ -380,10 +385,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_requiredChildCount(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _RequiredChildCount_INVALID) return;
-            if (newval == _requiredChildCount) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _RequiredChildCount_INVALID) {
+                return;
+            }
+            if (newval == _requiredChildCount) {
+                return;
+            }
             _func.set_requiredChildCount(newval);
             _requiredChildCount = newval;
         }

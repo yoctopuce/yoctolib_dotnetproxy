@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_i2cport_proxy.cs 39333 2020-01-30 10:05:40Z mvuilleu $
+ *  $Id: yocto_i2cport_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YI2cPortProxy, the Proxy API for I2cPort
  *
@@ -262,7 +262,6 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
             _startupJob = _func.get_startupJob();
             _protocol = _func.get_protocol();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _i2cVoltageLevel = _func.get_i2cVoltageLevel()+1;
             _i2cMode = _func.get_i2cMode();
         }
@@ -284,13 +283,14 @@ namespace YoctoProxyAPI
          */
         public int get_rxCount()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            int res = _func.get_rxCount();
-            if (res == YAPI.INVALID_INT) res = _RxCount_INVALID;
+            res = _func.get_rxCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _RxCount_INVALID;
+            }
             return res;
         }
 
@@ -311,13 +311,14 @@ namespace YoctoProxyAPI
          */
         public int get_txCount()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            int res = _func.get_txCount();
-            if (res == YAPI.INVALID_INT) res = _TxCount_INVALID;
+            res = _func.get_txCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _TxCount_INVALID;
+            }
             return res;
         }
 
@@ -338,13 +339,14 @@ namespace YoctoProxyAPI
          */
         public int get_errCount()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            int res = _func.get_errCount();
-            if (res == YAPI.INVALID_INT) res = _ErrCount_INVALID;
+            res = _func.get_errCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _ErrCount_INVALID;
+            }
             return res;
         }
 
@@ -365,13 +367,14 @@ namespace YoctoProxyAPI
          */
         public int get_rxMsgCount()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            int res = _func.get_rxMsgCount();
-            if (res == YAPI.INVALID_INT) res = _RxMsgCount_INVALID;
+            res = _func.get_rxMsgCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _RxMsgCount_INVALID;
+            }
             return res;
         }
 
@@ -392,13 +395,14 @@ namespace YoctoProxyAPI
          */
         public int get_txMsgCount()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            int res = _func.get_txMsgCount();
-            if (res == YAPI.INVALID_INT) res = _TxMsgCount_INVALID;
+            res = _func.get_txMsgCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _TxMsgCount_INVALID;
+            }
             return res;
         }
 
@@ -419,10 +423,8 @@ namespace YoctoProxyAPI
          */
         public string get_lastMsg()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.get_lastMsg();
         }
@@ -444,10 +446,8 @@ namespace YoctoProxyAPI
          */
         public string get_currentJob()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.get_currentJob();
         }
@@ -476,15 +476,14 @@ namespace YoctoProxyAPI
          */
         public int set_currentJob(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            if (newval == _CurrentJob_INVALID) return YAPI.SUCCESS;
+            if (newval == _CurrentJob_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_currentJob(newval);
         }
-
 
         /**
          * <summary>
@@ -503,10 +502,8 @@ namespace YoctoProxyAPI
          */
         public string get_startupJob()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.get_startupJob();
         }
@@ -535,23 +532,28 @@ namespace YoctoProxyAPI
          */
         public int set_startupJob(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            if (newval == _StartupJob_INVALID) return YAPI.SUCCESS;
+            if (newval == _StartupJob_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_startupJob(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Job file to use when the device is powered on.</value>
         public string StartupJob
         {
             get
             {
-                if (_func == null) return _StartupJob_INVALID;
-                return (_online ? _startupJob : _StartupJob_INVALID);
+                if (_func == null) {
+                    return _StartupJob_INVALID;
+                }
+                if (_online) {
+                    return _startupJob;
+                }
+                return _StartupJob_INVALID;
             }
             set
             {
@@ -562,22 +564,20 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_startupJob(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _StartupJob_INVALID) return;
-            if (newval == _startupJob) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _StartupJob_INVALID) {
+                return;
+            }
+            if (newval == _startupJob) {
+                return;
+            }
             _func.set_startupJob(newval);
             _startupJob = newval;
-        }
-
-        // property with cached value for instant access (constant value)
-        public int JobMaxTask
-        {
-            get
-            {
-                if (_func == null) return _JobMaxTask_INVALID;
-                return (_online ? _jobMaxTask : _JobMaxTask_INVALID);
-            }
         }
 
         /**
@@ -597,23 +597,30 @@ namespace YoctoProxyAPI
          */
         public int get_jobMaxTask()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            int res = _func.get_jobMaxTask();
-            if (res == YAPI.INVALID_INT) res = _JobMaxTask_INVALID;
+            res = _func.get_jobMaxTask();
+            if (res == YAPI.INVALID_INT) {
+                res = _JobMaxTask_INVALID;
+            }
             return res;
         }
 
         // property with cached value for instant access (constant value)
-        public int JobMaxSize
+        /// <value>Maximum number of tasks in a job that the device can handle.</value>
+        public int JobMaxTask
         {
             get
             {
-                if (_func == null) return _JobMaxSize_INVALID;
-                return (_online ? _jobMaxSize : _JobMaxSize_INVALID);
+                if (_func == null) {
+                    return _JobMaxTask_INVALID;
+                }
+                if (_online) {
+                    return _jobMaxTask;
+                }
+                return _JobMaxTask_INVALID;
             }
         }
 
@@ -634,14 +641,31 @@ namespace YoctoProxyAPI
          */
         public int get_jobMaxSize()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            int res = _func.get_jobMaxSize();
-            if (res == YAPI.INVALID_INT) res = _JobMaxSize_INVALID;
+            res = _func.get_jobMaxSize();
+            if (res == YAPI.INVALID_INT) {
+                res = _JobMaxSize_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Maximum size allowed for job files.</value>
+        public int JobMaxSize
+        {
+            get
+            {
+                if (_func == null) {
+                    return _JobMaxSize_INVALID;
+                }
+                if (_online) {
+                    return _jobMaxSize;
+                }
+                return _JobMaxSize_INVALID;
+            }
         }
 
         /**
@@ -664,10 +688,8 @@ namespace YoctoProxyAPI
          */
         public string get_protocol()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.get_protocol();
         }
@@ -701,23 +723,28 @@ namespace YoctoProxyAPI
          */
         public int set_protocol(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            if (newval == _Protocol_INVALID) return YAPI.SUCCESS;
+            if (newval == _Protocol_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_protocol(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Type of protocol used to send I2C messages, as a string.</value>
         public string Protocol
         {
             get
             {
-                if (_func == null) return _Protocol_INVALID;
-                return (_online ? _protocol : _Protocol_INVALID);
+                if (_func == null) {
+                    return _Protocol_INVALID;
+                }
+                if (_online) {
+                    return _protocol;
+                }
+                return _Protocol_INVALID;
             }
             set
             {
@@ -728,10 +755,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_protocol(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Protocol_INVALID) return;
-            if (newval == _protocol) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Protocol_INVALID) {
+                return;
+            }
+            if (newval == _protocol) {
+                return;
+            }
             _func.set_protocol(newval);
             _protocol = newval;
         }
@@ -754,10 +789,8 @@ namespace YoctoProxyAPI
          */
         public int get_i2cVoltageLevel()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_i2cVoltageLevel()+1;
@@ -788,24 +821,29 @@ namespace YoctoProxyAPI
          */
         public int set_i2cVoltageLevel(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            if (newval == _I2cVoltageLevel_INVALID) return YAPI.SUCCESS;
+            if (newval == _I2cVoltageLevel_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_i2cVoltageLevel(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Voltage level used on the I2C bus.</value>
         public int I2cVoltageLevel
         {
             get
             {
-                if (_func == null) return _I2cVoltageLevel_INVALID;
-                return (_online ? _i2cVoltageLevel : _I2cVoltageLevel_INVALID);
+                if (_func == null) {
+                    return _I2cVoltageLevel_INVALID;
+                }
+                if (_online) {
+                    return _i2cVoltageLevel;
+                }
+                return _I2cVoltageLevel_INVALID;
             }
             set
             {
@@ -816,10 +854,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_i2cVoltageLevel(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _I2cVoltageLevel_INVALID) return;
-            if (newval == _i2cVoltageLevel) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _I2cVoltageLevel_INVALID) {
+                return;
+            }
+            if (newval == _i2cVoltageLevel) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_i2cVoltageLevel(newval-1);
             _i2cVoltageLevel = newval;
@@ -848,10 +894,8 @@ namespace YoctoProxyAPI
          */
         public string get_i2cMode()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.get_i2cMode();
         }
@@ -886,23 +930,28 @@ namespace YoctoProxyAPI
          */
         public int set_i2cMode(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
-            if (newval == _I2cMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _I2cMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_i2cMode(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>I2C port communication parameters, as a string such as</value>
         public string I2cMode
         {
             get
             {
-                if (_func == null) return _I2cMode_INVALID;
-                return (_online ? _i2cMode : _I2cMode_INVALID);
+                if (_func == null) {
+                    return _I2cMode_INVALID;
+                }
+                if (_online) {
+                    return _i2cMode;
+                }
+                return _I2cMode_INVALID;
             }
             set
             {
@@ -913,10 +962,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_i2cMode(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _I2cMode_INVALID) return;
-            if (newval == _i2cMode) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _I2cMode_INVALID) {
+                return;
+            }
+            if (newval == _i2cMode) {
+                return;
+            }
             _func.set_i2cMode(newval);
             _i2cMode = newval;
         }
@@ -943,10 +1000,8 @@ namespace YoctoProxyAPI
          */
         public virtual string readLine()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.readLine();
         }
@@ -985,10 +1040,8 @@ namespace YoctoProxyAPI
          */
         public virtual string[] readMessages(string pattern, int maxWait)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.readMessages(pattern, maxWait).ToArray();
         }
@@ -1011,10 +1064,8 @@ namespace YoctoProxyAPI
          */
         public virtual int read_seek(int absPos)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.read_seek(absPos);
         }
@@ -1031,10 +1082,8 @@ namespace YoctoProxyAPI
          */
         public virtual int read_tell()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.read_tell();
         }
@@ -1052,10 +1101,8 @@ namespace YoctoProxyAPI
          */
         public virtual int read_avail()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.read_avail();
         }
@@ -1083,10 +1130,8 @@ namespace YoctoProxyAPI
          */
         public virtual string queryLine(string query, int maxWait)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.queryLine(query, maxWait);
         }
@@ -1115,10 +1160,8 @@ namespace YoctoProxyAPI
          */
         public virtual string queryHex(string hexString, int maxWait)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.queryHex(hexString, maxWait);
         }
@@ -1145,10 +1188,8 @@ namespace YoctoProxyAPI
          */
         public virtual int uploadJob(string jobfile, string jsonDef)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.uploadJob(jobfile, jsonDef);
         }
@@ -1176,10 +1217,8 @@ namespace YoctoProxyAPI
          */
         public virtual int selectJob(string jobfile)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.selectJob(jobfile);
         }
@@ -1201,10 +1240,8 @@ namespace YoctoProxyAPI
          */
         public virtual int reset()
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.reset();
         }
@@ -1231,10 +1268,8 @@ namespace YoctoProxyAPI
          */
         public virtual int i2cSendBin(int slaveAddr, byte[] buff)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.i2cSendBin(slaveAddr, buff);
         }
@@ -1261,10 +1296,8 @@ namespace YoctoProxyAPI
          */
         public virtual int i2cSendArray(int slaveAddr, int[] values)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.i2cSendArray(slaveAddr, new List<int>(values));
         }
@@ -1295,10 +1328,8 @@ namespace YoctoProxyAPI
          */
         public virtual byte[] i2cSendAndReceiveBin(int slaveAddr, byte[] buff, int rcvCount)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.i2cSendAndReceiveBin(slaveAddr, buff, rcvCount);
         }
@@ -1329,10 +1360,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] i2cSendAndReceiveArray(int slaveAddr, int[] values, int rcvCount)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.i2cSendAndReceiveArray(slaveAddr, new List<int>(values), rcvCount).ToArray();
         }
@@ -1366,10 +1395,8 @@ namespace YoctoProxyAPI
          */
         public virtual int writeStr(string codes)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.writeStr(codes);
         }
@@ -1403,10 +1430,8 @@ namespace YoctoProxyAPI
          */
         public virtual int writeLine(string codes)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.writeLine(codes);
         }
@@ -1431,10 +1456,8 @@ namespace YoctoProxyAPI
          */
         public virtual int writeByte(int code)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.writeByte(code);
         }
@@ -1459,10 +1482,8 @@ namespace YoctoProxyAPI
          */
         public virtual int writeHex(string hexString)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.writeHex(hexString);
         }
@@ -1487,10 +1508,8 @@ namespace YoctoProxyAPI
          */
         public virtual int writeBin(byte[] buff)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.writeBin(buff);
         }
@@ -1515,10 +1534,8 @@ namespace YoctoProxyAPI
          */
         public virtual int writeArray(int[] byteList)
         {
-            if (_func == null)
-            {
-                string msg = "No I2cPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.writeArray(new List<int>(byteList));
         }

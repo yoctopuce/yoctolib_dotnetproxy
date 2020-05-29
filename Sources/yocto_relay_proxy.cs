@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_relay_proxy.cs 39434 2020-02-25 08:53:55Z seb $
+ *  $Id: yocto_relay_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YRelayProxy, the Proxy API for Relay
  *
@@ -254,31 +254,9 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _stateAtPowerOn = _func.get_stateAtPowerOn()+1;
             _maxTimeOnStateA = _func.get_maxTimeOnStateA();
             _maxTimeOnStateB = _func.get_maxTimeOnStateB();
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int State
-        {
-            get
-            {
-                if (_func == null) return _State_INVALID;
-                return (_online ? _state : _State_INVALID);
-            }
-            set
-            {
-                setprop_state(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "A") _state = 1;
-            if (value == "B") _state = 2;
         }
 
         /**
@@ -299,10 +277,8 @@ namespace YoctoProxyAPI
          */
         public int get_state()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_state()+1;
@@ -331,27 +307,65 @@ namespace YoctoProxyAPI
          */
         public int set_state(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
-            if (newval == _State_INVALID) return YAPI.SUCCESS;
+            if (newval == _State_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_state(newval-1);
         }
 
+        // property with cached value for instant access (advertised value)
+        /// <value>State of the relays (A for the idle position, B for the active position).</value>
+        public int State
+        {
+            get
+            {
+                if (_func == null) {
+                    return _State_INVALID;
+                }
+                if (_online) {
+                    return _state;
+                }
+                return _State_INVALID;
+            }
+            set
+            {
+                setprop_state(value);
+            }
+        }
 
         // private helper for magic property
         private void setprop_state(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _State_INVALID) return;
-            if (newval == _state) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _State_INVALID) {
+                return;
+            }
+            if (newval == _state) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_state(newval-1);
             _state = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "A") {
+                _state = 1;
+            }
+            if (value == "B") {
+                _state = 2;
+            }
         }
 
         /**
@@ -375,10 +389,8 @@ namespace YoctoProxyAPI
          */
         public int get_stateAtPowerOn()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_stateAtPowerOn()+1;
@@ -412,24 +424,29 @@ namespace YoctoProxyAPI
          */
         public int set_stateAtPowerOn(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
-            if (newval == _StateAtPowerOn_INVALID) return YAPI.SUCCESS;
+            if (newval == _StateAtPowerOn_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_stateAtPowerOn(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>State of the relays at device startup (A for the idle position,</value>
         public int StateAtPowerOn
         {
             get
             {
-                if (_func == null) return _StateAtPowerOn_INVALID;
-                return (_online ? _stateAtPowerOn : _StateAtPowerOn_INVALID);
+                if (_func == null) {
+                    return _StateAtPowerOn_INVALID;
+                }
+                if (_online) {
+                    return _stateAtPowerOn;
+                }
+                return _StateAtPowerOn_INVALID;
             }
             set
             {
@@ -440,10 +457,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_stateAtPowerOn(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _StateAtPowerOn_INVALID) return;
-            if (newval == _stateAtPowerOn) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _StateAtPowerOn_INVALID) {
+                return;
+            }
+            if (newval == _stateAtPowerOn) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_stateAtPowerOn(newval-1);
             _stateAtPowerOn = newval;
@@ -469,10 +494,8 @@ namespace YoctoProxyAPI
          */
         public long get_maxTimeOnStateA()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             return _func.get_maxTimeOnStateA();
         }
@@ -504,23 +527,28 @@ namespace YoctoProxyAPI
          */
         public int set_maxTimeOnStateA(long newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
-            if (newval == _MaxTimeOnStateA_INVALID) return YAPI.SUCCESS;
+            if (newval == _MaxTimeOnStateA_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_maxTimeOnStateA(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Maximum time (ms) allowed for the relay to stay in state</value>
         public long MaxTimeOnStateA
         {
             get
             {
-                if (_func == null) return _MaxTimeOnStateA_INVALID;
-                return (_online ? _maxTimeOnStateA : _MaxTimeOnStateA_INVALID);
+                if (_func == null) {
+                    return _MaxTimeOnStateA_INVALID;
+                }
+                if (_online) {
+                    return _maxTimeOnStateA;
+                }
+                return _MaxTimeOnStateA_INVALID;
             }
             set
             {
@@ -531,10 +559,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_maxTimeOnStateA(long newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _MaxTimeOnStateA_INVALID) return;
-            if (newval == _maxTimeOnStateA) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MaxTimeOnStateA_INVALID) {
+                return;
+            }
+            if (newval == _maxTimeOnStateA) {
+                return;
+            }
             _func.set_maxTimeOnStateA(newval);
             _maxTimeOnStateA = newval;
         }
@@ -558,10 +594,8 @@ namespace YoctoProxyAPI
          */
         public long get_maxTimeOnStateB()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             return _func.get_maxTimeOnStateB();
         }
@@ -593,23 +627,28 @@ namespace YoctoProxyAPI
          */
         public int set_maxTimeOnStateB(long newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
-            if (newval == _MaxTimeOnStateB_INVALID) return YAPI.SUCCESS;
+            if (newval == _MaxTimeOnStateB_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_maxTimeOnStateB(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>The maximum time (ms) allowed for the relay to stay in state B</value>
         public long MaxTimeOnStateB
         {
             get
             {
-                if (_func == null) return _MaxTimeOnStateB_INVALID;
-                return (_online ? _maxTimeOnStateB : _MaxTimeOnStateB_INVALID);
+                if (_func == null) {
+                    return _MaxTimeOnStateB_INVALID;
+                }
+                if (_online) {
+                    return _maxTimeOnStateB;
+                }
+                return _MaxTimeOnStateB_INVALID;
             }
             set
             {
@@ -620,10 +659,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_maxTimeOnStateB(long newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _MaxTimeOnStateB_INVALID) return;
-            if (newval == _maxTimeOnStateB) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MaxTimeOnStateB_INVALID) {
+                return;
+            }
+            if (newval == _maxTimeOnStateB) {
+                return;
+            }
             _func.set_maxTimeOnStateB(newval);
             _maxTimeOnStateB = newval;
         }
@@ -646,10 +693,8 @@ namespace YoctoProxyAPI
          */
         public int get_output()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_output()+1;
@@ -678,16 +723,15 @@ namespace YoctoProxyAPI
          */
         public int set_output(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
-            if (newval == _Output_INVALID) return YAPI.SUCCESS;
+            if (newval == _Output_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_output(newval-1);
         }
-
 
         /**
          * <summary>
@@ -709,10 +753,8 @@ namespace YoctoProxyAPI
          */
         public long get_pulseTimer()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             return _func.get_pulseTimer();
         }
@@ -740,10 +782,8 @@ namespace YoctoProxyAPI
          */
         public int pulse(int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             return _func.pulse(ms_duration);
         }
@@ -773,10 +813,8 @@ namespace YoctoProxyAPI
          */
         public int delayedPulse(int ms_delay,int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             return _func.delayedPulse(ms_delay, ms_duration);
         }
@@ -800,10 +838,8 @@ namespace YoctoProxyAPI
          */
         public long get_countdown()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             return _func.get_countdown();
         }
@@ -823,10 +859,8 @@ namespace YoctoProxyAPI
          */
         public virtual int toggle()
         {
-            if (_func == null)
-            {
-                string msg = "No Relay connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Relay connected");
             }
             return _func.toggle();
         }

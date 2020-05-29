@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.10.39863</Version>
+    <Version>1.10.40758</Version>
     <Authors>Yoctopuce Dev Team</Authors>
     <Company>Yoctopuce</Company>
     <Product />
@@ -20,7 +20,6 @@
     <Compile Include="..\..\Sources\yocto_module_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_sensor_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_dataset_proxy.cs" />
-    <Compile Include="..\..\Sources\yocto_consolidateddataset_proxy.cs" />
 <!-- yocto_patch_start -->
     <Compile Include="..\..\Sources\API\yocto_accelerometer.cs" Link="yocto_accelerometer.cs" />
     <Compile Include="..\..\Sources\API\yocto_altitude.cs" Link="yocto_altitude.cs" />

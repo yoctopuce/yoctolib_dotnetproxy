@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_humidity_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_humidity_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YHumidityProxy, the Proxy API for Humidity
  *
@@ -267,15 +267,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Humidity connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Humidity connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -294,13 +293,14 @@ namespace YoctoProxyAPI
          */
         public double get_relHum()
         {
-            if (_func == null)
-            {
-                string msg = "No Humidity connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Humidity connected");
             }
-            double res = _func.get_relHum();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_relHum();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -321,13 +321,14 @@ namespace YoctoProxyAPI
          */
         public double get_absHum()
         {
-            if (_func == null)
-            {
-                string msg = "No Humidity connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Humidity connected");
             }
-            double res = _func.get_absHum();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_absHum();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
     }

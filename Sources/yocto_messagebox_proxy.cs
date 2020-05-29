@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_messagebox_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_messagebox_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YMessageBoxProxy, the Proxy API for MessageBox
  *
@@ -44,12 +44,12 @@ using System.IO;
 using System.Threading;
 using System.Timers;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
-
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YMessageBox class start)
+    //--- (YMessageBox class start)
     static public partial class YoctoProxyManager
     {
         public static YMessageBoxProxy FindMessageBox(string name)
@@ -156,8 +156,8 @@ namespace YoctoProxyAPI
         {
             return YoctoProxyManager.FindMessageBox(func);
         }
-        //--- (end of generated code: YMessageBox class start)
-        //--- (generated code: YMessageBox definitions)
+        //--- (end of YMessageBox class start)
+        //--- (YMessageBox definitions)
         public const int _SlotsInUse_INVALID = -1;
         public const int _SlotsCount_INVALID = -1;
         public const string _SlotsBitmap_INVALID = YAPI.INVALID_STRING;
@@ -169,9 +169,9 @@ namespace YoctoProxyAPI
         protected new YMessageBox _func;
         // property cache
         protected int _slotsInUse = _SlotsInUse_INVALID;
-        //--- (end of generated code: YMessageBox definitions)
+        //--- (end of YMessageBox definitions)
 
-        //--- (generated code: YMessageBox implementation)
+        //--- (YMessageBox implementation)
         internal YMessageBoxProxy(YMessageBox hwd, string instantiationName) : base(hwd, instantiationName)
         {
             InternalStuff.log("MessageBox " + instantiationName + " instantiation");
@@ -241,22 +241,6 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
         }
 
-        // property with cached value for instant access (advertised value)
-        public int SlotsInUse
-        {
-            get
-            {
-                if (_func == null) return _SlotsInUse_INVALID;
-                return (_online ? _slotsInUse : _SlotsInUse_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int32.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _slotsInUse);
-        }
-
         /**
          * <summary>
          *   Returns the number of message storage slots currently in use.
@@ -274,14 +258,37 @@ namespace YoctoProxyAPI
          */
         public int get_slotsInUse()
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
-            int res = _func.get_slotsInUse();
-            if (res == YAPI.INVALID_INT) res = _SlotsInUse_INVALID;
+            res = _func.get_slotsInUse();
+            if (res == YAPI.INVALID_INT) {
+                res = _SlotsInUse_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Number of message storage slots currently in use.</value>
+        public int SlotsInUse
+        {
+            get
+            {
+                if (_func == null) {
+                    return _SlotsInUse_INVALID;
+                }
+                if (_online) {
+                    return _slotsInUse;
+                }
+                return _SlotsInUse_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _slotsInUse = YAPI._atoi(value);
         }
 
         /**
@@ -301,13 +308,14 @@ namespace YoctoProxyAPI
          */
         public int get_slotsCount()
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
-            int res = _func.get_slotsCount();
-            if (res == YAPI.INVALID_INT) res = _SlotsCount_INVALID;
+            res = _func.get_slotsCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _SlotsCount_INVALID;
+            }
             return res;
         }
 
@@ -328,13 +336,14 @@ namespace YoctoProxyAPI
          */
         public int get_pduSent()
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
-            int res = _func.get_pduSent();
-            if (res == YAPI.INVALID_INT) res = _PduSent_INVALID;
+            res = _func.get_pduSent();
+            if (res == YAPI.INVALID_INT) {
+                res = _PduSent_INVALID;
+            }
             return res;
         }
 
@@ -360,15 +369,14 @@ namespace YoctoProxyAPI
          */
         public int set_pduSent(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
-            if (newval == _PduSent_INVALID) return YAPI.SUCCESS;
+            if (newval == _PduSent_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_pduSent(newval);
         }
-
 
         /**
          * <summary>
@@ -387,13 +395,14 @@ namespace YoctoProxyAPI
          */
         public int get_pduReceived()
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
-            int res = _func.get_pduReceived();
-            if (res == YAPI.INVALID_INT) res = _PduReceived_INVALID;
+            res = _func.get_pduReceived();
+            if (res == YAPI.INVALID_INT) {
+                res = _PduReceived_INVALID;
+            }
             return res;
         }
 
@@ -419,15 +428,14 @@ namespace YoctoProxyAPI
          */
         public int set_pduReceived(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
-            if (newval == _PduReceived_INVALID) return YAPI.SUCCESS;
+            if (newval == _PduReceived_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_pduReceived(newval);
         }
-
 
         /**
          * <summary>
@@ -444,10 +452,8 @@ namespace YoctoProxyAPI
          */
         public virtual int clearPduCounters()
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
             return _func.clearPduCounters();
         }
@@ -479,10 +485,8 @@ namespace YoctoProxyAPI
          */
         public virtual int sendTextMessage(string recipient, string message)
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
             return _func.sendTextMessage(recipient, message);
         }
@@ -515,10 +519,8 @@ namespace YoctoProxyAPI
          */
         public virtual int sendFlashMessage(string recipient, string message)
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
             return _func.sendFlashMessage(recipient, message);
         }
@@ -542,10 +544,8 @@ namespace YoctoProxyAPI
          */
         public virtual YSmsProxy newMessage(string recipient)
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
             return new YSmsProxy(_func.newMessage(recipient));
         }
@@ -567,20 +567,24 @@ namespace YoctoProxyAPI
          */
         public virtual YSmsProxy[] get_messages()
         {
-            if (_func == null)
-            {
-                string msg = "No MessageBox connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
             }
-            int i = 0;
-            var std_res = _func.get_messages();
-            YSmsProxy[] proxy_res = new YSmsProxy[std_res.Count];
-            foreach (var record in std_res) {
-                proxy_res[i++] = new YSmsProxy(record);
+            int i;
+            int arrlen;
+            YSms[] std_res;
+            YSmsProxy[] proxy_res;
+            std_res = _func.get_messages().ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YSmsProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YSmsProxy(std_res[i]);
+                i = i + 1;
             }
             return proxy_res;
         }
     }
-    //--- (end of generated code: YMessageBox implementation)
+    //--- (end of YMessageBox implementation)
 }
 

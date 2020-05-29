@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_hubport_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_hubport_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YHubPortProxy, the Proxy API for HubPort
  *
@@ -267,10 +267,8 @@ namespace YoctoProxyAPI
          */
         public int get_enabled()
         {
-            if (_func == null)
-            {
-                string msg = "No HubPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No HubPort connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enabled()+1;
@@ -301,63 +299,14 @@ namespace YoctoProxyAPI
          */
         public int set_enabled(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No HubPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No HubPort connected");
             }
-            if (newval == _Enabled_INVALID) return YAPI.SUCCESS;
+            if (newval == _Enabled_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enabled(newval-1);
-        }
-
-
-        // private helper for magic property
-        private void setprop_enabled(int newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Enabled_INVALID) return;
-            if (newval == _enabled) return;
-            // our enums start at 0 instead of the 'usual' -1 for invalid
-            _func.set_enabled(newval-1);
-            _enabled = newval;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int PortState
-        {
-            get
-            {
-                if (_func == null) return _PortState_INVALID;
-                return (_online ? _portState : _PortState_INVALID);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int Enabled
-        {
-            get
-            {
-                if (_func == null) return _Enabled_INVALID;
-                return (_online ? _enabled : _Enabled_INVALID);
-            }
-            set
-            {
-                setprop_enabled(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "OFF") _portState = 1;
-            if (value == "OVRLD") _portState = 2;
-            if (value == "ON") _portState = 3;
-            if (value == "RUN") _portState = 4;
-            if (value == "PROG") _portState = 5;
-            if (value == "OFF" || value == "OVRLD") _enabled = 0;
-            else if (value != "") _enabled = 1;
         }
 
         /**
@@ -379,13 +328,94 @@ namespace YoctoProxyAPI
          */
         public int get_portState()
         {
-            if (_func == null)
-            {
-                string msg = "No HubPort connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No HubPort connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_portState()+1;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Current state of the YoctoHub port.</value>
+        public int PortState
+        {
+            get
+            {
+                if (_func == null) {
+                    return _PortState_INVALID;
+                }
+                if (_online) {
+                    return _portState;
+                }
+                return _PortState_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "OFF") {
+                _portState = 1;
+            }
+            if (value == "OVRLD") {
+                _portState = 2;
+            }
+            if (value == "ON") {
+                _portState = 3;
+            }
+            if (value == "RUN") {
+                _portState = 4;
+            }
+            if (value == "PROG") {
+                _portState = 5;
+            }
+            if (value == "OFF" || value == "OVRLD") {
+                _enabled = _Enabled_FALSE;
+            } else {
+                if (!(value == "")) {
+                    _enabled = _Enabled_TRUE;
+                }
+            }
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>True if the port output is enabled.</value>
+        public int Enabled
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Enabled_INVALID;
+                }
+                if (_online) {
+                    return _enabled;
+                }
+                return _Enabled_INVALID;
+            }
+            set
+            {
+                setprop_enabled(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_enabled(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Enabled_INVALID) {
+                return;
+            }
+            if (newval == _enabled) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_enabled(newval-1);
+            _enabled = newval;
         }
 
         /**
@@ -407,13 +437,14 @@ namespace YoctoProxyAPI
          */
         public int get_baudRate()
         {
-            if (_func == null)
-            {
-                string msg = "No HubPort connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No HubPort connected");
             }
-            int res = _func.get_baudRate();
-            if (res == YAPI.INVALID_INT) res = _BaudRate_INVALID;
+            res = _func.get_baudRate();
+            if (res == YAPI.INVALID_INT) {
+                res = _BaudRate_INVALID;
+            }
             return res;
         }
     }

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multiaxiscontroller_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_multiaxiscontroller_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YMultiAxisControllerProxy, the Proxy API for MultiAxisController
  *
@@ -260,13 +260,14 @@ namespace YoctoProxyAPI
          */
         public int get_nAxis()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
-            int res = _func.get_nAxis();
-            if (res == YAPI.INVALID_INT) res = _NAxis_INVALID;
+            res = _func.get_nAxis();
+            if (res == YAPI.INVALID_INT) {
+                res = _NAxis_INVALID;
+            }
             return res;
         }
 
@@ -292,15 +293,14 @@ namespace YoctoProxyAPI
          */
         public int set_nAxis(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
-            if (newval == _NAxis_INVALID) return YAPI.SUCCESS;
+            if (newval == _NAxis_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_nAxis(newval);
         }
-
 
         /**
          * <summary>
@@ -322,10 +322,8 @@ namespace YoctoProxyAPI
          */
         public int get_globalState()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_globalState()+1;
@@ -344,10 +342,8 @@ namespace YoctoProxyAPI
          */
         public virtual int reset()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.reset();
         }
@@ -368,10 +364,8 @@ namespace YoctoProxyAPI
          */
         public virtual int findHomePosition(double[] speed)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.findHomePosition(new List<double>(speed));
         }
@@ -395,10 +389,8 @@ namespace YoctoProxyAPI
          */
         public virtual int moveTo(double[] absPos)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.moveTo(new List<double>(absPos));
         }
@@ -422,10 +414,8 @@ namespace YoctoProxyAPI
          */
         public virtual int moveRel(double[] relPos)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.moveRel(new List<double>(relPos));
         }
@@ -446,10 +436,8 @@ namespace YoctoProxyAPI
          */
         public virtual int pause(int waitMs)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.pause(waitMs);
         }
@@ -467,10 +455,8 @@ namespace YoctoProxyAPI
          */
         public virtual int emergencyStop()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.emergencyStop();
         }
@@ -488,10 +474,8 @@ namespace YoctoProxyAPI
          */
         public virtual int abortAndBrake()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.abortAndBrake();
         }
@@ -509,10 +493,8 @@ namespace YoctoProxyAPI
          */
         public virtual int abortAndHiZ()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiAxisController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiAxisController connected");
             }
             return _func.abortAndHiZ();
         }

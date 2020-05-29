@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_poweroutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_poweroutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YPowerOutputProxy, the Proxy API for PowerOutput
  *
@@ -239,7 +239,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _voltage = _func.get_voltage()+1;
         }
 
@@ -262,10 +261,8 @@ namespace YoctoProxyAPI
          */
         public int get_voltage()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerOutput connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_voltage()+1;
@@ -299,24 +296,29 @@ namespace YoctoProxyAPI
          */
         public int set_voltage(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerOutput connected");
             }
-            if (newval == _Voltage_INVALID) return YAPI.SUCCESS;
+            if (newval == _Voltage_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_voltage(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Voltage on the power output featured by the module.</value>
         public int Voltage
         {
             get
             {
-                if (_func == null) return _Voltage_INVALID;
-                return (_online ? _voltage : _Voltage_INVALID);
+                if (_func == null) {
+                    return _Voltage_INVALID;
+                }
+                if (_online) {
+                    return _voltage;
+                }
+                return _Voltage_INVALID;
             }
             set
             {
@@ -327,10 +329,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_voltage(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Voltage_INVALID) return;
-            if (newval == _voltage) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Voltage_INVALID) {
+                return;
+            }
+            if (newval == _voltage) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_voltage(newval-1);
             _voltage = newval;

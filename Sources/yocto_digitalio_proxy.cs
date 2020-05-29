@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_digitalio_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_digitalio_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YDigitalIOProxy, the Proxy API for DigitalIO
  *
@@ -260,28 +260,7 @@ namespace YoctoProxyAPI
             _portDirection = _func.get_portDirection();
             _portOpenDrain = _func.get_portOpenDrain();
             _portPolarity = _func.get_portPolarity();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _outputVoltage = _func.get_outputVoltage()+1;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int PortState
-        {
-            get
-            {
-                if (_func == null) return _PortState_INVALID;
-                return (_online ? _portState : _PortState_INVALID);
-            }
-            set
-            {
-                setprop_portState(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int32.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture,out _portState);
         }
 
         /**
@@ -309,13 +288,14 @@ namespace YoctoProxyAPI
          */
         public int get_portState()
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            int res = _func.get_portState();
-            if (res == YAPI.INVALID_INT) res = _PortState_INVALID;
+            res = _func.get_portState();
+            if (res == YAPI.INVALID_INT) {
+                res = _PortState_INVALID;
+            }
             return res;
         }
 
@@ -351,28 +331,61 @@ namespace YoctoProxyAPI
          */
         public int set_portState(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            if (newval == _PortState_INVALID) return YAPI.SUCCESS;
+            if (newval == _PortState_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_portState(newval);
         }
 
+        // property with cached value for instant access (advertised value)
+        /// <value>Digital IO port state as an integer with each bit</value>
+        public int PortState
+        {
+            get
+            {
+                if (_func == null) {
+                    return _PortState_INVALID;
+                }
+                if (_online) {
+                    return _portState;
+                }
+                return _PortState_INVALID;
+            }
+            set
+            {
+                setprop_portState(value);
+            }
+        }
 
         // private helper for magic property
         private void setprop_portState(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PortState_INVALID) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PortState_INVALID) {
+                return;
+            }
             // Touch output bits only
-            newval &= _portDirection;
-            newval |= (_portState & ~_portDirection);
-            if (newval == _portState) return;
+            newval = ((newval) & (_portDirection));
+            newval = ((newval) | (((_portState) & (~(_portDirection)))));
+            if (newval == _portState) {
+                return;
+            }
             _func.set_portState(newval);
             _portState = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _portState = YAPI._hexStrToInt(value);
         }
 
         /**
@@ -393,13 +406,14 @@ namespace YoctoProxyAPI
          */
         public int get_portDirection()
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            int res = _func.get_portDirection();
-            if (res == YAPI.INVALID_INT) res = _PortDirection_INVALID;
+            res = _func.get_portDirection();
+            if (res == YAPI.INVALID_INT) {
+                res = _PortDirection_INVALID;
+            }
             return res;
         }
 
@@ -427,23 +441,28 @@ namespace YoctoProxyAPI
          */
         public int set_portDirection(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            if (newval == _PortDirection_INVALID) return YAPI.SUCCESS;
+            if (newval == _PortDirection_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_portDirection(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>I/O direction of all channels of the port (bitmap): 0 makes a bit an input, 1 makes it an output.</value>
         public int PortDirection
         {
             get
             {
-                if (_func == null) return _PortDirection_INVALID;
-                return (_online ? _portDirection : _PortDirection_INVALID);
+                if (_func == null) {
+                    return _PortDirection_INVALID;
+                }
+                if (_online) {
+                    return _portDirection;
+                }
+                return _PortDirection_INVALID;
             }
             set
             {
@@ -454,10 +473,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_portDirection(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PortDirection_INVALID) return;
-            if (newval == _portDirection) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PortDirection_INVALID) {
+                return;
+            }
+            if (newval == _portDirection) {
+                return;
+            }
             _func.set_portDirection(newval);
             _portDirection = newval;
         }
@@ -481,13 +508,14 @@ namespace YoctoProxyAPI
          */
         public int get_portOpenDrain()
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            int res = _func.get_portOpenDrain();
-            if (res == YAPI.INVALID_INT) res = _PortOpenDrain_INVALID;
+            res = _func.get_portOpenDrain();
+            if (res == YAPI.INVALID_INT) {
+                res = _PortOpenDrain_INVALID;
+            }
             return res;
         }
 
@@ -516,23 +544,28 @@ namespace YoctoProxyAPI
          */
         public int set_portOpenDrain(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            if (newval == _PortOpenDrain_INVALID) return YAPI.SUCCESS;
+            if (newval == _PortOpenDrain_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_portOpenDrain(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Electrical interface for each bit of the port. For each bit set to 0  the matching I/O works in the regular,</value>
         public int PortOpenDrain
         {
             get
             {
-                if (_func == null) return _PortOpenDrain_INVALID;
-                return (_online ? _portOpenDrain : _PortOpenDrain_INVALID);
+                if (_func == null) {
+                    return _PortOpenDrain_INVALID;
+                }
+                if (_online) {
+                    return _portOpenDrain;
+                }
+                return _PortOpenDrain_INVALID;
             }
             set
             {
@@ -543,10 +576,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_portOpenDrain(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PortOpenDrain_INVALID) return;
-            if (newval == _portOpenDrain) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PortOpenDrain_INVALID) {
+                return;
+            }
+            if (newval == _portOpenDrain) {
+                return;
+            }
             _func.set_portOpenDrain(newval);
             _portOpenDrain = newval;
         }
@@ -570,13 +611,14 @@ namespace YoctoProxyAPI
          */
         public int get_portPolarity()
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            int res = _func.get_portPolarity();
-            if (res == YAPI.INVALID_INT) res = _PortPolarity_INVALID;
+            res = _func.get_portPolarity();
+            if (res == YAPI.INVALID_INT) {
+                res = _PortPolarity_INVALID;
+            }
             return res;
         }
 
@@ -606,23 +648,28 @@ namespace YoctoProxyAPI
          */
         public int set_portPolarity(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            if (newval == _PortPolarity_INVALID) return YAPI.SUCCESS;
+            if (newval == _PortPolarity_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_portPolarity(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Polarity of all the bits of the port.  For each bit set to 0, the matching I/O works the regular,</value>
         public int PortPolarity
         {
             get
             {
-                if (_func == null) return _PortPolarity_INVALID;
-                return (_online ? _portPolarity : _PortPolarity_INVALID);
+                if (_func == null) {
+                    return _PortPolarity_INVALID;
+                }
+                if (_online) {
+                    return _portPolarity;
+                }
+                return _PortPolarity_INVALID;
             }
             set
             {
@@ -633,10 +680,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_portPolarity(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PortPolarity_INVALID) return;
-            if (newval == _portPolarity) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PortPolarity_INVALID) {
+                return;
+            }
+            if (newval == _portPolarity) {
+                return;
+            }
             _func.set_portPolarity(newval);
             _portPolarity = newval;
         }
@@ -661,24 +716,15 @@ namespace YoctoProxyAPI
          */
         public int get_portDiags()
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            int res = _func.get_portDiags();
-            if (res == YAPI.INVALID_INT) res = _PortDiags_INVALID;
+            res = _func.get_portDiags();
+            if (res == YAPI.INVALID_INT) {
+                res = _PortDiags_INVALID;
+            }
             return res;
-        }
-
-        // property with cached value for instant access (constant value)
-        public int PortSize
-        {
-            get
-            {
-                if (_func == null) return _PortSize_INVALID;
-                return (_online ? _portSize : _PortSize_INVALID);
-            }
         }
 
         /**
@@ -699,14 +745,31 @@ namespace YoctoProxyAPI
          */
         public int get_portSize()
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            int res = _func.get_portSize();
-            if (res == YAPI.INVALID_INT) res = _PortSize_INVALID;
+            res = _func.get_portSize();
+            if (res == YAPI.INVALID_INT) {
+                res = _PortSize_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Number of bits (i.e. channels)implemented in the I/O port.</value>
+        public int PortSize
+        {
+            get
+            {
+                if (_func == null) {
+                    return _PortSize_INVALID;
+                }
+                if (_online) {
+                    return _portSize;
+                }
+                return _PortSize_INVALID;
+            }
         }
 
         /**
@@ -727,10 +790,8 @@ namespace YoctoProxyAPI
          */
         public int get_outputVoltage()
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_outputVoltage()+1;
@@ -760,24 +821,29 @@ namespace YoctoProxyAPI
          */
         public int set_outputVoltage(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
-            if (newval == _OutputVoltage_INVALID) return YAPI.SUCCESS;
+            if (newval == _OutputVoltage_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_outputVoltage(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Voltage source used to drive output bits.</value>
         public int OutputVoltage
         {
             get
             {
-                if (_func == null) return _OutputVoltage_INVALID;
-                return (_online ? _outputVoltage : _OutputVoltage_INVALID);
+                if (_func == null) {
+                    return _OutputVoltage_INVALID;
+                }
+                if (_online) {
+                    return _outputVoltage;
+                }
+                return _OutputVoltage_INVALID;
             }
             set
             {
@@ -788,10 +854,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_outputVoltage(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _OutputVoltage_INVALID) return;
-            if (newval == _outputVoltage) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _OutputVoltage_INVALID) {
+                return;
+            }
+            if (newval == _outputVoltage) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_outputVoltage(newval-1);
             _outputVoltage = newval;
@@ -819,10 +893,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_bitState(int bitno, int bitstate)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.set_bitState(bitno, bitstate);
         }
@@ -846,10 +918,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_bitState(int bitno)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.get_bitState(bitno);
         }
@@ -873,10 +943,8 @@ namespace YoctoProxyAPI
          */
         public virtual int toggle_bitState(int bitno)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.toggle_bitState(bitno);
         }
@@ -904,10 +972,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_bitDirection(int bitno, int bitdirection)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.set_bitDirection(bitno, bitdirection);
         }
@@ -931,10 +997,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_bitDirection(int bitno)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.get_bitDirection(bitno);
         }
@@ -961,10 +1025,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_bitPolarity(int bitno, int bitpolarity)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.set_bitPolarity(bitno, bitpolarity);
         }
@@ -987,10 +1049,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_bitPolarity(int bitno)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.get_bitPolarity(bitno);
         }
@@ -1018,10 +1078,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_bitOpenDrain(int bitno, int opendrain)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.set_bitOpenDrain(bitno, opendrain);
         }
@@ -1046,10 +1104,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_bitOpenDrain(int bitno)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.get_bitOpenDrain(bitno);
         }
@@ -1078,10 +1134,8 @@ namespace YoctoProxyAPI
          */
         public virtual int pulse(int bitno, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.pulse(bitno, ms_duration);
         }
@@ -1113,10 +1167,8 @@ namespace YoctoProxyAPI
          */
         public virtual int delayedPulse(int bitno, int ms_delay, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No DigitalIO connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DigitalIO connected");
             }
             return _func.delayedPulse(bitno, ms_delay, ms_duration);
         }

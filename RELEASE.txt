@@ -1,3 +1,5 @@
-DotNetProxy v1.10.39863
+DotNetProxy v1.10.40758
 
-- Add package to Nuget
+- Fix get_display function in displaylayer to return proxy object
+- Fix beacon property handling
+- Add LinkQuality property to Cellular class

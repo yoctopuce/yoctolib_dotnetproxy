@@ -51,7 +51,6 @@
     <Compile Include="..\..\Sources\yocto_module_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_sensor_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_dataset_proxy.cs" />
-    <Compile Include="..\..\Sources\yocto_consolidateddataset_proxy.cs" />
 <!-- yocto_patch_start -->
     <Compile Include="..\..\Sources\API\yocto_accelerometer.cs">
       <Link>yocto_accelerometer.cs</Link>

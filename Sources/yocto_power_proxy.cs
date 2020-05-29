@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_power_proxy.cs 38969 2019-12-26 16:31:16Z mvuilleu $
+ *  $Id: yocto_power_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YPowerProxy, the Proxy API for Power
  *
@@ -258,13 +258,14 @@ namespace YoctoProxyAPI
          */
         public double get_cosPhi()
         {
-            if (_func == null)
-            {
-                string msg = "No Power connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Power connected");
             }
-            double res = _func.get_cosPhi();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_cosPhi();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -287,13 +288,14 @@ namespace YoctoProxyAPI
          */
         public double get_meter()
         {
-            if (_func == null)
-            {
-                string msg = "No Power connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Power connected");
             }
-            double res = _func.get_meter();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_meter();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -314,13 +316,14 @@ namespace YoctoProxyAPI
          */
         public int get_meterTimer()
         {
-            if (_func == null)
-            {
-                string msg = "No Power connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Power connected");
             }
-            int res = _func.get_meterTimer();
-            if (res == YAPI.INVALID_INT) res = _MeterTimer_INVALID;
+            res = _func.get_meterTimer();
+            if (res == YAPI.INVALID_INT) {
+                res = _MeterTimer_INVALID;
+            }
             return res;
         }
 
@@ -339,10 +342,8 @@ namespace YoctoProxyAPI
          */
         public virtual int reset()
         {
-            if (_func == null)
-            {
-                string msg = "No Power connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Power connected");
             }
             return _func.reset();
         }

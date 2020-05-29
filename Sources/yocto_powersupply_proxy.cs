@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_powersupply_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_powersupply_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YPowerSupplyProxy, the Proxy API for PowerSupply
  *
@@ -278,15 +278,14 @@ namespace YoctoProxyAPI
          */
         public int set_voltageSetPoint(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _VoltageSetPoint_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_voltageSetPoint(newval);
         }
-
 
         /**
          * <summary>
@@ -305,13 +304,14 @@ namespace YoctoProxyAPI
          */
         public double get_voltageSetPoint()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_voltageSetPoint();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_voltageSetPoint();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -337,15 +337,14 @@ namespace YoctoProxyAPI
          */
         public int set_currentLimit(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _CurrentLimit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_currentLimit(newval);
         }
-
 
         /**
          * <summary>
@@ -364,13 +363,14 @@ namespace YoctoProxyAPI
          */
         public double get_currentLimit()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_currentLimit();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_currentLimit();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -392,10 +392,8 @@ namespace YoctoProxyAPI
          */
         public int get_powerOutput()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_powerOutput()+1;
@@ -424,16 +422,15 @@ namespace YoctoProxyAPI
          */
         public int set_powerOutput(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (newval == _PowerOutput_INVALID) return YAPI.SUCCESS;
+            if (newval == _PowerOutput_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_powerOutput(newval-1);
         }
-
 
         /**
          * <summary>
@@ -453,10 +450,8 @@ namespace YoctoProxyAPI
          */
         public int get_voltageSense()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_voltageSense()+1;
@@ -485,16 +480,15 @@ namespace YoctoProxyAPI
          */
         public int set_voltageSense(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (newval == _VoltageSense_INVALID) return YAPI.SUCCESS;
+            if (newval == _VoltageSense_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_voltageSense(newval-1);
         }
-
 
         /**
          * <summary>
@@ -513,13 +507,14 @@ namespace YoctoProxyAPI
          */
         public double get_measuredVoltage()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_measuredVoltage();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_measuredVoltage();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -540,13 +535,14 @@ namespace YoctoProxyAPI
          */
         public double get_measuredCurrent()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_measuredCurrent();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_measuredCurrent();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -567,13 +563,14 @@ namespace YoctoProxyAPI
          */
         public double get_inputVoltage()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_inputVoltage();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_inputVoltage();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -594,13 +591,14 @@ namespace YoctoProxyAPI
          */
         public double get_vInt()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_vInt();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_vInt();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -621,13 +619,14 @@ namespace YoctoProxyAPI
          */
         public double get_ldoTemperature()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_ldoTemperature();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_ldoTemperature();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -655,39 +654,13 @@ namespace YoctoProxyAPI
          */
         public int set_voltageAtStartUp(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _VoltageAtStartUp_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_voltageAtStartUp(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double VoltageAtStartUp
-        {
-            get
-            {
-                if (_func == null) return _VoltageAtStartUp_INVALID;
-                return (_online ? _voltageAtStartUp : _VoltageAtStartUp_INVALID);
-            }
-            set
-            {
-                setprop_voltageAtStartUp(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_voltageAtStartUp(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _voltageAtStartUp) return;
-            _func.set_voltageAtStartUp(newval);
-            _voltageAtStartUp = newval;
         }
 
         /**
@@ -707,14 +680,54 @@ namespace YoctoProxyAPI
          */
         public double get_voltageAtStartUp()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_voltageAtStartUp();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_voltageAtStartUp();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Selected voltage set point at device startup, in V.</value>
+        public double VoltageAtStartUp
+        {
+            get
+            {
+                if (_func == null) {
+                    return _VoltageAtStartUp_INVALID;
+                }
+                if (_online) {
+                    return _voltageAtStartUp;
+                }
+                return _VoltageAtStartUp_INVALID;
+            }
+            set
+            {
+                setprop_voltageAtStartUp(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_voltageAtStartUp(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _VoltageAtStartUp_INVALID) {
+                return;
+            }
+            if (newval == _voltageAtStartUp) {
+                return;
+            }
+            _func.set_voltageAtStartUp(newval);
+            _voltageAtStartUp = newval;
         }
 
         /**
@@ -741,39 +754,13 @@ namespace YoctoProxyAPI
          */
         public int set_currentAtStartUp(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _CurrentAtStartUp_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_currentAtStartUp(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double CurrentAtStartUp
-        {
-            get
-            {
-                if (_func == null) return _CurrentAtStartUp_INVALID;
-                return (_online ? _currentAtStartUp : _CurrentAtStartUp_INVALID);
-            }
-            set
-            {
-                setprop_currentAtStartUp(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_currentAtStartUp(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _currentAtStartUp) return;
-            _func.set_currentAtStartUp(newval);
-            _currentAtStartUp = newval;
         }
 
         /**
@@ -793,14 +780,54 @@ namespace YoctoProxyAPI
          */
         public double get_currentAtStartUp()
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            double res = _func.get_currentAtStartUp();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_currentAtStartUp();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Selected current limit at device startup, in mA.</value>
+        public double CurrentAtStartUp
+        {
+            get
+            {
+                if (_func == null) {
+                    return _CurrentAtStartUp_INVALID;
+                }
+                if (_online) {
+                    return _currentAtStartUp;
+                }
+                return _CurrentAtStartUp_INVALID;
+            }
+            set
+            {
+                setprop_currentAtStartUp(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_currentAtStartUp(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CurrentAtStartUp_INVALID) {
+                return;
+            }
+            if (newval == _currentAtStartUp) {
+                return;
+            }
+            _func.set_currentAtStartUp(newval);
+            _currentAtStartUp = newval;
         }
 
         /**
@@ -824,10 +851,8 @@ namespace YoctoProxyAPI
          */
         public virtual int voltageMove(double V_target, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No PowerSupply connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
             }
             return _func.voltageMove(V_target, ms_duration);
         }

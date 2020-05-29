@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_qt_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_qt_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YQtProxy, the Proxy API for Qt
  *
@@ -43,11 +43,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YQt class start)
+    //--- (YQt class start)
     static public partial class YoctoProxyManager
     {
         public static YQtProxy FindQt(string name)
@@ -159,15 +161,15 @@ namespace YoctoProxyAPI
         {
             return YoctoProxyManager.FindQt(func);
         }
-        //--- (end of generated code: YQt class start)
-        //--- (generated code: YQt definitions)
+        //--- (end of YQt class start)
+        //--- (YQt definitions)
 
         // reference to real YoctoAPI object
         protected new YQt _func;
         // property cache
-        //--- (end of generated code: YQt definitions)
+        //--- (end of YQt definitions)
 
-        //--- (generated code: YQt implementation)
+        //--- (YQt implementation)
         internal YQtProxy(YQt hwd, string instantiationName) : base(hwd, instantiationName)
         {
             InternalStuff.log("Qt " + instantiationName + " instantiation");
@@ -237,6 +239,6 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
         }
     }
-    //--- (end of generated code: YQt implementation)
+    //--- (end of YQt implementation)
 }
 

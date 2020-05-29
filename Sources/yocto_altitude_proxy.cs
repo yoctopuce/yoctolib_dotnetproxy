@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_altitude_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_altitude_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YAltitudeProxy, the Proxy API for Altitude
  *
@@ -238,7 +238,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            _currentValue = _func.get_currentValue();
             _qnh = _func.get_qnh();
         }
 
@@ -268,39 +267,13 @@ namespace YoctoProxyAPI
          */
         public int set_currentValue(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Altitude connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Altitude connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _CurrentValue_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_currentValue(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public new double CurrentValue
-        {
-            get
-            {
-                if (_func == null) return _CurrentValue_INVALID;
-                return (_online ? _currentValue : _CurrentValue_INVALID);
-            }
-            set
-            {
-                setprop_currentValue(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_currentValue(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _currentValue) return;
-            _func.set_currentValue(newval);
-            _currentValue = newval;
         }
 
         /**
@@ -331,39 +304,13 @@ namespace YoctoProxyAPI
          */
         public int set_qnh(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Altitude connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Altitude connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Qnh_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_qnh(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double Qnh
-        {
-            get
-            {
-                if (_func == null) return _Qnh_INVALID;
-                return (_online ? _qnh : _Qnh_INVALID);
-            }
-            set
-            {
-                setprop_qnh(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_qnh(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _qnh) return;
-            _func.set_qnh(newval);
-            _qnh = newval;
         }
 
         /**
@@ -386,14 +333,54 @@ namespace YoctoProxyAPI
          */
         public double get_qnh()
         {
-            if (_func == null)
-            {
-                string msg = "No Altitude connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Altitude connected");
             }
-            double res = _func.get_qnh();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_qnh();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Barometric pressure adjusted to sea level used to compute</value>
+        public double Qnh
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Qnh_INVALID;
+                }
+                if (_online) {
+                    return _qnh;
+                }
+                return _Qnh_INVALID;
+            }
+            set
+            {
+                setprop_qnh(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_qnh(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Qnh_INVALID) {
+                return;
+            }
+            if (newval == _qnh) {
+                return;
+            }
+            _func.set_qnh(newval);
+            _qnh = newval;
         }
 
         /**
@@ -416,10 +403,8 @@ namespace YoctoProxyAPI
          */
         public string get_technology()
         {
-            if (_func == null)
-            {
-                string msg = "No Altitude connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Altitude connected");
             }
             return _func.get_technology();
         }

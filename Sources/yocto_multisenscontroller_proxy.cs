@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multisenscontroller_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_multisenscontroller_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YMultiSensControllerProxy, the Proxy API for MultiSensController
  *
@@ -259,13 +259,14 @@ namespace YoctoProxyAPI
          */
         public int get_nSensors()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiSensController connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
             }
-            int res = _func.get_nSensors();
-            if (res == YAPI.INVALID_INT) res = _NSensors_INVALID;
+            res = _func.get_nSensors();
+            if (res == YAPI.INVALID_INT) {
+                res = _NSensors_INVALID;
+            }
             return res;
         }
 
@@ -296,23 +297,28 @@ namespace YoctoProxyAPI
          */
         public int set_nSensors(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiSensController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
             }
-            if (newval == _NSensors_INVALID) return YAPI.SUCCESS;
+            if (newval == _NSensors_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_nSensors(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Number of sensors to poll.</value>
         public int NSensors
         {
             get
             {
-                if (_func == null) return _NSensors_INVALID;
-                return (_online ? _nSensors : _NSensors_INVALID);
+                if (_func == null) {
+                    return _NSensors_INVALID;
+                }
+                if (_online) {
+                    return _nSensors;
+                }
+                return _NSensors_INVALID;
             }
             set
             {
@@ -323,10 +329,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_nSensors(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _NSensors_INVALID) return;
-            if (newval == _nSensors) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _NSensors_INVALID) {
+                return;
+            }
+            if (newval == _nSensors) {
+                return;
+            }
             _func.set_nSensors(newval);
             _nSensors = newval;
         }
@@ -348,13 +362,14 @@ namespace YoctoProxyAPI
          */
         public int get_maxSensors()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiSensController connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
             }
-            int res = _func.get_maxSensors();
-            if (res == YAPI.INVALID_INT) res = _MaxSensors_INVALID;
+            res = _func.get_maxSensors();
+            if (res == YAPI.INVALID_INT) {
+                res = _MaxSensors_INVALID;
+            }
             return res;
         }
 
@@ -376,10 +391,8 @@ namespace YoctoProxyAPI
          */
         public int get_maintenanceMode()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiSensController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_maintenanceMode()+1;
@@ -410,16 +423,15 @@ namespace YoctoProxyAPI
          */
         public int set_maintenanceMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiSensController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
             }
-            if (newval == _MaintenanceMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _MaintenanceMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_maintenanceMode(newval-1);
         }
-
 
         /**
          * <summary>
@@ -443,10 +455,8 @@ namespace YoctoProxyAPI
          */
         public virtual int setupAddress(int addr)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiSensController connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
             }
             return _func.setupAddress(addr);
         }

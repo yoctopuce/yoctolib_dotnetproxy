@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_lightsensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_lightsensor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YLightSensorProxy, the Proxy API for LightSensor
  *
@@ -244,7 +244,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _measureType = _func.get_measureType()+1;
         }
 
@@ -275,10 +274,8 @@ namespace YoctoProxyAPI
          */
         public int calibrate(double calibratedVal)
         {
-            if (_func == null)
-            {
-                string msg = "No LightSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No LightSensor connected");
             }
             return _func.calibrate(calibratedVal);
         }
@@ -302,10 +299,8 @@ namespace YoctoProxyAPI
          */
         public int get_measureType()
         {
-            if (_func == null)
-            {
-                string msg = "No LightSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No LightSensor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_measureType()+1;
@@ -340,24 +335,29 @@ namespace YoctoProxyAPI
          */
         public int set_measureType(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No LightSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No LightSensor connected");
             }
-            if (newval == _MeasureType_INVALID) return YAPI.SUCCESS;
+            if (newval == _MeasureType_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_measureType(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Type of light measure.</value>
         public int MeasureType
         {
             get
             {
-                if (_func == null) return _MeasureType_INVALID;
-                return (_online ? _measureType : _MeasureType_INVALID);
+                if (_func == null) {
+                    return _MeasureType_INVALID;
+                }
+                if (_online) {
+                    return _measureType;
+                }
+                return _MeasureType_INVALID;
             }
             set
             {
@@ -368,10 +368,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_measureType(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _MeasureType_INVALID) return;
-            if (newval == _measureType) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MeasureType_INVALID) {
+                return;
+            }
+            if (newval == _measureType) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_measureType(newval-1);
             _measureType = newval;

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmoutput_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_pwmoutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YPwmOutputProxy, the Proxy API for PwmOutput
  *
@@ -246,7 +246,6 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _enabled = _func.get_enabled()+1;
         }
 
@@ -255,7 +254,6 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
             _frequency = _func.get_frequency();
             _period = _func.get_period();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _enabledAtPowerOn = _func.get_enabledAtPowerOn()+1;
             _dutyCycleAtPowerOn = _func.get_dutyCycleAtPowerOn();
         }
@@ -278,10 +276,8 @@ namespace YoctoProxyAPI
          */
         public int get_enabled()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enabled()+1;
@@ -309,27 +305,14 @@ namespace YoctoProxyAPI
          */
         public int set_enabled(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            if (newval == _Enabled_INVALID) return YAPI.SUCCESS;
+            if (newval == _Enabled_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enabled(newval-1);
-        }
-
-
-        // private helper for magic property
-        private void setprop_enabled(int newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Enabled_INVALID) return;
-            if (newval == _enabled) return;
-            // our enums start at 0 instead of the 'usual' -1 for invalid
-            _func.set_enabled(newval-1);
-            _enabled = newval;
         }
 
         /**
@@ -361,39 +344,13 @@ namespace YoctoProxyAPI
          */
         public int set_frequency(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Frequency_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_frequency(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double Frequency
-        {
-            get
-            {
-                if (_func == null) return _Frequency_INVALID;
-                return (_online ? _frequency : _Frequency_INVALID);
-            }
-            set
-            {
-                setprop_frequency(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_frequency(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _frequency) return;
-            _func.set_frequency(newval);
-            _frequency = newval;
         }
 
         /**
@@ -413,14 +370,54 @@ namespace YoctoProxyAPI
          */
         public double get_frequency()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            double res = _func.get_frequency();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_frequency();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>PWM frequency in Hz.</value>
+        public double Frequency
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Frequency_INVALID;
+                }
+                if (_online) {
+                    return _frequency;
+                }
+                return _Frequency_INVALID;
+            }
+            set
+            {
+                setprop_frequency(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_frequency(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Frequency_INVALID) {
+                return;
+            }
+            if (newval == _frequency) {
+                return;
+            }
+            _func.set_frequency(newval);
+            _frequency = newval;
         }
 
         /**
@@ -450,39 +447,13 @@ namespace YoctoProxyAPI
          */
         public int set_period(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Period_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_period(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double Period
-        {
-            get
-            {
-                if (_func == null) return _Period_INVALID;
-                return (_online ? _period : _Period_INVALID);
-            }
-            set
-            {
-                setprop_period(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_period(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _period) return;
-            _func.set_period(newval);
-            _period = newval;
         }
 
         /**
@@ -502,14 +473,54 @@ namespace YoctoProxyAPI
          */
         public double get_period()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            double res = _func.get_period();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_period();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>PWM period in milliseconds.</value>
+        public double Period
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Period_INVALID;
+                }
+                if (_online) {
+                    return _period;
+                }
+                return _Period_INVALID;
+            }
+            set
+            {
+                setprop_period(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_period(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Period_INVALID) {
+                return;
+            }
+            if (newval == _period) {
+                return;
+            }
+            _func.set_period(newval);
+            _period = newval;
         }
 
         /**
@@ -534,63 +545,13 @@ namespace YoctoProxyAPI
          */
         public int set_dutyCycle(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _DutyCycle_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_dutyCycle(newval);
-        }
-
-
-        // property with cached value for instant access (advertised value)
-        public double DutyCycle
-        {
-            get
-            {
-                if (_func == null) return _DutyCycle_INVALID;
-                return (_online ? _dutyCycle : _DutyCycle_INVALID);
-            }
-            set
-            {
-                setprop_dutyCycle(value);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int Enabled
-        {
-            get
-            {
-                if (_func == null) return _Enabled_INVALID;
-                return (_online ? _enabled : _Enabled_INVALID);
-            }
-            set
-            {
-                setprop_enabled(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            value = Regex.Replace(value,"[^-0-9]","");
-            if (value == "OFF") _enabled = _Enabled_FALSE;
-            else _enabled = _Enabled_TRUE;
-            if (_enabled == _Enabled_TRUE) // then parse numeric value
-            Double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture,out _dutyCycle);
-        }
-
-        // private helper for magic property
-        private void setprop_dutyCycle(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _dutyCycle) return;
-            _func.set_dutyCycle(newval);
-            _dutyCycle = newval;
         }
 
         /**
@@ -610,14 +571,105 @@ namespace YoctoProxyAPI
          */
         public double get_dutyCycle()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            double res = _func.get_dutyCycle();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_dutyCycle();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>PWM duty cycle, in per cents.</value>
+        public double DutyCycle
+        {
+            get
+            {
+                if (_func == null) {
+                    return _DutyCycle_INVALID;
+                }
+                if (_online) {
+                    return _dutyCycle;
+                }
+                return _DutyCycle_INVALID;
+            }
+            set
+            {
+                setprop_dutyCycle(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_dutyCycle(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _DutyCycle_INVALID) {
+                return;
+            }
+            if (newval == _dutyCycle) {
+                return;
+            }
+            _func.set_dutyCycle(newval);
+            _dutyCycle = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "OFF") {
+                _enabled = _Enabled_FALSE;
+            } else {
+                _enabled = _Enabled_TRUE;
+                _dutyCycle = YAPI._atoi(value);
+            }
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>True if the port output is enabled.</value>
+        public int Enabled
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Enabled_INVALID;
+                }
+                if (_online) {
+                    return _enabled;
+                }
+                return _Enabled_INVALID;
+            }
+            set
+            {
+                setprop_enabled(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_enabled(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Enabled_INVALID) {
+                return;
+            }
+            if (newval == _enabled) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_enabled(newval-1);
+            _enabled = newval;
         }
 
         /**
@@ -643,15 +695,14 @@ namespace YoctoProxyAPI
          */
         public int set_pulseDuration(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _PulseDuration_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_pulseDuration(newval);
         }
-
 
         /**
          * <summary>
@@ -670,13 +721,14 @@ namespace YoctoProxyAPI
          */
         public double get_pulseDuration()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            double res = _func.get_pulseDuration();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_pulseDuration();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -698,10 +750,8 @@ namespace YoctoProxyAPI
          */
         public int get_enabledAtPowerOn()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enabledAtPowerOn()+1;
@@ -732,24 +782,29 @@ namespace YoctoProxyAPI
          */
         public int set_enabledAtPowerOn(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            if (newval == _EnabledAtPowerOn_INVALID) return YAPI.SUCCESS;
+            if (newval == _EnabledAtPowerOn_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enabledAtPowerOn(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>State of the PWM at device power on.</value>
         public int EnabledAtPowerOn
         {
             get
             {
-                if (_func == null) return _EnabledAtPowerOn_INVALID;
-                return (_online ? _enabledAtPowerOn : _EnabledAtPowerOn_INVALID);
+                if (_func == null) {
+                    return _EnabledAtPowerOn_INVALID;
+                }
+                if (_online) {
+                    return _enabledAtPowerOn;
+                }
+                return _EnabledAtPowerOn_INVALID;
             }
             set
             {
@@ -760,10 +815,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_enabledAtPowerOn(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _EnabledAtPowerOn_INVALID) return;
-            if (newval == _enabledAtPowerOn) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _EnabledAtPowerOn_INVALID) {
+                return;
+            }
+            if (newval == _enabledAtPowerOn) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_enabledAtPowerOn(newval-1);
             _enabledAtPowerOn = newval;
@@ -793,39 +856,13 @@ namespace YoctoProxyAPI
          */
         public int set_dutyCycleAtPowerOn(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _DutyCycleAtPowerOn_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_dutyCycleAtPowerOn(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double DutyCycleAtPowerOn
-        {
-            get
-            {
-                if (_func == null) return _DutyCycleAtPowerOn_INVALID;
-                return (_online ? _dutyCycleAtPowerOn : _DutyCycleAtPowerOn_INVALID);
-            }
-            set
-            {
-                setprop_dutyCycleAtPowerOn(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_dutyCycleAtPowerOn(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _dutyCycleAtPowerOn) return;
-            _func.set_dutyCycleAtPowerOn(newval);
-            _dutyCycleAtPowerOn = newval;
         }
 
         /**
@@ -846,14 +883,54 @@ namespace YoctoProxyAPI
          */
         public double get_dutyCycleAtPowerOn()
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
-            double res = _func.get_dutyCycleAtPowerOn();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_dutyCycleAtPowerOn();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>PWM generators duty cycle at device power on as a floating point number between 0 and 100.</value>
+        public double DutyCycleAtPowerOn
+        {
+            get
+            {
+                if (_func == null) {
+                    return _DutyCycleAtPowerOn_INVALID;
+                }
+                if (_online) {
+                    return _dutyCycleAtPowerOn;
+                }
+                return _DutyCycleAtPowerOn_INVALID;
+            }
+            set
+            {
+                setprop_dutyCycleAtPowerOn(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_dutyCycleAtPowerOn(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _DutyCycleAtPowerOn_INVALID) {
+                return;
+            }
+            if (newval == _dutyCycleAtPowerOn) {
+                return;
+            }
+            _func.set_dutyCycleAtPowerOn(newval);
+            _dutyCycleAtPowerOn = newval;
         }
 
         /**
@@ -879,10 +956,8 @@ namespace YoctoProxyAPI
          */
         public virtual int pulseDurationMove(double ms_target, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             return _func.pulseDurationMove(ms_target, ms_duration);
         }
@@ -910,10 +985,8 @@ namespace YoctoProxyAPI
          */
         public virtual int dutyCycleMove(double target, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             return _func.dutyCycleMove(target, ms_duration);
         }
@@ -940,10 +1013,8 @@ namespace YoctoProxyAPI
          */
         public virtual int frequencyMove(double target, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             return _func.frequencyMove(target, ms_duration);
         }
@@ -974,10 +1045,8 @@ namespace YoctoProxyAPI
          */
         public virtual int phaseMove(double target, int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             return _func.phaseMove(target, ms_duration);
         }
@@ -1005,10 +1074,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerPulsesByDuration(double ms_target, int n_pulses)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             return _func.triggerPulsesByDuration(ms_target, n_pulses);
         }
@@ -1036,10 +1103,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerPulsesByDutyCycle(double target, int n_pulses)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             return _func.triggerPulsesByDutyCycle(target, n_pulses);
         }
@@ -1066,10 +1131,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerPulsesByFrequency(double target, int n_pulses)
         {
-            if (_func == null)
-            {
-                string msg = "No PwmOutput connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
             }
             return _func.triggerPulsesByFrequency(target, n_pulses);
         }

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_filerecord_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_filerecord_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YFileRecordProxy, the Proxy API for FileRecord
  *
@@ -49,7 +49,7 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YFileRecord class start)
+    //--- (YFileRecord class start)
     public class YFileRecordProxy
     {
         private YFileRecord _objref;
@@ -57,19 +57,11 @@ namespace YoctoProxyAPI
         {
              _objref = objref;
         }
-        //--- (end of generated code: YFileRecord class start)
-        //--- (generated code: YFileRecord definitions)
-        //--- (end of generated code: YFileRecord definitions)
-        //--- (generated code: YFileRecord implementation)
+        //--- (end of YFileRecord class start)
+        //--- (YFileRecord definitions)
+        //--- (end of YFileRecord definitions)
+        //--- (YFileRecord implementation)
 
-        // property with cached value for instant access
-        public string Name
-        {
-            get
-            {
-                return this.get_name();
-            }
-        }
         /**
          * <summary>
          *   Returns the name of the file.
@@ -82,22 +74,18 @@ namespace YoctoProxyAPI
          */
         public virtual string get_name()
         {
-            if (_objref == null)
-            {
-                string msg = "No FileRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_name();
         }
 
-        // property with cached value for instant access
-        public int Size
+        // property with cached value for instant access (storage object)
+        public string Name
         {
             get
             {
-                return this.get_size();
+                return this.get_name();
             }
         }
+
         /**
          * <summary>
          *   Returns the size of the file in bytes.
@@ -110,22 +98,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_size()
         {
-            if (_objref == null)
-            {
-                string msg = "No FileRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_size();
         }
 
-        // property with cached value for instant access
-        public int Crc
+        // property with cached value for instant access (storage object)
+        public int Size
         {
             get
             {
-                return this.get_crc();
+                return this.get_size();
             }
         }
+
         /**
          * <summary>
          *   Returns the 32-bit CRC of the file content.
@@ -138,14 +122,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_crc()
         {
-            if (_objref == null)
-            {
-                string msg = "No FileRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_crc();
         }
+
+        // property with cached value for instant access (storage object)
+        public int Crc
+        {
+            get
+            {
+                return this.get_crc();
+            }
+        }
     }
-    //--- (end of generated code: YFileRecord implementation)
+    //--- (end of YFileRecord implementation)
 }
 

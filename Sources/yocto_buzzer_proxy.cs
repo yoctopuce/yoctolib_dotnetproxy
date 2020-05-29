@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_buzzer_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_buzzer_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YBuzzerProxy, the Proxy API for Buzzer
  *
@@ -270,45 +270,13 @@ namespace YoctoProxyAPI
          */
         public int set_frequency(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Frequency_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_frequency(newval);
-        }
-
-
-        // property with cached value for instant access (advertised value)
-        public double Frequency
-        {
-            get
-            {
-                if (_func == null) return _Frequency_INVALID;
-                return (_online ? _frequency : _Frequency_INVALID);
-            }
-            set
-            {
-                setprop_frequency(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture,out _frequency);
-        }
-
-        // private helper for magic property
-        private void setprop_frequency(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _frequency) return;
-            _func.set_frequency(newval);
-            _frequency = newval;
         }
 
         /**
@@ -328,14 +296,60 @@ namespace YoctoProxyAPI
          */
         public double get_frequency()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
-            double res = _func.get_frequency();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_frequency();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Frequency of the signal sent to the buzzer/speaker.</value>
+        public double Frequency
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Frequency_INVALID;
+                }
+                if (_online) {
+                    return _frequency;
+                }
+                return _Frequency_INVALID;
+            }
+            set
+            {
+                setprop_frequency(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_frequency(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Frequency_INVALID) {
+                return;
+            }
+            if (newval == _frequency) {
+                return;
+            }
+            _func.set_frequency(newval);
+            _frequency = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _frequency = YAPI._atof(value);
         }
 
         /**
@@ -355,13 +369,14 @@ namespace YoctoProxyAPI
          */
         public int get_volume()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
-            int res = _func.get_volume();
-            if (res == YAPI.INVALID_INT) res = _Volume_INVALID;
+            res = _func.get_volume();
+            if (res == YAPI.INVALID_INT) {
+                res = _Volume_INVALID;
+            }
             return res;
         }
 
@@ -389,23 +404,28 @@ namespace YoctoProxyAPI
          */
         public int set_volume(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
-            if (newval == _Volume_INVALID) return YAPI.SUCCESS;
+            if (newval == _Volume_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_volume(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Volume of the signal sent to the buzzer/speaker.</value>
         public int Volume
         {
             get
             {
-                if (_func == null) return _Volume_INVALID;
-                return (_online ? _volume : _Volume_INVALID);
+                if (_func == null) {
+                    return _Volume_INVALID;
+                }
+                if (_online) {
+                    return _volume;
+                }
+                return _Volume_INVALID;
             }
             set
             {
@@ -416,10 +436,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_volume(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Volume_INVALID) return;
-            if (newval == _volume) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Volume_INVALID) {
+                return;
+            }
+            if (newval == _volume) {
+                return;
+            }
             _func.set_volume(newval);
             _volume = newval;
         }
@@ -441,24 +469,15 @@ namespace YoctoProxyAPI
          */
         public int get_playSeqSize()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
-            int res = _func.get_playSeqSize();
-            if (res == YAPI.INVALID_INT) res = _PlaySeqSize_INVALID;
+            res = _func.get_playSeqSize();
+            if (res == YAPI.INVALID_INT) {
+                res = _PlaySeqSize_INVALID;
+            }
             return res;
-        }
-
-        // property with cached value for instant access (constant value)
-        public int PlaySeqMaxSize
-        {
-            get
-            {
-                if (_func == null) return _PlaySeqMaxSize_INVALID;
-                return (_online ? _playSeqMaxSize : _PlaySeqMaxSize_INVALID);
-            }
         }
 
         /**
@@ -478,14 +497,31 @@ namespace YoctoProxyAPI
          */
         public int get_playSeqMaxSize()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
-            int res = _func.get_playSeqMaxSize();
-            if (res == YAPI.INVALID_INT) res = _PlaySeqMaxSize_INVALID;
+            res = _func.get_playSeqMaxSize();
+            if (res == YAPI.INVALID_INT) {
+                res = _PlaySeqMaxSize_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Maximum length of the playing sequence.</value>
+        public int PlaySeqMaxSize
+        {
+            get
+            {
+                if (_func == null) {
+                    return _PlaySeqMaxSize_INVALID;
+                }
+                if (_online) {
+                    return _playSeqMaxSize;
+                }
+                return _PlaySeqMaxSize_INVALID;
+            }
         }
 
         /**
@@ -509,13 +545,14 @@ namespace YoctoProxyAPI
          */
         public int get_playSeqSignature()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
-            int res = _func.get_playSeqSignature();
-            if (res == YAPI.INVALID_INT) res = _PlaySeqSignature_INVALID;
+            res = _func.get_playSeqSignature();
+            if (res == YAPI.INVALID_INT) {
+                res = _PlaySeqSignature_INVALID;
+            }
             return res;
         }
 
@@ -538,10 +575,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addFreqMoveToPlaySeq(int freq, int msDelay)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.addFreqMoveToPlaySeq(freq, msDelay);
         }
@@ -565,10 +600,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addPulseToPlaySeq(int freq, int msDuration)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.addPulseToPlaySeq(freq, msDuration);
         }
@@ -596,10 +629,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addVolMoveToPlaySeq(int volume, int msDuration)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.addVolMoveToPlaySeq(volume, msDuration);
         }
@@ -626,10 +657,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addNotesToPlaySeq(string notes)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.addNotesToPlaySeq(notes);
         }
@@ -650,10 +679,8 @@ namespace YoctoProxyAPI
          */
         public virtual int startPlaySeq()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.startPlaySeq();
         }
@@ -671,10 +698,8 @@ namespace YoctoProxyAPI
          */
         public virtual int stopPlaySeq()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.stopPlaySeq();
         }
@@ -692,10 +717,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetPlaySeq()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.resetPlaySeq();
         }
@@ -713,10 +736,8 @@ namespace YoctoProxyAPI
          */
         public virtual int oncePlaySeq()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.oncePlaySeq();
         }
@@ -734,10 +755,8 @@ namespace YoctoProxyAPI
          */
         public virtual int savePlaySeq()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.savePlaySeq();
         }
@@ -755,10 +774,8 @@ namespace YoctoProxyAPI
          */
         public virtual int reloadPlaySeq()
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.reloadPlaySeq();
         }
@@ -784,10 +801,8 @@ namespace YoctoProxyAPI
          */
         public virtual int pulse(int frequency, int duration)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.pulse(frequency, duration);
         }
@@ -813,10 +828,8 @@ namespace YoctoProxyAPI
          */
         public virtual int freqMove(int frequency, int duration)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.freqMove(frequency, duration);
         }
@@ -842,10 +855,8 @@ namespace YoctoProxyAPI
          */
         public virtual int volumeMove(int volume, int duration)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.volumeMove(volume, duration);
         }
@@ -872,10 +883,8 @@ namespace YoctoProxyAPI
          */
         public virtual int playNotes(string notes)
         {
-            if (_func == null)
-            {
-                string msg = "No Buzzer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Buzzer connected");
             }
             return _func.playNotes(notes);
         }

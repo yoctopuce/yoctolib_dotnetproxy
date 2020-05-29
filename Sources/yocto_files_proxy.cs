@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_files_proxy.cs 38934 2019-12-23 09:29:53Z seb $
+ *  $Id: yocto_files_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YFilesProxy, the Proxy API for Files
  *
@@ -40,15 +40,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YFiles class start)
+    //--- (YFiles class start)
     static public partial class YoctoProxyManager
     {
         public static YFilesProxy FindFiles(string name)
@@ -158,8 +159,8 @@ namespace YoctoProxyAPI
         {
             return YoctoProxyManager.FindFiles(func);
         }
-        //--- (end of generated code: YFiles class start)
-        //--- (generated code: YFiles definitions)
+        //--- (end of YFiles class start)
+        //--- (YFiles definitions)
         public const int _FilesCount_INVALID = -1;
         public const int _FreeSpace_INVALID = -1;
 
@@ -167,39 +168,9 @@ namespace YoctoProxyAPI
         protected new YFiles _func;
         // property cache
         protected int _filesCount = _FilesCount_INVALID;
-        //--- (end of generated code: YFiles definitions)
+        //--- (end of YFiles definitions)
 
-        /**
-         * <summary>
-         *   Returns an array of strings that lists files currently loaded
-         *   in the filesystem.
-         * <para>
-         * </para>
-         * </summary>
-         * <returns>
-         *   an array of <c>string</c> objects, containing the file names.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception.
-         * </para>
-         */
-        public string[] get_filenames()
-        {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            List<string> res = new List<string>();
-            List<YFileRecord> records = _func.get_list("");
-            for (int i = 0; i < records.Count; i++)
-            {
-                res.Add(records[i].get_name());
-            }
-            return res.ToArray();
-        }
-
-        //--- (generated code: YFiles implementation)
+        //--- (YFiles implementation)
         internal YFilesProxy(YFiles hwd, string instantiationName) : base(hwd, instantiationName)
         {
             InternalStuff.log("Files " + instantiationName + " instantiation");
@@ -269,22 +240,6 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
         }
 
-        // property with cached value for instant access (advertised value)
-        public int FilesCount
-        {
-            get
-            {
-                if (_func == null) return _FilesCount_INVALID;
-                return (_online ? _filesCount : _FilesCount_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int32.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _filesCount);
-        }
-
         /**
          * <summary>
          *   Returns the number of files currently loaded in the filesystem.
@@ -302,14 +257,37 @@ namespace YoctoProxyAPI
          */
         public int get_filesCount()
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
-            int res = _func.get_filesCount();
-            if (res == YAPI.INVALID_INT) res = _FilesCount_INVALID;
+            res = _func.get_filesCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _FilesCount_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Number of files currently loaded in the filesystem.</value>
+        public int FilesCount
+        {
+            get
+            {
+                if (_func == null) {
+                    return _FilesCount_INVALID;
+                }
+                if (_online) {
+                    return _filesCount;
+                }
+                return _FilesCount_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _filesCount = YAPI._atoi(value);
         }
 
         /**
@@ -329,13 +307,14 @@ namespace YoctoProxyAPI
          */
         public int get_freeSpace()
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
-            int res = _func.get_freeSpace();
-            if (res == YAPI.INVALID_INT) res = _FreeSpace_INVALID;
+            res = _func.get_freeSpace();
+            if (res == YAPI.INVALID_INT) {
+                res = _FreeSpace_INVALID;
+            }
             return res;
         }
 
@@ -355,10 +334,8 @@ namespace YoctoProxyAPI
          */
         public virtual int format_fs()
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
             return _func.format_fs();
         }
@@ -385,16 +362,20 @@ namespace YoctoProxyAPI
          */
         public virtual YFileRecordProxy[] get_list(string pattern)
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
-            int i = 0;
-            var std_res = _func.get_list(pattern);
-            YFileRecordProxy[] proxy_res = new YFileRecordProxy[std_res.Count];
-            foreach (var record in std_res) {
-                proxy_res[i++] = new YFileRecordProxy(record);
+            int i;
+            int arrlen;
+            YFileRecord[] std_res;
+            YFileRecordProxy[] proxy_res;
+            std_res = _func.get_list(pattern).ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YFileRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YFileRecordProxy(std_res[i]);
+                i = i + 1;
             }
             return proxy_res;
         }
@@ -417,10 +398,8 @@ namespace YoctoProxyAPI
          */
         public virtual bool fileExist(string filename)
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
             return _func.fileExist(filename);
         }
@@ -443,10 +422,8 @@ namespace YoctoProxyAPI
          */
         public virtual byte[] download(string pathname)
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
             return _func.download(pathname);
         }
@@ -473,10 +450,8 @@ namespace YoctoProxyAPI
          */
         public virtual int upload(string pathname, byte[] content)
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
             return _func.upload(pathname, content);
         }
@@ -504,14 +479,12 @@ namespace YoctoProxyAPI
          */
         public virtual int remove(string pathname)
         {
-            if (_func == null)
-            {
-                string msg = "No Files connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Files connected");
             }
             return _func.remove(pathname);
         }
     }
-    //--- (end of generated code: YFiles implementation)
+    //--- (end of YFiles implementation)
 }
 

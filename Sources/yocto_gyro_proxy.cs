@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gyro_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_gyro_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YGyroProxy, the Proxy API for Gyro
  *
@@ -43,11 +43,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YGyro class start)
+    //--- (YGyro class start)
     static public partial class YoctoProxyManager
     {
         public static YGyroProxy FindGyro(string name)
@@ -158,8 +160,8 @@ namespace YoctoProxyAPI
         {
             return YoctoProxyManager.FindGyro(func);
         }
-        //--- (end of generated code: YGyro class start)
-        //--- (generated code: YGyro definitions)
+        //--- (end of YGyro class start)
+        //--- (YGyro definitions)
         public const int _Bandwidth_INVALID = -1;
         public const double _XValue_INVALID = Double.NaN;
         public const double _YValue_INVALID = Double.NaN;
@@ -169,9 +171,9 @@ namespace YoctoProxyAPI
         protected new YGyro _func;
         // property cache
         protected int _bandwidth = _Bandwidth_INVALID;
-        //--- (end of generated code: YGyro definitions)
+        //--- (end of YGyro definitions)
 
-        //--- (generated code: YGyro implementation)
+        //--- (YGyro implementation)
         internal YGyroProxy(YGyro hwd, string instantiationName) : base(hwd, instantiationName)
         {
             InternalStuff.log("Gyro " + instantiationName + " instantiation");
@@ -259,13 +261,14 @@ namespace YoctoProxyAPI
          */
         public int get_bandwidth()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            int res = _func.get_bandwidth();
-            if (res == YAPI.INVALID_INT) res = _Bandwidth_INVALID;
+            res = _func.get_bandwidth();
+            if (res == YAPI.INVALID_INT) {
+                res = _Bandwidth_INVALID;
+            }
             return res;
         }
 
@@ -295,23 +298,28 @@ namespace YoctoProxyAPI
          */
         public int set_bandwidth(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            if (newval == _Bandwidth_INVALID) return YAPI.SUCCESS;
+            if (newval == _Bandwidth_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_bandwidth(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
         public int Bandwidth
         {
             get
             {
-                if (_func == null) return _Bandwidth_INVALID;
-                return (_online ? _bandwidth : _Bandwidth_INVALID);
+                if (_func == null) {
+                    return _Bandwidth_INVALID;
+                }
+                if (_online) {
+                    return _bandwidth;
+                }
+                return _Bandwidth_INVALID;
             }
             set
             {
@@ -322,10 +330,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_bandwidth(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Bandwidth_INVALID) return;
-            if (newval == _bandwidth) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Bandwidth_INVALID) {
+                return;
+            }
+            if (newval == _bandwidth) {
+                return;
+            }
             _func.set_bandwidth(newval);
             _bandwidth = newval;
         }
@@ -348,13 +364,14 @@ namespace YoctoProxyAPI
          */
         public double get_xValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_xValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_xValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -376,13 +393,14 @@ namespace YoctoProxyAPI
          */
         public double get_yValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_yValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_yValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -404,13 +422,14 @@ namespace YoctoProxyAPI
          */
         public double get_zValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_zValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_zValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -434,13 +453,14 @@ namespace YoctoProxyAPI
          */
         public virtual double get_roll()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_roll();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_roll();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -464,13 +484,14 @@ namespace YoctoProxyAPI
          */
         public virtual double get_pitch()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_pitch();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_pitch();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -494,13 +515,14 @@ namespace YoctoProxyAPI
          */
         public virtual double get_heading()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_heading();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_heading();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -522,13 +544,14 @@ namespace YoctoProxyAPI
          */
         public virtual double get_quaternionW()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_quaternionW();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_quaternionW();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -552,13 +575,14 @@ namespace YoctoProxyAPI
          */
         public virtual double get_quaternionX()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_quaternionX();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_quaternionX();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -582,13 +606,14 @@ namespace YoctoProxyAPI
          */
         public virtual double get_quaternionY()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_quaternionY();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_quaternionY();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -612,16 +637,17 @@ namespace YoctoProxyAPI
          */
         public virtual double get_quaternionZ()
         {
-            if (_func == null)
-            {
-                string msg = "No Gyro connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Gyro connected");
             }
-            double res = _func.get_quaternionZ();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_quaternionZ();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
     }
-    //--- (end of generated code: YGyro implementation)
+    //--- (end of YGyro implementation)
 }
 

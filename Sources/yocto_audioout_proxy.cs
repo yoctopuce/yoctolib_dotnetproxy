@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_audioout_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_audioout_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YAudioOutProxy, the Proxy API for AudioOut
  *
@@ -242,7 +242,6 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _volume = _func.get_volume();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _mute = _func.get_mute()+1;
         }
 
@@ -263,13 +262,14 @@ namespace YoctoProxyAPI
          */
         public int get_volume()
         {
-            if (_func == null)
-            {
-                string msg = "No AudioOut connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AudioOut connected");
             }
-            int res = _func.get_volume();
-            if (res == YAPI.INVALID_INT) res = _Volume_INVALID;
+            res = _func.get_volume();
+            if (res == YAPI.INVALID_INT) {
+                res = _Volume_INVALID;
+            }
             return res;
         }
 
@@ -297,23 +297,28 @@ namespace YoctoProxyAPI
          */
         public int set_volume(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No AudioOut connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AudioOut connected");
             }
-            if (newval == _Volume_INVALID) return YAPI.SUCCESS;
+            if (newval == _Volume_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_volume(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Udio output volume, in per cents.</value>
         public int Volume
         {
             get
             {
-                if (_func == null) return _Volume_INVALID;
-                return (_online ? _volume : _Volume_INVALID);
+                if (_func == null) {
+                    return _Volume_INVALID;
+                }
+                if (_online) {
+                    return _volume;
+                }
+                return _Volume_INVALID;
             }
             set
             {
@@ -324,10 +329,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_volume(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Volume_INVALID) return;
-            if (newval == _volume) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Volume_INVALID) {
+                return;
+            }
+            if (newval == _volume) {
+                return;
+            }
             _func.set_volume(newval);
             _volume = newval;
         }
@@ -349,10 +362,8 @@ namespace YoctoProxyAPI
          */
         public int get_mute()
         {
-            if (_func == null)
-            {
-                string msg = "No AudioOut connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AudioOut connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_mute()+1;
@@ -382,24 +393,29 @@ namespace YoctoProxyAPI
          */
         public int set_mute(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No AudioOut connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AudioOut connected");
             }
-            if (newval == _Mute_INVALID) return YAPI.SUCCESS;
+            if (newval == _Mute_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_mute(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>State of the mute function.</value>
         public int Mute
         {
             get
             {
-                if (_func == null) return _Mute_INVALID;
-                return (_online ? _mute : _Mute_INVALID);
+                if (_func == null) {
+                    return _Mute_INVALID;
+                }
+                if (_online) {
+                    return _mute;
+                }
+                return _Mute_INVALID;
             }
             set
             {
@@ -410,10 +426,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_mute(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Mute_INVALID) return;
-            if (newval == _mute) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Mute_INVALID) {
+                return;
+            }
+            if (newval == _mute) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_mute(newval-1);
             _mute = newval;
@@ -440,28 +464,10 @@ namespace YoctoProxyAPI
          */
         public string get_volumeRange()
         {
-            if (_func == null)
-            {
-                string msg = "No AudioOut connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AudioOut connected");
             }
             return _func.get_volumeRange();
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int Signal
-        {
-            get
-            {
-                if (_func == null) return _Signal_INVALID;
-                return (_online ? _signal : _Signal_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int32.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _signal);
         }
 
         /**
@@ -481,12 +487,32 @@ namespace YoctoProxyAPI
          */
         public int get_signal()
         {
-            if (_func == null)
-            {
-                string msg = "No AudioOut connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AudioOut connected");
             }
             return _func.get_signal();
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Detected output current level.</value>
+        public int Signal
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Signal_INVALID;
+                }
+                if (_online) {
+                    return _signal;
+                }
+                return _Signal_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _signal = YAPI._atoi(value);
         }
 
         /**
@@ -506,10 +532,8 @@ namespace YoctoProxyAPI
          */
         public int get_noSignalFor()
         {
-            if (_func == null)
-            {
-                string msg = "No AudioOut connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AudioOut connected");
             }
             return _func.get_noSignalFor();
         }

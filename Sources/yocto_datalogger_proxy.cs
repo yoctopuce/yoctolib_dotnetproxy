@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_datalogger_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_datalogger_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YDataLoggerProxy, the Proxy API for DataLogger
  *
@@ -258,9 +258,7 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _autoStart = _func.get_autoStart()+1;
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _beaconDriven = _func.get_beaconDriven()+1;
         }
 
@@ -283,13 +281,14 @@ namespace YoctoProxyAPI
          */
         public int get_currentRunIndex()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            int res = _func.get_currentRunIndex();
-            if (res == YAPI.INVALID_INT) res = _CurrentRunIndex_INVALID;
+            res = _func.get_currentRunIndex();
+            if (res == YAPI.INVALID_INT) {
+                res = _CurrentRunIndex_INVALID;
+            }
             return res;
         }
 
@@ -310,13 +309,14 @@ namespace YoctoProxyAPI
          */
         public long get_timeUTC()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            long res = _func.get_timeUTC();
-            if (res == YAPI.INVALID_INT) res = _TimeUTC_INVALID;
+            res = _func.get_timeUTC();
+            if (res == YAPI.INVALID_INT) {
+                res = _TimeUTC_INVALID;
+            }
             return res;
         }
 
@@ -342,36 +342,13 @@ namespace YoctoProxyAPI
          */
         public int set_timeUTC(long newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            if (newval == _TimeUTC_INVALID) return YAPI.SUCCESS;
+            if (newval == _TimeUTC_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_timeUTC(newval);
-        }
-
-
-        // property with cached value for instant access (advertised value)
-        public int Recording
-        {
-            get
-            {
-                if (_func == null) return _Recording_INVALID;
-                return (_online ? _recording : _Recording_INVALID);
-            }
-            set
-            {
-                setprop_recording(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "OFF") _recording = 1;
-            if (value == "ON") _recording = 2;
-            if (value == "PENDING") _recording = 3;
         }
 
         /**
@@ -392,10 +369,8 @@ namespace YoctoProxyAPI
          */
         public int get_recording()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_recording()+1;
@@ -425,27 +400,68 @@ namespace YoctoProxyAPI
          */
         public int set_recording(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            if (newval == _Recording_INVALID) return YAPI.SUCCESS;
+            if (newval == _Recording_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_recording(newval-1);
         }
 
+        // property with cached value for instant access (advertised value)
+        /// <value>Current activation state of the data logger.</value>
+        public int Recording
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Recording_INVALID;
+                }
+                if (_online) {
+                    return _recording;
+                }
+                return _Recording_INVALID;
+            }
+            set
+            {
+                setprop_recording(value);
+            }
+        }
 
         // private helper for magic property
         private void setprop_recording(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Recording_INVALID) return;
-            if (newval == _recording) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Recording_INVALID) {
+                return;
+            }
+            if (newval == _recording) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_recording(newval-1);
             _recording = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "OFF") {
+                _recording = 1;
+            }
+            if (value == "ON") {
+                _recording = 2;
+            }
+            if (value == "PENDING") {
+                _recording = 3;
+            }
         }
 
         /**
@@ -466,10 +482,8 @@ namespace YoctoProxyAPI
          */
         public int get_autoStart()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_autoStart()+1;
@@ -502,24 +516,29 @@ namespace YoctoProxyAPI
          */
         public int set_autoStart(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            if (newval == _AutoStart_INVALID) return YAPI.SUCCESS;
+            if (newval == _AutoStart_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_autoStart(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Default activation state of the data logger on power up.</value>
         public int AutoStart
         {
             get
             {
-                if (_func == null) return _AutoStart_INVALID;
-                return (_online ? _autoStart : _AutoStart_INVALID);
+                if (_func == null) {
+                    return _AutoStart_INVALID;
+                }
+                if (_online) {
+                    return _autoStart;
+                }
+                return _AutoStart_INVALID;
             }
             set
             {
@@ -530,10 +549,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_autoStart(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _AutoStart_INVALID) return;
-            if (newval == _autoStart) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _AutoStart_INVALID) {
+                return;
+            }
+            if (newval == _autoStart) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_autoStart(newval-1);
             _autoStart = newval;
@@ -557,10 +584,8 @@ namespace YoctoProxyAPI
          */
         public int get_beaconDriven()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_beaconDriven()+1;
@@ -591,24 +616,29 @@ namespace YoctoProxyAPI
          */
         public int set_beaconDriven(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            if (newval == _BeaconDriven_INVALID) return YAPI.SUCCESS;
+            if (newval == _BeaconDriven_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_beaconDriven(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>True if the data logger is synchronised with the localization beacon.</value>
         public int BeaconDriven
         {
             get
             {
-                if (_func == null) return _BeaconDriven_INVALID;
-                return (_online ? _beaconDriven : _BeaconDriven_INVALID);
+                if (_func == null) {
+                    return _BeaconDriven_INVALID;
+                }
+                if (_online) {
+                    return _beaconDriven;
+                }
+                return _BeaconDriven_INVALID;
             }
             set
             {
@@ -619,10 +649,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_beaconDriven(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _BeaconDriven_INVALID) return;
-            if (newval == _beaconDriven) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _BeaconDriven_INVALID) {
+                return;
+            }
+            if (newval == _beaconDriven) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_beaconDriven(newval-1);
             _beaconDriven = newval;
@@ -645,13 +683,14 @@ namespace YoctoProxyAPI
          */
         public int get_usage()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            int res = _func.get_usage();
-            if (res == YAPI.INVALID_INT) res = _Usage_INVALID;
+            res = _func.get_usage();
+            if (res == YAPI.INVALID_INT) {
+                res = _Usage_INVALID;
+            }
             return res;
         }
 
@@ -671,10 +710,8 @@ namespace YoctoProxyAPI
          */
         public virtual int forgetAllDataStreams()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
             return _func.forgetAllDataStreams();
         }
@@ -702,16 +739,20 @@ namespace YoctoProxyAPI
          */
         public virtual YDataSetProxy[] get_dataSets()
         {
-            if (_func == null)
-            {
-                string msg = "No DataLogger connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DataLogger connected");
             }
-            int i = 0;
-            var std_res = _func.get_dataSets();
-            YDataSetProxy[] proxy_res = new YDataSetProxy[std_res.Count];
-            foreach (var record in std_res) {
-                proxy_res[i++] = new YDataSetProxy(record);
+            int i;
+            int arrlen;
+            YDataSet[] std_res;
+            YDataSetProxy[] proxy_res;
+            std_res = _func.get_dataSets().ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YDataSetProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YDataSetProxy(std_res[i]);
+                i = i + 1;
             }
             return proxy_res;
         }

@@ -156,7 +156,7 @@ namespace YoctoProxyAPI
 
 
         // Convert an RGB value to HSL using the nearest value to current HSL value
-        public static void rgb2hsl(int rgb, ref int hsl)
+        public static int rgb2hsl(int rgb, int hsl)
         {
             UInt16 R, G, B, H, S, L;
             UInt32 temp1, temp2, rgbVal;
@@ -193,7 +193,7 @@ namespace YoctoProxyAPI
             rgbVal = ((UInt32)R << 16) + ((UInt32)G << 8) + B;
             if (rgbVal == rgb)
             {   // no change
-                return;
+                return hsl;
             }
             // We know that the rgb value is different
             // Now compute the HSL value closest to current value
@@ -226,7 +226,7 @@ namespace YoctoProxyAPI
                 if (S > 255) S = 255; // just in case
                 if (L > 255) L = 255;
             }
-            hsl = ((Int32)H << 16) + ((Int32)S << 8) + L;
+            return ((Int32)H << 16) + ((Int32)S << 8) + L;
         }
     }
 
@@ -504,11 +504,27 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Frees dynamically allocated memory blocks used by the Yoctopuce library.
+         *   Waits for all pending communications with Yoctopuce devices to be
+         *   completed then frees dynamically allocated resources used by
+         *   the Yoctopuce library.
          * <para>
-         *   It is generally not required to call this function, unless you
-         *   want to free all dynamically allocated memory blocks in order to
-         *   track a memory leak for instance.
+         * </para>
+         * <para>
+         *   From an operating system standpoint, it is generally not required to call
+         *   this function since the OS will automatically free allocated resources
+         *   once your program is completed. However there are two situations when
+         *   you may really want to use that function:
+         * </para>
+         * <para>
+         *   - Free all dynamically allocated memory blocks in order to
+         *   track a memory leak.
+         * </para>
+         * <para>
+         *   - Send commands to devices right before the end
+         *   of the program. Since commands are sent in an asynchronous way
+         *   the program could exit before all commands are effectively sent.
+         * </para>
+         * <para>
          *   You should not call any other library function after calling
          *   <c>yFreeAPI()</c>, or your program will crash.
          * </para>

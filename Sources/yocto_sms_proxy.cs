@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sms_proxy.cs 38520 2019-11-26 23:12:57Z seb $
+ *  $Id: yocto_sms_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YSmsProxy, the Proxy API for Sms
  *
@@ -49,7 +49,7 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YSms class start)
+    //--- (YSms class start)
     public class YSmsProxy
     {
         private YSms _objref;
@@ -57,10 +57,10 @@ namespace YoctoProxyAPI
         {
              _objref = objref;
         }
-        //--- (end of generated code: YSms class start)
-        //--- (generated code: YSms definitions)
-        //--- (end of generated code: YSms definitions)
-        //--- (generated code: YSms implementation)
+        //--- (end of YSms class start)
+        //--- (YSms definitions)
+        //--- (end of YSms definitions)
+        //--- (YSms implementation)
 
         /**
          * <summary>
@@ -76,11 +76,6 @@ namespace YoctoProxyAPI
          */
         public virtual string get_textData()
         {
-            if (_objref == null)
-            {
-                string msg = "No Sms connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_textData();
         }
 
@@ -105,11 +100,6 @@ namespace YoctoProxyAPI
          */
         public virtual int addText(string val)
         {
-            if (_objref == null)
-            {
-                string msg = "No Sms connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.addText(val);
         }
 
@@ -132,11 +122,6 @@ namespace YoctoProxyAPI
          */
         public virtual int addUnicodeData(int[] val)
         {
-            if (_objref == null)
-            {
-                string msg = "No Sms connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.addUnicodeData(new List<int>(val));
         }
 
@@ -159,14 +144,9 @@ namespace YoctoProxyAPI
          */
         public virtual int send()
         {
-            if (_objref == null)
-            {
-                string msg = "No Sms connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.send();
         }
     }
-    //--- (end of generated code: YSms implementation)
+    //--- (end of YSms implementation)
 }
 

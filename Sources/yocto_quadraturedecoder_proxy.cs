@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_quadraturedecoder_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_quadraturedecoder_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YQuadratureDecoderProxy, the Proxy API for QuadratureDecoder
  *
@@ -238,7 +238,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _decoding = _func.get_decoding()+1;
         }
 
@@ -265,39 +264,13 @@ namespace YoctoProxyAPI
          */
         public int set_currentValue(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No QuadratureDecoder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No QuadratureDecoder connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _CurrentValue_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_currentValue(newval);
-        }
-
-
-        // property with cached value for instant access (advertised value)
-        public new double CurrentValue
-        {
-            get
-            {
-                if (_func == null) return _CurrentValue_INVALID;
-                return (_online ? _currentValue : _CurrentValue_INVALID);
-            }
-            set
-            {
-                setprop_currentValue(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_currentValue(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _currentValue) return;
-            _func.set_currentValue(newval);
-            _currentValue = newval;
         }
 
         /**
@@ -317,13 +290,14 @@ namespace YoctoProxyAPI
          */
         public double get_speed()
         {
-            if (_func == null)
-            {
-                string msg = "No QuadratureDecoder connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No QuadratureDecoder connected");
             }
-            double res = _func.get_speed();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_speed();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -345,10 +319,8 @@ namespace YoctoProxyAPI
          */
         public int get_decoding()
         {
-            if (_func == null)
-            {
-                string msg = "No QuadratureDecoder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No QuadratureDecoder connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_decoding()+1;
@@ -379,24 +351,29 @@ namespace YoctoProxyAPI
          */
         public int set_decoding(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No QuadratureDecoder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No QuadratureDecoder connected");
             }
-            if (newval == _Decoding_INVALID) return YAPI.SUCCESS;
+            if (newval == _Decoding_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_decoding(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Current activation state of the quadrature decoder.</value>
         public int Decoding
         {
             get
             {
-                if (_func == null) return _Decoding_INVALID;
-                return (_online ? _decoding : _Decoding_INVALID);
+                if (_func == null) {
+                    return _Decoding_INVALID;
+                }
+                if (_online) {
+                    return _decoding;
+                }
+                return _Decoding_INVALID;
             }
             set
             {
@@ -407,10 +384,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_decoding(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Decoding_INVALID) return;
-            if (newval == _decoding) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Decoding_INVALID) {
+                return;
+            }
+            if (newval == _decoding) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_decoding(newval-1);
             _decoding = newval;

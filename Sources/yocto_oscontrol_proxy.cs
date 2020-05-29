@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_oscontrol_proxy.cs 38969 2019-12-26 16:31:16Z mvuilleu $
+ *  $Id: yocto_oscontrol_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YOsControlProxy, the Proxy API for OsControl
  *
@@ -255,13 +255,14 @@ namespace YoctoProxyAPI
          */
         public int get_shutdownCountdown()
         {
-            if (_func == null)
-            {
-                string msg = "No OsControl connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No OsControl connected");
             }
-            int res = _func.get_shutdownCountdown();
-            if (res == YAPI.INVALID_INT) res = _ShutdownCountdown_INVALID;
+            res = _func.get_shutdownCountdown();
+            if (res == YAPI.INVALID_INT) {
+                res = _ShutdownCountdown_INVALID;
+            }
             return res;
         }
 
@@ -283,10 +284,8 @@ namespace YoctoProxyAPI
          */
         public virtual int shutdown(int secBeforeShutDown)
         {
-            if (_func == null)
-            {
-                string msg = "No OsControl connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No OsControl connected");
             }
             return _func.shutdown(secBeforeShutDown);
         }

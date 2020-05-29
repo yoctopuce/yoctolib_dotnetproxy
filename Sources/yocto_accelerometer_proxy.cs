@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_accelerometer_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_accelerometer_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YAccelerometerProxy, the Proxy API for Accelerometer
  *
@@ -263,13 +263,14 @@ namespace YoctoProxyAPI
          */
         public int get_bandwidth()
         {
-            if (_func == null)
-            {
-                string msg = "No Accelerometer connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Accelerometer connected");
             }
-            int res = _func.get_bandwidth();
-            if (res == YAPI.INVALID_INT) res = _Bandwidth_INVALID;
+            res = _func.get_bandwidth();
+            if (res == YAPI.INVALID_INT) {
+                res = _Bandwidth_INVALID;
+            }
             return res;
         }
 
@@ -299,23 +300,28 @@ namespace YoctoProxyAPI
          */
         public int set_bandwidth(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Accelerometer connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Accelerometer connected");
             }
-            if (newval == _Bandwidth_INVALID) return YAPI.SUCCESS;
+            if (newval == _Bandwidth_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_bandwidth(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
         public int Bandwidth
         {
             get
             {
-                if (_func == null) return _Bandwidth_INVALID;
-                return (_online ? _bandwidth : _Bandwidth_INVALID);
+                if (_func == null) {
+                    return _Bandwidth_INVALID;
+                }
+                if (_online) {
+                    return _bandwidth;
+                }
+                return _Bandwidth_INVALID;
             }
             set
             {
@@ -326,10 +332,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_bandwidth(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Bandwidth_INVALID) return;
-            if (newval == _bandwidth) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Bandwidth_INVALID) {
+                return;
+            }
+            if (newval == _bandwidth) {
+                return;
+            }
             _func.set_bandwidth(newval);
             _bandwidth = newval;
         }
@@ -351,13 +365,14 @@ namespace YoctoProxyAPI
          */
         public double get_xValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Accelerometer connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Accelerometer connected");
             }
-            double res = _func.get_xValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_xValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -378,13 +393,14 @@ namespace YoctoProxyAPI
          */
         public double get_yValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Accelerometer connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Accelerometer connected");
             }
-            double res = _func.get_yValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_yValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -405,13 +421,14 @@ namespace YoctoProxyAPI
          */
         public double get_zValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Accelerometer connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Accelerometer connected");
             }
-            double res = _func.get_zValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_zValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
     }

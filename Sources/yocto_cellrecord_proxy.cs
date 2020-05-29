@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellrecord_proxy.cs 38687 2019-12-04 18:22:46Z mvuilleu $
+ *  $Id: yocto_cellrecord_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YCellRecordProxy, the Proxy API for CellRecord
  *
@@ -49,7 +49,7 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YCellRecord class start)
+    //--- (YCellRecord class start)
     public class YCellRecordProxy
     {
         private YCellRecord _objref;
@@ -57,19 +57,11 @@ namespace YoctoProxyAPI
         {
              _objref = objref;
         }
-        //--- (end of generated code: YCellRecord class start)
-        //--- (generated code: YCellRecord definitions)
-        //--- (end of generated code: YCellRecord definitions)
-        //--- (generated code: YCellRecord implementation)
+        //--- (end of YCellRecord class start)
+        //--- (YCellRecord definitions)
+        //--- (end of YCellRecord definitions)
+        //--- (YCellRecord implementation)
 
-        // property with cached value for instant access
-        public string CellOperator
-        {
-            get
-            {
-                return this.get_cellOperator();
-            }
-        }
         /**
          * <summary>
          *   Returns the name of the the cell operator, as received from the network.
@@ -82,22 +74,18 @@ namespace YoctoProxyAPI
          */
         public virtual string get_cellOperator()
         {
-            if (_objref == null)
-            {
-                string msg = "No CellRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_cellOperator();
         }
 
-        // property with cached value for instant access
-        public int MobileCountryCode
+        // property with cached value for instant access (storage object)
+        public string CellOperator
         {
             get
             {
-                return this.get_mobileCountryCode();
+                return this.get_cellOperator();
             }
         }
+
         /**
          * <summary>
          *   Returns the Mobile Country Code (MCC).
@@ -111,22 +99,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_mobileCountryCode()
         {
-            if (_objref == null)
-            {
-                string msg = "No CellRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_mobileCountryCode();
         }
 
-        // property with cached value for instant access
-        public int MobileNetworkCode
+        // property with cached value for instant access (storage object)
+        public int MobileCountryCode
         {
             get
             {
-                return this.get_mobileNetworkCode();
+                return this.get_mobileCountryCode();
             }
         }
+
         /**
          * <summary>
          *   Returns the Mobile Network Code (MNC).
@@ -141,22 +125,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_mobileNetworkCode()
         {
-            if (_objref == null)
-            {
-                string msg = "No CellRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_mobileNetworkCode();
         }
 
-        // property with cached value for instant access
-        public int LocationAreaCode
+        // property with cached value for instant access (storage object)
+        public int MobileNetworkCode
         {
             get
             {
-                return this.get_locationAreaCode();
+                return this.get_mobileNetworkCode();
             }
         }
+
         /**
          * <summary>
          *   Returns the Location Area Code (LAC).
@@ -171,22 +151,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_locationAreaCode()
         {
-            if (_objref == null)
-            {
-                string msg = "No CellRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_locationAreaCode();
         }
 
-        // property with cached value for instant access
-        public int CellId
+        // property with cached value for instant access (storage object)
+        public int LocationAreaCode
         {
             get
             {
-                return this.get_cellId();
+                return this.get_locationAreaCode();
             }
         }
+
         /**
          * <summary>
          *   Returns the Cell ID.
@@ -201,22 +177,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_cellId()
         {
-            if (_objref == null)
-            {
-                string msg = "No CellRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_cellId();
         }
 
-        // property with cached value for instant access
-        public int SignalStrength
+        // property with cached value for instant access (storage object)
+        public int CellId
         {
             get
             {
-                return this.get_signalStrength();
+                return this.get_cellId();
             }
         }
+
         /**
          * <summary>
          *   Returns the signal strength, measured in dBm.
@@ -229,22 +201,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_signalStrength()
         {
-            if (_objref == null)
-            {
-                string msg = "No CellRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_signalStrength();
         }
 
-        // property with cached value for instant access
-        public int TimingAdvance
+        // property with cached value for instant access (storage object)
+        public int SignalStrength
         {
             get
             {
-                return this.get_timingAdvance();
+                return this.get_signalStrength();
             }
         }
+
         /**
          * <summary>
          *   Returns the Timing Advance (TA).
@@ -260,14 +228,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_timingAdvance()
         {
-            if (_objref == null)
-            {
-                string msg = "No CellRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_timingAdvance();
         }
+
+        // property with cached value for instant access (storage object)
+        public int TimingAdvance
+        {
+            get
+            {
+                return this.get_timingAdvance();
+            }
+        }
     }
-    //--- (end of generated code: YCellRecord implementation)
+    //--- (end of YCellRecord implementation)
 }
 

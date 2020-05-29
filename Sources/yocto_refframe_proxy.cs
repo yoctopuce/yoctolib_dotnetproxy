@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_refframe_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_refframe_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YRefFrameProxy, the Proxy API for RefFrame
  *
@@ -195,7 +195,7 @@ namespace YoctoProxyAPI
                 case YRefFrame.MOUNTPOSITION.LEFT:
                     return _MOUNTPOSITION_LEFT;
                 case YRefFrame.MOUNTPOSITION.INVALID:
-                    default:
+                default:
                     return _MOUNTPOSITION_INVALID;
             }
         }
@@ -216,7 +216,7 @@ namespace YoctoProxyAPI
                 case _MOUNTPOSITION_LEFT:
                     return YRefFrame.MOUNTPOSITION.LEFT;
                 case _MOUNTPOSITION_INVALID:
-                    default:
+                default:
                     return YRefFrame.MOUNTPOSITION.INVALID;
             }
         }
@@ -238,7 +238,7 @@ namespace YoctoProxyAPI
                 case YRefFrame.MOUNTORIENTATION.NINE:
                     return _MOUNTORIENTATION_NINE;
                 case YRefFrame.MOUNTORIENTATION.INVALID:
-                    default:
+                default:
                     return _MOUNTORIENTATION_INVALID;
             }
         }
@@ -255,7 +255,7 @@ namespace YoctoProxyAPI
                 case _MOUNTORIENTATION_NINE:
                     return YRefFrame.MOUNTORIENTATION.NINE;
                 case _MOUNTORIENTATION_INVALID:
-                    default:
+                default:
                     return YRefFrame.MOUNTORIENTATION.INVALID;
             }
         }
@@ -336,7 +336,6 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _bearing = _func.get_bearing();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _fusionMode = _func.get_fusionMode()+1;
         }
 
@@ -379,39 +378,13 @@ namespace YoctoProxyAPI
          */
         public int set_bearing(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _Bearing_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_bearing(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double Bearing
-        {
-            get
-            {
-                if (_func == null) return _Bearing_INVALID;
-                return (_online ? _bearing : _Bearing_INVALID);
-            }
-            set
-            {
-                setprop_bearing(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_bearing(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _bearing) return;
-            _func.set_bearing(newval);
-            _bearing = newval;
         }
 
         /**
@@ -434,14 +407,54 @@ namespace YoctoProxyAPI
          */
         public double get_bearing()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
-            double res = _func.get_bearing();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_bearing();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Reference bearing used by the compass. The relative bearing</value>
+        public double Bearing
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Bearing_INVALID;
+                }
+                if (_online) {
+                    return _bearing;
+                }
+                return _Bearing_INVALID;
+            }
+            set
+            {
+                setprop_bearing(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_bearing(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Bearing_INVALID) {
+                return;
+            }
+            if (newval == _bearing) {
+                return;
+            }
+            _func.set_bearing(newval);
+            _bearing = newval;
         }
 
         /**
@@ -464,10 +477,8 @@ namespace YoctoProxyAPI
          */
         public int get_fusionMode()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_fusionMode()+1;
@@ -498,24 +509,29 @@ namespace YoctoProxyAPI
          */
         public int set_fusionMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
-            if (newval == _FusionMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _FusionMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_fusionMode(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>BNO055 fusion mode. Note this feature is only availabe on Yocto-3D-V2.</value>
         public int FusionMode
         {
             get
             {
-                if (_func == null) return _FusionMode_INVALID;
-                return (_online ? _fusionMode : _FusionMode_INVALID);
+                if (_func == null) {
+                    return _FusionMode_INVALID;
+                }
+                if (_online) {
+                    return _fusionMode;
+                }
+                return _FusionMode_INVALID;
             }
             set
             {
@@ -526,10 +542,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_fusionMode(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _FusionMode_INVALID) return;
-            if (newval == _fusionMode) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _FusionMode_INVALID) {
+                return;
+            }
+            if (newval == _fusionMode) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_fusionMode(newval-1);
             _fusionMode = newval;
@@ -558,10 +582,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_mountPosition()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _MOUNTPOSITION2Int(_func.get_mountPosition());
         }
@@ -591,10 +613,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_mountOrientation()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _MOUNTORIENTATION2Int(_func.get_mountOrientation());
         }
@@ -638,10 +658,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_mountPosition(int position, int orientation)
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.set_mountPosition(_Int2MOUNTPOSITION(position), _Int2MOUNTORIENTATION(orientation));
         }
@@ -669,10 +687,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_calibrationState()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.get_calibrationState();
         }
@@ -699,10 +715,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_measureQuality()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.get_measureQuality();
         }
@@ -731,10 +745,8 @@ namespace YoctoProxyAPI
          */
         public virtual int start3DCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.start3DCalibration();
         }
@@ -756,10 +768,8 @@ namespace YoctoProxyAPI
          */
         public virtual int more3DCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.more3DCalibration();
         }
@@ -777,10 +787,8 @@ namespace YoctoProxyAPI
          */
         public virtual string get_3DCalibrationHint()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.get_3DCalibrationHint();
         }
@@ -798,10 +806,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_3DCalibrationProgress()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.get_3DCalibrationProgress();
         }
@@ -819,10 +825,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_3DCalibrationStage()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.get_3DCalibrationStage();
         }
@@ -840,10 +844,8 @@ namespace YoctoProxyAPI
          */
         public virtual int get_3DCalibrationStageProgress()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.get_3DCalibrationStageProgress();
         }
@@ -861,10 +863,8 @@ namespace YoctoProxyAPI
          */
         public virtual string get_3DCalibrationLogMsg()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.get_3DCalibrationLogMsg();
         }
@@ -883,10 +883,8 @@ namespace YoctoProxyAPI
          */
         public virtual int save3DCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.save3DCalibration();
         }
@@ -903,10 +901,8 @@ namespace YoctoProxyAPI
          */
         public virtual int cancel3DCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No RefFrame connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RefFrame connected");
             }
             return _func.cancel3DCalibration();
         }

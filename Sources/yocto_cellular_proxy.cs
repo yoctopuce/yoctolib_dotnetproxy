@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellular_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_cellular_proxy.cs 40755 2020-05-28 15:43:23Z mvuilleu $
  *
  *  Implements YCellularProxy, the Proxy API for Cellular
  *
@@ -43,11 +43,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YCellular class start)
+    //--- (YCellular class start)
     static public partial class YoctoProxyManager
     {
         public static YCellularProxy FindCellular(string name)
@@ -155,8 +157,8 @@ namespace YoctoProxyAPI
         {
             return YoctoProxyManager.FindCellular(func);
         }
-        //--- (end of generated code: YCellular class start)
-        //--- (generated code: YCellular definitions)
+        //--- (end of YCellular class start)
+        //--- (YCellular definitions)
         public const int _LinkQuality_INVALID = -1;
         public const string _CellOperator_INVALID = YAPI.INVALID_STRING;
         public const string _CellIdentifier_INVALID = YAPI.INVALID_STRING;
@@ -167,9 +169,13 @@ namespace YoctoProxyAPI
         public const int _CellType_HSDPA = 4;
         public const int _CellType_NONE = 5;
         public const int _CellType_CDMA = 6;
+        public const int _CellType_LTE_M = 7;
+        public const int _CellType_NB_IOT = 8;
+        public const int _CellType_EC_GSM_IOT = 9;
         public const string _Imsi_INVALID = YAPI.INVALID_STRING;
         public const string _Message_INVALID = YAPI.INVALID_STRING;
         public const string _Pin_INVALID = YAPI.INVALID_STRING;
+        public const string _RadioConfig_INVALID = YAPI.INVALID_STRING;
         public const string _LockedOperator_INVALID = YAPI.INVALID_STRING;
         public const int _AirplaneMode_INVALID = 0;
         public const int _AirplaneMode_OFF = 1;
@@ -189,14 +195,17 @@ namespace YoctoProxyAPI
         // reference to real YoctoAPI object
         protected new YCellular _func;
         // property cache
+        protected int _linkQuality = _LinkQuality_INVALID;
         protected string _pin = _Pin_INVALID;
+        protected string _radioConfig = _RadioConfig_INVALID;
         protected string _lockedOperator = _LockedOperator_INVALID;
         protected int _enableData = _EnableData_INVALID;
         protected string _apn = _Apn_INVALID;
         protected int _pingInterval = _PingInterval_INVALID;
-        //--- (end of generated code: YCellular definitions)
+        protected string _cellOperator = _CellOperator_INVALID;
+        //--- (end of YCellular definitions)
 
-        //--- (generated code: YCellular implementation)
+        //--- (YCellular implementation)
         internal YCellularProxy(YCellular hwd, string instantiationName) : base(hwd, instantiationName)
         {
             InternalStuff.log("Cellular " + instantiationName + " instantiation");
@@ -259,14 +268,16 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
+            _cellOperator = _func.get_cellOperator();
         }
 
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
+            _cellOperator = _func.get_cellOperator();
             _pin = _func.get_pin();
+            _radioConfig = _func.get_radioConfig();
             _lockedOperator = _func.get_lockedOperator();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _enableData = _func.get_enableData()+1;
             _apn = _func.get_apn();
             _pingInterval = _func.get_pingInterval();
@@ -289,14 +300,54 @@ namespace YoctoProxyAPI
          */
         public int get_linkQuality()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            int res = _func.get_linkQuality();
-            if (res == YAPI.INVALID_INT) res = _LinkQuality_INVALID;
+            res = _func.get_linkQuality();
+            if (res == YAPI.INVALID_INT) {
+                res = _LinkQuality_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Link quality, expressed in percent.</value>
+        public int LinkQuality
+        {
+            get
+            {
+                if (_func == null) {
+                    return _LinkQuality_INVALID;
+                }
+                if (_online) {
+                    return _linkQuality;
+                }
+                return _LinkQuality_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            value = (YAPI._atoi(value)).ToString();
+            _linkQuality = YAPI._atoi(value);
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>Cell operator currently in use.</value>
+        public string CellOperator
+        {
+            get
+            {
+                if (_func == null) {
+                    return _CellOperator_INVALID;
+                }
+                if (_online) {
+                    return _cellOperator;
+                }
+                return _CellOperator_INVALID;
+            }
         }
 
         /**
@@ -316,10 +367,8 @@ namespace YoctoProxyAPI
          */
         public string get_cellOperator()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_cellOperator();
         }
@@ -341,10 +390,8 @@ namespace YoctoProxyAPI
          */
         public string get_cellIdentifier()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_cellIdentifier();
         }
@@ -359,8 +406,9 @@ namespace YoctoProxyAPI
          * </summary>
          * <returns>
          *   a value among <c>cellular._Celltype_GPRS</c>, <c>cellular._Celltype_EGPRS</c>,
-         *   <c>cellular._Celltype_WCDMA</c>, <c>cellular._Celltype_HSDPA</c>, <c>cellular._Celltype_NONE</c>
-         *   and <c>cellular._Celltype_CDMA</c>
+         *   <c>cellular._Celltype_WCDMA</c>, <c>cellular._Celltype_HSDPA</c>, <c>cellular._Celltype_NONE</c>,
+         *   <c>cellular._Celltype_CDMA</c>, <c>cellular._Celltype_LTE_M</c>, <c>cellular._Celltype_NB_IOT</c>
+         *   and <c>cellular._Celltype_EC_GSM_IOT</c>
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>cellular._Celltype_INVALID</c>.
@@ -368,10 +416,8 @@ namespace YoctoProxyAPI
          */
         public int get_cellType()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_cellType()+1;
@@ -379,18 +425,19 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns an opaque string if a PIN code has been configured in the device to access
-         *   the SIM card, or an empty string if none has been configured or if the code provided
-         *   was rejected by the SIM card.
+         *   Returns the International Mobile Subscriber Identity (MSI) that uniquely identifies
+         *   the SIM card.
          * <para>
+         *   The first 3 digits represent the mobile country code (MCC), which
+         *   is followed by the mobile network code (MNC), either 2-digit (European standard)
+         *   or 3-digit (North American standard)
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a string corresponding to an opaque string if a PIN code has been configured in the device to access
-         *   the SIM card, or an empty string if none has been configured or if the code provided
-         *   was rejected by the SIM card
+         *   a string corresponding to the International Mobile Subscriber Identity (MSI) that uniquely identifies
+         *   the SIM card
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>cellular._Imsi_INVALID</c>.
@@ -398,10 +445,8 @@ namespace YoctoProxyAPI
          */
         public string get_imsi()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_imsi();
         }
@@ -423,10 +468,8 @@ namespace YoctoProxyAPI
          */
         public string get_message()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_message();
         }
@@ -452,10 +495,8 @@ namespace YoctoProxyAPI
          */
         public string get_pin()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_pin();
         }
@@ -493,23 +534,28 @@ namespace YoctoProxyAPI
          */
         public int set_pin(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _Pin_INVALID) return YAPI.SUCCESS;
+            if (newval == _Pin_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_pin(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>N opaque string if a PIN code has been configured in the device to access</value>
         public string Pin
         {
             get
             {
-                if (_func == null) return _Pin_INVALID;
-                return (_online ? _pin : _Pin_INVALID);
+                if (_func == null) {
+                    return _Pin_INVALID;
+                }
+                if (_online) {
+                    return _pin;
+                }
+                return _Pin_INVALID;
             }
             set
             {
@@ -520,12 +566,125 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_pin(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Pin_INVALID) return;
-            if (newval == _pin) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Pin_INVALID) {
+                return;
+            }
+            if (newval == _pin) {
+                return;
+            }
             _func.set_pin(newval);
             _pin = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the type of protocol used over the serial line, as a string.
+         * <para>
+         *   Possible values are "Line" for ASCII messages separated by CR and/or LF,
+         *   "Frame:[timeout]ms" for binary messages separated by a delay time,
+         *   "Char" for a continuous ASCII stream or
+         *   "Byte" for a continuous binary stream.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a string corresponding to the type of protocol used over the serial line, as a string
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>cellular._Radioconfig_INVALID</c>.
+         * </para>
+         */
+        public string get_radioConfig()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
+            }
+            return _func.get_radioConfig();
+        }
+
+        /**
+         * <summary>
+         *   Changes the type of protocol used over the serial line.
+         * <para>
+         *   Possible values are "Line" for ASCII messages separated by CR and/or LF,
+         *   "Frame:[timeout]ms" for binary messages separated by a delay time,
+         *   "Char" for a continuous ASCII stream or
+         *   "Byte" for a continuous binary stream.
+         *   The suffix "/[wait]ms" can be added to reduce the transmit rate so that there
+         *   is always at lest the specified number of milliseconds between each bytes sent.
+         *   Remember to call the <c>saveToFlash()</c> method of the module if the
+         *   modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   a string corresponding to the type of protocol used over the serial line
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_radioConfig(string newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
+            }
+            if (newval == _RadioConfig_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            return _func.set_radioConfig(newval);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Type of protocol used over the serial line, as a string.</value>
+        public string RadioConfig
+        {
+            get
+            {
+                if (_func == null) {
+                    return _RadioConfig_INVALID;
+                }
+                if (_online) {
+                    return _radioConfig;
+                }
+                return _RadioConfig_INVALID;
+            }
+            set
+            {
+                setprop_radioConfig(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_radioConfig(string newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _RadioConfig_INVALID) {
+                return;
+            }
+            if (newval == _radioConfig) {
+                return;
+            }
+            _func.set_radioConfig(newval);
+            _radioConfig = newval;
         }
 
         /**
@@ -549,10 +708,8 @@ namespace YoctoProxyAPI
          */
         public string get_lockedOperator()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_lockedOperator();
         }
@@ -584,23 +741,28 @@ namespace YoctoProxyAPI
          */
         public int set_lockedOperator(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _LockedOperator_INVALID) return YAPI.SUCCESS;
+            if (newval == _LockedOperator_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_lockedOperator(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Name of the only cell operator to use if automatic choice is disabled,</value>
         public string LockedOperator
         {
             get
             {
-                if (_func == null) return _LockedOperator_INVALID;
-                return (_online ? _lockedOperator : _LockedOperator_INVALID);
+                if (_func == null) {
+                    return _LockedOperator_INVALID;
+                }
+                if (_online) {
+                    return _lockedOperator;
+                }
+                return _LockedOperator_INVALID;
             }
             set
             {
@@ -611,10 +773,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_lockedOperator(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _LockedOperator_INVALID) return;
-            if (newval == _lockedOperator) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _LockedOperator_INVALID) {
+                return;
+            }
+            if (newval == _lockedOperator) {
+                return;
+            }
             _func.set_lockedOperator(newval);
             _lockedOperator = newval;
         }
@@ -637,10 +807,8 @@ namespace YoctoProxyAPI
          */
         public int get_airplaneMode()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_airplaneMode()+1;
@@ -669,16 +837,15 @@ namespace YoctoProxyAPI
          */
         public int set_airplaneMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _AirplaneMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _AirplaneMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_airplaneMode(newval-1);
         }
-
 
         /**
          * <summary>
@@ -700,10 +867,8 @@ namespace YoctoProxyAPI
          */
         public int get_enableData()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enableData()+1;
@@ -741,24 +906,29 @@ namespace YoctoProxyAPI
          */
         public int set_enableData(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _EnableData_INVALID) return YAPI.SUCCESS;
+            if (newval == _EnableData_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enableData(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Condition for enabling IP data services (GPRS).</value>
         public int EnableData
         {
             get
             {
-                if (_func == null) return _EnableData_INVALID;
-                return (_online ? _enableData : _EnableData_INVALID);
+                if (_func == null) {
+                    return _EnableData_INVALID;
+                }
+                if (_online) {
+                    return _enableData;
+                }
+                return _EnableData_INVALID;
             }
             set
             {
@@ -769,10 +939,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_enableData(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _EnableData_INVALID) return;
-            if (newval == _enableData) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _EnableData_INVALID) {
+                return;
+            }
+            if (newval == _enableData) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_enableData(newval-1);
             _enableData = newval;
@@ -796,10 +974,8 @@ namespace YoctoProxyAPI
          */
         public string get_apn()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_apn();
         }
@@ -829,23 +1005,28 @@ namespace YoctoProxyAPI
          */
         public int set_apn(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _Apn_INVALID) return YAPI.SUCCESS;
+            if (newval == _Apn_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_apn(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Access Point Name (APN) to be used, if needed.</value>
         public string Apn
         {
             get
             {
-                if (_func == null) return _Apn_INVALID;
-                return (_online ? _apn : _Apn_INVALID);
+                if (_func == null) {
+                    return _Apn_INVALID;
+                }
+                if (_online) {
+                    return _apn;
+                }
+                return _Apn_INVALID;
             }
             set
             {
@@ -856,10 +1037,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_apn(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Apn_INVALID) return;
-            if (newval == _apn) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Apn_INVALID) {
+                return;
+            }
+            if (newval == _apn) {
+                return;
+            }
             _func.set_apn(newval);
             _apn = newval;
         }
@@ -884,10 +1073,8 @@ namespace YoctoProxyAPI
          */
         public string get_apnSecret()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_apnSecret();
         }
@@ -909,13 +1096,14 @@ namespace YoctoProxyAPI
          */
         public int get_pingInterval()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            int res = _func.get_pingInterval();
-            if (res == YAPI.INVALID_INT) res = _PingInterval_INVALID;
+            res = _func.get_pingInterval();
+            if (res == YAPI.INVALID_INT) {
+                res = _PingInterval_INVALID;
+            }
             return res;
         }
 
@@ -943,23 +1131,28 @@ namespace YoctoProxyAPI
          */
         public int set_pingInterval(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _PingInterval_INVALID) return YAPI.SUCCESS;
+            if (newval == _PingInterval_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_pingInterval(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Automated connectivity check interval, in seconds.</value>
         public int PingInterval
         {
             get
             {
-                if (_func == null) return _PingInterval_INVALID;
-                return (_online ? _pingInterval : _PingInterval_INVALID);
+                if (_func == null) {
+                    return _PingInterval_INVALID;
+                }
+                if (_online) {
+                    return _pingInterval;
+                }
+                return _PingInterval_INVALID;
             }
             set
             {
@@ -970,10 +1163,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_pingInterval(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PingInterval_INVALID) return;
-            if (newval == _pingInterval) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PingInterval_INVALID) {
+                return;
+            }
+            if (newval == _pingInterval) {
+                return;
+            }
             _func.set_pingInterval(newval);
             _pingInterval = newval;
         }
@@ -995,13 +1196,14 @@ namespace YoctoProxyAPI
          */
         public int get_dataSent()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            int res = _func.get_dataSent();
-            if (res == YAPI.INVALID_INT) res = _DataSent_INVALID;
+            res = _func.get_dataSent();
+            if (res == YAPI.INVALID_INT) {
+                res = _DataSent_INVALID;
+            }
             return res;
         }
 
@@ -1027,15 +1229,14 @@ namespace YoctoProxyAPI
          */
         public int set_dataSent(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _DataSent_INVALID) return YAPI.SUCCESS;
+            if (newval == _DataSent_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_dataSent(newval);
         }
-
 
         /**
          * <summary>
@@ -1054,13 +1255,14 @@ namespace YoctoProxyAPI
          */
         public int get_dataReceived()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            int res = _func.get_dataReceived();
-            if (res == YAPI.INVALID_INT) res = _DataReceived_INVALID;
+            res = _func.get_dataReceived();
+            if (res == YAPI.INVALID_INT) {
+                res = _DataReceived_INVALID;
+            }
             return res;
         }
 
@@ -1086,15 +1288,14 @@ namespace YoctoProxyAPI
          */
         public int set_dataReceived(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            if (newval == _DataReceived_INVALID) return YAPI.SUCCESS;
+            if (newval == _DataReceived_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_dataReceived(newval);
         }
-
 
         /**
          * <summary>
@@ -1124,10 +1325,8 @@ namespace YoctoProxyAPI
          */
         public virtual int sendPUK(string puk, string newPin)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.sendPUK(puk, newPin);
         }
@@ -1157,10 +1356,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_apnAuth(string username, string password)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.set_apnAuth(username, password);
         }
@@ -1180,10 +1377,8 @@ namespace YoctoProxyAPI
          */
         public virtual int clearDataCounters()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.clearDataCounters();
         }
@@ -1209,10 +1404,8 @@ namespace YoctoProxyAPI
          */
         public virtual string _AT(string cmd)
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func._AT(cmd);
         }
@@ -1233,10 +1426,8 @@ namespace YoctoProxyAPI
          */
         public virtual string[] get_availableOperators()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.get_availableOperators().ToArray();
         }
@@ -1257,20 +1448,24 @@ namespace YoctoProxyAPI
          */
         public virtual YCellRecordProxy[] quickCellSurvey()
         {
-            if (_func == null)
-            {
-                string msg = "No Cellular connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
             }
-            int i = 0;
-            var std_res = _func.quickCellSurvey();
-            YCellRecordProxy[] proxy_res = new YCellRecordProxy[std_res.Count];
-            foreach (var record in std_res) {
-                proxy_res[i++] = new YCellRecordProxy(record);
+            int i;
+            int arrlen;
+            YCellRecord[] std_res;
+            YCellRecordProxy[] proxy_res;
+            std_res = _func.quickCellSurvey().ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YCellRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YCellRecordProxy(std_res[i]);
+                i = i + 1;
             }
             return proxy_res;
         }
     }
-    //--- (end of generated code: YCellular implementation)
+    //--- (end of YCellular implementation)
 }
 

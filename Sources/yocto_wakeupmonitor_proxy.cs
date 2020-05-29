@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_wakeupmonitor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YWakeUpMonitorProxy, the Proxy API for WakeUpMonitor
  *
@@ -268,13 +268,14 @@ namespace YoctoProxyAPI
          */
         public int get_powerDuration()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
-            int res = _func.get_powerDuration();
-            if (res == YAPI.INVALID_INT) res = _PowerDuration_INVALID;
+            res = _func.get_powerDuration();
+            if (res == YAPI.INVALID_INT) {
+                res = _PowerDuration_INVALID;
+            }
             return res;
         }
 
@@ -302,23 +303,28 @@ namespace YoctoProxyAPI
          */
         public int set_powerDuration(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
-            if (newval == _PowerDuration_INVALID) return YAPI.SUCCESS;
+            if (newval == _PowerDuration_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_powerDuration(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Maximal wake up time (in seconds) before automatically going to sleep.</value>
         public int PowerDuration
         {
             get
             {
-                if (_func == null) return _PowerDuration_INVALID;
-                return (_online ? _powerDuration : _PowerDuration_INVALID);
+                if (_func == null) {
+                    return _PowerDuration_INVALID;
+                }
+                if (_online) {
+                    return _powerDuration;
+                }
+                return _PowerDuration_INVALID;
             }
             set
             {
@@ -329,10 +335,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_powerDuration(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PowerDuration_INVALID) return;
-            if (newval == _powerDuration) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PowerDuration_INVALID) {
+                return;
+            }
+            if (newval == _powerDuration) {
+                return;
+            }
             _func.set_powerDuration(newval);
             _powerDuration = newval;
         }
@@ -354,13 +368,14 @@ namespace YoctoProxyAPI
          */
         public int get_sleepCountdown()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
-            int res = _func.get_sleepCountdown();
-            if (res == YAPI.INVALID_INT) res = _SleepCountdown_INVALID;
+            res = _func.get_sleepCountdown();
+            if (res == YAPI.INVALID_INT) {
+                res = _SleepCountdown_INVALID;
+            }
             return res;
         }
 
@@ -386,34 +401,13 @@ namespace YoctoProxyAPI
          */
         public int set_sleepCountdown(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
-            if (newval == _SleepCountdown_INVALID) return YAPI.SUCCESS;
+            if (newval == _SleepCountdown_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_sleepCountdown(newval);
-        }
-
-
-        // property with cached value for instant access (advertised value)
-        public long NextWakeUp
-        {
-            get
-            {
-                if (_func == null) return _NextWakeUp_INVALID;
-                return (_online ? _nextWakeUp : _NextWakeUp_INVALID);
-            }
-            set
-            {
-                setprop_nextWakeUp(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            Int64.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture,out _nextWakeUp);
         }
 
         /**
@@ -433,13 +427,14 @@ namespace YoctoProxyAPI
          */
         public long get_nextWakeUp()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            long res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
-            long res = _func.get_nextWakeUp();
-            if (res == YAPI.INVALID_INT) res = _NextWakeUp_INVALID;
+            res = _func.get_nextWakeUp();
+            if (res == YAPI.INVALID_INT) {
+                res = _NextWakeUp_INVALID;
+            }
             return res;
         }
 
@@ -465,25 +460,58 @@ namespace YoctoProxyAPI
          */
         public int set_nextWakeUp(long newval)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
-            if (newval == _NextWakeUp_INVALID) return YAPI.SUCCESS;
+            if (newval == _NextWakeUp_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_nextWakeUp(newval);
         }
 
+        // property with cached value for instant access (advertised value)
+        /// <value>Next scheduled wake up date/time (UNIX format).</value>
+        public long NextWakeUp
+        {
+            get
+            {
+                if (_func == null) {
+                    return _NextWakeUp_INVALID;
+                }
+                if (_online) {
+                    return _nextWakeUp;
+                }
+                return _NextWakeUp_INVALID;
+            }
+            set
+            {
+                setprop_nextWakeUp(value);
+            }
+        }
 
         // private helper for magic property
         private void setprop_nextWakeUp(long newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _NextWakeUp_INVALID) return;
-            if (newval == _nextWakeUp) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _NextWakeUp_INVALID) {
+                return;
+            }
+            if (newval == _nextWakeUp) {
+                return;
+            }
             _func.set_nextWakeUp(newval);
             _nextWakeUp = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _nextWakeUp = YAPI._hexStrToLong(value);
         }
 
         /**
@@ -506,10 +534,8 @@ namespace YoctoProxyAPI
          */
         public int get_wakeUpReason()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_wakeUpReason()+1;
@@ -533,10 +559,8 @@ namespace YoctoProxyAPI
          */
         public int get_wakeUpState()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_wakeUpState()+1;
@@ -551,10 +575,8 @@ namespace YoctoProxyAPI
          */
         public virtual int wakeUp()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
             return _func.wakeUp();
         }
@@ -578,10 +600,8 @@ namespace YoctoProxyAPI
          */
         public virtual int sleep(int secBeforeSleep)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
             return _func.sleep(secBeforeSleep);
         }
@@ -610,10 +630,8 @@ namespace YoctoProxyAPI
          */
         public virtual int sleepFor(int secUntilWakeUp, int secBeforeSleep)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
             return _func.sleepFor(secUntilWakeUp, secBeforeSleep);
         }
@@ -642,10 +660,8 @@ namespace YoctoProxyAPI
          */
         public virtual int sleepUntil(int wakeUpTime, int secBeforeSleep)
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
             return _func.sleepUntil(wakeUpTime, secBeforeSleep);
         }
@@ -663,10 +679,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetSleepCountDown()
         {
-            if (_func == null)
-            {
-                string msg = "No WakeUpMonitor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpMonitor connected");
             }
             return _func.resetSleepCountDown();
         }

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_firmwareupdate_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_firmwareupdate_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YFirmwareUpdateProxy, the Proxy API for FirmwareUpdate
  *
@@ -49,7 +49,7 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YFirmwareUpdate class start)
+    //--- (YFirmwareUpdate class start)
     public class YFirmwareUpdateProxy
     {
         private YFirmwareUpdate _objref;
@@ -57,10 +57,10 @@ namespace YoctoProxyAPI
         {
              _objref = objref;
         }
-        //--- (end of generated code: YFirmwareUpdate class start)
-        //--- (generated code: YFirmwareUpdate definitions)
-        //--- (end of generated code: YFirmwareUpdate definitions)
-        //--- (generated code: YFirmwareUpdate implementation)
+        //--- (end of YFirmwareUpdate class start)
+        //--- (YFirmwareUpdate definitions)
+        //--- (end of YFirmwareUpdate definitions)
+        //--- (YFirmwareUpdate implementation)
 
         /**
          * <summary>
@@ -134,11 +134,6 @@ namespace YoctoProxyAPI
          */
         public virtual int get_progress()
         {
-            if (_objref == null)
-            {
-                string msg = "No FirmwareUpdate connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_progress();
         }
 
@@ -158,11 +153,6 @@ namespace YoctoProxyAPI
          */
         public virtual string get_progressMessage()
         {
-            if (_objref == null)
-            {
-                string msg = "No FirmwareUpdate connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_progressMessage();
         }
 
@@ -187,14 +177,9 @@ namespace YoctoProxyAPI
          */
         public virtual int startUpdate()
         {
-            if (_objref == null)
-            {
-                string msg = "No FirmwareUpdate connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.startUpdate();
         }
     }
-    //--- (end of generated code: YFirmwareUpdate implementation)
+    //--- (end of YFirmwareUpdate implementation)
 }
 

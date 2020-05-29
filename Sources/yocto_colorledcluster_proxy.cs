@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorledcluster_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_colorledcluster_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YColorLedClusterProxy, the Proxy API for ColorLedCluster
  *
@@ -256,7 +256,6 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _activeLedCount = _func.get_activeLedCount();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _ledType = _func.get_ledType()+1;
         }
 
@@ -277,13 +276,14 @@ namespace YoctoProxyAPI
          */
         public int get_activeLedCount()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
-            int res = _func.get_activeLedCount();
-            if (res == YAPI.INVALID_INT) res = _ActiveLedCount_INVALID;
+            res = _func.get_activeLedCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _ActiveLedCount_INVALID;
+            }
             return res;
         }
 
@@ -311,23 +311,28 @@ namespace YoctoProxyAPI
          */
         public int set_activeLedCount(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
-            if (newval == _ActiveLedCount_INVALID) return YAPI.SUCCESS;
+            if (newval == _ActiveLedCount_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_activeLedCount(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Number of LEDs currently handled by the device.</value>
         public int ActiveLedCount
         {
             get
             {
-                if (_func == null) return _ActiveLedCount_INVALID;
-                return (_online ? _activeLedCount : _ActiveLedCount_INVALID);
+                if (_func == null) {
+                    return _ActiveLedCount_INVALID;
+                }
+                if (_online) {
+                    return _activeLedCount;
+                }
+                return _ActiveLedCount_INVALID;
             }
             set
             {
@@ -338,10 +343,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_activeLedCount(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _ActiveLedCount_INVALID) return;
-            if (newval == _activeLedCount) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _ActiveLedCount_INVALID) {
+                return;
+            }
+            if (newval == _activeLedCount) {
+                return;
+            }
             _func.set_activeLedCount(newval);
             _activeLedCount = newval;
         }
@@ -364,10 +377,8 @@ namespace YoctoProxyAPI
          */
         public int get_ledType()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_ledType()+1;
@@ -398,24 +409,29 @@ namespace YoctoProxyAPI
          */
         public int set_ledType(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
-            if (newval == _LedType_INVALID) return YAPI.SUCCESS;
+            if (newval == _LedType_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_ledType(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>RGB LED type currently handled by the device.</value>
         public int LedType
         {
             get
             {
-                if (_func == null) return _LedType_INVALID;
-                return (_online ? _ledType : _LedType_INVALID);
+                if (_func == null) {
+                    return _LedType_INVALID;
+                }
+                if (_online) {
+                    return _ledType;
+                }
+                return _LedType_INVALID;
             }
             set
             {
@@ -426,23 +442,21 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_ledType(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _LedType_INVALID) return;
-            if (newval == _ledType) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _LedType_INVALID) {
+                return;
+            }
+            if (newval == _ledType) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_ledType(newval-1);
             _ledType = newval;
-        }
-
-        // property with cached value for instant access (constant value)
-        public int MaxLedCount
-        {
-            get
-            {
-                if (_func == null) return _MaxLedCount_INVALID;
-                return (_online ? _maxLedCount : _MaxLedCount_INVALID);
-            }
         }
 
         /**
@@ -462,23 +476,30 @@ namespace YoctoProxyAPI
          */
         public int get_maxLedCount()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
-            int res = _func.get_maxLedCount();
-            if (res == YAPI.INVALID_INT) res = _MaxLedCount_INVALID;
+            res = _func.get_maxLedCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _MaxLedCount_INVALID;
+            }
             return res;
         }
 
         // property with cached value for instant access (constant value)
-        public int BlinkSeqMaxCount
+        /// <value>Maximum number of LEDs that the device can handle.</value>
+        public int MaxLedCount
         {
             get
             {
-                if (_func == null) return _BlinkSeqMaxCount_INVALID;
-                return (_online ? _blinkSeqMaxCount : _BlinkSeqMaxCount_INVALID);
+                if (_func == null) {
+                    return _MaxLedCount_INVALID;
+                }
+                if (_online) {
+                    return _maxLedCount;
+                }
+                return _MaxLedCount_INVALID;
             }
         }
 
@@ -499,23 +520,30 @@ namespace YoctoProxyAPI
          */
         public int get_blinkSeqMaxCount()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
-            int res = _func.get_blinkSeqMaxCount();
-            if (res == YAPI.INVALID_INT) res = _BlinkSeqMaxCount_INVALID;
+            res = _func.get_blinkSeqMaxCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _BlinkSeqMaxCount_INVALID;
+            }
             return res;
         }
 
         // property with cached value for instant access (constant value)
-        public int BlinkSeqMaxSize
+        /// <value>Maximum number of sequences that the device can handle.</value>
+        public int BlinkSeqMaxCount
         {
             get
             {
-                if (_func == null) return _BlinkSeqMaxSize_INVALID;
-                return (_online ? _blinkSeqMaxSize : _BlinkSeqMaxSize_INVALID);
+                if (_func == null) {
+                    return _BlinkSeqMaxCount_INVALID;
+                }
+                if (_online) {
+                    return _blinkSeqMaxCount;
+                }
+                return _BlinkSeqMaxCount_INVALID;
             }
         }
 
@@ -536,14 +564,31 @@ namespace YoctoProxyAPI
          */
         public int get_blinkSeqMaxSize()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
-            int res = _func.get_blinkSeqMaxSize();
-            if (res == YAPI.INVALID_INT) res = _BlinkSeqMaxSize_INVALID;
+            res = _func.get_blinkSeqMaxSize();
+            if (res == YAPI.INVALID_INT) {
+                res = _BlinkSeqMaxSize_INVALID;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Maximum length of sequences.</value>
+        public int BlinkSeqMaxSize
+        {
+            get
+            {
+                if (_func == null) {
+                    return _BlinkSeqMaxSize_INVALID;
+                }
+                if (_online) {
+                    return _blinkSeqMaxSize;
+                }
+                return _BlinkSeqMaxSize_INVALID;
+            }
         }
 
         /**
@@ -571,10 +616,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_rgbColor(int ledIndex, int count, int rgbValue)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_rgbColor(ledIndex, count, rgbValue);
         }
@@ -605,10 +648,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_rgbColorAtPowerOn(int ledIndex, int count, int rgbValue)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_rgbColorAtPowerOn(ledIndex, count, rgbValue);
         }
@@ -639,10 +680,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_hslColorAtPowerOn(int ledIndex, int count, int hslValue)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_hslColorAtPowerOn(ledIndex, count, hslValue);
         }
@@ -672,10 +711,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_hslColor(int ledIndex, int count, int hslValue)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_hslColor(ledIndex, count, hslValue);
         }
@@ -709,10 +746,8 @@ namespace YoctoProxyAPI
          */
         public virtual int rgb_move(int ledIndex, int count, int rgbValue, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.rgb_move(ledIndex, count, rgbValue, delay);
         }
@@ -750,10 +785,8 @@ namespace YoctoProxyAPI
          */
         public virtual int hsl_move(int ledIndex, int count, int hslValue, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.hsl_move(ledIndex, count, hslValue, delay);
         }
@@ -785,10 +818,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addRgbMoveToBlinkSeq(int seqIndex, int rgbValue, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.addRgbMoveToBlinkSeq(seqIndex, rgbValue, delay);
         }
@@ -820,10 +851,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addHslMoveToBlinkSeq(int seqIndex, int hslValue, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.addHslMoveToBlinkSeq(seqIndex, hslValue, delay);
         }
@@ -851,10 +880,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addMirrorToBlinkSeq(int seqIndex)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.addMirrorToBlinkSeq(seqIndex);
         }
@@ -883,10 +910,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addJumpToBlinkSeq(int seqIndex, int linkSeqIndex)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.addJumpToBlinkSeq(seqIndex, linkSeqIndex);
         }
@@ -912,10 +937,8 @@ namespace YoctoProxyAPI
          */
         public virtual int addUnlinkToBlinkSeq(int seqIndex)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.addUnlinkToBlinkSeq(seqIndex);
         }
@@ -951,10 +974,8 @@ namespace YoctoProxyAPI
          */
         public virtual int linkLedToBlinkSeq(int ledIndex, int count, int seqIndex, int offset)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.linkLedToBlinkSeq(ledIndex, count, seqIndex, offset);
         }
@@ -990,10 +1011,8 @@ namespace YoctoProxyAPI
          */
         public virtual int linkLedToBlinkSeqAtPowerOn(int ledIndex, int count, int seqIndex, int offset)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.linkLedToBlinkSeqAtPowerOn(ledIndex, count, seqIndex, offset);
         }
@@ -1029,10 +1048,8 @@ namespace YoctoProxyAPI
          */
         public virtual int linkLedToPeriodicBlinkSeq(int ledIndex, int count, int seqIndex, int periods)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.linkLedToPeriodicBlinkSeq(ledIndex, count, seqIndex, periods);
         }
@@ -1058,10 +1075,8 @@ namespace YoctoProxyAPI
          */
         public virtual int unlinkLedFromBlinkSeq(int ledIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.unlinkLedFromBlinkSeq(ledIndex, count);
         }
@@ -1086,10 +1101,8 @@ namespace YoctoProxyAPI
          */
         public virtual int startBlinkSeq(int seqIndex)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.startBlinkSeq(seqIndex);
         }
@@ -1114,10 +1127,8 @@ namespace YoctoProxyAPI
          */
         public virtual int stopBlinkSeq(int seqIndex)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.stopBlinkSeq(seqIndex);
         }
@@ -1142,10 +1153,8 @@ namespace YoctoProxyAPI
          */
         public virtual int resetBlinkSeq(int seqIndex)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.resetBlinkSeq(seqIndex);
         }
@@ -1175,10 +1184,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_blinkSeqStateAtPowerOn(int seqIndex, int autostart)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_blinkSeqStateAtPowerOn(seqIndex, autostart);
         }
@@ -1207,10 +1214,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_blinkSeqSpeed(int seqIndex, int speed)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_blinkSeqSpeed(seqIndex, speed);
         }
@@ -1233,10 +1238,8 @@ namespace YoctoProxyAPI
          */
         public virtual int saveLedsConfigAtPowerOn()
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.saveLedsConfigAtPowerOn();
         }
@@ -1262,10 +1265,8 @@ namespace YoctoProxyAPI
          */
         public virtual int saveBlinkSeq(int seqIndex)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.saveBlinkSeq(seqIndex);
         }
@@ -1293,10 +1294,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_rgbColorBuffer(int ledIndex, byte[] buff)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_rgbColorBuffer(ledIndex, buff);
         }
@@ -1324,10 +1323,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_rgbColorArray(int ledIndex, int[] rgbList)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_rgbColorArray(ledIndex, new List<int>(rgbList));
         }
@@ -1359,10 +1356,8 @@ namespace YoctoProxyAPI
          */
         public virtual int rgbArrayOfs_move(int ledIndex, int[] rgbList, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.rgbArrayOfs_move(ledIndex, new List<int>(rgbList), delay);
         }
@@ -1391,10 +1386,8 @@ namespace YoctoProxyAPI
          */
         public virtual int rgbArray_move(int[] rgbList, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.rgbArray_move(new List<int>(rgbList), delay);
         }
@@ -1422,10 +1415,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_hslColorBuffer(int ledIndex, byte[] buff)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_hslColorBuffer(ledIndex, buff);
         }
@@ -1453,10 +1444,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_hslColorArray(int ledIndex, int[] hslList)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.set_hslColorArray(ledIndex, new List<int>(hslList));
         }
@@ -1485,10 +1474,8 @@ namespace YoctoProxyAPI
          */
         public virtual int hslArray_move(int[] hslList, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.hslArray_move(new List<int>(hslList), delay);
         }
@@ -1520,10 +1507,8 @@ namespace YoctoProxyAPI
          */
         public virtual int hslArrayOfs_move(int ledIndex, int[] hslList, int delay)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.hslArrayOfs_move(ledIndex, new List<int>(hslList), delay);
         }
@@ -1551,10 +1536,8 @@ namespace YoctoProxyAPI
          */
         public virtual byte[] get_rgbColorBuffer(int ledIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_rgbColorBuffer(ledIndex, count);
         }
@@ -1583,10 +1566,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] get_rgbColorArray(int ledIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_rgbColorArray(ledIndex, count).ToArray();
         }
@@ -1614,10 +1595,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] get_rgbColorArrayAtPowerOn(int ledIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_rgbColorArrayAtPowerOn(ledIndex, count).ToArray();
         }
@@ -1646,10 +1625,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] get_linkedSeqArray(int ledIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_linkedSeqArray(ledIndex, count).ToArray();
         }
@@ -1677,10 +1654,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] get_blinkSeqSignatures(int seqIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_blinkSeqSignatures(seqIndex, count).ToArray();
         }
@@ -1706,10 +1681,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] get_blinkSeqStateSpeed(int seqIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_blinkSeqStateSpeed(seqIndex, count).ToArray();
         }
@@ -1735,10 +1708,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] get_blinkSeqStateAtPowerOn(int seqIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_blinkSeqStateAtPowerOn(seqIndex, count).ToArray();
         }
@@ -1764,10 +1735,8 @@ namespace YoctoProxyAPI
          */
         public virtual int[] get_blinkSeqState(int seqIndex, int count)
         {
-            if (_func == null)
-            {
-                string msg = "No ColorLedCluster connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
             }
             return _func.get_blinkSeqState(seqIndex, count).ToArray();
         }

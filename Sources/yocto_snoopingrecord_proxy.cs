@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_snoopingrecord_proxy.cs 38514 2019-11-26 16:54:39Z seb $
+ *  $Id: yocto_snoopingrecord_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements YSnoopingRecordProxy, the Proxy API for SnoopingRecord
  *
@@ -49,7 +49,7 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YSnoopingRecord class start)
+    //--- (YSnoopingRecord class start)
     public class YSnoopingRecordProxy
     {
         private YSnoopingRecord _objref;
@@ -57,19 +57,11 @@ namespace YoctoProxyAPI
         {
              _objref = objref;
         }
-        //--- (end of generated code: YSnoopingRecord class start)
-        //--- (generated code: YSnoopingRecord definitions)
-        //--- (end of generated code: YSnoopingRecord definitions)
-        //--- (generated code: YSnoopingRecord implementation)
+        //--- (end of YSnoopingRecord class start)
+        //--- (YSnoopingRecord definitions)
+        //--- (end of YSnoopingRecord definitions)
+        //--- (YSnoopingRecord implementation)
 
-        // property with cached value for instant access
-        public int Time
-        {
-            get
-            {
-                return this.get_time();
-            }
-        }
         /**
          * <summary>
          *   Returns the elapsed time, in ms, since the beginning of the preceding message.
@@ -82,22 +74,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_time()
         {
-            if (_objref == null)
-            {
-                string msg = "No SnoopingRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_time();
         }
 
-        // property with cached value for instant access
-        public int Direction
+        // property with cached value for instant access (storage object)
+        public int Time
         {
             get
             {
-                return this.get_direction();
+                return this.get_time();
             }
         }
+
         /**
          * <summary>
          *   Returns the message direction (RX=0 , TX=1) .
@@ -110,22 +98,18 @@ namespace YoctoProxyAPI
          */
         public virtual int get_direction()
         {
-            if (_objref == null)
-            {
-                string msg = "No SnoopingRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_direction();
         }
 
-        // property with cached value for instant access
-        public string Message
+        // property with cached value for instant access (storage object)
+        public int Direction
         {
             get
             {
-                return this.get_message();
+                return this.get_direction();
             }
         }
+
         /**
          * <summary>
          *   Returns the message content.
@@ -138,14 +122,18 @@ namespace YoctoProxyAPI
          */
         public virtual string get_message()
         {
-            if (_objref == null)
-            {
-                string msg = "No SnoopingRecord connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_message();
         }
+
+        // property with cached value for instant access (storage object)
+        public string Message
+        {
+            get
+            {
+                return this.get_message();
+            }
+        }
     }
-    //--- (end of generated code: YSnoopingRecord implementation)
+    //--- (end of YSnoopingRecord implementation)
 }
 

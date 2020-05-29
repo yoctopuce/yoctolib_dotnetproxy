@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_current_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_current_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YCurrentProxy, the Proxy API for Current
  *
@@ -237,7 +237,6 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _enabled = _func.get_enabled()+1;
         }
 
@@ -259,10 +258,8 @@ namespace YoctoProxyAPI
          */
         public int get_enabled()
         {
-            if (_func == null)
-            {
-                string msg = "No Current connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Current connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enabled()+1;
@@ -297,24 +294,29 @@ namespace YoctoProxyAPI
          */
         public int set_enabled(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Current connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Current connected");
             }
-            if (newval == _Enabled_INVALID) return YAPI.SUCCESS;
+            if (newval == _Enabled_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enabled(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Activation state of this input.</value>
         public int Enabled
         {
             get
             {
-                if (_func == null) return _Enabled_INVALID;
-                return (_online ? _enabled : _Enabled_INVALID);
+                if (_func == null) {
+                    return _Enabled_INVALID;
+                }
+                if (_online) {
+                    return _enabled;
+                }
+                return _Enabled_INVALID;
             }
             set
             {
@@ -325,10 +327,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_enabled(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Enabled_INVALID) return;
-            if (newval == _enabled) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Enabled_INVALID) {
+                return;
+            }
+            if (newval == _enabled) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_enabled(newval-1);
             _enabled = newval;

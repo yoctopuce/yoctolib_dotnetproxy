@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_servo_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_servo_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YServoProxy, the Proxy API for Servo
  *
@@ -247,7 +247,6 @@ namespace YoctoProxyAPI
         protected override void functionArrival()
         {
             base.functionArrival();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _enabled = _func.get_enabled()+1;
         }
 
@@ -257,45 +256,7 @@ namespace YoctoProxyAPI
             _range = _func.get_range();
             _neutral = _func.get_neutral();
             _positionAtPowerOn = _func.get_positionAtPowerOn();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _enabledAtPowerOn = _func.get_enabledAtPowerOn()+1;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int Position
-        {
-            get
-            {
-                if (_func == null) return _Position_INVALID;
-                return (_online ? _position : _Position_INVALID);
-            }
-            set
-            {
-                setprop_position(value);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int Enabled
-        {
-            get
-            {
-                if (_func == null) return _Enabled_INVALID;
-                return (_online ? _enabled : _Enabled_INVALID);
-            }
-            set
-            {
-                setprop_enabled(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "OFF") _enabled = _Enabled_FALSE;
-            else _enabled = _Enabled_TRUE;
-            if (_enabled == _Enabled_TRUE) // then parse numeric value
-            Int32.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture,out _position);
         }
 
         /**
@@ -315,10 +276,8 @@ namespace YoctoProxyAPI
          */
         public int get_position()
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
             return _func.get_position();
         }
@@ -345,25 +304,103 @@ namespace YoctoProxyAPI
          */
         public int set_position(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            if (newval == _Position_INVALID) return YAPI.SUCCESS;
+            if (newval == _Position_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_position(newval);
         }
 
+        // property with cached value for instant access (advertised value)
+        /// <value>Current servo position.</value>
+        public int Position
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Position_INVALID;
+                }
+                if (_online) {
+                    return _position;
+                }
+                return _Position_INVALID;
+            }
+            set
+            {
+                setprop_position(value);
+            }
+        }
 
         // private helper for magic property
         private void setprop_position(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Position_INVALID) return;
-            if (newval == _position) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Position_INVALID) {
+                return;
+            }
+            if (newval == _position) {
+                return;
+            }
             _func.set_position(newval);
             _position = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "OFF") {
+                _enabled = _Enabled_FALSE;
+            } else {
+                _enabled = _Enabled_TRUE;
+                _position = YAPI._atoi(value);
+            }
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>True if the port output is enabled.</value>
+        public int Enabled
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Enabled_INVALID;
+                }
+                if (_online) {
+                    return _enabled;
+                }
+                return _Enabled_INVALID;
+            }
+            set
+            {
+                setprop_enabled(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_enabled(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Enabled_INVALID) {
+                return;
+            }
+            if (newval == _enabled) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_enabled(newval-1);
+            _enabled = newval;
         }
 
         /**
@@ -383,10 +420,8 @@ namespace YoctoProxyAPI
          */
         public int get_enabled()
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enabled()+1;
@@ -414,27 +449,14 @@ namespace YoctoProxyAPI
          */
         public int set_enabled(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            if (newval == _Enabled_INVALID) return YAPI.SUCCESS;
+            if (newval == _Enabled_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enabled(newval-1);
-        }
-
-
-        // private helper for magic property
-        private void setprop_enabled(int newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Enabled_INVALID) return;
-            if (newval == _enabled) return;
-            // our enums start at 0 instead of the 'usual' -1 for invalid
-            _func.set_enabled(newval-1);
-            _enabled = newval;
         }
 
         /**
@@ -454,13 +476,14 @@ namespace YoctoProxyAPI
          */
         public int get_range()
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            int res = _func.get_range();
-            if (res == YAPI.INVALID_INT) res = _Range_INVALID;
+            res = _func.get_range();
+            if (res == YAPI.INVALID_INT) {
+                res = _Range_INVALID;
+            }
             return res;
         }
 
@@ -492,23 +515,28 @@ namespace YoctoProxyAPI
          */
         public int set_range(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            if (newval == _Range_INVALID) return YAPI.SUCCESS;
+            if (newval == _Range_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_range(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Current range of use of the servo.</value>
         public int Range
         {
             get
             {
-                if (_func == null) return _Range_INVALID;
-                return (_online ? _range : _Range_INVALID);
+                if (_func == null) {
+                    return _Range_INVALID;
+                }
+                if (_online) {
+                    return _range;
+                }
+                return _Range_INVALID;
             }
             set
             {
@@ -519,10 +547,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_range(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Range_INVALID) return;
-            if (newval == _range) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Range_INVALID) {
+                return;
+            }
+            if (newval == _range) {
+                return;
+            }
             _func.set_range(newval);
             _range = newval;
         }
@@ -544,13 +580,14 @@ namespace YoctoProxyAPI
          */
         public int get_neutral()
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            int res = _func.get_neutral();
-            if (res == YAPI.INVALID_INT) res = _Neutral_INVALID;
+            res = _func.get_neutral();
+            if (res == YAPI.INVALID_INT) {
+                res = _Neutral_INVALID;
+            }
             return res;
         }
 
@@ -581,23 +618,28 @@ namespace YoctoProxyAPI
          */
         public int set_neutral(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            if (newval == _Neutral_INVALID) return YAPI.SUCCESS;
+            if (newval == _Neutral_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_neutral(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Duration in microseconds of a neutral pulse for the servo.</value>
         public int Neutral
         {
             get
             {
-                if (_func == null) return _Neutral_INVALID;
-                return (_online ? _neutral : _Neutral_INVALID);
+                if (_func == null) {
+                    return _Neutral_INVALID;
+                }
+                if (_online) {
+                    return _neutral;
+                }
+                return _Neutral_INVALID;
             }
             set
             {
@@ -608,10 +650,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_neutral(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Neutral_INVALID) return;
-            if (newval == _neutral) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Neutral_INVALID) {
+                return;
+            }
+            if (newval == _neutral) {
+                return;
+            }
             _func.set_neutral(newval);
             _neutral = newval;
         }
@@ -641,10 +691,8 @@ namespace YoctoProxyAPI
          */
         public int move(int target,int ms_duration)
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
             return _func.move(target, ms_duration);
         }
@@ -666,10 +714,8 @@ namespace YoctoProxyAPI
          */
         public int get_positionAtPowerOn()
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
             return _func.get_positionAtPowerOn();
         }
@@ -698,23 +744,28 @@ namespace YoctoProxyAPI
          */
         public int set_positionAtPowerOn(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            if (newval == _PositionAtPowerOn_INVALID) return YAPI.SUCCESS;
+            if (newval == _PositionAtPowerOn_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_positionAtPowerOn(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Servo position at device power up.</value>
         public int PositionAtPowerOn
         {
             get
             {
-                if (_func == null) return _PositionAtPowerOn_INVALID;
-                return (_online ? _positionAtPowerOn : _PositionAtPowerOn_INVALID);
+                if (_func == null) {
+                    return _PositionAtPowerOn_INVALID;
+                }
+                if (_online) {
+                    return _positionAtPowerOn;
+                }
+                return _PositionAtPowerOn_INVALID;
             }
             set
             {
@@ -725,10 +776,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_positionAtPowerOn(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PositionAtPowerOn_INVALID) return;
-            if (newval == _positionAtPowerOn) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PositionAtPowerOn_INVALID) {
+                return;
+            }
+            if (newval == _positionAtPowerOn) {
+                return;
+            }
             _func.set_positionAtPowerOn(newval);
             _positionAtPowerOn = newval;
         }
@@ -751,10 +810,8 @@ namespace YoctoProxyAPI
          */
         public int get_enabledAtPowerOn()
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enabledAtPowerOn()+1;
@@ -784,24 +841,29 @@ namespace YoctoProxyAPI
          */
         public int set_enabledAtPowerOn(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Servo connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Servo connected");
             }
-            if (newval == _EnabledAtPowerOn_INVALID) return YAPI.SUCCESS;
+            if (newval == _EnabledAtPowerOn_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enabledAtPowerOn(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Servo signal generator state at power up.</value>
         public int EnabledAtPowerOn
         {
             get
             {
-                if (_func == null) return _EnabledAtPowerOn_INVALID;
-                return (_online ? _enabledAtPowerOn : _EnabledAtPowerOn_INVALID);
+                if (_func == null) {
+                    return _EnabledAtPowerOn_INVALID;
+                }
+                if (_online) {
+                    return _enabledAtPowerOn;
+                }
+                return _EnabledAtPowerOn_INVALID;
             }
             set
             {
@@ -812,10 +874,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_enabledAtPowerOn(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _EnabledAtPowerOn_INVALID) return;
-            if (newval == _enabledAtPowerOn) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _EnabledAtPowerOn_INVALID) {
+                return;
+            }
+            if (newval == _enabledAtPowerOn) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_enabledAtPowerOn(newval-1);
             _enabledAtPowerOn = newval;

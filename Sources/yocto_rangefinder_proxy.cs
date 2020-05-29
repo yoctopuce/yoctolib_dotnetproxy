@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_rangefinder_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_rangefinder_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YRangeFinderProxy, the Proxy API for RangeFinder
  *
@@ -251,18 +251,23 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _rangeFinderMode = _func.get_rangeFinderMode()+1;
             _timeFrame = _func.get_timeFrame();
         }
 
         // property with cached value for instant access (derived from advertisedValue)
+        /// <value>True if the sensor detected an object</value>
         public int IsPresent
         {
             get
             {
-                if (_func == null) return _IsPresent_INVALID;
-                return (_online ? _isPresent : _IsPresent_INVALID);
+                if (_func == null) {
+                    return _IsPresent_INVALID;
+                }
+                if (_online) {
+                    return _isPresent;
+                }
+                return _IsPresent_INVALID;
             }
         }
 
@@ -300,15 +305,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -331,10 +335,8 @@ namespace YoctoProxyAPI
          */
         public int get_rangeFinderMode()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_rangeFinderMode()+1;
@@ -367,24 +369,29 @@ namespace YoctoProxyAPI
          */
         public int set_rangeFinderMode(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
-            if (newval == _RangeFinderMode_INVALID) return YAPI.SUCCESS;
+            if (newval == _RangeFinderMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_rangeFinderMode(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Range finder running mode. The rangefinder running mode</value>
         public int RangeFinderMode
         {
             get
             {
-                if (_func == null) return _RangeFinderMode_INVALID;
-                return (_online ? _rangeFinderMode : _RangeFinderMode_INVALID);
+                if (_func == null) {
+                    return _RangeFinderMode_INVALID;
+                }
+                if (_online) {
+                    return _rangeFinderMode;
+                }
+                return _RangeFinderMode_INVALID;
             }
             set
             {
@@ -395,10 +402,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_rangeFinderMode(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _RangeFinderMode_INVALID) return;
-            if (newval == _rangeFinderMode) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _RangeFinderMode_INVALID) {
+                return;
+            }
+            if (newval == _rangeFinderMode) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_rangeFinderMode(newval-1);
             _rangeFinderMode = newval;
@@ -424,10 +439,8 @@ namespace YoctoProxyAPI
          */
         public long get_timeFrame()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
             return _func.get_timeFrame();
         }
@@ -460,23 +473,28 @@ namespace YoctoProxyAPI
          */
         public int set_timeFrame(long newval)
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
-            if (newval == _TimeFrame_INVALID) return YAPI.SUCCESS;
+            if (newval == _TimeFrame_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_timeFrame(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Time frame used to measure the distance and estimate the measure</value>
         public long TimeFrame
         {
             get
             {
-                if (_func == null) return _TimeFrame_INVALID;
-                return (_online ? _timeFrame : _TimeFrame_INVALID);
+                if (_func == null) {
+                    return _TimeFrame_INVALID;
+                }
+                if (_online) {
+                    return _timeFrame;
+                }
+                return _TimeFrame_INVALID;
             }
             set
             {
@@ -487,10 +505,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_timeFrame(long newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _TimeFrame_INVALID) return;
-            if (newval == _timeFrame) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _TimeFrame_INVALID) {
+                return;
+            }
+            if (newval == _timeFrame) {
+                return;
+            }
             _func.set_timeFrame(newval);
             _timeFrame = newval;
         }
@@ -512,13 +538,14 @@ namespace YoctoProxyAPI
          */
         public int get_quality()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
-            int res = _func.get_quality();
-            if (res == YAPI.INVALID_INT) res = _Quality_INVALID;
+            res = _func.get_quality();
+            if (res == YAPI.INVALID_INT) {
+                res = _Quality_INVALID;
+            }
             return res;
         }
 
@@ -539,13 +566,14 @@ namespace YoctoProxyAPI
          */
         public double get_currentTemperature()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
-            double res = _func.get_currentTemperature();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_currentTemperature();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -564,13 +592,14 @@ namespace YoctoProxyAPI
          */
         public virtual double get_hardwareCalibrationTemperature()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
-            double res = _func.get_hardwareCalibrationTemperature();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            double res;
+            res = _func.get_hardwareCalibrationTemperature();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -591,10 +620,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerTemperatureCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
             return _func.triggerTemperatureCalibration();
         }
@@ -615,10 +642,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerSpadCalibration()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
             return _func.triggerSpadCalibration();
         }
@@ -643,10 +668,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerOffsetCalibration(double targetDist)
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
             return _func.triggerOffsetCalibration(targetDist);
         }
@@ -671,10 +694,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerXTalkCalibration(double targetDist)
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
             return _func.triggerXTalkCalibration(targetDist);
         }
@@ -694,10 +715,8 @@ namespace YoctoProxyAPI
          */
         public virtual int cancelCoverGlassCalibrations()
         {
-            if (_func == null)
-            {
-                string msg = "No RangeFinder connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RangeFinder connected");
             }
             return _func.cancelCoverGlassCalibrations();
         }

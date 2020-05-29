@@ -660,10 +660,8 @@ namespace YoctoProxyAPI
          */
         public string get_logicalName()
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
             return _func.get_logicalName();
         }
@@ -694,23 +692,28 @@ namespace YoctoProxyAPI
          */
         public int set_logicalName(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
-            if (newval == _LogicalName_INVALID) return YAPI.SUCCESS;
+            if (newval == _LogicalName_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_logicalName(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Logical name of the function.</value>
         public string LogicalName
         {
             get
             {
-                if (_func == null) return _LogicalName_INVALID;
-                return (_online ? _logicalName : _LogicalName_INVALID);
+                if (_func == null) {
+                    return _LogicalName_INVALID;
+                }
+                if (_online) {
+                    return _logicalName;
+                }
+                return _LogicalName_INVALID;
             }
             set
             {
@@ -721,11 +724,21 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_logicalName(string newval)
         {
-            if (!YAPI.CheckLogicalName(newval)) throw new InvalidDataException("(" + newval + ") is not a valid logical name.");
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _LogicalName_INVALID) return;
-            if (newval == _logicalName) return;
+            if (!(YAPI.CheckLogicalName(newval))) {
+                throw new YoctoApiProxyException("Invalid logical name");
+            }
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _LogicalName_INVALID) {
+                return;
+            }
+            if (newval == _logicalName) {
+                return;
+            }
             _func.set_logicalName(newval);
             _logicalName = newval;
         }
@@ -747,10 +760,8 @@ namespace YoctoProxyAPI
          */
         public string get_advertisedValue()
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
             return _func.get_advertisedValue();
         }
@@ -774,10 +785,8 @@ namespace YoctoProxyAPI
          */
         public virtual int muteValueCallbacks()
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
             return _func.muteValueCallbacks();
         }
@@ -800,10 +809,8 @@ namespace YoctoProxyAPI
          */
         public virtual int unmuteValueCallbacks()
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
             return _func.unmuteValueCallbacks();
         }
@@ -829,10 +836,8 @@ namespace YoctoProxyAPI
          */
         public virtual string loadAttribute(string attrName)
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
             return _func.loadAttribute(attrName);
         }
@@ -853,10 +858,8 @@ namespace YoctoProxyAPI
          */
         public virtual bool isReadOnly()
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
             return _func.isReadOnly();
         }
@@ -876,10 +879,8 @@ namespace YoctoProxyAPI
          */
         public virtual string get_serialNumber()
         {
-            if (_func == null)
-            {
-                string msg = "No Function connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Function connected");
             }
             return _func.get_serialNumber();
         }

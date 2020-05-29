@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_network_proxy.cs 39573 2020-03-10 17:20:22Z seb $
+ *  $Id: yocto_network_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YNetworkProxy, the Proxy API for Network
  *
@@ -304,50 +304,16 @@ namespace YoctoProxyAPI
             _adminPassword = _func.get_adminPassword();
             _httpPort = _func.get_httpPort();
             _defaultPage = _func.get_defaultPage();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _discoverable = _func.get_discoverable()+1;
             _wwwWatchdogDelay = _func.get_wwwWatchdogDelay();
             _callbackUrl = _func.get_callbackUrl();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _callbackMethod = _func.get_callbackMethod()+1;
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _callbackEncoding = _func.get_callbackEncoding()+1;
             _callbackCredentials = _func.get_callbackCredentials();
             _callbackInitialDelay = _func.get_callbackInitialDelay();
             _callbackSchedule = _func.get_callbackSchedule();
             _callbackMinDelay = _func.get_callbackMinDelay();
             _callbackMaxDelay = _func.get_callbackMaxDelay();
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int Readiness
-        {
-            get
-            {
-                if (_func == null) return _Readiness_INVALID;
-                return (_online ? _readiness : _Readiness_INVALID);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public string IpAddress
-        {
-            get
-            {
-                if (_func == null) return _IpAddress_INVALID;
-                return (_online ? _ipAddress : _IpAddress_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "DOWN") _readiness = 1;
-            if (value == "EXISTS") _readiness = 2;
-            if (value == "LINKED") _readiness = 3;
-            if (value == "LAN_OK") _readiness = 4;
-            if (value == "WWW_OK") _readiness = 5;
-            _ipAddress = _func.get_ipAddress();
         }
 
         /**
@@ -382,22 +348,63 @@ namespace YoctoProxyAPI
          */
         public int get_readiness()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_readiness()+1;
         }
 
-        // property with cached value for instant access (constant value)
-        public string MacAddress
+        // property with cached value for instant access (advertised value)
+        /// <value>Current established working mode of the network interface.</value>
+        public int Readiness
         {
             get
             {
-                if (_func == null) return _MacAddress_INVALID;
-                return (_online ? _macAddress : _MacAddress_INVALID);
+                if (_func == null) {
+                    return _Readiness_INVALID;
+                }
+                if (_online) {
+                    return _readiness;
+                }
+                return _Readiness_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "DOWN") {
+                _readiness = 1;
+            }
+            if (value == "EXISTS") {
+                _readiness = 2;
+            }
+            if (value == "LINKED") {
+                _readiness = 3;
+            }
+            if (value == "LAN_OK") {
+                _readiness = 4;
+            }
+            if (value == "WWW_OK") {
+                _readiness = 5;
+            }
+            _ipAddress = _func.get_ipAddress();
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>IP address currently in use by the device.</value>
+        public string IpAddress
+        {
+            get
+            {
+                if (_func == null) {
+                    return _IpAddress_INVALID;
+                }
+                if (_online) {
+                    return _ipAddress;
+                }
+                return _IpAddress_INVALID;
             }
         }
 
@@ -420,12 +427,26 @@ namespace YoctoProxyAPI
          */
         public string get_macAddress()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_macAddress();
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>MAC address of the network interface. The MAC address is also available on a sticker</value>
+        public string MacAddress
+        {
+            get
+            {
+                if (_func == null) {
+                    return _MacAddress_INVALID;
+                }
+                if (_online) {
+                    return _macAddress;
+                }
+                return _MacAddress_INVALID;
+            }
         }
 
         /**
@@ -447,10 +468,8 @@ namespace YoctoProxyAPI
          */
         public string get_ipAddress()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_ipAddress();
         }
@@ -472,10 +491,8 @@ namespace YoctoProxyAPI
          */
         public string get_subnetMask()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_subnetMask();
         }
@@ -497,10 +514,8 @@ namespace YoctoProxyAPI
          */
         public string get_router()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_router();
         }
@@ -536,10 +551,8 @@ namespace YoctoProxyAPI
          */
         public string get_ipConfig()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_ipConfig();
         }
@@ -561,10 +574,8 @@ namespace YoctoProxyAPI
          */
         public string get_primaryDNS()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_primaryDNS();
         }
@@ -593,23 +604,28 @@ namespace YoctoProxyAPI
          */
         public int set_primaryDNS(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _PrimaryDNS_INVALID) return YAPI.SUCCESS;
+            if (newval == _PrimaryDNS_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_primaryDNS(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>IP address of the primary name server to be used by the module.</value>
         public string PrimaryDNS
         {
             get
             {
-                if (_func == null) return _PrimaryDNS_INVALID;
-                return (_online ? _primaryDNS : _PrimaryDNS_INVALID);
+                if (_func == null) {
+                    return _PrimaryDNS_INVALID;
+                }
+                if (_online) {
+                    return _primaryDNS;
+                }
+                return _PrimaryDNS_INVALID;
             }
             set
             {
@@ -620,10 +636,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_primaryDNS(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PrimaryDNS_INVALID) return;
-            if (newval == _primaryDNS) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PrimaryDNS_INVALID) {
+                return;
+            }
+            if (newval == _primaryDNS) {
+                return;
+            }
             _func.set_primaryDNS(newval);
             _primaryDNS = newval;
         }
@@ -645,10 +669,8 @@ namespace YoctoProxyAPI
          */
         public string get_secondaryDNS()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_secondaryDNS();
         }
@@ -677,23 +699,28 @@ namespace YoctoProxyAPI
          */
         public int set_secondaryDNS(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _SecondaryDNS_INVALID) return YAPI.SUCCESS;
+            if (newval == _SecondaryDNS_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_secondaryDNS(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>IP address of the secondary name server to be used by the module.</value>
         public string SecondaryDNS
         {
             get
             {
-                if (_func == null) return _SecondaryDNS_INVALID;
-                return (_online ? _secondaryDNS : _SecondaryDNS_INVALID);
+                if (_func == null) {
+                    return _SecondaryDNS_INVALID;
+                }
+                if (_online) {
+                    return _secondaryDNS;
+                }
+                return _SecondaryDNS_INVALID;
             }
             set
             {
@@ -704,10 +731,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_secondaryDNS(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _SecondaryDNS_INVALID) return;
-            if (newval == _secondaryDNS) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _SecondaryDNS_INVALID) {
+                return;
+            }
+            if (newval == _secondaryDNS) {
+                return;
+            }
             _func.set_secondaryDNS(newval);
             _secondaryDNS = newval;
         }
@@ -729,10 +764,8 @@ namespace YoctoProxyAPI
          */
         public string get_ntpServer()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_ntpServer();
         }
@@ -762,23 +795,28 @@ namespace YoctoProxyAPI
          */
         public int set_ntpServer(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _NtpServer_INVALID) return YAPI.SUCCESS;
+            if (newval == _NtpServer_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_ntpServer(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>IP address of the NTP server to be used by the device.</value>
         public string NtpServer
         {
             get
             {
-                if (_func == null) return _NtpServer_INVALID;
-                return (_online ? _ntpServer : _NtpServer_INVALID);
+                if (_func == null) {
+                    return _NtpServer_INVALID;
+                }
+                if (_online) {
+                    return _ntpServer;
+                }
+                return _NtpServer_INVALID;
             }
             set
             {
@@ -789,10 +827,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_ntpServer(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _NtpServer_INVALID) return;
-            if (newval == _ntpServer) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _NtpServer_INVALID) {
+                return;
+            }
+            if (newval == _ntpServer) {
+                return;
+            }
             _func.set_ntpServer(newval);
             _ntpServer = newval;
         }
@@ -816,10 +862,8 @@ namespace YoctoProxyAPI
          */
         public string get_userPassword()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_userPassword();
         }
@@ -851,23 +895,28 @@ namespace YoctoProxyAPI
          */
         public int set_userPassword(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _UserPassword_INVALID) return YAPI.SUCCESS;
+            if (newval == _UserPassword_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_userPassword(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Hash string if a password has been set for "user" user,</value>
         public string UserPassword
         {
             get
             {
-                if (_func == null) return _UserPassword_INVALID;
-                return (_online ? _userPassword : _UserPassword_INVALID);
+                if (_func == null) {
+                    return _UserPassword_INVALID;
+                }
+                if (_online) {
+                    return _userPassword;
+                }
+                return _UserPassword_INVALID;
             }
             set
             {
@@ -878,10 +927,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_userPassword(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _UserPassword_INVALID) return;
-            if (newval == _userPassword) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _UserPassword_INVALID) {
+                return;
+            }
+            if (newval == _userPassword) {
+                return;
+            }
             _func.set_userPassword(newval);
             _userPassword = newval;
         }
@@ -905,10 +962,8 @@ namespace YoctoProxyAPI
          */
         public string get_adminPassword()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_adminPassword();
         }
@@ -940,23 +995,28 @@ namespace YoctoProxyAPI
          */
         public int set_adminPassword(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _AdminPassword_INVALID) return YAPI.SUCCESS;
+            if (newval == _AdminPassword_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_adminPassword(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Hash string if a password has been set for user "admin",</value>
         public string AdminPassword
         {
             get
             {
-                if (_func == null) return _AdminPassword_INVALID;
-                return (_online ? _adminPassword : _AdminPassword_INVALID);
+                if (_func == null) {
+                    return _AdminPassword_INVALID;
+                }
+                if (_online) {
+                    return _adminPassword;
+                }
+                return _AdminPassword_INVALID;
             }
             set
             {
@@ -967,10 +1027,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_adminPassword(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _AdminPassword_INVALID) return;
-            if (newval == _adminPassword) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _AdminPassword_INVALID) {
+                return;
+            }
+            if (newval == _adminPassword) {
+                return;
+            }
             _func.set_adminPassword(newval);
             _adminPassword = newval;
         }
@@ -992,13 +1060,14 @@ namespace YoctoProxyAPI
          */
         public int get_httpPort()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            int res = _func.get_httpPort();
-            if (res == YAPI.INVALID_INT) res = _HttpPort_INVALID;
+            res = _func.get_httpPort();
+            if (res == YAPI.INVALID_INT) {
+                res = _HttpPort_INVALID;
+            }
             return res;
         }
 
@@ -1029,23 +1098,28 @@ namespace YoctoProxyAPI
          */
         public int set_httpPort(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _HttpPort_INVALID) return YAPI.SUCCESS;
+            if (newval == _HttpPort_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_httpPort(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>TCP port used to serve the hub web UI.</value>
         public int HttpPort
         {
             get
             {
-                if (_func == null) return _HttpPort_INVALID;
-                return (_online ? _httpPort : _HttpPort_INVALID);
+                if (_func == null) {
+                    return _HttpPort_INVALID;
+                }
+                if (_online) {
+                    return _httpPort;
+                }
+                return _HttpPort_INVALID;
             }
             set
             {
@@ -1056,10 +1130,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_httpPort(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _HttpPort_INVALID) return;
-            if (newval == _httpPort) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _HttpPort_INVALID) {
+                return;
+            }
+            if (newval == _httpPort) {
+                return;
+            }
             _func.set_httpPort(newval);
             _httpPort = newval;
         }
@@ -1081,10 +1163,8 @@ namespace YoctoProxyAPI
          */
         public string get_defaultPage()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_defaultPage();
         }
@@ -1116,23 +1196,28 @@ namespace YoctoProxyAPI
          */
         public int set_defaultPage(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _DefaultPage_INVALID) return YAPI.SUCCESS;
+            if (newval == _DefaultPage_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_defaultPage(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>HTML page to serve for the URL "/"" of the hub.</value>
         public string DefaultPage
         {
             get
             {
-                if (_func == null) return _DefaultPage_INVALID;
-                return (_online ? _defaultPage : _DefaultPage_INVALID);
+                if (_func == null) {
+                    return _DefaultPage_INVALID;
+                }
+                if (_online) {
+                    return _defaultPage;
+                }
+                return _DefaultPage_INVALID;
             }
             set
             {
@@ -1143,10 +1228,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_defaultPage(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _DefaultPage_INVALID) return;
-            if (newval == _defaultPage) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _DefaultPage_INVALID) {
+                return;
+            }
+            if (newval == _defaultPage) {
+                return;
+            }
             _func.set_defaultPage(newval);
             _defaultPage = newval;
         }
@@ -1171,10 +1264,8 @@ namespace YoctoProxyAPI
          */
         public int get_discoverable()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_discoverable()+1;
@@ -1207,24 +1298,29 @@ namespace YoctoProxyAPI
          */
         public int set_discoverable(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _Discoverable_INVALID) return YAPI.SUCCESS;
+            if (newval == _Discoverable_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_discoverable(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Activation state of the multicast announce protocols to allow easy</value>
         public int Discoverable
         {
             get
             {
-                if (_func == null) return _Discoverable_INVALID;
-                return (_online ? _discoverable : _Discoverable_INVALID);
+                if (_func == null) {
+                    return _Discoverable_INVALID;
+                }
+                if (_online) {
+                    return _discoverable;
+                }
+                return _Discoverable_INVALID;
             }
             set
             {
@@ -1235,10 +1331,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_discoverable(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Discoverable_INVALID) return;
-            if (newval == _discoverable) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Discoverable_INVALID) {
+                return;
+            }
+            if (newval == _discoverable) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_discoverable(newval-1);
             _discoverable = newval;
@@ -1265,13 +1369,14 @@ namespace YoctoProxyAPI
          */
         public int get_wwwWatchdogDelay()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            int res = _func.get_wwwWatchdogDelay();
-            if (res == YAPI.INVALID_INT) res = _WwwWatchdogDelay_INVALID;
+            res = _func.get_wwwWatchdogDelay();
+            if (res == YAPI.INVALID_INT) {
+                res = _WwwWatchdogDelay_INVALID;
+            }
             return res;
         }
 
@@ -1303,23 +1408,28 @@ namespace YoctoProxyAPI
          */
         public int set_wwwWatchdogDelay(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _WwwWatchdogDelay_INVALID) return YAPI.SUCCESS;
+            if (newval == _WwwWatchdogDelay_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_wwwWatchdogDelay(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Allowed downtime of the WWW link (in seconds) before triggering an automated</value>
         public int WwwWatchdogDelay
         {
             get
             {
-                if (_func == null) return _WwwWatchdogDelay_INVALID;
-                return (_online ? _wwwWatchdogDelay : _WwwWatchdogDelay_INVALID);
+                if (_func == null) {
+                    return _WwwWatchdogDelay_INVALID;
+                }
+                if (_online) {
+                    return _wwwWatchdogDelay;
+                }
+                return _WwwWatchdogDelay_INVALID;
             }
             set
             {
@@ -1330,10 +1440,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_wwwWatchdogDelay(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _WwwWatchdogDelay_INVALID) return;
-            if (newval == _wwwWatchdogDelay) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _WwwWatchdogDelay_INVALID) {
+                return;
+            }
+            if (newval == _wwwWatchdogDelay) {
+                return;
+            }
             _func.set_wwwWatchdogDelay(newval);
             _wwwWatchdogDelay = newval;
         }
@@ -1355,10 +1473,8 @@ namespace YoctoProxyAPI
          */
         public string get_callbackUrl()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_callbackUrl();
         }
@@ -1387,23 +1503,28 @@ namespace YoctoProxyAPI
          */
         public int set_callbackUrl(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackUrl_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackUrl_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_callbackUrl(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Callback URL to notify of significant state changes.</value>
         public string CallbackUrl
         {
             get
             {
-                if (_func == null) return _CallbackUrl_INVALID;
-                return (_online ? _callbackUrl : _CallbackUrl_INVALID);
+                if (_func == null) {
+                    return _CallbackUrl_INVALID;
+                }
+                if (_online) {
+                    return _callbackUrl;
+                }
+                return _CallbackUrl_INVALID;
             }
             set
             {
@@ -1414,10 +1535,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackUrl(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackUrl_INVALID) return;
-            if (newval == _callbackUrl) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackUrl_INVALID) {
+                return;
+            }
+            if (newval == _callbackUrl) {
+                return;
+            }
             _func.set_callbackUrl(newval);
             _callbackUrl = newval;
         }
@@ -1441,10 +1570,8 @@ namespace YoctoProxyAPI
          */
         public int get_callbackMethod()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_callbackMethod()+1;
@@ -1476,24 +1603,29 @@ namespace YoctoProxyAPI
          */
         public int set_callbackMethod(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackMethod_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackMethod_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_callbackMethod(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>HTTP method used to notify callbacks for significant state changes.</value>
         public int CallbackMethod
         {
             get
             {
-                if (_func == null) return _CallbackMethod_INVALID;
-                return (_online ? _callbackMethod : _CallbackMethod_INVALID);
+                if (_func == null) {
+                    return _CallbackMethod_INVALID;
+                }
+                if (_online) {
+                    return _callbackMethod;
+                }
+                return _CallbackMethod_INVALID;
             }
             set
             {
@@ -1504,10 +1636,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackMethod(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackMethod_INVALID) return;
-            if (newval == _callbackMethod) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackMethod_INVALID) {
+                return;
+            }
+            if (newval == _callbackMethod) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_callbackMethod(newval-1);
             _callbackMethod = newval;
@@ -1537,10 +1677,8 @@ namespace YoctoProxyAPI
          */
         public int get_callbackEncoding()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_callbackEncoding()+1;
@@ -1577,24 +1715,29 @@ namespace YoctoProxyAPI
          */
         public int set_callbackEncoding(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackEncoding_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackEncoding_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_callbackEncoding(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Encoding standard to use for representing notification values.</value>
         public int CallbackEncoding
         {
             get
             {
-                if (_func == null) return _CallbackEncoding_INVALID;
-                return (_online ? _callbackEncoding : _CallbackEncoding_INVALID);
+                if (_func == null) {
+                    return _CallbackEncoding_INVALID;
+                }
+                if (_online) {
+                    return _callbackEncoding;
+                }
+                return _CallbackEncoding_INVALID;
             }
             set
             {
@@ -1605,10 +1748,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackEncoding(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackEncoding_INVALID) return;
-            if (newval == _callbackEncoding) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackEncoding_INVALID) {
+                return;
+            }
+            if (newval == _callbackEncoding) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_callbackEncoding(newval-1);
             _callbackEncoding = newval;
@@ -1633,10 +1784,8 @@ namespace YoctoProxyAPI
          */
         public string get_callbackCredentials()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_callbackCredentials();
         }
@@ -1672,23 +1821,28 @@ namespace YoctoProxyAPI
          */
         public int set_callbackCredentials(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackCredentials_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackCredentials_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_callbackCredentials(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Hashed version of the notification callback credentials if set,</value>
         public string CallbackCredentials
         {
             get
             {
-                if (_func == null) return _CallbackCredentials_INVALID;
-                return (_online ? _callbackCredentials : _CallbackCredentials_INVALID);
+                if (_func == null) {
+                    return _CallbackCredentials_INVALID;
+                }
+                if (_online) {
+                    return _callbackCredentials;
+                }
+                return _CallbackCredentials_INVALID;
             }
             set
             {
@@ -1699,10 +1853,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackCredentials(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackCredentials_INVALID) return;
-            if (newval == _callbackCredentials) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackCredentials_INVALID) {
+                return;
+            }
+            if (newval == _callbackCredentials) {
+                return;
+            }
             _func.set_callbackCredentials(newval);
             _callbackCredentials = newval;
         }
@@ -1736,10 +1898,8 @@ namespace YoctoProxyAPI
          */
         public int callbackLogin(string username,string password)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.callbackLogin(username, password);
         }
@@ -1761,13 +1921,14 @@ namespace YoctoProxyAPI
          */
         public int get_callbackInitialDelay()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            int res = _func.get_callbackInitialDelay();
-            if (res == YAPI.INVALID_INT) res = _CallbackInitialDelay_INVALID;
+            res = _func.get_callbackInitialDelay();
+            if (res == YAPI.INVALID_INT) {
+                res = _CallbackInitialDelay_INVALID;
+            }
             return res;
         }
 
@@ -1794,23 +1955,28 @@ namespace YoctoProxyAPI
          */
         public int set_callbackInitialDelay(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackInitialDelay_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackInitialDelay_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_callbackInitialDelay(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Initial waiting time before first callback notifications, in seconds.</value>
         public int CallbackInitialDelay
         {
             get
             {
-                if (_func == null) return _CallbackInitialDelay_INVALID;
-                return (_online ? _callbackInitialDelay : _CallbackInitialDelay_INVALID);
+                if (_func == null) {
+                    return _CallbackInitialDelay_INVALID;
+                }
+                if (_online) {
+                    return _callbackInitialDelay;
+                }
+                return _CallbackInitialDelay_INVALID;
             }
             set
             {
@@ -1821,10 +1987,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackInitialDelay(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackInitialDelay_INVALID) return;
-            if (newval == _callbackInitialDelay) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackInitialDelay_INVALID) {
+                return;
+            }
+            if (newval == _callbackInitialDelay) {
+                return;
+            }
             _func.set_callbackInitialDelay(newval);
             _callbackInitialDelay = newval;
         }
@@ -1846,10 +2020,8 @@ namespace YoctoProxyAPI
          */
         public string get_callbackSchedule()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_callbackSchedule();
         }
@@ -1878,23 +2050,28 @@ namespace YoctoProxyAPI
          */
         public int set_callbackSchedule(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackSchedule_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackSchedule_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_callbackSchedule(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>HTTP callback schedule strategy, as a text string.</value>
         public string CallbackSchedule
         {
             get
             {
-                if (_func == null) return _CallbackSchedule_INVALID;
-                return (_online ? _callbackSchedule : _CallbackSchedule_INVALID);
+                if (_func == null) {
+                    return _CallbackSchedule_INVALID;
+                }
+                if (_online) {
+                    return _callbackSchedule;
+                }
+                return _CallbackSchedule_INVALID;
             }
             set
             {
@@ -1905,10 +2082,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackSchedule(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackSchedule_INVALID) return;
-            if (newval == _callbackSchedule) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackSchedule_INVALID) {
+                return;
+            }
+            if (newval == _callbackSchedule) {
+                return;
+            }
             _func.set_callbackSchedule(newval);
             _callbackSchedule = newval;
         }
@@ -1930,13 +2115,14 @@ namespace YoctoProxyAPI
          */
         public int get_callbackMinDelay()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            int res = _func.get_callbackMinDelay();
-            if (res == YAPI.INVALID_INT) res = _CallbackMinDelay_INVALID;
+            res = _func.get_callbackMinDelay();
+            if (res == YAPI.INVALID_INT) {
+                res = _CallbackMinDelay_INVALID;
+            }
             return res;
         }
 
@@ -1963,23 +2149,28 @@ namespace YoctoProxyAPI
          */
         public int set_callbackMinDelay(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackMinDelay_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackMinDelay_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_callbackMinDelay(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Minimum waiting time between two HTTP callbacks, in seconds.</value>
         public int CallbackMinDelay
         {
             get
             {
-                if (_func == null) return _CallbackMinDelay_INVALID;
-                return (_online ? _callbackMinDelay : _CallbackMinDelay_INVALID);
+                if (_func == null) {
+                    return _CallbackMinDelay_INVALID;
+                }
+                if (_online) {
+                    return _callbackMinDelay;
+                }
+                return _CallbackMinDelay_INVALID;
             }
             set
             {
@@ -1990,10 +2181,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackMinDelay(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackMinDelay_INVALID) return;
-            if (newval == _callbackMinDelay) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackMinDelay_INVALID) {
+                return;
+            }
+            if (newval == _callbackMinDelay) {
+                return;
+            }
             _func.set_callbackMinDelay(newval);
             _callbackMinDelay = newval;
         }
@@ -2015,13 +2214,14 @@ namespace YoctoProxyAPI
          */
         public int get_callbackMaxDelay()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            int res = _func.get_callbackMaxDelay();
-            if (res == YAPI.INVALID_INT) res = _CallbackMaxDelay_INVALID;
+            res = _func.get_callbackMaxDelay();
+            if (res == YAPI.INVALID_INT) {
+                res = _CallbackMaxDelay_INVALID;
+            }
             return res;
         }
 
@@ -2048,23 +2248,28 @@ namespace YoctoProxyAPI
          */
         public int set_callbackMaxDelay(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            if (newval == _CallbackMaxDelay_INVALID) return YAPI.SUCCESS;
+            if (newval == _CallbackMaxDelay_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_callbackMaxDelay(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Waiting time between two HTTP callbacks when there is nothing new.</value>
         public int CallbackMaxDelay
         {
             get
             {
-                if (_func == null) return _CallbackMaxDelay_INVALID;
-                return (_online ? _callbackMaxDelay : _CallbackMaxDelay_INVALID);
+                if (_func == null) {
+                    return _CallbackMaxDelay_INVALID;
+                }
+                if (_online) {
+                    return _callbackMaxDelay;
+                }
+                return _CallbackMaxDelay_INVALID;
             }
             set
             {
@@ -2075,10 +2280,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_callbackMaxDelay(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CallbackMaxDelay_INVALID) return;
-            if (newval == _callbackMaxDelay) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackMaxDelay_INVALID) {
+                return;
+            }
+            if (newval == _callbackMaxDelay) {
+                return;
+            }
             _func.set_callbackMaxDelay(newval);
             _callbackMaxDelay = newval;
         }
@@ -2102,13 +2315,14 @@ namespace YoctoProxyAPI
          */
         public int get_poeCurrent()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
-            int res = _func.get_poeCurrent();
-            if (res == YAPI.INVALID_INT) res = _PoeCurrent_INVALID;
+            res = _func.get_poeCurrent();
+            if (res == YAPI.INVALID_INT) {
+                res = _PoeCurrent_INVALID;
+            }
             return res;
         }
 
@@ -2141,10 +2355,8 @@ namespace YoctoProxyAPI
          */
         public virtual int useDHCP(string fallbackIpAddr, int fallbackSubnetMaskLen, string fallbackRouter)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.useDHCP(fallbackIpAddr, fallbackSubnetMaskLen, fallbackRouter);
         }
@@ -2168,10 +2380,8 @@ namespace YoctoProxyAPI
          */
         public virtual int useDHCPauto()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.useDHCPauto();
         }
@@ -2201,10 +2411,8 @@ namespace YoctoProxyAPI
          */
         public virtual int useStaticIP(string ipAddress, int subnetMaskLen, string router)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.useStaticIP(ipAddress, subnetMaskLen, router);
         }
@@ -2229,10 +2437,8 @@ namespace YoctoProxyAPI
          */
         public virtual string ping(string host)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.ping(host);
         }
@@ -2256,10 +2462,8 @@ namespace YoctoProxyAPI
          */
         public virtual int triggerCallback()
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.triggerCallback();
         }
@@ -2288,10 +2492,8 @@ namespace YoctoProxyAPI
          */
         public virtual int set_periodicCallbackSchedule(string interval, int offset)
         {
-            if (_func == null)
-            {
-                string msg = "No Network connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
             }
             return _func.set_periodicCallbackSchedule(interval, offset);
         }

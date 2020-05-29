@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_genericsensor_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_genericsensor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YGenericSensorProxy, the Proxy API for GenericSensor
  *
@@ -260,9 +260,7 @@ namespace YoctoProxyAPI
             _signalRange = _func.get_signalRange();
             _valueRange = _func.get_valueRange();
             _signalBias = _func.get_signalBias();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _signalSampling = _func.get_signalSampling()+1;
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _enabled = _func.get_enabled()+1;
         }
 
@@ -290,15 +288,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -317,24 +314,15 @@ namespace YoctoProxyAPI
          */
         public double get_signalValue()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            double res = _func.get_signalValue();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_signalValue();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
-        }
-
-        // property with cached value for instant access (constant value)
-        public string SignalUnit
-        {
-            get
-            {
-                if (_func == null) return _SignalUnit_INVALID;
-                return (_online ? _signalUnit : _SignalUnit_INVALID);
-            }
         }
 
         /**
@@ -354,12 +342,26 @@ namespace YoctoProxyAPI
          */
         public string get_signalUnit()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
             return _func.get_signalUnit();
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Measuring unit of the electrical signal used by the sensor.</value>
+        public string SignalUnit
+        {
+            get
+            {
+                if (_func == null) {
+                    return _SignalUnit_INVALID;
+                }
+                if (_online) {
+                    return _signalUnit;
+                }
+                return _SignalUnit_INVALID;
+            }
         }
 
         /**
@@ -379,10 +381,8 @@ namespace YoctoProxyAPI
          */
         public string get_signalRange()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
             return _func.get_signalRange();
         }
@@ -422,23 +422,28 @@ namespace YoctoProxyAPI
          */
         public int set_signalRange(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            if (newval == _SignalRange_INVALID) return YAPI.SUCCESS;
+            if (newval == _SignalRange_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_signalRange(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Input signal range used by the sensor.</value>
         public string SignalRange
         {
             get
             {
-                if (_func == null) return _SignalRange_INVALID;
-                return (_online ? _signalRange : _SignalRange_INVALID);
+                if (_func == null) {
+                    return _SignalRange_INVALID;
+                }
+                if (_online) {
+                    return _signalRange;
+                }
+                return _SignalRange_INVALID;
             }
             set
             {
@@ -449,10 +454,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_signalRange(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _SignalRange_INVALID) return;
-            if (newval == _signalRange) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _SignalRange_INVALID) {
+                return;
+            }
+            if (newval == _signalRange) {
+                return;
+            }
             _func.set_signalRange(newval);
             _signalRange = newval;
         }
@@ -474,10 +487,8 @@ namespace YoctoProxyAPI
          */
         public string get_valueRange()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
             return _func.get_valueRange();
         }
@@ -514,23 +525,28 @@ namespace YoctoProxyAPI
          */
         public int set_valueRange(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            if (newval == _ValueRange_INVALID) return YAPI.SUCCESS;
+            if (newval == _ValueRange_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_valueRange(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Physical value range measured by the sensor.</value>
         public string ValueRange
         {
             get
             {
-                if (_func == null) return _ValueRange_INVALID;
-                return (_online ? _valueRange : _ValueRange_INVALID);
+                if (_func == null) {
+                    return _ValueRange_INVALID;
+                }
+                if (_online) {
+                    return _valueRange;
+                }
+                return _ValueRange_INVALID;
             }
             set
             {
@@ -541,10 +557,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_valueRange(string newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _ValueRange_INVALID) return;
-            if (newval == _valueRange) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _ValueRange_INVALID) {
+                return;
+            }
+            if (newval == _valueRange) {
+                return;
+            }
             _func.set_valueRange(newval);
             _valueRange = newval;
         }
@@ -575,39 +599,13 @@ namespace YoctoProxyAPI
          */
         public int set_signalBias(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _SignalBias_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_signalBias(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double SignalBias
-        {
-            get
-            {
-                if (_func == null) return _SignalBias_INVALID;
-                return (_online ? _signalBias : _SignalBias_INVALID);
-            }
-            set
-            {
-                setprop_signalBias(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_signalBias(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _signalBias) return;
-            _func.set_signalBias(newval);
-            _signalBias = newval;
         }
 
         /**
@@ -629,14 +627,54 @@ namespace YoctoProxyAPI
          */
         public double get_signalBias()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            double res = _func.get_signalBias();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_signalBias();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Electric signal bias for zero shift adjustment.</value>
+        public double SignalBias
+        {
+            get
+            {
+                if (_func == null) {
+                    return _SignalBias_INVALID;
+                }
+                if (_online) {
+                    return _signalBias;
+                }
+                return _SignalBias_INVALID;
+            }
+            set
+            {
+                setprop_signalBias(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_signalBias(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _SignalBias_INVALID) {
+                return;
+            }
+            if (newval == _signalBias) {
+                return;
+            }
+            _func.set_signalBias(newval);
+            _signalBias = newval;
         }
 
         /**
@@ -664,10 +702,8 @@ namespace YoctoProxyAPI
          */
         public int get_signalSampling()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_signalSampling()+1;
@@ -705,24 +741,29 @@ namespace YoctoProxyAPI
          */
         public int set_signalSampling(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            if (newval == _SignalSampling_INVALID) return YAPI.SUCCESS;
+            if (newval == _SignalSampling_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_signalSampling(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Electric signal sampling method to use.</value>
         public int SignalSampling
         {
             get
             {
-                if (_func == null) return _SignalSampling_INVALID;
-                return (_online ? _signalSampling : _SignalSampling_INVALID);
+                if (_func == null) {
+                    return _SignalSampling_INVALID;
+                }
+                if (_online) {
+                    return _signalSampling;
+                }
+                return _SignalSampling_INVALID;
             }
             set
             {
@@ -733,10 +774,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_signalSampling(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _SignalSampling_INVALID) return;
-            if (newval == _signalSampling) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _SignalSampling_INVALID) {
+                return;
+            }
+            if (newval == _signalSampling) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_signalSampling(newval-1);
             _signalSampling = newval;
@@ -760,10 +809,8 @@ namespace YoctoProxyAPI
          */
         public int get_enabled()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_enabled()+1;
@@ -797,24 +844,29 @@ namespace YoctoProxyAPI
          */
         public int set_enabled(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
-            if (newval == _Enabled_INVALID) return YAPI.SUCCESS;
+            if (newval == _Enabled_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_enabled(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Activation state of this input.</value>
         public int Enabled
         {
             get
             {
-                if (_func == null) return _Enabled_INVALID;
-                return (_online ? _enabled : _Enabled_INVALID);
+                if (_func == null) {
+                    return _Enabled_INVALID;
+                }
+                if (_online) {
+                    return _enabled;
+                }
+                return _Enabled_INVALID;
             }
             set
             {
@@ -825,10 +877,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_enabled(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Enabled_INVALID) return;
-            if (newval == _enabled) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Enabled_INVALID) {
+                return;
+            }
+            if (newval == _enabled) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_enabled(newval-1);
             _enabled = newval;
@@ -852,10 +912,8 @@ namespace YoctoProxyAPI
          */
         public virtual int zeroAdjust()
         {
-            if (_func == null)
-            {
-                string msg = "No GenericSensor connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No GenericSensor connected");
             }
             return _func.zeroAdjust();
         }

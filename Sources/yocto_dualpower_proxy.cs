@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_dualpower_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_dualpower_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YDualPowerProxy, the Proxy API for DualPower
  *
@@ -247,28 +247,7 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _powerControl = _func.get_powerControl()+1;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int PowerState
-        {
-            get
-            {
-                if (_func == null) return _PowerState_INVALID;
-                return (_online ? _powerState : _PowerState_INVALID);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "OFF") _powerState = 1;
-            if (value == "FROM_USB") _powerState = 2;
-            if (value == "FROM_EXT") _powerState = 3;
-            if (value == "USB") _powerState = 2;
-            if (value == "EXT") _powerState = 3;
         }
 
         /**
@@ -290,13 +269,47 @@ namespace YoctoProxyAPI
          */
         public int get_powerState()
         {
-            if (_func == null)
-            {
-                string msg = "No DualPower connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DualPower connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_powerState()+1;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Current power source for module functions that require lots of current.</value>
+        public int PowerState
+        {
+            get
+            {
+                if (_func == null) {
+                    return _PowerState_INVALID;
+                }
+                if (_online) {
+                    return _powerState;
+                }
+                return _PowerState_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "OFF") {
+                _powerState = 1;
+            }
+            if (value == "FROM_USB") {
+                _powerState = 2;
+            }
+            if (value == "FROM_EXT") {
+                _powerState = 3;
+            }
+            if (value == "USB") {
+                _powerState = _PowerState_FROM_USB;
+            }
+            if (value == "EXT") {
+                _powerState = _PowerState_FROM_EXT;
+            }
         }
 
         /**
@@ -318,10 +331,8 @@ namespace YoctoProxyAPI
          */
         public int get_powerControl()
         {
-            if (_func == null)
-            {
-                string msg = "No DualPower connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DualPower connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_powerControl()+1;
@@ -352,24 +363,29 @@ namespace YoctoProxyAPI
          */
         public int set_powerControl(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No DualPower connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DualPower connected");
             }
-            if (newval == _PowerControl_INVALID) return YAPI.SUCCESS;
+            if (newval == _PowerControl_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_powerControl(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Selected power source for module functions that require lots of current.</value>
         public int PowerControl
         {
             get
             {
-                if (_func == null) return _PowerControl_INVALID;
-                return (_online ? _powerControl : _PowerControl_INVALID);
+                if (_func == null) {
+                    return _PowerControl_INVALID;
+                }
+                if (_online) {
+                    return _powerControl;
+                }
+                return _PowerControl_INVALID;
             }
             set
             {
@@ -380,10 +396,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_powerControl(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _PowerControl_INVALID) return;
-            if (newval == _powerControl) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PowerControl_INVALID) {
+                return;
+            }
+            if (newval == _powerControl) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_powerControl(newval-1);
             _powerControl = newval;
@@ -406,13 +430,14 @@ namespace YoctoProxyAPI
          */
         public int get_extVoltage()
         {
-            if (_func == null)
-            {
-                string msg = "No DualPower connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No DualPower connected");
             }
-            int res = _func.get_extVoltage();
-            if (res == YAPI.INVALID_INT) res = _ExtVoltage_INVALID;
+            res = _func.get_extVoltage();
+            if (res == YAPI.INVALID_INT) {
+                res = _ExtVoltage_INVALID;
+            }
             return res;
         }
     }

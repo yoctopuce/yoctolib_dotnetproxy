@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_arithmeticsensor.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_arithmeticsensor.cs 40190 2020-04-29 13:16:45Z mvuilleu $
  *
  *  Implements yFindArithmeticSensor(), the high-level API for ArithmeticSensor functions
  *
@@ -386,8 +386,11 @@ public class YArithmeticSensor : YSensor
         content = "// "+ descr+"\n"+expr;
         data = this._uploadEx(fname, YAPI.DefaultEncoding.GetBytes(content));
         diags = YAPI.DefaultEncoding.GetString(data);
-        if (!((diags).Substring(0, 8) == "Result: ")) { this._throw( YAPI.INVALID_ARGUMENT, diags); return YAPI.INVALID_DOUBLE; }
-        resval = Double.Parse((diags).Substring( 8, (diags).Length-8));
+        if (!((diags).Substring(0, 8) == "Result: ")) {
+            this._throw(YAPI.INVALID_ARGUMENT, diags);
+            return YAPI.INVALID_DOUBLE;
+        }
+        resval = YAPI._atof((diags).Substring( 8, (diags).Length-8));
         return resval;
     }
 
@@ -463,8 +466,14 @@ public class YArithmeticSensor : YSensor
         double outputVal;
         string fname;
         siz = inputValues.Count;
-        if (!(siz > 1)) { this._throw( YAPI.INVALID_ARGUMENT, "auxiliary function must be defined by at least two points"); return YAPI.INVALID_ARGUMENT; }
-        if (!(siz == outputValues.Count)) { this._throw( YAPI.INVALID_ARGUMENT, "table sizes mismatch"); return YAPI.INVALID_ARGUMENT; }
+        if (!(siz > 1)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "auxiliary function must be defined by at least two points");
+            return YAPI.INVALID_ARGUMENT;
+        }
+        if (!(siz == outputValues.Count)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "table sizes mismatch");
+            return YAPI.INVALID_ARGUMENT;
+        }
         defstr = "";
         idx = 0;
         while (idx < siz) {
@@ -513,7 +522,10 @@ public class YArithmeticSensor : YSensor
         fname = "userMap"+name+".txt";
         defbin = this._download(fname);
         siz = (defbin).Length;
-        if (!(siz > 0)) { this._throw( YAPI.INVALID_ARGUMENT, "auxiliary function does not exist"); return YAPI.INVALID_ARGUMENT; }
+        if (!(siz > 0)) {
+            this._throw(YAPI.INVALID_ARGUMENT, "auxiliary function does not exist");
+            return YAPI.INVALID_ARGUMENT;
+        }
         inputValues.Clear();
         outputValues.Clear();
         // FIXME: decode line by line

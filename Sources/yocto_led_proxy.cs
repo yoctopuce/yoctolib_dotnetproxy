@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_led_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_led_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YLedProxy, the Proxy API for Led
  *
@@ -267,10 +267,8 @@ namespace YoctoProxyAPI
          */
         public int get_power()
         {
-            if (_func == null)
-            {
-                string msg = "No Led connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Led connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_power()+1;
@@ -298,27 +296,14 @@ namespace YoctoProxyAPI
          */
         public int set_power(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Led connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Led connected");
             }
-            if (newval == _Power_INVALID) return YAPI.SUCCESS;
+            if (newval == _Power_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_power(newval-1);
-        }
-
-
-        // private helper for magic property
-        private void setprop_power(int newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Power_INVALID) return;
-            if (newval == _power) return;
-            // our enums start at 0 instead of the 'usual' -1 for invalid
-            _func.set_power(newval-1);
-            _power = newval;
         }
 
         /**
@@ -338,13 +323,14 @@ namespace YoctoProxyAPI
          */
         public int get_luminosity()
         {
-            if (_func == null)
-            {
-                string msg = "No Led connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Led connected");
             }
-            int res = _func.get_luminosity();
-            if (res == YAPI.INVALID_INT) res = _Luminosity_INVALID;
+            res = _func.get_luminosity();
+            if (res == YAPI.INVALID_INT) {
+                res = _Luminosity_INVALID;
+            }
             return res;
         }
 
@@ -372,23 +358,28 @@ namespace YoctoProxyAPI
          */
         public int set_luminosity(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Led connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Led connected");
             }
-            if (newval == _Luminosity_INVALID) return YAPI.SUCCESS;
+            if (newval == _Luminosity_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_luminosity(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Current LED intensity (in per cent).</value>
         public int Luminosity
         {
             get
             {
-                if (_func == null) return _Luminosity_INVALID;
-                return (_online ? _luminosity : _Luminosity_INVALID);
+                if (_func == null) {
+                    return _Luminosity_INVALID;
+                }
+                if (_online) {
+                    return _luminosity;
+                }
+                return _Luminosity_INVALID;
             }
             set
             {
@@ -399,54 +390,20 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_luminosity(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Luminosity_INVALID) return;
-            if (newval == _luminosity) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Luminosity_INVALID) {
+                return;
+            }
+            if (newval == _luminosity) {
+                return;
+            }
             _func.set_luminosity(newval);
             _luminosity = newval;
-        }
-
-        // property with cached value for instant access (advertised value)
-        public int Blinking
-        {
-            get
-            {
-                if (_func == null) return _Blinking_INVALID;
-                return (_online ? _blinking : _Blinking_INVALID);
-            }
-            set
-            {
-                setprop_blinking(value);
-            }
-        }
-
-        // property with cached value for instant access (derived from advertised value)
-        public int Power
-        {
-            get
-            {
-                if (_func == null) return _Power_INVALID;
-                return (_online ? _power : _Power_INVALID);
-            }
-            set
-            {
-                setprop_power(value);
-            }
-        }
-
-        protected override void valueChangeCallback(YFunction source, string value)
-        {
-            base.valueChangeCallback(source, value);
-            if (value == "STILL") _blinking = 1;
-            if (value == "RELAX") _blinking = 2;
-            if (value == "AWARE") _blinking = 3;
-            if (value == "RUN") _blinking = 4;
-            if (value == "CALL") _blinking = 5;
-            if (value == "PANIC") _blinking = 6;
-            if (value == "ON") _blinking = 1;
-            if (value == "OFF") _power = 0;
-            else if (value != "") _power = 1;
         }
 
         /**
@@ -468,10 +425,8 @@ namespace YoctoProxyAPI
          */
         public int get_blinking()
         {
-            if (_func == null)
-            {
-                string msg = "No Led connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Led connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_blinking()+1;
@@ -501,27 +456,127 @@ namespace YoctoProxyAPI
          */
         public int set_blinking(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No Led connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Led connected");
             }
-            if (newval == _Blinking_INVALID) return YAPI.SUCCESS;
+            if (newval == _Blinking_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_blinking(newval-1);
         }
 
+        // property with cached value for instant access (advertised value)
+        /// <value>Current LED signaling mode.</value>
+        public int Blinking
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Blinking_INVALID;
+                }
+                if (_online) {
+                    return _blinking;
+                }
+                return _Blinking_INVALID;
+            }
+            set
+            {
+                setprop_blinking(value);
+            }
+        }
 
         // private helper for magic property
         private void setprop_blinking(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Blinking_INVALID) return;
-            if (newval == _blinking) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Blinking_INVALID) {
+                return;
+            }
+            if (newval == _blinking) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_blinking(newval-1);
             _blinking = newval;
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            if (value == "STILL") {
+                _blinking = 1;
+            }
+            if (value == "RELAX") {
+                _blinking = 2;
+            }
+            if (value == "AWARE") {
+                _blinking = 3;
+            }
+            if (value == "RUN") {
+                _blinking = 4;
+            }
+            if (value == "CALL") {
+                _blinking = 5;
+            }
+            if (value == "PANIC") {
+                _blinking = 6;
+            }
+            if (value == "ON") {
+                _blinking = _Blinking_STILL;
+            }
+            if (value == "OFF") {
+                _power = _Power_OFF;
+            } else {
+                if (!(value == "")) {
+                    _power = _Power_ON;
+                }
+            }
+        }
+
+        // property with cached value for instant access (derived from advertised value)
+        /// <value>Current LED state.</value>
+        public int Power
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Power_INVALID;
+                }
+                if (_online) {
+                    return _power;
+                }
+                return _Power_INVALID;
+            }
+            set
+            {
+                setprop_power(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_power(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Power_INVALID) {
+                return;
+            }
+            if (newval == _power) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_power(newval-1);
+            _power = newval;
         }
     }
     //--- (end of YLed implementation)

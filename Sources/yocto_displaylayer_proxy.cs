@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_displaylayer_proxy.cs 38676 2019-12-03 15:52:14Z mvuilleu $
+ *  $Id: yocto_displaylayer_proxy.cs 40244 2020-05-03 15:22:34Z mvuilleu $
  *
  *  Implements YDisplayLayerProxy, the Proxy API for DisplayLayer
  *
@@ -40,15 +40,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (generated code: YDisplayLayer class start)
+    //--- (YDisplayLayer class start)
     public class YDisplayLayerProxy
     {
         private YDisplayLayer _objref;
@@ -56,8 +57,8 @@ namespace YoctoProxyAPI
         {
              _objref = objref;
         }
-        //--- (end of generated code: YDisplayLayer class start)
-        //--- (generated code: YDisplayLayer definitions)
+        //--- (end of YDisplayLayer class start)
+        //--- (YDisplayLayer definitions)
         public const int _ALIGN_INVALID = 0;
         public const int _ALIGN_TOP_LEFT = 1;
         public const int _ALIGN_CENTER_LEFT = 2;
@@ -79,7 +80,7 @@ namespace YoctoProxyAPI
         private int _ALIGN2Int(YDisplayLayer.ALIGN realenum)
         {
             switch (realenum) {
-                    default:
+                default:
                 case YDisplayLayer.ALIGN.TOP_LEFT:
                     return _ALIGN_TOP_LEFT;
                 case YDisplayLayer.ALIGN.CENTER_LEFT:
@@ -118,7 +119,7 @@ namespace YoctoProxyAPI
         private YDisplayLayer.ALIGN _Int2ALIGN(int value)
         {
             switch (value) {
-                    default:
+                default:
                 case _ALIGN_TOP_LEFT:
                     return YDisplayLayer.ALIGN.TOP_LEFT;
                 case _ALIGN_CENTER_LEFT:
@@ -153,18 +154,8 @@ namespace YoctoProxyAPI
                     return YDisplayLayer.ALIGN.BOTTOM_RIGHT;
             }
         }
-        //--- (end of generated code: YDisplayLayer definitions)
-
-        public int DisplayHeight {
-            get { return this.get_displayHeight(); }
-        }
-
-        public int DisplayWidth {
-            get { return this.get_displayWidth(); }
-        }
-
-
-        //--- (generated code: YDisplayLayer implementation)
+        //--- (end of YDisplayLayer definitions)
+        //--- (YDisplayLayer implementation)
 
         /**
          * <summary>
@@ -184,11 +175,6 @@ namespace YoctoProxyAPI
          */
         public virtual int reset()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.reset();
         }
 
@@ -210,11 +196,6 @@ namespace YoctoProxyAPI
          */
         public virtual int clear()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.clear();
         }
 
@@ -240,11 +221,6 @@ namespace YoctoProxyAPI
          */
         public virtual int selectColorPen(int color)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.selectColorPen(color);
         }
 
@@ -272,11 +248,6 @@ namespace YoctoProxyAPI
          */
         public virtual int selectGrayPen(int graylevel)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.selectGrayPen(graylevel);
         }
 
@@ -299,11 +270,6 @@ namespace YoctoProxyAPI
          */
         public virtual int selectEraser()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.selectEraser();
         }
 
@@ -332,11 +298,6 @@ namespace YoctoProxyAPI
          */
         public virtual int setAntialiasingMode(bool mode)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.setAntialiasingMode(mode);
         }
 
@@ -361,11 +322,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawPixel(int x, int y)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawPixel(x, y);
         }
 
@@ -396,11 +352,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawRect(int x1, int y1, int x2, int y2)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawRect(x1, y1, x2, y2);
         }
 
@@ -431,11 +382,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawBar(int x1, int y1, int x2, int y2)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawBar(x1, y1, x2, y2);
         }
 
@@ -463,11 +409,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawCircle(int x, int y, int r)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawCircle(x, y, r);
         }
 
@@ -495,11 +436,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawDisc(int x, int y, int r)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawDisc(x, y, r);
         }
 
@@ -527,11 +463,6 @@ namespace YoctoProxyAPI
          */
         public virtual int selectFont(string fontname)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.selectFont(fontname);
         }
 
@@ -573,11 +504,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawText(int x, int y, int anchor, string text)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawText(x, y, _Int2ALIGN(anchor), text);
         }
 
@@ -609,11 +535,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawImage(int x, int y, string imagename)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawImage(x, y, imagename);
         }
 
@@ -655,11 +576,6 @@ namespace YoctoProxyAPI
          */
         public virtual int drawBitmap(int x, int y, int w, byte[] bitmap, int bgcol)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.drawBitmap(x, y, w, bitmap, bgcol);
         }
 
@@ -684,11 +600,6 @@ namespace YoctoProxyAPI
          */
         public virtual int moveTo(int x, int y)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.moveTo(x, y);
         }
 
@@ -715,11 +626,6 @@ namespace YoctoProxyAPI
          */
         public virtual int lineTo(int x, int y)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.lineTo(x, y);
         }
 
@@ -745,11 +651,6 @@ namespace YoctoProxyAPI
          */
         public virtual int consoleOut(string text)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.consoleOut(text);
         }
 
@@ -780,11 +681,6 @@ namespace YoctoProxyAPI
          */
         public virtual int setConsoleMargins(int x1, int y1, int x2, int y2)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.setConsoleMargins(x1, y1, x2, y2);
         }
 
@@ -808,11 +704,6 @@ namespace YoctoProxyAPI
          */
         public virtual int setConsoleBackground(int bgcol)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.setConsoleBackground(bgcol);
         }
 
@@ -835,11 +726,6 @@ namespace YoctoProxyAPI
          */
         public virtual int setConsoleWordWrap(bool wordwrap)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.setConsoleWordWrap(wordwrap);
         }
 
@@ -859,11 +745,6 @@ namespace YoctoProxyAPI
          */
         public virtual int clearConsole()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.clearConsole();
         }
 
@@ -894,11 +775,6 @@ namespace YoctoProxyAPI
          */
         public virtual int setLayerPosition(int x, int y, int scrollTime)
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.setLayerPosition(x, y, scrollTime);
         }
 
@@ -921,11 +797,6 @@ namespace YoctoProxyAPI
          */
         public virtual int hide()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.hide();
         }
 
@@ -945,11 +816,6 @@ namespace YoctoProxyAPI
          */
         public virtual int unhide()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.unhide();
         }
 
@@ -964,14 +830,9 @@ namespace YoctoProxyAPI
          *   an <c>YDisplay</c> object
          * </returns>
          */
-        public virtual YDisplay get_display()
+        public virtual YDisplayProxy get_display()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
-            return _objref.get_display();
+            return YDisplayProxy.FindDisplay(_objref.get_display().get_serialNumber());
         }
 
         /**
@@ -989,11 +850,6 @@ namespace YoctoProxyAPI
          */
         public virtual int get_displayWidth()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_displayWidth();
         }
 
@@ -1012,11 +868,6 @@ namespace YoctoProxyAPI
          */
         public virtual int get_displayHeight()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_displayHeight();
         }
 
@@ -1035,11 +886,6 @@ namespace YoctoProxyAPI
          */
         public virtual int get_layerWidth()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_layerWidth();
         }
 
@@ -1058,13 +904,9 @@ namespace YoctoProxyAPI
          */
         public virtual int get_layerHeight()
         {
-            if (_objref == null)
-            {
-                string msg = "No DisplayLayer connected";
-                throw new YoctoApiProxyException(msg);
-            }
             return _objref.get_layerHeight();
         }
     }
-    //--- (end of generated code: YDisplayLayer implementation)
+    //--- (end of YDisplayLayer implementation)
 }
+

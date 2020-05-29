@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multicellweighscale_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: yocto_multicellweighscale_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
  *
  *  Implements YMultiCellWeighScaleProxy, the Proxy API for MultiCellWeighScale
  *
@@ -254,7 +254,6 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _cellCount = _func.get_cellCount();
-            // our enums start at 0 instead of the 'usual' -1 for invalid
             _excitation = _func.get_excitation()+1;
             _tempAvgAdaptRatio = _func.get_tempAvgAdaptRatio();
             _tempChgAdaptRatio = _func.get_tempChgAdaptRatio();
@@ -285,15 +284,14 @@ namespace YoctoProxyAPI
          */
         public int set_unit(string newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            if (newval == _Unit_INVALID) return YAPI.SUCCESS;
+            if (newval == _Unit_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_unit(newval);
         }
-
 
         /**
          * <summary>
@@ -312,13 +310,14 @@ namespace YoctoProxyAPI
          */
         public int get_cellCount()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            int res = _func.get_cellCount();
-            if (res == YAPI.INVALID_INT) res = _CellCount_INVALID;
+            res = _func.get_cellCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _CellCount_INVALID;
+            }
             return res;
         }
 
@@ -346,23 +345,28 @@ namespace YoctoProxyAPI
          */
         public int set_cellCount(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            if (newval == _CellCount_INVALID) return YAPI.SUCCESS;
+            if (newval == _CellCount_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_cellCount(newval);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Number of load cells in use.</value>
         public int CellCount
         {
             get
             {
-                if (_func == null) return _CellCount_INVALID;
-                return (_online ? _cellCount : _CellCount_INVALID);
+                if (_func == null) {
+                    return _CellCount_INVALID;
+                }
+                if (_online) {
+                    return _cellCount;
+                }
+                return _CellCount_INVALID;
             }
             set
             {
@@ -373,10 +377,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_cellCount(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _CellCount_INVALID) return;
-            if (newval == _cellCount) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CellCount_INVALID) {
+                return;
+            }
+            if (newval == _cellCount) {
+                return;
+            }
             _func.set_cellCount(newval);
             _cellCount = newval;
         }
@@ -399,10 +411,8 @@ namespace YoctoProxyAPI
          */
         public int get_excitation()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_excitation()+1;
@@ -433,24 +443,29 @@ namespace YoctoProxyAPI
          */
         public int set_excitation(int newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            if (newval == _Excitation_INVALID) return YAPI.SUCCESS;
+            if (newval == _Excitation_INVALID) {
+                return YAPI.SUCCESS;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_excitation(newval-1);
         }
 
-
         // property with cached value for instant access (configuration)
+        /// <value>Current load cell bridge excitation method.</value>
         public int Excitation
         {
             get
             {
-                if (_func == null) return _Excitation_INVALID;
-                return (_online ? _excitation : _Excitation_INVALID);
+                if (_func == null) {
+                    return _Excitation_INVALID;
+                }
+                if (_online) {
+                    return _excitation;
+                }
+                return _Excitation_INVALID;
             }
             set
             {
@@ -461,10 +476,18 @@ namespace YoctoProxyAPI
         // private helper for magic property
         private void setprop_excitation(int newval)
         {
-            if (_func == null) return;
-            if (!_online) return;
-            if (newval == _Excitation_INVALID) return;
-            if (newval == _excitation) return;
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Excitation_INVALID) {
+                return;
+            }
+            if (newval == _excitation) {
+                return;
+            }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_excitation(newval-1);
             _excitation = newval;
@@ -498,39 +521,13 @@ namespace YoctoProxyAPI
          */
         public int set_tempAvgAdaptRatio(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _TempAvgAdaptRatio_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_tempAvgAdaptRatio(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double TempAvgAdaptRatio
-        {
-            get
-            {
-                if (_func == null) return _TempAvgAdaptRatio_INVALID;
-                return (_online ? _tempAvgAdaptRatio : _TempAvgAdaptRatio_INVALID);
-            }
-            set
-            {
-                setprop_tempAvgAdaptRatio(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_tempAvgAdaptRatio(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _tempAvgAdaptRatio) return;
-            _func.set_tempAvgAdaptRatio(newval);
-            _tempAvgAdaptRatio = newval;
         }
 
         /**
@@ -554,14 +551,54 @@ namespace YoctoProxyAPI
          */
         public double get_tempAvgAdaptRatio()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            double res = _func.get_tempAvgAdaptRatio();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_tempAvgAdaptRatio();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Averaged temperature update rate, in per mille.</value>
+        public double TempAvgAdaptRatio
+        {
+            get
+            {
+                if (_func == null) {
+                    return _TempAvgAdaptRatio_INVALID;
+                }
+                if (_online) {
+                    return _tempAvgAdaptRatio;
+                }
+                return _TempAvgAdaptRatio_INVALID;
+            }
+            set
+            {
+                setprop_tempAvgAdaptRatio(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_tempAvgAdaptRatio(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _TempAvgAdaptRatio_INVALID) {
+                return;
+            }
+            if (newval == _tempAvgAdaptRatio) {
+                return;
+            }
+            _func.set_tempAvgAdaptRatio(newval);
+            _tempAvgAdaptRatio = newval;
         }
 
         /**
@@ -591,39 +628,13 @@ namespace YoctoProxyAPI
          */
         public int set_tempChgAdaptRatio(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _TempChgAdaptRatio_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_tempChgAdaptRatio(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double TempChgAdaptRatio
-        {
-            get
-            {
-                if (_func == null) return _TempChgAdaptRatio_INVALID;
-                return (_online ? _tempChgAdaptRatio : _TempChgAdaptRatio_INVALID);
-            }
-            set
-            {
-                setprop_tempChgAdaptRatio(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_tempChgAdaptRatio(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _tempChgAdaptRatio) return;
-            _func.set_tempChgAdaptRatio(newval);
-            _tempChgAdaptRatio = newval;
         }
 
         /**
@@ -646,14 +657,54 @@ namespace YoctoProxyAPI
          */
         public double get_tempChgAdaptRatio()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            double res = _func.get_tempChgAdaptRatio();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_tempChgAdaptRatio();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Temperature change update rate, in per mille.</value>
+        public double TempChgAdaptRatio
+        {
+            get
+            {
+                if (_func == null) {
+                    return _TempChgAdaptRatio_INVALID;
+                }
+                if (_online) {
+                    return _tempChgAdaptRatio;
+                }
+                return _TempChgAdaptRatio_INVALID;
+            }
+            set
+            {
+                setprop_tempChgAdaptRatio(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_tempChgAdaptRatio(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _TempChgAdaptRatio_INVALID) {
+                return;
+            }
+            if (newval == _tempChgAdaptRatio) {
+                return;
+            }
+            _func.set_tempChgAdaptRatio(newval);
+            _tempChgAdaptRatio = newval;
         }
 
         /**
@@ -673,13 +724,14 @@ namespace YoctoProxyAPI
          */
         public double get_compTempAvg()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            double res = _func.get_compTempAvg();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_compTempAvg();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -700,13 +752,14 @@ namespace YoctoProxyAPI
          */
         public double get_compTempChg()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            double res = _func.get_compTempChg();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_compTempChg();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -727,13 +780,14 @@ namespace YoctoProxyAPI
          */
         public double get_compensation()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            double res = _func.get_compensation();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_compensation();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
         }
 
@@ -764,39 +818,13 @@ namespace YoctoProxyAPI
          */
         public int set_zeroTracking(double newval)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            if (Double.IsNaN(newval)) return YAPI.SUCCESS;
+            if (newval == _ZeroTracking_INVALID) {
+                return YAPI.SUCCESS;
+            }
             return _func.set_zeroTracking(newval);
-        }
-
-
-        // property with cached value for instant access (configuration)
-        public double ZeroTracking
-        {
-            get
-            {
-                if (_func == null) return _ZeroTracking_INVALID;
-                return (_online ? _zeroTracking : _ZeroTracking_INVALID);
-            }
-            set
-            {
-                setprop_zeroTracking(value);
-            }
-        }
-
-        // private helper for magic property
-        private void setprop_zeroTracking(double newval)
-        {
-            if (_func == null) return;
-            if (!_online) return;
-            if (Double.IsNaN(newval)) return;
-            if (newval == _zeroTracking) return;
-            _func.set_zeroTracking(newval);
-            _zeroTracking = newval;
         }
 
         /**
@@ -819,14 +847,54 @@ namespace YoctoProxyAPI
          */
         public double get_zeroTracking()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
-            double res = _func.get_zeroTracking();
-            if (res == YAPI.INVALID_DOUBLE) res = Double.NaN;
+            res = _func.get_zeroTracking();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
             return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Zero tracking threshold value. When this threshold is larger than</value>
+        public double ZeroTracking
+        {
+            get
+            {
+                if (_func == null) {
+                    return _ZeroTracking_INVALID;
+                }
+                if (_online) {
+                    return _zeroTracking;
+                }
+                return _ZeroTracking_INVALID;
+            }
+            set
+            {
+                setprop_zeroTracking(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_zeroTracking(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _ZeroTracking_INVALID) {
+                return;
+            }
+            if (newval == _zeroTracking) {
+                return;
+            }
+            _func.set_zeroTracking(newval);
+            _zeroTracking = newval;
         }
 
         /**
@@ -847,10 +915,8 @@ namespace YoctoProxyAPI
          */
         public virtual int tare()
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
             return _func.tare();
         }
@@ -879,10 +945,8 @@ namespace YoctoProxyAPI
          */
         public virtual int setupSpan(double currWeight, double maxWeight)
         {
-            if (_func == null)
-            {
-                string msg = "No MultiCellWeighScale connected";
-                throw new YoctoApiProxyException(msg);
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
             }
             return _func.setupSpan(currWeight, maxWeight);
         }
