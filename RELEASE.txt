@@ -1,3 +1,3 @@
-DotNetProxy v1.10.40785
+DotNetProxy v1.10.40924
 
-- Add LinkQuality and CellOperator properties to Cellular class
+- Fix set_allSettingsAndFiles() that was accepting files with \r\n line ending

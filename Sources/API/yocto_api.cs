@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 40707 2020-05-26 09:59:14Z seb $
+ * $Id: yocto_api.cs 40899 2020-06-10 07:24:13Z seb $
  *
  * High-level programming interface, common to all modules
  *
@@ -2761,7 +2761,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "40785";
+    public const string YOCTO_API_BUILD_NO = "40924";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -11007,6 +11007,9 @@ public class YModule : YFunction
         string json_api;
         string json_files;
         string json_extra;
+        int fuperror;
+        int globalres;
+        fuperror = 0;
         json = YAPI.DefaultEncoding.GetString(settings);
         json_api = this._get_json_path(json, "api");
         if (json_api == "") {
@@ -11036,11 +11039,20 @@ public class YModule : YFunction
                 name = this._decode_json_string(name);
                 data = this._get_json_path( files[ii], "data");
                 data = this._decode_json_string(data);
-                this._upload(name, YAPI._hexStrToBin(data));
+                if (name == "") {
+                    fuperror = fuperror + 1;
+                } else {
+                    this._upload(name, YAPI._hexStrToBin(data));
+                }
             }
         }
         // Apply settings a second time for file-dependent settings and dynamic sensor nodes
-        return this.set_allSettings(YAPI.DefaultEncoding.GetBytes(json_api));
+        globalres = this.set_allSettings(YAPI.DefaultEncoding.GetBytes(json_api));
+        if (!(fuperror == 0)) {
+            this._throw(YAPI.IO_ERROR, "Error during file upload");
+            return YAPI.IO_ERROR;
+        }
+        return globalres;
     }
 
 
