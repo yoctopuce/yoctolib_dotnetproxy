@@ -12804,6 +12804,8 @@
               Adapts the load cell signal bias (stored in the corresponding genericSensor)
               so that the current signal corresponds to a zero weight.
             <para>
+              Remember to call the
+              <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
             </para>
@@ -17540,7 +17542,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the relay, for instance
-              <c>MXCOUPL2.relay1</c>.
+              <c>YLTCHRL1.relay1</c>.
             </param>
             <returns>
               a <c>YRelay</c> object allowing you to drive the relay.
@@ -23375,6 +23377,8 @@
               Adapts the load cell signal bias (stored in the corresponding genericSensor)
               so that the current signal corresponds to a zero weight.
             <para>
+              Remember to call the
+              <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
             </para>
@@ -41613,6 +41617,8 @@
               Adapts the load cell signal bias (stored in the corresponding genericSensor)
               so that the current signal corresponds to a zero weight.
             <para>
+              Remember to call the
+              <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
             </para>
@@ -47036,7 +47042,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the relay, for instance
-              <c>MXCOUPL2.relay1</c>.
+              <c>YLTCHRL1.relay1</c>.
             </param>
             <returns>
               a <c>YRelay</c> object allowing you to drive the relay.
@@ -53084,6 +53090,8 @@
               Adapts the load cell signal bias (stored in the corresponding genericSensor)
               so that the current signal corresponds to a zero weight.
             <para>
+              Remember to call the
+              <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
             </para>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_relay_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_relay_proxy.cs 41109 2020-06-29 12:40:42Z seb $
  *
  *  Implements YRelayProxy, the Proxy API for Relay
  *
@@ -150,7 +150,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the relay, for instance
-         *   <c>MXCOUPL2.relay1</c>.
+         *   <c>YLTCHRL1.relay1</c>.
          * </param>
          * <returns>
          *   a <c>YRelay</c> object allowing you to drive the relay.

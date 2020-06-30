@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multicellweighscale_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_multicellweighscale_proxy.cs 41108 2020-06-29 12:29:07Z seb $
  *
  *  Implements YMultiCellWeighScaleProxy, the Proxy API for MultiCellWeighScale
  *
@@ -902,6 +902,8 @@ namespace YoctoProxyAPI
          *   Adapts the load cell signal bias (stored in the corresponding genericSensor)
          *   so that the current signal corresponds to a zero weight.
          * <para>
+         *   Remember to call the
+         *   <c>saveToFlash()</c> method of the module if the modification must be kept.
          * </para>
          * <para>
          * </para>

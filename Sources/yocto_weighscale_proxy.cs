@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_weighscale_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_weighscale_proxy.cs 41112 2020-06-29 13:21:58Z seb $
  *
  *  Implements YWeighScaleProxy, the Proxy API for WeighScale
  *
@@ -798,6 +798,8 @@ namespace YoctoProxyAPI
          *   Adapts the load cell signal bias (stored in the corresponding genericSensor)
          *   so that the current signal corresponds to a zero weight.
          * <para>
+         *   Remember to call the
+         *   <c>saveToFlash()</c> method of the module if the modification must be kept.
          * </para>
          * <para>
          * </para>
