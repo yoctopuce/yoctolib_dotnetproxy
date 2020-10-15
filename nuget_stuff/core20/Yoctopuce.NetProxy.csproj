@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.10.41115</Version>
+    <Version>1.10.42060</Version>
     <Authors>Yoctopuce Dev Team</Authors>
     <Company>Yoctopuce</Company>
     <Product />
@@ -167,6 +167,8 @@
     <Compile Include="..\..\Sources\yocto_cellrecord_proxy.cs" Link="yocto_cellrecord_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_sms_proxy.cs" Link="yocto_sms_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_snoopingrecord_proxy.cs" Link="yocto_snoopingrecord_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_spisnoopingrecord_proxy.cs" Link="yocto_spisnoopingrecord_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_i2csnoopingrecord_proxy.cs" Link="yocto_i2csnoopingrecord_proxy.cs"/>
 <!-- yocto_patch_stop -->
   </ItemGroup>
 

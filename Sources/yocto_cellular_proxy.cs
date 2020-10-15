@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellular_proxy.cs 40755 2020-05-28 15:43:23Z mvuilleu $
+ *  $Id: yocto_cellular_proxy.cs 41769 2020-09-03 17:34:23Z mvuilleu $
  *
  *  Implements YCellularProxy, the Proxy API for Cellular
  *
@@ -1464,6 +1464,27 @@ namespace YoctoProxyAPI
                 i = i + 1;
             }
             return proxy_res;
+        }
+
+        /**
+         * <summary>
+         *   Returns the cell operator brand for a given MCC/MNC pair.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="mccmnc">
+         *   a string starting with a MCC code followed by a MNC code,
+         * </param>
+         * <returns>
+         *   a string containing the corresponding cell operator brand name.
+         * </returns>
+         */
+        public virtual string decodePLMN(string mccmnc)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
+            }
+            return _func.decodePLMN(mccmnc);
         }
     }
     //--- (end of YCellular implementation)

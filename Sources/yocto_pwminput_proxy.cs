@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwminput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_pwminput_proxy.cs 41348 2020-08-10 15:12:57Z seb $
  *
  *  Implements YPwmInputProxy, the Proxy API for PwmInput
  *
@@ -178,13 +178,17 @@ namespace YoctoProxyAPI
         public const int _PwmReportMode_PWM_STATE = 8;
         public const int _PwmReportMode_PWM_FREQ_CPS = 9;
         public const int _PwmReportMode_PWM_FREQ_CPM = 10;
+        public const int _PwmReportMode_PWM_PERIODCOUNT = 11;
         public const int _DebouncePeriod_INVALID = -1;
+        public const int _Bandwidth_INVALID = -1;
+        public const int _EdgesPerPeriod_INVALID = -1;
 
         // reference to real YoctoAPI object
         protected new YPwmInput _func;
         // property cache
         protected int _pwmReportMode = _PwmReportMode_INVALID;
         protected int _debouncePeriod = _DebouncePeriod_INVALID;
+        protected int _bandwidth = _Bandwidth_INVALID;
         //--- (end of YPwmInput definitions)
 
         //--- (YPwmInput implementation)
@@ -257,6 +261,7 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
             _pwmReportMode = _func.get_pwmReportMode()+1;
             _debouncePeriod = _func.get_debouncePeriod();
+            _bandwidth = _func.get_bandwidth();
         }
 
         /**
@@ -475,9 +480,9 @@ namespace YoctoProxyAPI
          *   <c>pwminput._Pwmreportmode_PWM_PULSEDURATION</c>, <c>pwminput._Pwmreportmode_PWM_EDGECOUNT</c>,
          *   <c>pwminput._Pwmreportmode_PWM_PULSECOUNT</c>, <c>pwminput._Pwmreportmode_PWM_CPS</c>,
          *   <c>pwminput._Pwmreportmode_PWM_CPM</c>, <c>pwminput._Pwmreportmode_PWM_STATE</c>,
-         *   <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c> and <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c>
-         *   corresponding to the parameter (frequency/duty cycle, pulse width, edges count) returned by the
-         *   get_currentValue function and callbacks
+         *   <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c>, <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c> and
+         *   <c>pwminput._Pwmreportmode_PWM_PERIODCOUNT</c> corresponding to the parameter (frequency/duty
+         *   cycle, pulse width, edges count) returned by the get_currentValue function and callbacks
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>pwminput._Pwmreportmode_INVALID</c>.
@@ -508,9 +513,9 @@ namespace YoctoProxyAPI
          *   <c>pwminput._Pwmreportmode_PWM_PULSEDURATION</c>, <c>pwminput._Pwmreportmode_PWM_EDGECOUNT</c>,
          *   <c>pwminput._Pwmreportmode_PWM_PULSECOUNT</c>, <c>pwminput._Pwmreportmode_PWM_CPS</c>,
          *   <c>pwminput._Pwmreportmode_PWM_CPM</c>, <c>pwminput._Pwmreportmode_PWM_STATE</c>,
-         *   <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c> and <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c>
-         *   corresponding to the  parameter  type (frequency/duty cycle, pulse width, or edge count) returned
-         *   by the get_currentValue function and callbacks
+         *   <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c>, <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c> and
+         *   <c>pwminput._Pwmreportmode_PWM_PERIODCOUNT</c> corresponding to the  parameter  type
+         *   (frequency/duty cycle, pulse width, or edge count) returned by the get_currentValue function and callbacks
          * </param>
          * <para>
          * </para>
@@ -672,6 +677,138 @@ namespace YoctoProxyAPI
             }
             _func.set_debouncePeriod(newval);
             _debouncePeriod = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the input signal sampling rate, in kHz.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the input signal sampling rate, in kHz
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>pwminput._Bandwidth_INVALID</c>.
+         * </para>
+         */
+        public int get_bandwidth()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
+            }
+            res = _func.get_bandwidth();
+            if (res == YAPI.INVALID_INT) {
+                res = _Bandwidth_INVALID;
+            }
+            return res;
+        }
+
+        /**
+         * <summary>
+         *   Changes the input signal sampling rate, measured in kHz.
+         * <para>
+         *   A lower sampling frequency can be used to hide hide-frequency bounce effects,
+         *   for instance on electromechanical contacts, but limits the measure resolution.
+         *   Remember to call the <c>saveToFlash()</c>
+         *   method of the module if the modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   an integer corresponding to the input signal sampling rate, measured in kHz
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_bandwidth(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
+            }
+            if (newval == _Bandwidth_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            return _func.set_bandwidth(newval);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Input signal sampling rate, in kHz.</value>
+        public int Bandwidth
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Bandwidth_INVALID;
+                }
+                if (_online) {
+                    return _bandwidth;
+                }
+                return _Bandwidth_INVALID;
+            }
+            set
+            {
+                setprop_bandwidth(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_bandwidth(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Bandwidth_INVALID) {
+                return;
+            }
+            if (newval == _bandwidth) {
+                return;
+            }
+            _func.set_bandwidth(newval);
+            _bandwidth = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the number of edges detected per preiod.
+         * <para>
+         *   For a clean PWM signal, this should be exactly two,
+         *   but in cas the signal is created by a mechanical contact with bounces, it can get higher.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the number of edges detected per preiod
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>pwminput._Edgesperperiod_INVALID</c>.
+         * </para>
+         */
+        public int get_edgesPerPeriod()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
+            }
+            res = _func.get_edgesPerPeriod();
+            if (res == YAPI.INVALID_INT) {
+                res = _EdgesPerPeriod_INVALID;
+            }
+            return res;
         }
 
         /**

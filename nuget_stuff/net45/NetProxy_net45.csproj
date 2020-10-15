@@ -490,6 +490,12 @@
     <Compile Include="..\..\Sources\yocto_snoopingrecord_proxy.cs">
       <Link>yocto_snoopingrecord_proxy.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\yocto_spisnoopingrecord_proxy.cs">
+      <Link>yocto_spisnoopingrecord_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_i2csnoopingrecord_proxy.cs">
+      <Link>yocto_i2csnoopingrecord_proxy.cs</Link>
+    </Compile>
 <!-- yocto_patch_stop -->
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

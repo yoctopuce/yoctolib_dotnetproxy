@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_spiport_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_spiport_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
  *
  *  Implements YSpiPortProxy, the Proxy API for SpiPort
  *
@@ -1768,6 +1768,47 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No SpiPort connected");
             }
             return _func.set_SS(val);
+        }
+
+        /**
+         * <summary>
+         *   Retrieves messages (both direction) in the SPI port buffer, starting at current position.
+         * <para>
+         * </para>
+         * <para>
+         *   If no message is found, the search waits for one up to the specified maximum timeout
+         *   (in milliseconds).
+         * </para>
+         * </summary>
+         * <param name="maxWait">
+         *   the maximum number of milliseconds to wait for a message if none is found
+         *   in the receive buffer.
+         * </param>
+         * <returns>
+         *   an array of <c>YSpiSnoopingRecord</c> objects containing the messages found, if any.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns an empty array.
+         * </para>
+         */
+        public virtual YSpiSnoopingRecordProxy[] snoopMessages(int maxWait)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SpiPort connected");
+            }
+            int i;
+            int arrlen;
+            YSpiSnoopingRecord[] std_res;
+            YSpiSnoopingRecordProxy[] proxy_res;
+            std_res = _func.snoopMessages(maxWait).ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YSpiSnoopingRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YSpiSnoopingRecordProxy(std_res[i]);
+                i = i + 1;
+            }
+            return proxy_res;
         }
     }
     //--- (end of YSpiPort implementation)

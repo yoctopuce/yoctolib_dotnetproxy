@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_serialport_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_serialport_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
  *
  *  Implements YSerialPortProxy, the Proxy API for SerialPort
  *
@@ -678,6 +678,7 @@ namespace YoctoProxyAPI
          *   Returns the type of protocol used over the serial line, as a string.
          * <para>
          *   Possible values are "Line" for ASCII messages separated by CR and/or LF,
+         *   "StxEtx" for ASCII messages delimited by STX/ETX codes,
          *   "Frame:[timeout]ms" for binary messages separated by a delay time,
          *   "Modbus-ASCII" for MODBUS messages in ASCII mode,
          *   "Modbus-RTU" for MODBUS messages in RTU mode,
@@ -709,6 +710,7 @@ namespace YoctoProxyAPI
          *   Changes the type of protocol used over the serial line.
          * <para>
          *   Possible values are "Line" for ASCII messages separated by CR and/or LF,
+         *   "StxEtx" for ASCII messages delimited by STX/ETX codes,
          *   "Frame:[timeout]ms" for binary messages separated by a delay time,
          *   "Modbus-ASCII" for MODBUS messages in ASCII mode,
          *   "Modbus-RTU" for MODBUS messages in RTU mode,
@@ -1640,6 +1642,31 @@ namespace YoctoProxyAPI
                 i = i + 1;
             }
             return proxy_res;
+        }
+
+        /**
+         * <summary>
+         *   Sends an ASCII string to the serial port, preceeded with an STX code and
+         *   followed by an ETX code.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="text">
+         *   the text string to send
+         * </param>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public virtual int writeStxEtx(string text)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SerialPort connected");
+            }
+            return _func.writeStxEtx(text);
         }
 
         /**

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_i2cport_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_i2cport_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
  *
  *  Implements YI2cPortProxy, the Proxy API for I2cPort
  *
@@ -1538,6 +1538,47 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No I2cPort connected");
             }
             return _func.writeArray(new List<int>(byteList));
+        }
+
+        /**
+         * <summary>
+         *   Retrieves messages (both direction) in the I2C port buffer, starting at current position.
+         * <para>
+         * </para>
+         * <para>
+         *   If no message is found, the search waits for one up to the specified maximum timeout
+         *   (in milliseconds).
+         * </para>
+         * </summary>
+         * <param name="maxWait">
+         *   the maximum number of milliseconds to wait for a message if none is found
+         *   in the receive buffer.
+         * </param>
+         * <returns>
+         *   an array of <c>YI2cSnoopingRecord</c> objects containing the messages found, if any.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns an empty array.
+         * </para>
+         */
+        public virtual YI2cSnoopingRecordProxy[] snoopMessages(int maxWait)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No I2cPort connected");
+            }
+            int i;
+            int arrlen;
+            YI2cSnoopingRecord[] std_res;
+            YI2cSnoopingRecordProxy[] proxy_res;
+            std_res = _func.snoopMessages(maxWait).ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YI2cSnoopingRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YI2cSnoopingRecordProxy(std_res[i]);
+                i = i + 1;
+            }
+            return proxy_res;
         }
     }
     //--- (end of YI2cPort implementation)

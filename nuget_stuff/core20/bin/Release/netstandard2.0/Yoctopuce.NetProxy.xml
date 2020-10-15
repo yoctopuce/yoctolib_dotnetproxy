@@ -3530,7 +3530,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the data logger, for instance
-              <c>Y3DMK002.dataLogger</c>.
+              <c>LIGHTMK3.dataLogger</c>.
             </param>
             <returns>
               a <c>YDataLogger</c> object allowing you to drive the data logger.
@@ -4327,6 +4327,44 @@
             </returns>
             <para>
               On failure, throws an exception or returns <c>YAnButton.PULSETIMER_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YAnButton.get_inputType">
+            <summary>
+              Returns the decoding method applied to the input (analog or multiplexed binary switches).
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YAnButton.INPUTTYPE_ANALOG</c> or <c>YAnButton.INPUTTYPE_DIGITAL4</c>, according to the
+              decoding method applied to the input (analog or multiplexed binary switches)
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YAnButton.INPUTTYPE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YAnButton.set_inputType(System.Int32)">
+            <summary>
+              Changes the decoding method applied to the input (analog or multiplexed binary switches).
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YAnButton.INPUTTYPE_ANALOG</c> or <c>YAnButton.INPUTTYPE_DIGITAL4</c>, according to the
+              decoding method applied to the input (analog or multiplexed binary switches)
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
             </para>
         </member>
         <member name="M:YoctoLib.YAnButton.FindAnButton(System.String)">
@@ -6971,6 +7009,19 @@
             </summary>
             <returns>
               a list of <c>YCellRecords</c>.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YCellular.decodePLMN(System.String)">
+            <summary>
+              Returns the cell operator brand for a given MCC/MNC pair.
+            <para>
+            </para>
+            </summary>
+            <param name="mccmnc">
+              a string starting with a MCC code followed by a MNC code,
+            </param>
+            <returns>
+              a string containing the corresponding cell operator brand name.
             </returns>
         </member>
         <member name="M:YoctoLib.YCellular.nextCellular">
@@ -13309,6 +13360,36 @@
               if there are none.
             </returns>
         </member>
+        <member name="M:YoctoLib.YI2cSnoopingRecord.get_time">
+            <summary>
+              Returns the elapsed time, in ms, since the beginning of the preceding message.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the elapsed time, in ms, since the beginning of the preceding message.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YI2cSnoopingRecord.get_direction">
+            <summary>
+              Returns the message direction (RX=0, TX=1).
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message direction (RX=0, TX=1).
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YI2cSnoopingRecord.get_message">
+            <summary>
+              Returns the message content.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message content.
+            </returns>
+        </member>
         <member name="T:YoctoLib.YI2cPort">
             <summary>
               The <c>YI2cPort</c> classe allows you to fully drive a Yoctopuce I2C port.
@@ -14117,6 +14198,27 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YI2cPort.snoopMessages(System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the I2C port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <returns>
+              an array of <c>YI2cSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
             </para>
         </member>
         <member name="M:YoctoLib.YI2cPort.nextI2cPort">
@@ -18090,7 +18192,8 @@
         </member>
         <member name="M:YoctoLib.YPower.get_meter">
             <summary>
-              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time.
+              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+              but only when positive.
             <para>
               Note that this counter is reset at each start of the device.
             </para>
@@ -18099,10 +18202,49 @@
             </summary>
             <returns>
               a floating point number corresponding to the energy counter, maintained by the wattmeter by
-              integrating the power consumption over time
+              integrating the power consumption over time,
+              but only when positive
             </returns>
             <para>
               On failure, throws an exception or returns <c>YPower.METER_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPower.get_deliveredEnergyMeter">
+            <summary>
+              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+              but only when positive.
+            <para>
+              Note that this counter is reset at each start of the device.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the energy counter, maintained by the wattmeter by
+              integrating the power consumption over time,
+              but only when positive
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPower.DELIVEREDENERGYMETER_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPower.get_receivedEnergyMeter">
+            <summary>
+              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+              but only when negative.
+            <para>
+              Note that this counter is reset at each start of the device.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the energy counter, maintained by the wattmeter by
+              integrating the power consumption over time,
+              but only when negative
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPower.RECEIVEDENERGYMETER_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoLib.YPower.get_meterTimer">
@@ -18208,7 +18350,7 @@
         </member>
         <member name="M:YoctoLib.YPower.reset">
             <summary>
-              Resets the energy counter.
+              Resets the energy counters.
             <para>
             </para>
             </summary>
@@ -19537,9 +19679,9 @@
               <c>YPwmInput.PWMREPORTMODE_PWM_PULSEDURATION</c>, <c>YPwmInput.PWMREPORTMODE_PWM_EDGECOUNT</c>,
               <c>YPwmInput.PWMREPORTMODE_PWM_PULSECOUNT</c>, <c>YPwmInput.PWMREPORTMODE_PWM_CPS</c>,
               <c>YPwmInput.PWMREPORTMODE_PWM_CPM</c>, <c>YPwmInput.PWMREPORTMODE_PWM_STATE</c>,
-              <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPS</c> and <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPM</c>
-              corresponding to the parameter (frequency/duty cycle, pulse width, edges count) returned by the
-              get_currentValue function and callbacks
+              <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPS</c>, <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPM</c> and
+              <c>YPwmInput.PWMREPORTMODE_PWM_PERIODCOUNT</c> corresponding to the parameter (frequency/duty
+              cycle, pulse width, edges count) returned by the get_currentValue function and callbacks
             </returns>
             <para>
               On failure, throws an exception or returns <c>YPwmInput.PWMREPORTMODE_INVALID</c>.
@@ -19561,9 +19703,9 @@
               <c>YPwmInput.PWMREPORTMODE_PWM_PULSEDURATION</c>, <c>YPwmInput.PWMREPORTMODE_PWM_EDGECOUNT</c>,
               <c>YPwmInput.PWMREPORTMODE_PWM_PULSECOUNT</c>, <c>YPwmInput.PWMREPORTMODE_PWM_CPS</c>,
               <c>YPwmInput.PWMREPORTMODE_PWM_CPM</c>, <c>YPwmInput.PWMREPORTMODE_PWM_STATE</c>,
-              <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPS</c> and <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPM</c>
-              corresponding to the  parameter  type (frequency/duty cycle, pulse width, or edge count) returned
-              by the get_currentValue function and callbacks
+              <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPS</c>, <c>YPwmInput.PWMREPORTMODE_PWM_FREQ_CPM</c> and
+              <c>YPwmInput.PWMREPORTMODE_PWM_PERIODCOUNT</c> corresponding to the  parameter  type
+              (frequency/duty cycle, pulse width, or edge count) returned by the get_currentValue function and callbacks
             </param>
             <para>
             </para>
@@ -19610,6 +19752,62 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPwmInput.get_bandwidth">
+            <summary>
+              Returns the input signal sampling rate, in kHz.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the input signal sampling rate, in kHz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPwmInput.BANDWIDTH_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPwmInput.set_bandwidth(System.Int32)">
+            <summary>
+              Changes the input signal sampling rate, measured in kHz.
+            <para>
+              A lower sampling frequency can be used to hide hide-frequency bounce effects,
+              for instance on electromechanical contacts, but limits the measure resolution.
+              Remember to call the <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the input signal sampling rate, measured in kHz
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPwmInput.get_edgesPerPeriod">
+            <summary>
+              Returns the number of edges detected per preiod.
+            <para>
+              For a clean PWM signal, this should be exactly two,
+              but in cas the signal is created by a mechanical contact with bounces, it can get higher.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of edges detected per preiod
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPwmInput.EDGESPERPERIOD_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoLib.YPwmInput.FindPwmInput(System.String)">
@@ -22197,12 +22395,12 @@
         </member>
         <member name="M:YoctoLib.YSnoopingRecord.get_direction">
             <summary>
-              Returns the message direction (RX=0 , TX=1) .
+              Returns the message direction (RX=0, TX=1).
             <para>
             </para>
             </summary>
             <returns>
-              the message direction (RX=0 , TX=1) .
+              the message direction (RX=0, TX=1).
             </returns>
         </member>
         <member name="M:YoctoLib.YSnoopingRecord.get_message">
@@ -22427,6 +22625,7 @@
               Returns the type of protocol used over the serial line, as a string.
             <para>
               Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "StxEtx" for ASCII messages delimited by STX/ETX codes,
               "Frame:[timeout]ms" for binary messages separated by a delay time,
               "Modbus-ASCII" for MODBUS messages in ASCII mode,
               "Modbus-RTU" for MODBUS messages in RTU mode,
@@ -22450,6 +22649,7 @@
               Changes the type of protocol used over the serial line.
             <para>
               Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "StxEtx" for ASCII messages delimited by STX/ETX codes,
               "Frame:[timeout]ms" for binary messages separated by a delay time,
               "Modbus-ASCII" for MODBUS messages in ASCII mode,
               "Modbus-RTU" for MODBUS messages in RTU mode,
@@ -23076,6 +23276,23 @@
             </returns>
             <para>
               On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YSerialPort.writeStxEtx(System.String)">
+            <summary>
+              Sends an ASCII string to the serial port, preceeded with an STX code and
+              followed by an ETX code.
+            <para>
+            </para>
+            </summary>
+            <param name="text">
+              the text string to send
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
             </para>
         </member>
         <member name="M:YoctoLib.YSerialPort.writeMODBUS(System.String)">
@@ -23719,6 +23936,36 @@
               a pointer to a <c>YServo</c> object, corresponding to
               the first RC servo motor currently online, or a <c>null</c> pointer
               if there are none.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSpiSnoopingRecord.get_time">
+            <summary>
+              Returns the elapsed time, in ms, since the beginning of the preceding message.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the elapsed time, in ms, since the beginning of the preceding message.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSpiSnoopingRecord.get_direction">
+            <summary>
+              Returns the message direction (RX=0, TX=1).
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message direction (RX=0, TX=1).
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSpiSnoopingRecord.get_message">
+            <summary>
+              Returns the message content.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message content.
             </returns>
         </member>
         <member name="T:YoctoLib.YSpiPort">
@@ -24606,6 +24853,27 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YSpiPort.snoopMessages(System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the SPI port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <returns>
+              an array of <c>YSpiSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
             </para>
         </member>
         <member name="M:YoctoLib.YSpiPort.nextSpiPort">
@@ -31061,6 +31329,47 @@
               On failure, throws an exception or returns <c>anbutton._Pulsetimer_INVALID</c>.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YAnButtonProxy.get_inputType">
+            <summary>
+              Returns the decoding method applied to the input (analog or multiplexed binary switches).
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>anbutton._Inputtype_ANALOG</c> or <c>anbutton._Inputtype_DIGITAL4</c>, according to the
+              decoding method applied to the input (analog or multiplexed binary switches)
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>anbutton._Inputtype_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YAnButtonProxy.set_inputType(System.Int32)">
+            <summary>
+              Changes the decoding method applied to the input (analog or multiplexed binary switches).
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>anbutton._Inputtype_ANALOG</c> or <c>anbutton._Inputtype_DIGITAL4</c>, according to the
+              decoding method applied to the input (analog or multiplexed binary switches)
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YAnButtonProxy.InputType">
+            <value>Decoding method applied to the input (analog or multiplexed binary switches).</value>
+        </member>
         <member name="M:YoctoProxyAPI.YAnButtonProxy.resetCounter">
             <summary>
               Returns the pulse counter value as well as its timer.
@@ -33334,6 +33643,19 @@
               a list of <c>YCellRecords</c>.
             </returns>
         </member>
+        <member name="M:YoctoProxyAPI.YCellularProxy.decodePLMN(System.String)">
+            <summary>
+              Returns the cell operator brand for a given MCC/MNC pair.
+            <para>
+            </para>
+            </summary>
+            <param name="mccmnc">
+              a string starting with a MCC code followed by a MNC code,
+            </param>
+            <returns>
+              a string containing the corresponding cell operator brand name.
+            </returns>
+        </member>
         <member name="T:YoctoProxyAPI.YColorLedProxy">
             <summary>
               The <c>ColorLed</c> class allows you to drive a color LED.
@@ -35427,7 +35749,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the data logger, for instance
-              <c>Y3DMK002.dataLogger</c>.
+              <c>LIGHTMK3.dataLogger</c>.
             </param>
             <returns>
               a <c>YDataLogger</c> object allowing you to drive the data logger.
@@ -39449,6 +39771,27 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YI2cPortProxy.snoopMessages(System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the I2C port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <returns>
+              an array of <c>YI2cSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
         <member name="T:YoctoProxyAPI.YLatitudeProxy">
             <summary>
               The <c>YLatitude</c> class allows you to read and configure Yoctopuce latitude sensors.
@@ -43023,7 +43366,8 @@
         </member>
         <member name="M:YoctoProxyAPI.YPowerProxy.get_meter">
             <summary>
-              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time.
+              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+              but only when positive.
             <para>
               Note that this counter is reset at each start of the device.
             </para>
@@ -43032,10 +43376,49 @@
             </summary>
             <returns>
               a floating point number corresponding to the energy counter, maintained by the wattmeter by
-              integrating the power consumption over time
+              integrating the power consumption over time,
+              but only when positive
             </returns>
             <para>
               On failure, throws an exception or returns <c>power._Meter_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YPowerProxy.get_deliveredEnergyMeter">
+            <summary>
+              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+              but only when positive.
+            <para>
+              Note that this counter is reset at each start of the device.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the energy counter, maintained by the wattmeter by
+              integrating the power consumption over time,
+              but only when positive
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>power._Deliveredenergymeter_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YPowerProxy.get_receivedEnergyMeter">
+            <summary>
+              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+              but only when negative.
+            <para>
+              Note that this counter is reset at each start of the device.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the energy counter, maintained by the wattmeter by
+              integrating the power consumption over time,
+              but only when negative
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>power._Receivedenergymeter_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoProxyAPI.YPowerProxy.get_meterTimer">
@@ -43055,7 +43438,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YPowerProxy.reset">
             <summary>
-              Resets the energy counter.
+              Resets the energy counters.
             <para>
             </para>
             </summary>
@@ -44280,9 +44663,9 @@
               <c>pwminput._Pwmreportmode_PWM_PULSEDURATION</c>, <c>pwminput._Pwmreportmode_PWM_EDGECOUNT</c>,
               <c>pwminput._Pwmreportmode_PWM_PULSECOUNT</c>, <c>pwminput._Pwmreportmode_PWM_CPS</c>,
               <c>pwminput._Pwmreportmode_PWM_CPM</c>, <c>pwminput._Pwmreportmode_PWM_STATE</c>,
-              <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c> and <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c>
-              corresponding to the parameter (frequency/duty cycle, pulse width, edges count) returned by the
-              get_currentValue function and callbacks
+              <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c>, <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c> and
+              <c>pwminput._Pwmreportmode_PWM_PERIODCOUNT</c> corresponding to the parameter (frequency/duty
+              cycle, pulse width, edges count) returned by the get_currentValue function and callbacks
             </returns>
             <para>
               On failure, throws an exception or returns <c>pwminput._Pwmreportmode_INVALID</c>.
@@ -44304,9 +44687,9 @@
               <c>pwminput._Pwmreportmode_PWM_PULSEDURATION</c>, <c>pwminput._Pwmreportmode_PWM_EDGECOUNT</c>,
               <c>pwminput._Pwmreportmode_PWM_PULSECOUNT</c>, <c>pwminput._Pwmreportmode_PWM_CPS</c>,
               <c>pwminput._Pwmreportmode_PWM_CPM</c>, <c>pwminput._Pwmreportmode_PWM_STATE</c>,
-              <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c> and <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c>
-              corresponding to the  parameter  type (frequency/duty cycle, pulse width, or edge count) returned
-              by the get_currentValue function and callbacks
+              <c>pwminput._Pwmreportmode_PWM_FREQ_CPS</c>, <c>pwminput._Pwmreportmode_PWM_FREQ_CPM</c> and
+              <c>pwminput._Pwmreportmode_PWM_PERIODCOUNT</c> corresponding to the  parameter  type
+              (frequency/duty cycle, pulse width, or edge count) returned by the get_currentValue function and callbacks
             </param>
             <para>
             </para>
@@ -44360,6 +44743,65 @@
         </member>
         <member name="P:YoctoProxyAPI.YPwmInputProxy.DebouncePeriod">
             <value>Shortest expected pulse duration, in ms. Any shorter pulse will be automatically ignored (debounce).</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YPwmInputProxy.get_bandwidth">
+            <summary>
+              Returns the input signal sampling rate, in kHz.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the input signal sampling rate, in kHz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>pwminput._Bandwidth_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YPwmInputProxy.set_bandwidth(System.Int32)">
+            <summary>
+              Changes the input signal sampling rate, measured in kHz.
+            <para>
+              A lower sampling frequency can be used to hide hide-frequency bounce effects,
+              for instance on electromechanical contacts, but limits the measure resolution.
+              Remember to call the <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the input signal sampling rate, measured in kHz
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YPwmInputProxy.Bandwidth">
+            <value>Input signal sampling rate, in kHz.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YPwmInputProxy.get_edgesPerPeriod">
+            <summary>
+              Returns the number of edges detected per preiod.
+            <para>
+              For a clean PWM signal, this should be exactly two,
+              but in cas the signal is created by a mechanical contact with bounces, it can get higher.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of edges detected per preiod
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>pwminput._Edgesperperiod_INVALID</c>.
+            </para>
         </member>
         <member name="M:YoctoProxyAPI.YPwmInputProxy.resetCounter">
             <summary>
@@ -46947,6 +47389,7 @@
               Returns the type of protocol used over the serial line, as a string.
             <para>
               Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "StxEtx" for ASCII messages delimited by STX/ETX codes,
               "Frame:[timeout]ms" for binary messages separated by a delay time,
               "Modbus-ASCII" for MODBUS messages in ASCII mode,
               "Modbus-RTU" for MODBUS messages in RTU mode,
@@ -46970,6 +47413,7 @@
               Changes the type of protocol used over the serial line.
             <para>
               Possible values are "Line" for ASCII messages separated by CR and/or LF,
+              "StxEtx" for ASCII messages delimited by STX/ETX codes,
               "Frame:[timeout]ms" for binary messages separated by a delay time,
               "Modbus-ASCII" for MODBUS messages in ASCII mode,
               "Modbus-RTU" for MODBUS messages in RTU mode,
@@ -47537,6 +47981,23 @@
             </returns>
             <para>
               On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YSerialPortProxy.writeStxEtx(System.String)">
+            <summary>
+              Sends an ASCII string to the serial port, preceeded with an STX code and
+              followed by an ETX code.
+            <para>
+            </para>
+            </summary>
+            <param name="text">
+              the text string to send
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
             </para>
         </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.writeMODBUS(System.String)">
@@ -49045,6 +49506,27 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpiPortProxy.snoopMessages(System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the SPI port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <returns>
+              an array of <c>YSpiSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
             </para>
         </member>
         <member name="T:YoctoProxyAPI.YStepperMotorProxy">
@@ -53731,15 +54213,75 @@
         </member>
         <member name="M:YoctoProxyAPI.YSnoopingRecordProxy.get_direction">
             <summary>
-              Returns the message direction (RX=0 , TX=1) .
+              Returns the message direction (RX=0, TX=1).
             <para>
             </para>
             </summary>
             <returns>
-              the message direction (RX=0 , TX=1) .
+              the message direction (RX=0, TX=1).
             </returns>
         </member>
         <member name="M:YoctoProxyAPI.YSnoopingRecordProxy.get_message">
+            <summary>
+              Returns the message content.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message content.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpiSnoopingRecordProxy.get_time">
+            <summary>
+              Returns the elapsed time, in ms, since the beginning of the preceding message.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the elapsed time, in ms, since the beginning of the preceding message.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpiSnoopingRecordProxy.get_direction">
+            <summary>
+              Returns the message direction (RX=0, TX=1).
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message direction (RX=0, TX=1).
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpiSnoopingRecordProxy.get_message">
+            <summary>
+              Returns the message content.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message content.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YI2cSnoopingRecordProxy.get_time">
+            <summary>
+              Returns the elapsed time, in ms, since the beginning of the preceding message.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the elapsed time, in ms, since the beginning of the preceding message.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YI2cSnoopingRecordProxy.get_direction">
+            <summary>
+              Returns the message direction (RX=0, TX=1).
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the message direction (RX=0, TX=1).
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YI2cSnoopingRecordProxy.get_message">
             <summary>
               Returns the message content.
             <para>

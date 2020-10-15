@@ -1,8 +1,8 @@
 /*********************************************************************
  *
- *  $Id: yocto_snoopingrecord_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
+ *  $Id: svn_id $
  *
- *  Implements YSnoopingRecordProxy, the Proxy API for SnoopingRecord
+ *  Implements YI2cSnoopingRecordProxy, the Proxy API for I2cSnoopingRecord
  *
  *  - - - - - - - - - License information: - - - - - - - - -
  *
@@ -49,18 +49,18 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (YSnoopingRecord class start)
-    public class YSnoopingRecordProxy
+    //--- (YI2cSnoopingRecord class start)
+    public class YI2cSnoopingRecordProxy
     {
-        private YSnoopingRecord _objref;
-        internal YSnoopingRecordProxy(YSnoopingRecord objref)
+        private YI2cSnoopingRecord _objref;
+        internal YI2cSnoopingRecordProxy(YI2cSnoopingRecord objref)
         {
              _objref = objref;
         }
-        //--- (end of YSnoopingRecord class start)
-        //--- (YSnoopingRecord definitions)
-        //--- (end of YSnoopingRecord definitions)
-        //--- (YSnoopingRecord implementation)
+        //--- (end of YI2cSnoopingRecord class start)
+        //--- (YI2cSnoopingRecord definitions)
+        //--- (end of YI2cSnoopingRecord definitions)
+        //--- (YI2cSnoopingRecord implementation)
 
         /**
          * <summary>
@@ -134,6 +134,6 @@ namespace YoctoProxyAPI
             }
         }
     }
-    //--- (end of YSnoopingRecord implementation)
+    //--- (end of YI2cSnoopingRecord implementation)
 }
 

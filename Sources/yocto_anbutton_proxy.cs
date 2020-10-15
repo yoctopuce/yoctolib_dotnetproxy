@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_anbutton_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_anbutton_proxy.cs 42054 2020-10-14 09:46:38Z seb $
  *
  *  Implements YAnButtonProxy, the Proxy API for AnButton
  *
@@ -178,6 +178,9 @@ namespace YoctoProxyAPI
         public const long _LastTimeReleased_INVALID = YAPI.INVALID_LONG;
         public const long _PulseCounter_INVALID = YAPI.INVALID_LONG;
         public const long _PulseTimer_INVALID = YAPI.INVALID_LONG;
+        public const int _InputType_INVALID = 0;
+        public const int _InputType_ANALOG = 1;
+        public const int _InputType_DIGITAL4 = 2;
 
         // reference to real YoctoAPI object
         protected new YAnButton _func;
@@ -187,6 +190,7 @@ namespace YoctoProxyAPI
         protected int _calibrationMax = _CalibrationMax_INVALID;
         protected int _calibrationMin = _CalibrationMin_INVALID;
         protected int _sensitivity = _Sensitivity_INVALID;
+        protected int _inputType = _InputType_INVALID;
         protected int _isPressed = _IsPressed_INVALID;
         //--- (end of YAnButton definitions)
 
@@ -263,6 +267,7 @@ namespace YoctoProxyAPI
             _calibrationMax = _func.get_calibrationMax();
             _calibrationMin = _func.get_calibrationMin();
             _sensitivity = _func.get_sensitivity();
+            _inputType = _func.get_inputType()+1;
         }
 
         /**
@@ -899,6 +904,105 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No AnButton connected");
             }
             return _func.get_pulseTimer();
+        }
+
+        /**
+         * <summary>
+         *   Returns the decoding method applied to the input (analog or multiplexed binary switches).
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>anbutton._Inputtype_ANALOG</c> or <c>anbutton._Inputtype_DIGITAL4</c>, according to the
+         *   decoding method applied to the input (analog or multiplexed binary switches)
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>anbutton._Inputtype_INVALID</c>.
+         * </para>
+         */
+        public int get_inputType()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_inputType()+1;
+        }
+
+        /**
+         * <summary>
+         *   Changes the decoding method applied to the input (analog or multiplexed binary switches).
+         * <para>
+         *   Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   either <c>anbutton._Inputtype_ANALOG</c> or <c>anbutton._Inputtype_DIGITAL4</c>, according to the
+         *   decoding method applied to the input (analog or multiplexed binary switches)
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_inputType(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No AnButton connected");
+            }
+            if (newval == _InputType_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_inputType(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Decoding method applied to the input (analog or multiplexed binary switches).</value>
+        public int InputType
+        {
+            get
+            {
+                if (_func == null) {
+                    return _InputType_INVALID;
+                }
+                if (_online) {
+                    return _inputType;
+                }
+                return _InputType_INVALID;
+            }
+            set
+            {
+                setprop_inputType(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_inputType(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _InputType_INVALID) {
+                return;
+            }
+            if (newval == _inputType) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_inputType(newval-1);
+            _inputType = newval;
         }
 
         /**

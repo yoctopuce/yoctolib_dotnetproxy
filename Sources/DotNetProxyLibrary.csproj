@@ -194,6 +194,8 @@
     <Compile Include="yocto_cellrecord_proxy.cs"/>
     <Compile Include="yocto_sms_proxy.cs"/>
     <Compile Include="yocto_snoopingrecord_proxy.cs"/>
+    <Compile Include="yocto_spisnoopingrecord_proxy.cs"/>
+    <Compile Include="yocto_i2csnoopingrecord_proxy.cs"/>
 
   </ItemGroup>
   <ItemGroup>

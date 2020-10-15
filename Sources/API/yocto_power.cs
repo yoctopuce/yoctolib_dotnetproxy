@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_power.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_power.cs 41290 2020-07-24 10:02:23Z mvuilleu $
  *
  *  Implements yFindPower(), the high-level API for Power functions
  *
@@ -77,9 +77,13 @@ public class YPower : YSensor
 
     public const double COSPHI_INVALID = YAPI.INVALID_DOUBLE;
     public const double METER_INVALID = YAPI.INVALID_DOUBLE;
+    public const double DELIVEREDENERGYMETER_INVALID = YAPI.INVALID_DOUBLE;
+    public const double RECEIVEDENERGYMETER_INVALID = YAPI.INVALID_DOUBLE;
     public const int METERTIMER_INVALID = YAPI.INVALID_UINT;
     protected double _cosPhi = COSPHI_INVALID;
     protected double _meter = METER_INVALID;
+    protected double _deliveredEnergyMeter = DELIVEREDENERGYMETER_INVALID;
+    protected double _receivedEnergyMeter = RECEIVEDENERGYMETER_INVALID;
     protected int _meterTimer = METERTIMER_INVALID;
     protected ValueCallback _valueCallbackPower = null;
     protected TimedReportCallback _timedReportCallbackPower = null;
@@ -104,6 +108,14 @@ public class YPower : YSensor
         if (json_val.has("meter"))
         {
             _meter = Math.Round(json_val.getDouble("meter") * 1000.0 / 65536.0) / 1000.0;
+        }
+        if (json_val.has("deliveredEnergyMeter"))
+        {
+            _deliveredEnergyMeter = Math.Round(json_val.getDouble("deliveredEnergyMeter") * 1000.0 / 65536.0) / 1000.0;
+        }
+        if (json_val.has("receivedEnergyMeter"))
+        {
+            _receivedEnergyMeter = Math.Round(json_val.getDouble("receivedEnergyMeter") * 1000.0 / 65536.0) / 1000.0;
         }
         if (json_val.has("meterTimer"))
         {
@@ -156,7 +168,8 @@ public class YPower : YSensor
 
     /**
      * <summary>
-     *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time.
+     *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+     *   but only when positive.
      * <para>
      *   Note that this counter is reset at each start of the device.
      * </para>
@@ -165,7 +178,8 @@ public class YPower : YSensor
      * </summary>
      * <returns>
      *   a floating point number corresponding to the energy counter, maintained by the wattmeter by
-     *   integrating the power consumption over time
+     *   integrating the power consumption over time,
+     *   but only when positive
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YPower.METER_INVALID</c>.
@@ -181,6 +195,74 @@ public class YPower : YSensor
                 }
             }
             res = this._meter;
+        }
+        return res;
+    }
+
+
+    /**
+     * <summary>
+     *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+     *   but only when positive.
+     * <para>
+     *   Note that this counter is reset at each start of the device.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   a floating point number corresponding to the energy counter, maintained by the wattmeter by
+     *   integrating the power consumption over time,
+     *   but only when positive
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YPower.DELIVEREDENERGYMETER_INVALID</c>.
+     * </para>
+     */
+    public double get_deliveredEnergyMeter()
+    {
+        double res;
+        lock (_thisLock) {
+            if (this._cacheExpiration <= YAPI.GetTickCount()) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return DELIVEREDENERGYMETER_INVALID;
+                }
+            }
+            res = this._deliveredEnergyMeter;
+        }
+        return res;
+    }
+
+
+    /**
+     * <summary>
+     *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+     *   but only when negative.
+     * <para>
+     *   Note that this counter is reset at each start of the device.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   a floating point number corresponding to the energy counter, maintained by the wattmeter by
+     *   integrating the power consumption over time,
+     *   but only when negative
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YPower.RECEIVEDENERGYMETER_INVALID</c>.
+     * </para>
+     */
+    public double get_receivedEnergyMeter()
+    {
+        double res;
+        lock (_thisLock) {
+            if (this._cacheExpiration <= YAPI.GetTickCount()) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return RECEIVEDENERGYMETER_INVALID;
+                }
+            }
+            res = this._receivedEnergyMeter;
         }
         return res;
     }
@@ -374,7 +456,7 @@ public class YPower : YSensor
 
     /**
      * <summary>
-     *   Resets the energy counter.
+     *   Resets the energy counters.
      * <para>
      * </para>
      * </summary>

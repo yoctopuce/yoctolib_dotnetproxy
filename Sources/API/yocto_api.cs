@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 40899 2020-06-10 07:24:13Z seb $
+ * $Id: yocto_api.cs 41171 2020-07-02 17:49:00Z mvuilleu $
  *
  * High-level programming interface, common to all modules
  *
@@ -2761,7 +2761,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "41115";
+    public const string YOCTO_API_BUILD_NO = "42060";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -14321,7 +14321,7 @@ public class YDataLogger : YFunction
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the data logger, for instance
-     *   <c>Y3DMK002.dataLogger</c>.
+     *   <c>LIGHTMK3.dataLogger</c>.
      * </param>
      * <returns>
      *   a <c>YDataLogger</c> object allowing you to drive the data logger.

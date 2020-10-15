@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_datalogger_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_datalogger_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
  *
  *  Implements YDataLoggerProxy, the Proxy API for DataLogger
  *
@@ -153,7 +153,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the data logger, for instance
-         *   <c>Y3DMK002.dataLogger</c>.
+         *   <c>LIGHTMK3.dataLogger</c>.
          * </param>
          * <returns>
          *   a <c>YDataLogger</c> object allowing you to drive the data logger.

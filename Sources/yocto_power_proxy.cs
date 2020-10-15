@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_power_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: yocto_power_proxy.cs 41290 2020-07-24 10:02:23Z mvuilleu $
  *
  *  Implements YPowerProxy, the Proxy API for Power
  *
@@ -162,6 +162,8 @@ namespace YoctoProxyAPI
         //--- (YPower definitions)
         public const double _CosPhi_INVALID = Double.NaN;
         public const double _Meter_INVALID = Double.NaN;
+        public const double _DeliveredEnergyMeter_INVALID = Double.NaN;
+        public const double _ReceivedEnergyMeter_INVALID = Double.NaN;
         public const int _MeterTimer_INVALID = -1;
 
         // reference to real YoctoAPI object
@@ -271,7 +273,8 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time.
+         *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+         *   but only when positive.
          * <para>
          *   Note that this counter is reset at each start of the device.
          * </para>
@@ -280,7 +283,8 @@ namespace YoctoProxyAPI
          * </summary>
          * <returns>
          *   a floating point number corresponding to the energy counter, maintained by the wattmeter by
-         *   integrating the power consumption over time
+         *   integrating the power consumption over time,
+         *   but only when positive
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>power._Meter_INVALID</c>.
@@ -293,6 +297,70 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No Power connected");
             }
             res = _func.get_meter();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
+            return res;
+        }
+
+        /**
+         * <summary>
+         *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+         *   but only when positive.
+         * <para>
+         *   Note that this counter is reset at each start of the device.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a floating point number corresponding to the energy counter, maintained by the wattmeter by
+         *   integrating the power consumption over time,
+         *   but only when positive
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>power._Deliveredenergymeter_INVALID</c>.
+         * </para>
+         */
+        public double get_deliveredEnergyMeter()
+        {
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Power connected");
+            }
+            res = _func.get_deliveredEnergyMeter();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
+            return res;
+        }
+
+        /**
+         * <summary>
+         *   Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
+         *   but only when negative.
+         * <para>
+         *   Note that this counter is reset at each start of the device.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a floating point number corresponding to the energy counter, maintained by the wattmeter by
+         *   integrating the power consumption over time,
+         *   but only when negative
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>power._Receivedenergymeter_INVALID</c>.
+         * </para>
+         */
+        public double get_receivedEnergyMeter()
+        {
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Power connected");
+            }
+            res = _func.get_receivedEnergyMeter();
             if (res == YAPI.INVALID_DOUBLE) {
                 res = Double.NaN;
             }
@@ -329,7 +397,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Resets the energy counter.
+         *   Resets the energy counters.
          * <para>
          * </para>
          * </summary>
