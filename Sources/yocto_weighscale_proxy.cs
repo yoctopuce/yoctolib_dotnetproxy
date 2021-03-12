@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_weighscale_proxy.cs 41112 2020-06-29 13:21:58Z seb $
+ *  $Id: yocto_weighscale_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YWeighScaleProxy, the Proxy API for WeighScale
  *
@@ -272,7 +272,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -298,11 +298,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>weighscale._Excitation_OFF</c>, <c>weighscale._Excitation_DC</c> and
-         *   <c>weighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>YWeighScale.EXCITATION_OFF</c>, <c>YWeighScale.EXCITATION_DC</c> and
+         *   <c>YWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>weighscale._Excitation_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWeighScale.EXCITATION_INVALID</c>.
          * </para>
          */
         public int get_excitation()
@@ -325,13 +325,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>weighscale._Excitation_OFF</c>, <c>weighscale._Excitation_DC</c> and
-         *   <c>weighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>YWeighScale.EXCITATION_OFF</c>, <c>YWeighScale.EXCITATION_DC</c> and
+         *   <c>YWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -409,7 +409,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -442,7 +442,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the averaged temperature update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>weighscale._Tempavgadaptratio_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWeighScale.TEMPAVGADAPTRATIO_INVALID</c>.
          * </para>
          */
         public double get_tempAvgAdaptRatio()
@@ -516,7 +516,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -548,7 +548,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the temperature change update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>weighscale._Tempchgadaptratio_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWeighScale.TEMPCHGADAPTRATIO_INVALID</c>.
          * </para>
          */
         public double get_tempChgAdaptRatio()
@@ -615,7 +615,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current averaged temperature, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>weighscale._Comptempavg_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWeighScale.COMPTEMPAVG_INVALID</c>.
          * </para>
          */
         public double get_compTempAvg()
@@ -643,7 +643,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current temperature variation, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>weighscale._Comptempchg_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWeighScale.COMPTEMPCHG_INVALID</c>.
          * </para>
          */
         public double get_compTempChg()
@@ -671,7 +671,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current current thermal compensation value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>weighscale._Compensation_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWeighScale.COMPENSATION_INVALID</c>.
          * </para>
          */
         public double get_compensation()
@@ -706,7 +706,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -738,7 +738,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the zero tracking threshold value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>weighscale._Zerotracking_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWeighScale.ZEROTRACKING_INVALID</c>.
          * </para>
          */
         public double get_zeroTracking()
@@ -805,7 +805,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -835,7 +835,7 @@ namespace YoctoProxyAPI
          *   maximum weight to be expected on the load cell.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -869,7 +869,7 @@ namespace YoctoProxyAPI
          *   argument, index by index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -903,7 +903,7 @@ namespace YoctoProxyAPI
          *   argument, index by index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -937,7 +937,7 @@ namespace YoctoProxyAPI
          *   argument, index by index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -971,7 +971,7 @@ namespace YoctoProxyAPI
          *   in the first argument, index by index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_oscontrol_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: yocto_oscontrol_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YOsControlProxy, the Proxy API for OsControl
  *
@@ -250,7 +250,7 @@ namespace YoctoProxyAPI
          *   shutdown has been scheduled
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>oscontrol._Shutdowncountdown_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YOsControl.SHUTDOWNCOUNTDOWN_INVALID</c>.
          * </para>
          */
         public int get_shutdownCountdown()
@@ -276,7 +276,7 @@ namespace YoctoProxyAPI
          *   number of seconds before shutdown
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_relay_proxy.cs 41109 2020-06-29 12:40:42Z seb $
+ *  $Id: yocto_relay_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YRelayProxy, the Proxy API for Relay
  *
@@ -268,11 +268,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>relay._State_A</c> or <c>relay._State_B</c>, according to the state of the relays (A for
+         *   either <c>YRelay.STATE_A</c> or <c>YRelay.STATE_B</c>, according to the state of the relays (A for
          *   the idle position, B for the active position)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>relay._State_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRelay.STATE_INVALID</c>.
          * </para>
          */
         public int get_state()
@@ -293,13 +293,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>relay._State_A</c> or <c>relay._State_B</c>, according to the state of the relays (A for
+         *   either <c>YRelay.STATE_A</c> or <c>YRelay.STATE_B</c>, according to the state of the relays (A for
          *   the idle position, B for the active position)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -378,13 +378,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>relay._Stateatpoweron_UNCHANGED</c>, <c>relay._Stateatpoweron_A</c> and
-         *   <c>relay._Stateatpoweron_B</c> corresponding to the state of the relays at device startup (A for
+         *   a value among <c>YRelay.STATEATPOWERON_UNCHANGED</c>, <c>YRelay.STATEATPOWERON_A</c> and
+         *   <c>YRelay.STATEATPOWERON_B</c> corresponding to the state of the relays at device startup (A for
          *   the idle position,
          *   B for the active position, UNCHANGED to leave the relay state as is)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>relay._Stateatpoweron_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRelay.STATEATPOWERON_INVALID</c>.
          * </para>
          */
         public int get_stateAtPowerOn()
@@ -408,15 +408,15 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>relay._Stateatpoweron_UNCHANGED</c>, <c>relay._Stateatpoweron_A</c> and
-         *   <c>relay._Stateatpoweron_B</c> corresponding to the state of the relays at device startup (A for
+         *   a value among <c>YRelay.STATEATPOWERON_UNCHANGED</c>, <c>YRelay.STATEATPOWERON_A</c> and
+         *   <c>YRelay.STATEATPOWERON_B</c> corresponding to the state of the relays at device startup (A for
          *   the idle position,
          *   B for the active position, UNCHANGED to leave the relay state as is)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -489,7 +489,7 @@ namespace YoctoProxyAPI
          *   A before automatically switching back in to B state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>relay._Maxtimeonstatea_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRelay.MAXTIMEONSTATEA_INVALID</c>.
          * </para>
          */
         public long get_maxTimeOnStateA()
@@ -519,7 +519,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -589,7 +589,7 @@ namespace YoctoProxyAPI
          *   an integer
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>relay._Maxtimeonstateb_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRelay.MAXTIMEONSTATEB_INVALID</c>.
          * </para>
          */
         public long get_maxTimeOnStateB()
@@ -619,7 +619,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -684,11 +684,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>relay._Output_OFF</c> or <c>relay._Output_ON</c>, according to the output state of the
+         *   either <c>YRelay.OUTPUT_OFF</c> or <c>YRelay.OUTPUT_ON</c>, according to the output state of the
          *   relays, when used as a simple switch (single throw)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>relay._Output_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRelay.OUTPUT_INVALID</c>.
          * </para>
          */
         public int get_output()
@@ -709,13 +709,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>relay._Output_OFF</c> or <c>relay._Output_ON</c>, according to the output state of the
+         *   either <c>YRelay.OUTPUT_OFF</c> or <c>YRelay.OUTPUT_ON</c>, according to the output state of the
          *   relays, when used as a simple switch (single throw)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -748,7 +748,7 @@ namespace YoctoProxyAPI
          *   (state A), during a measured pulse generation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>relay._Pulsetimer_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRelay.PULSETIMER_INVALID</c>.
          * </para>
          */
         public long get_pulseTimer()
@@ -774,7 +774,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -805,7 +805,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -833,7 +833,7 @@ namespace YoctoProxyAPI
          *   When there is no scheduled pulse, returns zero
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>relay._Countdown_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRelay.COUNTDOWN_INVALID</c>.
          * </para>
          */
         public long get_countdown()
@@ -851,7 +851,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

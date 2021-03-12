@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_module_proxy.cs 40752 2020-05-28 13:32:54Z mvuilleu $
+ *  $Id: yocto_module_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YModuleProxy, the Proxy API for Module
  *
@@ -300,7 +300,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the commercial name of the module, as set by the factory
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Productname_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.PRODUCTNAME_INVALID</c>.
          * </para>
          */
         public string get_productName()
@@ -339,7 +339,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the USB device identifier of the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Productid_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.PRODUCTID_INVALID</c>.
          * </para>
          */
         public int get_productId()
@@ -384,7 +384,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the release number of the module hardware, preprogrammed at the factory
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Productrelease_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.PRODUCTRELEASE_INVALID</c>.
          * </para>
          */
         public int get_productRelease()
@@ -428,7 +428,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the version of the firmware embedded in the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Firmwarerelease_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.FIRMWARERELEASE_INVALID</c>.
          * </para>
          */
         public string get_firmwareRelease()
@@ -464,11 +464,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>module._Persistentsettings_LOADED</c>, <c>module._Persistentsettings_SAVED</c> and
-         *   <c>module._Persistentsettings_MODIFIED</c> corresponding to the current state of persistent module settings
+         *   a value among <c>YModule.PERSISTENTSETTINGS_LOADED</c>, <c>YModule.PERSISTENTSETTINGS_SAVED</c> and
+         *   <c>YModule.PERSISTENTSETTINGS_MODIFIED</c> corresponding to the current state of persistent module settings
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Persistentsettings_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.PERSISTENTSETTINGS_INVALID</c>.
          * </para>
          */
         public int get_persistentSettings()
@@ -492,7 +492,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the luminosity of the  module informative LEDs (from 0 to 100)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Luminosity_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.LUMINOSITY_INVALID</c>.
          * </para>
          */
         public int get_luminosity()
@@ -526,7 +526,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -591,10 +591,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>module._Beacon_OFF</c> or <c>module._Beacon_ON</c>, according to the state of the localization beacon
+         *   either <c>YModule.BEACON_OFF</c> or <c>YModule.BEACON_ON</c>, according to the state of the localization beacon
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Beacon_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.BEACON_INVALID</c>.
          * </para>
          */
         public int get_beacon()
@@ -615,12 +615,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>module._Beacon_OFF</c> or <c>module._Beacon_ON</c>
+         *   either <c>YModule.BEACON_OFF</c> or <c>YModule.BEACON_ON</c>
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -650,7 +650,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of milliseconds spent since the module was powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Uptime_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.UPTIME_INVALID</c>.
          * </para>
          */
         public long get_upTime()
@@ -673,7 +673,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current consumed by the module on the USB bus, in milli-amps
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Usbcurrent_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.USBCURRENT_INVALID</c>.
          * </para>
          */
         public int get_usbCurrent()
@@ -703,7 +703,7 @@ namespace YoctoProxyAPI
          *   reboot has been scheduled
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Rebootcountdown_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.REBOOTCOUNTDOWN_INVALID</c>.
          * </para>
          */
         public int get_rebootCountdown()
@@ -727,7 +727,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the value previously stored in this attribute
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>module._Uservar_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YModule.USERVAR_INVALID</c>.
          * </para>
          */
         public int get_userVar()
@@ -755,7 +755,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -781,7 +781,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -803,7 +803,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -827,7 +827,7 @@ namespace YoctoProxyAPI
          *   number of seconds before rebooting
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -851,7 +851,7 @@ namespace YoctoProxyAPI
          *   number of seconds before rebooting
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1011,7 +1011,7 @@ namespace YoctoProxyAPI
          *   a binary buffer with all the settings.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1088,7 +1088,7 @@ namespace YoctoProxyAPI
          *   a binary buffer with all the settings.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1207,7 +1207,7 @@ namespace YoctoProxyAPI
          *   the string to append to the logs.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

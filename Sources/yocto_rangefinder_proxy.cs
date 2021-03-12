@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_rangefinder_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_rangefinder_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YRangeFinderProxy, the Proxy API for RangeFinder
  *
@@ -297,7 +297,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -325,12 +325,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>rangefinder._Rangefindermode_DEFAULT</c>, <c>rangefinder._Rangefindermode_LONG_RANGE</c>,
-         *   <c>rangefinder._Rangefindermode_HIGH_ACCURACY</c> and <c>rangefinder._Rangefindermode_HIGH_SPEED</c>
+         *   a value among <c>YRangeFinder.RANGEFINDERMODE_DEFAULT</c>, <c>YRangeFinder.RANGEFINDERMODE_LONG_RANGE</c>,
+         *   <c>YRangeFinder.RANGEFINDERMODE_HIGH_ACCURACY</c> and <c>YRangeFinder.RANGEFINDERMODE_HIGH_SPEED</c>
          *   corresponding to the range finder running mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>rangefinder._Rangefindermode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRangeFinder.RANGEFINDERMODE_INVALID</c>.
          * </para>
          */
         public int get_rangeFinderMode()
@@ -353,15 +353,15 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>rangefinder._Rangefindermode_DEFAULT</c>, <c>rangefinder._Rangefindermode_LONG_RANGE</c>,
-         *   <c>rangefinder._Rangefindermode_HIGH_ACCURACY</c> and <c>rangefinder._Rangefindermode_HIGH_SPEED</c>
+         *   a value among <c>YRangeFinder.RANGEFINDERMODE_DEFAULT</c>, <c>YRangeFinder.RANGEFINDERMODE_LONG_RANGE</c>,
+         *   <c>YRangeFinder.RANGEFINDERMODE_HIGH_ACCURACY</c> and <c>YRangeFinder.RANGEFINDERMODE_HIGH_SPEED</c>
          *   corresponding to the rangefinder running mode, allowing you to put priority on
          *   precision, speed or maximum range
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -434,7 +434,7 @@ namespace YoctoProxyAPI
          *   reliability
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>rangefinder._Timeframe_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRangeFinder.TIMEFRAME_INVALID</c>.
          * </para>
          */
         public long get_timeFrame()
@@ -465,7 +465,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -533,7 +533,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to a measure quality estimate, based on measured dispersion
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>rangefinder._Quality_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRangeFinder.QUALITY_INVALID</c>.
          * </para>
          */
         public int get_quality()
@@ -561,7 +561,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current sensor temperature, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>rangefinder._Currenttemperature_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRangeFinder.CURRENTTEMPERATURE_INVALID</c>.
          * </para>
          */
         public double get_currentTemperature()
@@ -614,7 +614,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -636,7 +636,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -662,7 +662,7 @@ namespace YoctoProxyAPI
          *   on the unit selected in the device
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -688,7 +688,7 @@ namespace YoctoProxyAPI
          *   on the unit selected in the device
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -709,7 +709,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */

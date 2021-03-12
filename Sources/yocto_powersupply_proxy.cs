@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_powersupply_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_powersupply_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YPowerSupplyProxy, the Proxy API for PowerSupply
  *
@@ -270,7 +270,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -299,7 +299,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the voltage set point, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Voltagesetpoint_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGESETPOINT_INVALID</c>.
          * </para>
          */
         public double get_voltageSetPoint()
@@ -329,7 +329,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -358,7 +358,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current limit, in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Currentlimit_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.CURRENTLIMIT_INVALID</c>.
          * </para>
          */
         public double get_currentLimit()
@@ -383,11 +383,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>powersupply._Poweroutput_OFF</c> or <c>powersupply._Poweroutput_ON</c>, according to the
+         *   either <c>YPowerSupply.POWEROUTPUT_OFF</c> or <c>YPowerSupply.POWEROUTPUT_ON</c>, according to the
          *   power supply output switch state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Poweroutput_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.POWEROUTPUT_INVALID</c>.
          * </para>
          */
         public int get_powerOutput()
@@ -408,13 +408,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>powersupply._Poweroutput_OFF</c> or <c>powersupply._Poweroutput_ON</c>, according to the
+         *   either <c>YPowerSupply.POWEROUTPUT_OFF</c> or <c>YPowerSupply.POWEROUTPUT_ON</c>, according to the
          *   power supply output switch state
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -441,11 +441,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>powersupply._Voltagesense_INT</c> or <c>powersupply._Voltagesense_EXT</c>, according to
+         *   either <c>YPowerSupply.VOLTAGESENSE_INT</c> or <c>YPowerSupply.VOLTAGESENSE_EXT</c>, according to
          *   the output voltage control point
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Voltagesense_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGESENSE_INVALID</c>.
          * </para>
          */
         public int get_voltageSense()
@@ -466,13 +466,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>powersupply._Voltagesense_INT</c> or <c>powersupply._Voltagesense_EXT</c>, according to
+         *   either <c>YPowerSupply.VOLTAGESENSE_INT</c> or <c>YPowerSupply.VOLTAGESENSE_EXT</c>, according to
          *   the voltage control point
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -502,7 +502,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the measured output voltage, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Measuredvoltage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.MEASUREDVOLTAGE_INVALID</c>.
          * </para>
          */
         public double get_measuredVoltage()
@@ -530,7 +530,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the measured output current, in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Measuredcurrent_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.MEASUREDCURRENT_INVALID</c>.
          * </para>
          */
         public double get_measuredCurrent()
@@ -558,7 +558,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the measured input voltage, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Inputvoltage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.INPUTVOLTAGE_INVALID</c>.
          * </para>
          */
         public double get_inputVoltage()
@@ -586,7 +586,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the internal voltage, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Vint_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.VINT_INVALID</c>.
          * </para>
          */
         public double get_vInt()
@@ -614,7 +614,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the LDO temperature, in Celsius
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Ldotemperature_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.LDOTEMPERATURE_INVALID</c>.
          * </para>
          */
         public double get_ldoTemperature()
@@ -646,7 +646,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -675,7 +675,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the selected voltage set point at device startup, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Voltageatstartup_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGEATSTARTUP_INVALID</c>.
          * </para>
          */
         public double get_voltageAtStartUp()
@@ -746,7 +746,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -775,7 +775,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the selected current limit at device startup, in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>powersupply._Currentatstartup_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.CURRENTATSTARTUP_INVALID</c>.
          * </para>
          */
         public double get_currentAtStartUp()
@@ -846,7 +846,7 @@ namespace YoctoProxyAPI
          *   total duration of the transition, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          */
         public virtual int voltageMove(double V_target, int ms_duration)

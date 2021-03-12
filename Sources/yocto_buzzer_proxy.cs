@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_buzzer_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_buzzer_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YBuzzerProxy, the Proxy API for Buzzer
  *
@@ -262,7 +262,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -291,7 +291,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the  frequency of the signal sent to the buzzer/speaker
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>buzzer._Frequency_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YBuzzer.FREQUENCY_INVALID</c>.
          * </para>
          */
         public double get_frequency()
@@ -364,7 +364,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the volume of the signal sent to the buzzer/speaker
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>buzzer._Volume_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YBuzzer.VOLUME_INVALID</c>.
          * </para>
          */
         public int get_volume()
@@ -396,7 +396,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -464,7 +464,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current length of the playing sequence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>buzzer._Playseqsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YBuzzer.PLAYSEQSIZE_INVALID</c>.
          * </para>
          */
         public int get_playSeqSize()
@@ -492,7 +492,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum length of the playing sequence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>buzzer._Playseqmaxsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YBuzzer.PLAYSEQMAXSIZE_INVALID</c>.
          * </para>
          */
         public int get_playSeqMaxSize()
@@ -540,7 +540,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the playing sequence signature
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>buzzer._Playseqsignature_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YBuzzer.PLAYSEQSIGNATURE_INVALID</c>.
          * </para>
          */
         public int get_playSeqSignature()
@@ -569,7 +569,7 @@ namespace YoctoProxyAPI
          *   duration of the frequency transition, in milliseconds.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -594,7 +594,7 @@ namespace YoctoProxyAPI
          *   pulse duration, in milliseconds.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -623,7 +623,7 @@ namespace YoctoProxyAPI
          *   duration of the volume transition, in milliseconds.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -651,7 +651,7 @@ namespace YoctoProxyAPI
          *   notes to be played, as a text string.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -673,7 +673,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -692,7 +692,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -711,7 +711,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -730,7 +730,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -749,7 +749,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -768,7 +768,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -793,7 +793,7 @@ namespace YoctoProxyAPI
          *   pulse duration in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -820,7 +820,7 @@ namespace YoctoProxyAPI
          *   pulse duration in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -847,7 +847,7 @@ namespace YoctoProxyAPI
          *   change duration in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -877,7 +877,7 @@ namespace YoctoProxyAPI
          *   notes to be played, as a text string.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */

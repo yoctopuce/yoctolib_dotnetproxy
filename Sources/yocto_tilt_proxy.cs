@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_tilt_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_tilt_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YTiltProxy, the Proxy API for Tilt
  *
@@ -251,17 +251,17 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Returns the measure update frequency, measured in Hz.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>tilt._Bandwidth_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YTilt.BANDWIDTH_INVALID</c>.
          * </para>
          */
         public int get_bandwidth()
@@ -279,7 +279,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Changes the measure update frequency, measured in Hz.
          * <para>
          *   When the
          *   frequency is lower, the device performs averaging.
@@ -290,12 +290,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -313,7 +313,7 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access (configuration)
-        /// <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
+        /// <value>Measure update frequency, measured in Hz.</value>
         public int Bandwidth
         {
             get
@@ -349,6 +349,52 @@ namespace YoctoProxyAPI
             }
             _func.set_bandwidth(newval);
             _bandwidth = newval;
+        }
+
+        /**
+         * <summary>
+         *   Performs a zero calibration for the tilt measurement (Yocto-Inclinometer only).
+         * <para>
+         *   When this method is invoked, a simple shift (translation)
+         *   is applied so that the current position is reported as a zero angle.
+         *   Be aware that this shift will also affect the measurement boundaries.
+         * </para>
+         * </summary>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public virtual int calibrateToZero()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Tilt connected");
+            }
+            return _func.calibrateToZero();
+        }
+
+        /**
+         * <summary>
+         *   Cancels any previous zero calibration for the tilt measurement (Yocto-Inclinometer only).
+         * <para>
+         *   This function restores the factory zero calibration.
+         * </para>
+         * </summary>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public virtual int restoreZeroCalibration()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Tilt connected");
+            }
+            return _func.restoreZeroCalibration();
         }
     }
     //--- (end of YTilt implementation)

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_magnetometer_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_magnetometer_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YMagnetometerProxy, the Proxy API for Magnetometer
  *
@@ -250,17 +250,17 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Returns the measure update frequency, measured in Hz.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>magnetometer._Bandwidth_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMagnetometer.BANDWIDTH_INVALID</c>.
          * </para>
          */
         public int get_bandwidth()
@@ -278,7 +278,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Changes the measure update frequency, measured in Hz.
          * <para>
          *   When the
          *   frequency is lower, the device performs averaging.
@@ -289,12 +289,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -312,7 +312,7 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access (configuration)
-        /// <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
+        /// <value>Measure update frequency, measured in Hz.</value>
         public int Bandwidth
         {
             get
@@ -362,7 +362,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the X component of the magnetic field, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>magnetometer._Xvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMagnetometer.XVALUE_INVALID</c>.
          * </para>
          */
         public double get_xValue()
@@ -390,7 +390,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the Y component of the magnetic field, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>magnetometer._Yvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMagnetometer.YVALUE_INVALID</c>.
          * </para>
          */
         public double get_yValue()
@@ -418,7 +418,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the Z component of the magnetic field, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>magnetometer._Zvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMagnetometer.ZVALUE_INVALID</c>.
          * </para>
          */
         public double get_zValue()

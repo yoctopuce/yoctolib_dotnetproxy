@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: svn_id $
+ *  $Id: yocto_dataset_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YDataSetProxy, the Proxy API for DataSet
  *
@@ -79,7 +79,7 @@ namespace YoctoProxyAPI
          *   a string that uniquely identifies the function (ex: <c>THRMCPL1-123456.temperature1</c>)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns  <c>dataset._Hardwareid_INVALID</c>.
+         *   On failure, throws an exception or returns  <c>YDataSet.HARDWAREID_INVALID</c>.
          * </para>
          */
         public virtual string get_hardwareId()
@@ -118,7 +118,7 @@ namespace YoctoProxyAPI
          *   a string that represents a physical unit.
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns  <c>dataset._Unit_INVALID</c>.
+         *   On failure, throws an exception or returns  <c>YDataSet.UNIT_INVALID</c>.
          * </para>
          */
         public virtual string get_unit()

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_network_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_network_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YNetworkProxy, the Proxy API for Network
  *
@@ -338,12 +338,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>network._Readiness_DOWN</c>, <c>network._Readiness_EXISTS</c>,
-         *   <c>network._Readiness_LINKED</c>, <c>network._Readiness_LAN_OK</c> and
-         *   <c>network._Readiness_WWW_OK</c> corresponding to the current established working mode of the network interface
+         *   a value among <c>YNetwork.READINESS_DOWN</c>, <c>YNetwork.READINESS_EXISTS</c>,
+         *   <c>YNetwork.READINESS_LINKED</c>, <c>YNetwork.READINESS_LAN_OK</c> and
+         *   <c>YNetwork.READINESS_WWW_OK</c> corresponding to the current established working mode of the network interface
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Readiness_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.READINESS_INVALID</c>.
          * </para>
          */
         public int get_readiness()
@@ -422,7 +422,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the MAC address of the network interface
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Macaddress_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.MACADDRESS_INVALID</c>.
          * </para>
          */
         public string get_macAddress()
@@ -463,7 +463,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the IP address currently in use by the device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Ipaddress_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.IPADDRESS_INVALID</c>.
          * </para>
          */
         public string get_ipAddress()
@@ -486,7 +486,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the subnet mask currently used by the device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Subnetmask_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.SUBNETMASK_INVALID</c>.
          * </para>
          */
         public string get_subnetMask()
@@ -509,7 +509,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the IP address of the router on the device subnet (default gateway)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Router_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.ROUTER_INVALID</c>.
          * </para>
          */
         public string get_router()
@@ -546,7 +546,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the IP configuration of the network interface
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Ipconfig_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.IPCONFIG_INVALID</c>.
          * </para>
          */
         public string get_ipConfig()
@@ -569,7 +569,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the IP address of the primary name server to be used by the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Primarydns_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.PRIMARYDNS_INVALID</c>.
          * </para>
          */
         public string get_primaryDNS()
@@ -596,7 +596,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -664,7 +664,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the IP address of the secondary name server to be used by the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Secondarydns_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.SECONDARYDNS_INVALID</c>.
          * </para>
          */
         public string get_secondaryDNS()
@@ -691,7 +691,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -759,7 +759,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the IP address of the NTP server to be used by the device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Ntpserver_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.NTPSERVER_INVALID</c>.
          * </para>
          */
         public string get_ntpServer()
@@ -787,7 +787,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -857,7 +857,7 @@ namespace YoctoProxyAPI
          *   or an empty string otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Userpassword_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.USERPASSWORD_INVALID</c>.
          * </para>
          */
         public string get_userPassword()
@@ -887,7 +887,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -957,7 +957,7 @@ namespace YoctoProxyAPI
          *   or an empty string otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Adminpassword_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.ADMINPASSWORD_INVALID</c>.
          * </para>
          */
         public string get_adminPassword()
@@ -987,7 +987,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1055,7 +1055,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the TCP port used to serve the hub web UI
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Httpport_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.HTTPPORT_INVALID</c>.
          * </para>
          */
         public int get_httpPort()
@@ -1090,7 +1090,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1158,7 +1158,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the HTML page to serve for the URL "/"" of the hub
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Defaultpage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.DEFAULTPAGE_INVALID</c>.
          * </para>
          */
         public string get_defaultPage()
@@ -1188,7 +1188,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1254,12 +1254,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>network._Discoverable_FALSE</c> or <c>network._Discoverable_TRUE</c>, according to the
+         *   either <c>YNetwork.DISCOVERABLE_FALSE</c> or <c>YNetwork.DISCOVERABLE_TRUE</c>, according to the
          *   activation state of the multicast announce protocols to allow easy
          *   discovery of the module in the network neighborhood (uPnP/Bonjour protocol)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Discoverable_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.DISCOVERABLE_INVALID</c>.
          * </para>
          */
         public int get_discoverable()
@@ -1283,14 +1283,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>network._Discoverable_FALSE</c> or <c>network._Discoverable_TRUE</c>, according to the
+         *   either <c>YNetwork.DISCOVERABLE_FALSE</c> or <c>YNetwork.DISCOVERABLE_TRUE</c>, according to the
          *   activation state of the multicast announce protocols to allow easy
          *   discovery of the module in the network neighborhood (uPnP/Bonjour protocol)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1364,7 +1364,7 @@ namespace YoctoProxyAPI
          *   reboot to try to recover Internet connectivity
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Wwwwatchdogdelay_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.WWWWATCHDOGDELAY_INVALID</c>.
          * </para>
          */
         public int get_wwwWatchdogDelay()
@@ -1400,7 +1400,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1468,7 +1468,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the callback URL to notify of significant state changes
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackurl_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKURL_INVALID</c>.
          * </para>
          */
         public string get_callbackUrl()
@@ -1495,7 +1495,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1560,12 +1560,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>network._Callbackmethod_POST</c>, <c>network._Callbackmethod_GET</c> and
-         *   <c>network._Callbackmethod_PUT</c> corresponding to the HTTP method used to notify callbacks for
+         *   a value among <c>YNetwork.CALLBACKMETHOD_POST</c>, <c>YNetwork.CALLBACKMETHOD_GET</c> and
+         *   <c>YNetwork.CALLBACKMETHOD_PUT</c> corresponding to the HTTP method used to notify callbacks for
          *   significant state changes
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackmethod_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKMETHOD_INVALID</c>.
          * </para>
          */
         public int get_callbackMethod()
@@ -1588,14 +1588,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>network._Callbackmethod_POST</c>, <c>network._Callbackmethod_GET</c> and
-         *   <c>network._Callbackmethod_PUT</c> corresponding to the HTTP method used to notify callbacks for
+         *   a value among <c>YNetwork.CALLBACKMETHOD_POST</c>, <c>YNetwork.CALLBACKMETHOD_GET</c> and
+         *   <c>YNetwork.CALLBACKMETHOD_PUT</c> corresponding to the HTTP method used to notify callbacks for
          *   significant state changes
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1662,17 +1662,17 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>network._Callbackencoding_FORM</c>, <c>network._Callbackencoding_JSON</c>,
-         *   <c>network._Callbackencoding_JSON_ARRAY</c>, <c>network._Callbackencoding_CSV</c>,
-         *   <c>network._Callbackencoding_YOCTO_API</c>, <c>network._Callbackencoding_JSON_NUM</c>,
-         *   <c>network._Callbackencoding_EMONCMS</c>, <c>network._Callbackencoding_AZURE</c>,
-         *   <c>network._Callbackencoding_INFLUXDB</c>, <c>network._Callbackencoding_MQTT</c>,
-         *   <c>network._Callbackencoding_YOCTO_API_JZON</c>, <c>network._Callbackencoding_PRTG</c> and
-         *   <c>network._Callbackencoding_INFLUXDB_V2</c> corresponding to the encoding standard to use for
+         *   a value among <c>YNetwork.CALLBACKENCODING_FORM</c>, <c>YNetwork.CALLBACKENCODING_JSON</c>,
+         *   <c>YNetwork.CALLBACKENCODING_JSON_ARRAY</c>, <c>YNetwork.CALLBACKENCODING_CSV</c>,
+         *   <c>YNetwork.CALLBACKENCODING_YOCTO_API</c>, <c>YNetwork.CALLBACKENCODING_JSON_NUM</c>,
+         *   <c>YNetwork.CALLBACKENCODING_EMONCMS</c>, <c>YNetwork.CALLBACKENCODING_AZURE</c>,
+         *   <c>YNetwork.CALLBACKENCODING_INFLUXDB</c>, <c>YNetwork.CALLBACKENCODING_MQTT</c>,
+         *   <c>YNetwork.CALLBACKENCODING_YOCTO_API_JZON</c>, <c>YNetwork.CALLBACKENCODING_PRTG</c> and
+         *   <c>YNetwork.CALLBACKENCODING_INFLUXDB_V2</c> corresponding to the encoding standard to use for
          *   representing notification values
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackencoding_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKENCODING_INVALID</c>.
          * </para>
          */
         public int get_callbackEncoding()
@@ -1695,19 +1695,19 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>network._Callbackencoding_FORM</c>, <c>network._Callbackencoding_JSON</c>,
-         *   <c>network._Callbackencoding_JSON_ARRAY</c>, <c>network._Callbackencoding_CSV</c>,
-         *   <c>network._Callbackencoding_YOCTO_API</c>, <c>network._Callbackencoding_JSON_NUM</c>,
-         *   <c>network._Callbackencoding_EMONCMS</c>, <c>network._Callbackencoding_AZURE</c>,
-         *   <c>network._Callbackencoding_INFLUXDB</c>, <c>network._Callbackencoding_MQTT</c>,
-         *   <c>network._Callbackencoding_YOCTO_API_JZON</c>, <c>network._Callbackencoding_PRTG</c> and
-         *   <c>network._Callbackencoding_INFLUXDB_V2</c> corresponding to the encoding standard to use for
+         *   a value among <c>YNetwork.CALLBACKENCODING_FORM</c>, <c>YNetwork.CALLBACKENCODING_JSON</c>,
+         *   <c>YNetwork.CALLBACKENCODING_JSON_ARRAY</c>, <c>YNetwork.CALLBACKENCODING_CSV</c>,
+         *   <c>YNetwork.CALLBACKENCODING_YOCTO_API</c>, <c>YNetwork.CALLBACKENCODING_JSON_NUM</c>,
+         *   <c>YNetwork.CALLBACKENCODING_EMONCMS</c>, <c>YNetwork.CALLBACKENCODING_AZURE</c>,
+         *   <c>YNetwork.CALLBACKENCODING_INFLUXDB</c>, <c>YNetwork.CALLBACKENCODING_MQTT</c>,
+         *   <c>YNetwork.CALLBACKENCODING_YOCTO_API_JZON</c>, <c>YNetwork.CALLBACKENCODING_PRTG</c> and
+         *   <c>YNetwork.CALLBACKENCODING_INFLUXDB_V2</c> corresponding to the encoding standard to use for
          *   representing notification values
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1779,7 +1779,7 @@ namespace YoctoProxyAPI
          *   or an empty string otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackcredentials_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKCREDENTIALS_INVALID</c>.
          * </para>
          */
         public string get_callbackCredentials()
@@ -1813,7 +1813,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1890,7 +1890,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1916,7 +1916,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the initial waiting time before first callback notifications, in seconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackinitialdelay_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKINITIALDELAY_INVALID</c>.
          * </para>
          */
         public int get_callbackInitialDelay()
@@ -1947,7 +1947,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2015,7 +2015,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the HTTP callback schedule strategy, as a text string
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackschedule_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKSCHEDULE_INVALID</c>.
          * </para>
          */
         public string get_callbackSchedule()
@@ -2042,7 +2042,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2110,7 +2110,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minimum waiting time between two HTTP callbacks, in seconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackmindelay_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKMINDELAY_INVALID</c>.
          * </para>
          */
         public int get_callbackMinDelay()
@@ -2141,7 +2141,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2209,7 +2209,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the waiting time between two HTTP callbacks when there is nothing new
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Callbackmaxdelay_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKMAXDELAY_INVALID</c>.
          * </para>
          */
         public int get_callbackMaxDelay()
@@ -2240,7 +2240,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2310,7 +2310,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current consumed by the module from Power-over-Ethernet (PoE), in milliamps
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>network._Poecurrent_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YNetwork.POECURRENT_INVALID</c>.
          * </para>
          */
         public int get_poeCurrent()
@@ -2347,7 +2347,7 @@ namespace YoctoProxyAPI
          *   fallback router IP address, to be used when no DHCP reply is received
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2372,7 +2372,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2403,7 +2403,7 @@ namespace YoctoProxyAPI
          *   router IP address (default gateway)
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2454,7 +2454,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -2484,7 +2484,7 @@ namespace YoctoProxyAPI
          *   24h, an offset of 7 will make the callback occur each day at 7AM.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

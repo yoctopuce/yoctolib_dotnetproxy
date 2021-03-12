@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_altitude_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_altitude_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YAltitudeProxy, the Proxy API for Altitude
  *
@@ -259,7 +259,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -296,7 +296,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -328,7 +328,7 @@ namespace YoctoProxyAPI
          *   the altitude (QNH)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>altitude._Qnh_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YAltitude.QNH_INVALID</c>.
          * </para>
          */
         public double get_qnh()
@@ -398,7 +398,7 @@ namespace YoctoProxyAPI
          *   altitude
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>altitude._Technology_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YAltitude.TECHNOLOGY_INVALID</c>.
          * </para>
          */
         public string get_technology()

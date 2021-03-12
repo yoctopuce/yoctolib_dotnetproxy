@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_audioin_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_audioin_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YAudioInProxy, the Proxy API for AudioIn
  *
@@ -257,7 +257,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to audio input gain, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>audioin._Volume_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YAudioIn.VOLUME_INVALID</c>.
          * </para>
          */
         public int get_volume()
@@ -289,7 +289,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -354,10 +354,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>audioin._Mute_FALSE</c> or <c>audioin._Mute_TRUE</c>, according to the state of the mute function
+         *   either <c>YAudioIn.MUTE_FALSE</c> or <c>YAudioIn.MUTE_TRUE</c>, according to the state of the mute function
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>audioin._Mute_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YAudioIn.MUTE_INVALID</c>.
          * </para>
          */
         public int get_mute()
@@ -380,12 +380,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>audioin._Mute_FALSE</c> or <c>audioin._Mute_TRUE</c>, according to the state of the mute function
+         *   either <c>YAudioIn.MUTE_FALSE</c> or <c>YAudioIn.MUTE_TRUE</c>, according to the state of the mute function
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -459,7 +459,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the supported volume range
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>audioin._Volumerange_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YAudioIn.VOLUMERANGE_INVALID</c>.
          * </para>
          */
         public string get_volumeRange()
@@ -482,7 +482,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the detected input signal level
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>audioin._Signal_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YAudioIn.SIGNAL_INVALID</c>.
          * </para>
          */
         public int get_signal()
@@ -527,7 +527,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of seconds elapsed without detecting a signal
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>audioin._Nosignalfor_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YAudioIn.NOSIGNALFOR_INVALID</c>.
          * </para>
          */
         public int get_noSignalFor()

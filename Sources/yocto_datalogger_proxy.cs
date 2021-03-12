@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_datalogger_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
+ *  $Id: yocto_datalogger_proxy.cs 44114 2021-03-03 17:47:55Z mvuilleu $
  *
  *  Implements YDataLoggerProxy, the Proxy API for DataLogger
  *
@@ -276,7 +276,7 @@ namespace YoctoProxyAPI
          *   powered on with the dataLogger enabled at some point
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>datalogger._Currentrunindex_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDataLogger.CURRENTRUNINDEX_INVALID</c>.
          * </para>
          */
         public int get_currentRunIndex()
@@ -304,7 +304,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the Unix timestamp for current UTC time, if known
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>datalogger._Timeutc_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDataLogger.TIMEUTC_INVALID</c>.
          * </para>
          */
         public long get_timeUTC()
@@ -334,7 +334,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -360,11 +360,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>datalogger._Recording_OFF</c>, <c>datalogger._Recording_ON</c> and
-         *   <c>datalogger._Recording_PENDING</c> corresponding to the current activation state of the data logger
+         *   a value among <c>YDataLogger.RECORDING_OFF</c>, <c>YDataLogger.RECORDING_ON</c> and
+         *   <c>YDataLogger.RECORDING_PENDING</c> corresponding to the current activation state of the data logger
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>datalogger._Recording_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDataLogger.RECORDING_INVALID</c>.
          * </para>
          */
         public int get_recording()
@@ -385,14 +385,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>datalogger._Recording_OFF</c>, <c>datalogger._Recording_ON</c> and
-         *   <c>datalogger._Recording_PENDING</c> corresponding to the activation state of the data logger to
+         *   a value among <c>YDataLogger.RECORDING_OFF</c>, <c>YDataLogger.RECORDING_ON</c> and
+         *   <c>YDataLogger.RECORDING_PENDING</c> corresponding to the activation state of the data logger to
          *   start/stop recording data
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -473,11 +473,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>datalogger._Autostart_OFF</c> or <c>datalogger._Autostart_ON</c>, according to the
+         *   either <c>YDataLogger.AUTOSTART_OFF</c> or <c>YDataLogger.AUTOSTART_ON</c>, according to the
          *   default activation state of the data logger on power up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>datalogger._Autostart_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDataLogger.AUTOSTART_INVALID</c>.
          * </para>
          */
         public int get_autoStart()
@@ -502,13 +502,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>datalogger._Autostart_OFF</c> or <c>datalogger._Autostart_ON</c>, according to the
+         *   either <c>YDataLogger.AUTOSTART_OFF</c> or <c>YDataLogger.AUTOSTART_ON</c>, according to the
          *   default activation state of the data logger on power up
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -575,11 +575,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>datalogger._Beacondriven_OFF</c> or <c>datalogger._Beacondriven_ON</c>, according to true
+         *   either <c>YDataLogger.BEACONDRIVEN_OFF</c> or <c>YDataLogger.BEACONDRIVEN_ON</c>, according to true
          *   if the data logger is synchronised with the localization beacon
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>datalogger._Beacondriven_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDataLogger.BEACONDRIVEN_INVALID</c>.
          * </para>
          */
         public int get_beaconDriven()
@@ -602,13 +602,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>datalogger._Beacondriven_OFF</c> or <c>datalogger._Beacondriven_ON</c>, according to the
+         *   either <c>YDataLogger.BEACONDRIVEN_OFF</c> or <c>YDataLogger.BEACONDRIVEN_ON</c>, according to the
          *   type of synchronisation of the data logger
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -678,7 +678,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the percentage of datalogger memory in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>datalogger._Usage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDataLogger.USAGE_INVALID</c>.
          * </para>
          */
         public int get_usage()
@@ -702,7 +702,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

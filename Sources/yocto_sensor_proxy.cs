@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sensor_proxy.cs 40661 2020-05-25 14:42:04Z mvuilleu $
+ *  $Id: yocto_sensor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YSensorProxy, the Proxy API for Sensor
  *
@@ -374,7 +374,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the measuring unit for the measure
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Unit_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.UNIT_INVALID</c>.
          * </para>
          */
         public string get_unit()
@@ -406,7 +406,7 @@ namespace YoctoProxyAPI
          *   as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Currentvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.CURRENTVALUE_INVALID</c>.
          * </para>
          */
         public double get_currentValue()
@@ -438,7 +438,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -468,7 +468,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the minimal value observed for the measure since the device was started
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Lowestvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.LOWESTVALUE_INVALID</c>.
          * </para>
          */
         public double get_lowestValue()
@@ -500,7 +500,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -530,7 +530,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the maximal value observed for the measure since the device was started
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Highestvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.HIGHESTVALUE_INVALID</c>.
          * </para>
          */
         public double get_highestValue()
@@ -560,7 +560,7 @@ namespace YoctoProxyAPI
          *   sensor, in the specified unit, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Currentrawvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.CURRENTRAWVALUE_INVALID</c>.
          * </para>
          */
         public double get_currentRawValue()
@@ -590,7 +590,7 @@ namespace YoctoProxyAPI
          *   when measures are not stored in the data logger flash memory
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Logfrequency_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.LOGFREQUENCY_INVALID</c>.
          * </para>
          */
         public string get_logFrequency()
@@ -622,7 +622,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -692,7 +692,7 @@ namespace YoctoProxyAPI
          *   value notifications are disabled for this function
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Reportfrequency_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.REPORTFREQUENCY_INVALID</c>.
          * </para>
          */
         public string get_reportFrequency()
@@ -725,7 +725,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -790,12 +790,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>sensor._Advmode_IMMEDIATE</c>, <c>sensor._Advmode_PERIOD_AVG</c>,
-         *   <c>sensor._Advmode_PERIOD_MIN</c> and <c>sensor._Advmode_PERIOD_MAX</c> corresponding to the
+         *   a value among <c>YSensor.ADVMODE_IMMEDIATE</c>, <c>YSensor.ADVMODE_PERIOD_AVG</c>,
+         *   <c>YSensor.ADVMODE_PERIOD_MIN</c> and <c>YSensor.ADVMODE_PERIOD_MAX</c> corresponding to the
          *   measuring mode used for the advertised value pushed to the parent hub
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Advmode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.ADVMODE_INVALID</c>.
          * </para>
          */
         public int get_advMode()
@@ -817,14 +817,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>sensor._Advmode_IMMEDIATE</c>, <c>sensor._Advmode_PERIOD_AVG</c>,
-         *   <c>sensor._Advmode_PERIOD_MIN</c> and <c>sensor._Advmode_PERIOD_MAX</c> corresponding to the
+         *   a value among <c>YSensor.ADVMODE_IMMEDIATE</c>, <c>YSensor.ADVMODE_PERIOD_AVG</c>,
+         *   <c>YSensor.ADVMODE_PERIOD_MIN</c> and <c>YSensor.ADVMODE_PERIOD_MAX</c> corresponding to the
          *   measuring mode used for the advertised value pushed to the parent hub
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -899,7 +899,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -931,7 +931,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the resolution of the measured values
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Resolution_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.RESOLUTION_INVALID</c>.
          * </para>
          */
         public double get_resolution()
@@ -1000,7 +1000,7 @@ namespace YoctoProxyAPI
          *   available or a positive code if the sensor is not able to provide a measure right now
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>sensor._Sensorstate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSensor.SENSORSTATE_INVALID</c>.
          * </para>
          */
         public int get_sensorState()
@@ -1067,7 +1067,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          */
         public virtual int startDataLogger()
@@ -1085,7 +1085,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          */
         public virtual int stopDataLogger()
@@ -1170,7 +1170,7 @@ namespace YoctoProxyAPI
          *   values for the correction points.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

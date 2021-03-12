@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_dualpower_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_dualpower_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YDualPowerProxy, the Proxy API for DualPower
  *
@@ -259,12 +259,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>dualpower._Powerstate_OFF</c>, <c>dualpower._Powerstate_FROM_USB</c> and
-         *   <c>dualpower._Powerstate_FROM_EXT</c> corresponding to the current power source for module
+         *   a value among <c>YDualPower.POWERSTATE_OFF</c>, <c>YDualPower.POWERSTATE_FROM_USB</c> and
+         *   <c>YDualPower.POWERSTATE_FROM_EXT</c> corresponding to the current power source for module
          *   functions that require lots of current
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>dualpower._Powerstate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDualPower.POWERSTATE_INVALID</c>.
          * </para>
          */
         public int get_powerState()
@@ -321,12 +321,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>dualpower._Powercontrol_AUTO</c>, <c>dualpower._Powercontrol_FROM_USB</c>,
-         *   <c>dualpower._Powercontrol_FROM_EXT</c> and <c>dualpower._Powercontrol_OFF</c> corresponding to the
+         *   a value among <c>YDualPower.POWERCONTROL_AUTO</c>, <c>YDualPower.POWERCONTROL_FROM_USB</c>,
+         *   <c>YDualPower.POWERCONTROL_FROM_EXT</c> and <c>YDualPower.POWERCONTROL_OFF</c> corresponding to the
          *   selected power source for module functions that require lots of current
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>dualpower._Powercontrol_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDualPower.POWERCONTROL_INVALID</c>.
          * </para>
          */
         public int get_powerControl()
@@ -348,14 +348,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>dualpower._Powercontrol_AUTO</c>, <c>dualpower._Powercontrol_FROM_USB</c>,
-         *   <c>dualpower._Powercontrol_FROM_EXT</c> and <c>dualpower._Powercontrol_OFF</c> corresponding to the
+         *   a value among <c>YDualPower.POWERCONTROL_AUTO</c>, <c>YDualPower.POWERCONTROL_FROM_USB</c>,
+         *   <c>YDualPower.POWERCONTROL_FROM_EXT</c> and <c>YDualPower.POWERCONTROL_OFF</c> corresponding to the
          *   selected power source for module functions that require lots of current
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -425,7 +425,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the measured voltage on the external power source, in millivolts
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>dualpower._Extvoltage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDualPower.EXTVOLTAGE_INVALID</c>.
          * </para>
          */
         public int get_extVoltage()

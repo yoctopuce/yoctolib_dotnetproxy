@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorledcluster_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_colorledcluster_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YColorLedClusterProxy, the Proxy API for ColorLedCluster
  *
@@ -271,7 +271,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of LEDs currently handled by the device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorledcluster._Activeledcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLedCluster.ACTIVELEDCOUNT_INVALID</c>.
          * </para>
          */
         public int get_activeLedCount()
@@ -303,7 +303,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -368,11 +368,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>colorledcluster._Ledtype_RGB</c> or <c>colorledcluster._Ledtype_RGBW</c>, according to
+         *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
          *   the RGB LED type currently handled by the device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorledcluster._Ledtype_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLedCluster.LEDTYPE_INVALID</c>.
          * </para>
          */
         public int get_ledType()
@@ -395,13 +395,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>colorledcluster._Ledtype_RGB</c> or <c>colorledcluster._Ledtype_RGBW</c>, according to
+         *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
          *   the RGB LED type currently handled by the device
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -471,7 +471,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum number of LEDs that the device can handle
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorledcluster._Maxledcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLedCluster.MAXLEDCOUNT_INVALID</c>.
          * </para>
          */
         public int get_maxLedCount()
@@ -515,7 +515,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum number of sequences that the device can handle
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorledcluster._Blinkseqmaxcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLedCluster.BLINKSEQMAXCOUNT_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqMaxCount()
@@ -559,7 +559,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum length of sequences
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorledcluster._Blinkseqmaxsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLedCluster.BLINKSEQMAXSIZE_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqMaxSize()
@@ -608,7 +608,7 @@ namespace YoctoProxyAPI
          *   new color.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -640,7 +640,7 @@ namespace YoctoProxyAPI
          *   new color.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -672,7 +672,7 @@ namespace YoctoProxyAPI
          *   new color.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -703,7 +703,7 @@ namespace YoctoProxyAPI
          *   new color.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -738,7 +738,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -777,7 +777,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -810,7 +810,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -843,7 +843,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -872,7 +872,7 @@ namespace YoctoProxyAPI
          *   sequence index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -902,7 +902,7 @@ namespace YoctoProxyAPI
          *   index of the sequence to chain.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -929,7 +929,7 @@ namespace YoctoProxyAPI
          *   sequence index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -966,7 +966,7 @@ namespace YoctoProxyAPI
          *   execution offset in ms.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1003,7 +1003,7 @@ namespace YoctoProxyAPI
          *   execution offset in ms.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1040,7 +1040,7 @@ namespace YoctoProxyAPI
          *   number of periods to show on LEDs.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1067,7 +1067,7 @@ namespace YoctoProxyAPI
          *   affected LED count.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1093,7 +1093,7 @@ namespace YoctoProxyAPI
          *   index of the sequence to start.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1119,7 +1119,7 @@ namespace YoctoProxyAPI
          *   index of the sequence to stop.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1145,7 +1145,7 @@ namespace YoctoProxyAPI
          *   index of the sequence to reset
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1176,7 +1176,7 @@ namespace YoctoProxyAPI
          *   0 to keep the sequence turned off and 1 to start it automatically.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1206,7 +1206,7 @@ namespace YoctoProxyAPI
          *   sequence running speed (-1000...1000).
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1230,7 +1230,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1257,7 +1257,7 @@ namespace YoctoProxyAPI
          *   index of the sequence to start.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1286,7 +1286,7 @@ namespace YoctoProxyAPI
          *   the binary buffer to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1315,7 +1315,7 @@ namespace YoctoProxyAPI
          *   a list of 24bit RGB codes, in the form 0xRRGGBB
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1348,7 +1348,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1378,7 +1378,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1407,7 +1407,7 @@ namespace YoctoProxyAPI
          *   the binary buffer to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1436,7 +1436,7 @@ namespace YoctoProxyAPI
          *   a list of 24bit HSL codes, in the form 0xHHSSLL
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1466,7 +1466,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1499,7 +1499,7 @@ namespace YoctoProxyAPI
          *   transition duration in ms
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

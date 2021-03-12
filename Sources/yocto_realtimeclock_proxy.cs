@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_realtimeclock_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *
@@ -270,7 +270,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current time in Unix format (number of elapsed seconds since Jan 1st, 1970)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>realtimeclock._Unixtime_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRealTimeClock.UNIXTIME_INVALID</c>.
          * </para>
          */
         public long get_unixTime()
@@ -301,7 +301,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -330,7 +330,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the current time in the form "YYYY/MM/DD hh:mm:ss"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>realtimeclock._Datetime_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRealTimeClock.DATETIME_INVALID</c>.
          * </para>
          */
         public string get_dateTime()
@@ -353,7 +353,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of seconds between current time and UTC time (time zone)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>realtimeclock._Utcoffset_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRealTimeClock.UTCOFFSET_INVALID</c>.
          * </para>
          */
         public int get_utcOffset()
@@ -381,7 +381,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -446,11 +446,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>realtimeclock._Timeset_FALSE</c> or <c>realtimeclock._Timeset_TRUE</c>, according to true
+         *   either <c>YRealTimeClock.TIMESET_FALSE</c> or <c>YRealTimeClock.TIMESET_TRUE</c>, according to true
          *   if the clock has been set, and false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>realtimeclock._Timeset_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRealTimeClock.TIMESET_INVALID</c>.
          * </para>
          */
         public int get_timeSet()

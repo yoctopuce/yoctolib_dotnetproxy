@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_segmenteddisplay_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: yocto_segmenteddisplay_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YSegmentedDisplayProxy, the Proxy API for SegmentedDisplay
  *
@@ -251,7 +251,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the text currently displayed on the screen
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>segmenteddisplay._Displayedtext_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSegmentedDisplay.DISPLAYEDTEXT_INVALID</c>.
          * </para>
          */
         public string get_displayedText()
@@ -276,7 +276,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

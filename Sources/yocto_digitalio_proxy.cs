@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_digitalio_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_digitalio_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YDigitalIOProxy, the Proxy API for DigitalIO
  *
@@ -283,7 +283,7 @@ namespace YoctoProxyAPI
          *   representing a channel
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>digitalio._Portstate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDigitalIO.PORTSTATE_INVALID</c>.
          * </para>
          */
         public int get_portState()
@@ -323,7 +323,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -401,7 +401,7 @@ namespace YoctoProxyAPI
          *   an input, 1 makes it an output
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>digitalio._Portdirection_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDigitalIO.PORTDIRECTION_INVALID</c>.
          * </para>
          */
         public int get_portDirection()
@@ -433,7 +433,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -503,7 +503,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the electrical interface for each bit of the port
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>digitalio._Portopendrain_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDigitalIO.PORTOPENDRAIN_INVALID</c>.
          * </para>
          */
         public int get_portOpenDrain()
@@ -536,7 +536,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -606,7 +606,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the polarity of all the bits of the port
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>digitalio._Portpolarity_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDigitalIO.PORTPOLARITY_INVALID</c>.
          * </para>
          */
         public int get_portPolarity()
@@ -640,7 +640,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -711,7 +711,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>digitalio._Portdiags_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDigitalIO.PORTDIAGS_INVALID</c>.
          * </para>
          */
         public int get_portDiags()
@@ -740,7 +740,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of bits (i.e
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>digitalio._Portsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDigitalIO.PORTSIZE_INVALID</c>.
          * </para>
          */
         public int get_portSize()
@@ -781,11 +781,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>digitalio._Outputvoltage_USB_5V</c>, <c>digitalio._Outputvoltage_USB_3V</c> and
-         *   <c>digitalio._Outputvoltage_EXT_V</c> corresponding to the voltage source used to drive output bits
+         *   a value among <c>YDigitalIO.OUTPUTVOLTAGE_USB_5V</c>, <c>YDigitalIO.OUTPUTVOLTAGE_USB_3V</c> and
+         *   <c>YDigitalIO.OUTPUTVOLTAGE_EXT_V</c> corresponding to the voltage source used to drive output bits
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>digitalio._Outputvoltage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDigitalIO.OUTPUTVOLTAGE_INVALID</c>.
          * </para>
          */
         public int get_outputVoltage()
@@ -807,13 +807,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>digitalio._Outputvoltage_USB_5V</c>, <c>digitalio._Outputvoltage_USB_3V</c> and
-         *   <c>digitalio._Outputvoltage_EXT_V</c> corresponding to the voltage source used to drive output bits
+         *   a value among <c>YDigitalIO.OUTPUTVOLTAGE_USB_5V</c>, <c>YDigitalIO.OUTPUTVOLTAGE_USB_3V</c> and
+         *   <c>YDigitalIO.OUTPUTVOLTAGE_EXT_V</c> corresponding to the voltage source used to drive output bits
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -885,7 +885,7 @@ namespace YoctoProxyAPI
          *   the state of the bit (1 or 0)
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -935,7 +935,7 @@ namespace YoctoProxyAPI
          *   the bit number; lowest bit has index 0
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -964,7 +964,7 @@ namespace YoctoProxyAPI
          *   Remember to call the   <c>saveToFlash()</c> method to make sure the setting is kept after a reboot.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -989,7 +989,7 @@ namespace YoctoProxyAPI
          *   the bit number; lowest bit has index 0
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1017,7 +1017,7 @@ namespace YoctoProxyAPI
          *   Remember to call the   <c>saveToFlash()</c> method to make sure the setting is kept after a reboot.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1041,7 +1041,7 @@ namespace YoctoProxyAPI
          *   the bit number; lowest bit has index 0
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1070,7 +1070,7 @@ namespace YoctoProxyAPI
          *   <c>saveToFlash()</c> method to make sure the setting is kept after a reboot.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1126,7 +1126,7 @@ namespace YoctoProxyAPI
          *   resolution is not guaranteed up to the millisecond.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1159,7 +1159,7 @@ namespace YoctoProxyAPI
          *   resolution is not guaranteed up to the millisecond.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

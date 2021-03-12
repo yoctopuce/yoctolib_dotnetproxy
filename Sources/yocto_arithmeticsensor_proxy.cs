@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_arithmeticsensor_proxy.cs 40347 2020-05-06 09:29:33Z seb $
+ *  $Id: yocto_arithmeticsensor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YArithmeticSensorProxy, the Proxy API for ArithmeticSensor
  *
@@ -255,7 +255,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -284,7 +284,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to a short informative description of the formula
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>arithmeticsensor._Description_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YArithmeticSensor.DESCRIPTION_INVALID</c>.
          * </para>
          */
         public string get_description()
@@ -375,7 +375,7 @@ namespace YoctoProxyAPI
          *   desired for each of the input value, index by index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

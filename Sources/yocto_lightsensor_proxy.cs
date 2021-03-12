@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_lightsensor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_lightsensor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YLightSensorProxy, the Proxy API for LightSensor
  *
@@ -169,6 +169,7 @@ namespace YoctoProxyAPI
         public const int _MeasureType_INFRARED = 3;
         public const int _MeasureType_HIGH_RATE = 4;
         public const int _MeasureType_HIGH_ENERGY = 5;
+        public const int _MeasureType_HIGH_RESOLUTION = 6;
 
         // reference to real YoctoAPI object
         protected new YLightSensor _func;
@@ -266,7 +267,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -289,12 +290,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>lightsensor._Measuretype_HUMAN_EYE</c>, <c>lightsensor._Measuretype_WIDE_SPECTRUM</c>,
-         *   <c>lightsensor._Measuretype_INFRARED</c>, <c>lightsensor._Measuretype_HIGH_RATE</c> and
-         *   <c>lightsensor._Measuretype_HIGH_ENERGY</c> corresponding to the type of light measure
+         *   a value among <c>YLightSensor.MEASURETYPE_HUMAN_EYE</c>, <c>YLightSensor.MEASURETYPE_WIDE_SPECTRUM</c>,
+         *   <c>YLightSensor.MEASURETYPE_INFRARED</c>, <c>YLightSensor.MEASURETYPE_HIGH_RATE</c>,
+         *   <c>YLightSensor.MEASURETYPE_HIGH_ENERGY</c> and <c>YLightSensor.MEASURETYPE_HIGH_RESOLUTION</c>
+         *   corresponding to the type of light measure
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>lightsensor._Measuretype_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YLightSensor.MEASURETYPE_INVALID</c>.
          * </para>
          */
         public int get_measureType()
@@ -320,14 +322,15 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>lightsensor._Measuretype_HUMAN_EYE</c>, <c>lightsensor._Measuretype_WIDE_SPECTRUM</c>,
-         *   <c>lightsensor._Measuretype_INFRARED</c>, <c>lightsensor._Measuretype_HIGH_RATE</c> and
-         *   <c>lightsensor._Measuretype_HIGH_ENERGY</c> corresponding to the light sensor type used in the device
+         *   a value among <c>YLightSensor.MEASURETYPE_HUMAN_EYE</c>, <c>YLightSensor.MEASURETYPE_WIDE_SPECTRUM</c>,
+         *   <c>YLightSensor.MEASURETYPE_INFRARED</c>, <c>YLightSensor.MEASURETYPE_HIGH_RATE</c>,
+         *   <c>YLightSensor.MEASURETYPE_HIGH_ENERGY</c> and <c>YLightSensor.MEASURETYPE_HIGH_RESOLUTION</c>
+         *   corresponding to the light sensor type used in the device
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

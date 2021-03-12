@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_i2cport_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
+ *  $Id: yocto_i2cport_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YI2cPortProxy, the Proxy API for I2cPort
  *
@@ -278,7 +278,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Rxcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.RXCOUNT_INVALID</c>.
          * </para>
          */
         public int get_rxCount()
@@ -306,7 +306,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes transmitted since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Txcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.TXCOUNT_INVALID</c>.
          * </para>
          */
         public int get_txCount()
@@ -334,7 +334,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of communication errors detected since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Errcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.ERRCOUNT_INVALID</c>.
          * </para>
          */
         public int get_errCount()
@@ -362,7 +362,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Rxmsgcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.RXMSGCOUNT_INVALID</c>.
          * </para>
          */
         public int get_rxMsgCount()
@@ -390,7 +390,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages send since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Txmsgcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.TXMSGCOUNT_INVALID</c>.
          * </para>
          */
         public int get_txMsgCount()
@@ -418,7 +418,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest message fully received (for Line and Frame protocols)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Lastmsg_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.LASTMSG_INVALID</c>.
          * </para>
          */
         public string get_lastMsg()
@@ -441,7 +441,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the job file currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Currentjob_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.CURRENTJOB_INVALID</c>.
          * </para>
          */
         public string get_currentJob()
@@ -468,7 +468,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -497,7 +497,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the job file to use when the device is powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Startupjob_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.STARTUPJOB_INVALID</c>.
          * </para>
          */
         public string get_startupJob()
@@ -524,7 +524,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -592,7 +592,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum number of tasks in a job that the device can handle
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Jobmaxtask_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.JOBMAXTASK_INVALID</c>.
          * </para>
          */
         public int get_jobMaxTask()
@@ -636,7 +636,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to maximum size allowed for job files
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Jobmaxsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.JOBMAXSIZE_INVALID</c>.
          * </para>
          */
         public int get_jobMaxSize()
@@ -683,7 +683,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the type of protocol used to send I2C messages, as a string
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._Protocol_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.PROTOCOL_INVALID</c>.
          * </para>
          */
         public string get_protocol()
@@ -715,7 +715,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -780,11 +780,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>i2cport._I2cvoltagelevel_OFF</c>, <c>i2cport._I2cvoltagelevel_3V3</c> and
-         *   <c>i2cport._I2cvoltagelevel_1V8</c> corresponding to the voltage level used on the I2C bus
+         *   a value among <c>YI2cPort.I2CVOLTAGELEVEL_OFF</c>, <c>YI2cPort.I2CVOLTAGELEVEL_3V3</c> and
+         *   <c>YI2cPort.I2CVOLTAGELEVEL_1V8</c> corresponding to the voltage level used on the I2C bus
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._I2cvoltagelevel_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.I2CVOLTAGELEVEL_INVALID</c>.
          * </para>
          */
         public int get_i2cVoltageLevel()
@@ -807,13 +807,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>i2cport._I2cvoltagelevel_OFF</c>, <c>i2cport._I2cvoltagelevel_3V3</c> and
-         *   <c>i2cport._I2cvoltagelevel_1V8</c> corresponding to the voltage level used on the I2C bus
+         *   a value among <c>YI2cPort.I2CVOLTAGELEVEL_OFF</c>, <c>YI2cPort.I2CVOLTAGELEVEL_3V3</c> and
+         *   <c>YI2cPort.I2CVOLTAGELEVEL_1V8</c> corresponding to the voltage level used on the I2C bus
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -889,7 +889,7 @@ namespace YoctoProxyAPI
          *   "400kbps,2000ms,NoRestart"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>i2cport._I2cmode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YI2cPort.I2CMODE_INVALID</c>.
          * </para>
          */
         public string get_i2cMode()
@@ -922,7 +922,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1180,7 +1180,7 @@ namespace YoctoProxyAPI
          *   a string containing a JSON definition of the job
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1209,7 +1209,7 @@ namespace YoctoProxyAPI
          *   name of the job file (on the device filesystem)
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1232,7 +1232,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1260,7 +1260,7 @@ namespace YoctoProxyAPI
          *   the binary buffer to be sent
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1288,7 +1288,7 @@ namespace YoctoProxyAPI
          *   a list of data bytes to be sent
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1387,7 +1387,7 @@ namespace YoctoProxyAPI
          *   the code stream to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1422,7 +1422,7 @@ namespace YoctoProxyAPI
          *   the code stream to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1448,7 +1448,7 @@ namespace YoctoProxyAPI
          *   the byte to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1474,7 +1474,7 @@ namespace YoctoProxyAPI
          *   a string of hexadecimal byte codes
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1500,7 +1500,7 @@ namespace YoctoProxyAPI
          *   the binary buffer to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1526,7 +1526,7 @@ namespace YoctoProxyAPI
          *   a list of byte codes
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_display_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_display_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YDisplayProxy, the Proxy API for Display
  *
@@ -291,11 +291,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>display._Enabled_FALSE</c> or <c>display._Enabled_TRUE</c>, according to true if the
+         *   either <c>YDisplay.ENABLED_FALSE</c> or <c>YDisplay.ENABLED_TRUE</c>, according to true if the
          *   screen is powered, false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Enabled_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.ENABLED_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -316,13 +316,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>display._Enabled_FALSE</c> or <c>display._Enabled_TRUE</c>, according to the power state
+         *   either <c>YDisplay.ENABLED_FALSE</c> or <c>YDisplay.ENABLED_TRUE</c>, according to the power state
          *   of the display
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -352,7 +352,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the sequence to play when the displayed is powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Startupseq_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.STARTUPSEQ_INVALID</c>.
          * </para>
          */
         public string get_startupSeq()
@@ -379,7 +379,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -447,7 +447,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the luminosity of the  module informative LEDs (from 0 to 100)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Brightness_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.BRIGHTNESS_INVALID</c>.
          * </para>
          */
         public int get_brightness()
@@ -480,7 +480,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -545,12 +545,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>display._Orientation_LEFT</c>, <c>display._Orientation_UP</c>,
-         *   <c>display._Orientation_RIGHT</c> and <c>display._Orientation_DOWN</c> corresponding to the
+         *   a value among <c>YDisplay.ORIENTATION_LEFT</c>, <c>YDisplay.ORIENTATION_UP</c>,
+         *   <c>YDisplay.ORIENTATION_RIGHT</c> and <c>YDisplay.ORIENTATION_DOWN</c> corresponding to the
          *   currently selected display orientation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Orientation_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.ORIENTATION_INVALID</c>.
          * </para>
          */
         public int get_orientation()
@@ -573,13 +573,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>display._Orientation_LEFT</c>, <c>display._Orientation_UP</c>,
-         *   <c>display._Orientation_RIGHT</c> and <c>display._Orientation_DOWN</c> corresponding to the display orientation
+         *   a value among <c>YDisplay.ORIENTATION_LEFT</c>, <c>YDisplay.ORIENTATION_UP</c>,
+         *   <c>YDisplay.ORIENTATION_RIGHT</c> and <c>YDisplay.ORIENTATION_DOWN</c> corresponding to the display orientation
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -649,7 +649,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the display width, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Displaywidth_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.DISPLAYWIDTH_INVALID</c>.
          * </para>
          */
         public int get_displayWidth()
@@ -693,7 +693,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the display height, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Displayheight_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.DISPLAYHEIGHT_INVALID</c>.
          * </para>
          */
         public int get_displayHeight()
@@ -734,11 +734,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>display._Displaytype_MONO</c>, <c>display._Displaytype_GRAY</c> and
-         *   <c>display._Displaytype_RGB</c> corresponding to the display type: monochrome, gray levels or full color
+         *   a value among <c>YDisplay.DISPLAYTYPE_MONO</c>, <c>YDisplay.DISPLAYTYPE_GRAY</c> and
+         *   <c>YDisplay.DISPLAYTYPE_RGB</c> corresponding to the display type: monochrome, gray levels or full color
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Displaytype_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.DISPLAYTYPE_INVALID</c>.
          * </para>
          */
         public int get_displayType()
@@ -778,7 +778,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the width of the layers to draw on, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Layerwidth_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.LAYERWIDTH_INVALID</c>.
          * </para>
          */
         public int get_layerWidth()
@@ -822,7 +822,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the height of the layers to draw on, in pixels
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Layerheight_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.LAYERHEIGHT_INVALID</c>.
          * </para>
          */
         public int get_layerHeight()
@@ -866,7 +866,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of available layers to draw on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>display._Layercount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDisplay.LAYERCOUNT_INVALID</c>.
          * </para>
          */
         public int get_layerCount()
@@ -909,7 +909,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -937,7 +937,7 @@ namespace YoctoProxyAPI
          *   duration of the brightness transition, in milliseconds.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -960,7 +960,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -987,7 +987,7 @@ namespace YoctoProxyAPI
          *   the name of the newly created sequence
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1012,7 +1012,7 @@ namespace YoctoProxyAPI
          *   the name of the newly created sequence
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1042,7 +1042,7 @@ namespace YoctoProxyAPI
          *   the duration to wait, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1064,7 +1064,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1094,7 +1094,7 @@ namespace YoctoProxyAPI
          *   binary buffer with the content to set
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1126,7 +1126,7 @@ namespace YoctoProxyAPI
          *   the identifier of the destination layer (a number in range 0..layerCount-1)
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1159,7 +1159,7 @@ namespace YoctoProxyAPI
          *   the second layer (a number in range 0..layerCount-1)
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1171,6 +1171,33 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No Display connected");
             }
             return _func.swapLayerContent(layerIdA, layerIdB);
+        }
+
+        /**
+         * <summary>
+         *   Returns a YDisplayLayer object that can be used to draw on the specified
+         *   layer.
+         * <para>
+         *   The content is displayed only when the layer is active on the
+         *   screen (and not masked by other overlapping layers).
+         * </para>
+         * </summary>
+         * <param name="layerId">
+         *   the identifier of the layer (a number in range 0..layerCount-1)
+         * </param>
+         * <returns>
+         *   an <c>YDisplayLayer</c> object
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>null</c>.
+         * </para>
+         */
+        public virtual YDisplayLayerProxy get_displayLayer(int layerId)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Display connected");
+            }
+            return new YDisplayLayerProxy(_func.get_displayLayer(layerId));
         }
     }
     //--- (end of YDisplay implementation)

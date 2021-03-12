@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_proximity_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_proximity_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YProximityProxy, the Proxy API for Proximity
  *
@@ -275,7 +275,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current value of signal measured by the proximity sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Signalvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.SIGNALVALUE_INVALID</c>.
          * </para>
          */
         public double get_signalValue()
@@ -306,7 +306,7 @@ namespace YoctoProxyAPI
          *   as a binary input (on/off)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Detectionthreshold_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.DETECTIONTHRESHOLD_INVALID</c>.
          * </para>
          */
         public int get_detectionThreshold()
@@ -340,7 +340,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -411,7 +411,7 @@ namespace YoctoProxyAPI
          *   as a binary input (on/off)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Detectionhysteresis_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.DETECTIONHYSTERESIS_INVALID</c>.
          * </para>
          */
         public int get_detectionHysteresis()
@@ -445,7 +445,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -515,7 +515,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minimal detection duration before signalling a presence event
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Presencemintime_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.PRESENCEMINTIME_INVALID</c>.
          * </para>
          */
         public int get_presenceMinTime()
@@ -548,7 +548,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -618,7 +618,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minimal detection duration before signalling a removal event
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Removalmintime_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.REMOVALMINTIME_INVALID</c>.
          * </para>
          */
         public int get_removalMinTime()
@@ -651,7 +651,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -716,12 +716,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>proximity._Ispresent_FALSE</c> or <c>proximity._Ispresent_TRUE</c>, according to true if
+         *   either <c>YProximity.ISPRESENT_FALSE</c> or <c>YProximity.ISPRESENT_TRUE</c>, according to true if
          *   the input (considered as binary) is active (detection value is smaller than the specified
          *   <c>threshold</c>), and false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Ispresent_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.ISPRESENT_INVALID</c>.
          * </para>
          */
         public int get_isPresent()
@@ -747,7 +747,7 @@ namespace YoctoProxyAPI
          *   detection (the input contact transitioned from absent to present)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Lasttimeapproached_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.LASTTIMEAPPROACHED_INVALID</c>.
          * </para>
          */
         public long get_lastTimeApproached()
@@ -772,7 +772,7 @@ namespace YoctoProxyAPI
          *   detection (the input contact transitioned from present to absent)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Lasttimeremoved_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.LASTTIMEREMOVED_INVALID</c>.
          * </para>
          */
         public long get_lastTimeRemoved()
@@ -798,7 +798,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the pulse counter value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Pulsecounter_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.PULSECOUNTER_INVALID</c>.
          * </para>
          */
         public long get_pulseCounter()
@@ -826,7 +826,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the timer of the pulse counter (ms)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Pulsetimer_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.PULSETIMER_INVALID</c>.
          * </para>
          */
         public long get_pulseTimer()
@@ -846,13 +846,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>proximity._Proximityreportmode_NUMERIC</c>,
-         *   <c>proximity._Proximityreportmode_PRESENCE</c> and <c>proximity._Proximityreportmode_PULSECOUNT</c>
+         *   a value among <c>YProximity.PROXIMITYREPORTMODE_NUMERIC</c>,
+         *   <c>YProximity.PROXIMITYREPORTMODE_PRESENCE</c> and <c>YProximity.PROXIMITYREPORTMODE_PULSECOUNT</c>
          *   corresponding to the parameter (sensor value, presence or pulse count) returned by the
          *   get_currentValue function and callbacks
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>proximity._Proximityreportmode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YProximity.PROXIMITYREPORTMODE_INVALID</c>.
          * </para>
          */
         public int get_proximityReportMode()
@@ -876,15 +876,15 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>proximity._Proximityreportmode_NUMERIC</c>,
-         *   <c>proximity._Proximityreportmode_PRESENCE</c> and <c>proximity._Proximityreportmode_PULSECOUNT</c>
+         *   a value among <c>YProximity.PROXIMITYREPORTMODE_NUMERIC</c>,
+         *   <c>YProximity.PROXIMITYREPORTMODE_PRESENCE</c> and <c>YProximity.PROXIMITYREPORTMODE_PULSECOUNT</c>
          *   corresponding to the  parameter  type (sensor value, presence or pulse count) returned by the
          *   get_currentValue function and callbacks
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -949,7 +949,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

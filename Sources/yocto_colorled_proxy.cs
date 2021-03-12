@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorled_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_colorled_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YColorLedProxy, the Proxy API for ColorLed
  *
@@ -264,7 +264,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current RGB color of the LED
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorled._Rgbcolor_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLed.RGBCOLOR_INVALID</c>.
          * </para>
          */
         public int get_rgbColor()
@@ -295,7 +295,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -409,7 +409,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current HSL color of the LED
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorled._Hslcolor_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLed.HSLCOLOR_INVALID</c>.
          * </para>
          */
         public int get_hslColor()
@@ -440,7 +440,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -474,7 +474,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -505,7 +505,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -531,7 +531,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the configured color to be displayed when the module is turned on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorled._Rgbcoloratpoweron_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLed.RGBCOLORATPOWERON_INVALID</c>.
          * </para>
          */
         public int get_rgbColorAtPowerOn()
@@ -563,7 +563,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -631,7 +631,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current length of the blinking sequence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorled._Blinkseqsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLed.BLINKSEQSIZE_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqSize()
@@ -659,7 +659,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum length of the blinking sequence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorled._Blinkseqmaxsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLed.BLINKSEQMAXSIZE_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqMaxSize()
@@ -707,7 +707,7 @@ namespace YoctoProxyAPI
          *   an integer
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>colorled._Blinkseqsignature_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YColorLed.BLINKSEQSIGNATURE_INVALID</c>.
          * </para>
          */
         public int get_blinkSeqSignature()
@@ -737,7 +737,7 @@ namespace YoctoProxyAPI
          *   duration of the color transition, in milliseconds.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -763,7 +763,7 @@ namespace YoctoProxyAPI
          *   duration of the color transition, in milliseconds.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -785,7 +785,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -804,7 +804,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -823,7 +823,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */

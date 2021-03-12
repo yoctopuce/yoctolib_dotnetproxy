@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_files.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ * $Id: yocto_files.cs 43478 2021-01-21 13:49:12Z mvuilleu $
  *
  * Implements yFindFiles(), the high-level API for Files functions
  *
@@ -291,7 +291,7 @@ public class YFiles : YFunction
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the filesystem, for instance
-     *   <c>YBUZZER2.files</c>.
+     *   <c>YRGBLED2.files</c>.
      * </param>
      * <returns>
      *   a <c>YFiles</c> object allowing you to drive the filesystem.

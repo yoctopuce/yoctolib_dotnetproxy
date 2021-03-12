@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 41171 2020-07-02 17:49:00Z mvuilleu $
+ * $Id: yocto_api.cs 44114 2021-03-03 17:47:55Z mvuilleu $
  *
  * High-level programming interface, common to all modules
  *
@@ -2725,6 +2725,44 @@ internal static class SafeNativeMethods
                   return _yapiGetNetworkTimeoutLINAARCH64();
         }
     }
+    [DllImport("yapi", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoWIN32(int force, StringBuilder errmsg);
+    [DllImport("amd64\\yapi.dll", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoWIN64(int force, StringBuilder errmsg);
+    [DllImport("libyapi32", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoMACOS32(int force, StringBuilder errmsg);
+    [DllImport("libyapi64", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoMACOS64(int force, StringBuilder errmsg);
+    [DllImport("libyapi-amd64", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoLIN64(int force, StringBuilder errmsg);
+    [DllImport("libyapi-i386", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoLIN32(int force, StringBuilder errmsg);
+    [DllImport("libyapi-armhf", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoLINARMHF(int force, StringBuilder errmsg);
+    [DllImport("libyapi-aarch64", EntryPoint = "yapiAddUdevRulesForYocto", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    private extern static int _yapiAddUdevRulesForYoctoLINAARCH64(int force, StringBuilder errmsg);
+    internal static int _yapiAddUdevRulesForYocto(int force, StringBuilder errmsg)
+    {
+        switch (_dllVersion) {
+             default:
+             case YAPIDLL_VERSION.WIN32:
+                  return _yapiAddUdevRulesForYoctoWIN32(force, errmsg);
+             case YAPIDLL_VERSION.WIN64:
+                  return _yapiAddUdevRulesForYoctoWIN64(force, errmsg);
+             case YAPIDLL_VERSION.MACOS32:
+                  return _yapiAddUdevRulesForYoctoMACOS32(force, errmsg);
+             case YAPIDLL_VERSION.MACOS64:
+                  return _yapiAddUdevRulesForYoctoMACOS64(force, errmsg);
+             case YAPIDLL_VERSION.LIN64:
+                  return _yapiAddUdevRulesForYoctoLIN64(force, errmsg);
+             case YAPIDLL_VERSION.LIN32:
+                  return _yapiAddUdevRulesForYoctoLIN32(force, errmsg);
+             case YAPIDLL_VERSION.LINARMHF:
+                  return _yapiAddUdevRulesForYoctoLINARMHF(force, errmsg);
+             case YAPIDLL_VERSION.LINAARCH64:
+                  return _yapiAddUdevRulesForYoctoLINAARCH64(force, errmsg);
+        }
+    }
 //--- (end of generated code: YFunction dlldef)
 }
 
@@ -2761,7 +2799,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "42060";
+    public const string YOCTO_API_BUILD_NO = "44175";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -5776,6 +5814,30 @@ public class YAPI
 
     /**
      * <summary>
+     *   Adds a UDEV rule which authorizes all users to access Yoctopuce modules
+     *   connected to the USB ports.
+     * <para>
+     *   This function works only under Linux. The process that
+     *   calls this method must have root privileges because this method changes the Linux configuration.
+     * </para>
+     * </summary>
+     * <param name="force">
+     *   if true, overwrites any existing rule.
+     * </param>
+     * <returns>
+     *   an empty string if the rule has been added.
+     * </returns>
+     * <para>
+     *   On failure, returns a string that starts with "error:".
+     * </para>
+     */
+    public static string AddUdevRule(bool force)
+    {
+        return _yapiContext.AddUdevRule(force);
+    }
+
+    /**
+     * <summary>
      *   Modifies the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
      * <para>
      *   This delay impacts only the YoctoHubs and VirtualHub
@@ -5925,6 +5987,46 @@ public class YAPIContext
         int res;
         res = SafeNativeMethods._yapiGetNetDevListValidity();
         return res;
+    }
+
+
+    /**
+     * <summary>
+     *   Adds a UDEV rule which authorizes all users to access Yoctopuce modules
+     *   connected to the USB ports.
+     * <para>
+     *   This function works only under Linux. The process that
+     *   calls this method must have root privileges because this method changes the Linux configuration.
+     * </para>
+     * </summary>
+     * <param name="force">
+     *   if true, overwrites any existing rule.
+     * </param>
+     * <returns>
+     *   an empty string if the rule has been added.
+     * </returns>
+     * <para>
+     *   On failure, returns a string that starts with "error:".
+     * </para>
+     */
+    public virtual string AddUdevRule(bool force)
+    {
+        string msg;
+        int res;
+        int c_force;
+        StringBuilder errmsg = new StringBuilder(YAPI.YOCTO_ERRMSG_LEN);
+        if (force) {
+            c_force = 1;
+        } else {
+            c_force = 0;
+        }
+        res = SafeNativeMethods._yapiAddUdevRulesForYocto(c_force, errmsg);
+        if (res < 0) {
+            msg = "error: " + errmsg.ToString();
+        } else {
+            msg = "";
+        }
+        return msg;
     }
 
 
@@ -9033,7 +9135,7 @@ public class YFunction
      *   a string corresponding to the serial number of the module, as set by the factory.
      * </returns>
      * <para>
-     *   On failure, throws an exception or returns YModule.SERIALNUMBER_INVALID.
+     *   On failure, throws an exception or returns YFunction.SERIALNUMBER_INVALID.
      * </para>
      */
     public virtual string get_serialNumber()
@@ -9722,7 +9824,7 @@ public class YFunction
      *   an identifier of type <c>YFUN_DESCR</c>.
      * </returns>
      * <para>
-     *   If the function has never been contacted, the returned value is <c>YFunction.FUNCTIONDESCRIPTOR_INVALID</c>.
+     *   If the function has never been contacted, the returned value is <c>Y$CLASSNAME$.FUNCTIONDESCRIPTOR_INVALID</c>.
      * </para>
      */
     public YFUN_DESCR get_functionDescriptor()
@@ -12011,7 +12113,7 @@ public class YModule : YFunction
      *   (ex: <c>MyCustomName.relay1</c>)
      * </returns>
      * <para>
-     *   On failure, throws an exception or returns  <c>YModule.FRIENDLYNAME_INVALID</c>.
+     *   On failure, throws an exception or returns  <c>YFunction.FRIENDLYNAME_INVALID</c>.
      * </para>
      */
 

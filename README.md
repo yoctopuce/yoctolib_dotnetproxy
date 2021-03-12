@@ -1,5 +1,5 @@
-Yoctopuce library for c#
-========================
+.NET Proxy Library, provided as a .NET Assembly
+===============================================
 
 ## License information
 
@@ -33,37 +33,6 @@ CONTRIBUTION, OR OTHER SIMILAR COSTS, WHETHER ASSERTED ON THE
 BASIS OF CONTRACT, TORT (INCLUDING NEGLIGENCE), BREACH OF
 WARRANTY, OR OTHERWISE.
 
-
-## Content of this package
-
-* build.bat
-
-		Automated build script
-
-* FILES.txt
-
-		List of files contained in this archive
-
-* RELEASE.txt
-
-		Release notes
-
-* Documentation/
-
-		API Reference, in HTML and PDF format
-
-* Examples/
-
-		Directory with sample programs in C#
-
-* Sources/
-
-		Source code of the high-level library (in C#)
-
-* Sources/dll/
-
-		Low-level library as DLL (C source code with makefile
-        to build the DLL is available in the C++ library)
 
 ## Compilation
 

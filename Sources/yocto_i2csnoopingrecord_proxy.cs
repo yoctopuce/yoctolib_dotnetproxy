@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: svn_id $
+ *  $Id: yocto_i2csnoopingrecord_proxy.cs 43337 2021-01-18 10:36:22Z web $
  *
  *  Implements YI2cSnoopingRecordProxy, the Proxy API for I2cSnoopingRecord
  *

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multisenscontroller_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_multisenscontroller_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YMultiSensControllerProxy, the Proxy API for MultiSensController
  *
@@ -254,7 +254,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of sensors to poll
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multisenscontroller._Nsensors_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiSensController.NSENSORS_INVALID</c>.
          * </para>
          */
         public int get_nSensors()
@@ -289,7 +289,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -357,7 +357,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum configurable sensor count allowed on this device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multisenscontroller._Maxsensors_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiSensController.MAXSENSORS_INVALID</c>.
          * </para>
          */
         public int get_maxSensors()
@@ -382,11 +382,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>multisenscontroller._Maintenancemode_FALSE</c> or <c>multisenscontroller._Maintenancemode_TRUE</c>,
+         *   either <c>YMultiSensController.MAINTENANCEMODE_FALSE</c> or <c>YMultiSensController.MAINTENANCEMODE_TRUE</c>,
          *   according to true when the device is in maintenance mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multisenscontroller._Maintenancemode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiSensController.MAINTENANCEMODE_INVALID</c>.
          * </para>
          */
         public int get_maintenanceMode()
@@ -409,13 +409,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>multisenscontroller._Maintenancemode_FALSE</c> or <c>multisenscontroller._Maintenancemode_TRUE</c>,
+         *   either <c>YMultiSensController.MAINTENANCEMODE_FALSE</c> or <c>YMultiSensController.MAINTENANCEMODE_TRUE</c>,
          *   according to the device mode to enable maintenance and to stop sensor polling
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -449,7 +449,7 @@ namespace YoctoProxyAPI
          *   new address of the connected sensor
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */

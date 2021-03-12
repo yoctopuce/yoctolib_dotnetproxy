@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_currentloopoutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_currentloopoutput_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YCurrentLoopOutputProxy, the Proxy API for CurrentLoopOutput
  *
@@ -264,7 +264,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -293,7 +293,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the loop current set point in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>currentloopoutput._Current_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCurrentLoopOutput.CURRENT_INVALID</c>.
          * </para>
          */
         public double get_current()
@@ -395,7 +395,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -424,7 +424,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current in the loop at device startup, in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>currentloopoutput._Currentatstartup_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCurrentLoopOutput.CURRENTATSTARTUP_INVALID</c>.
          * </para>
          */
         public double get_currentAtStartUp()
@@ -491,11 +491,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>currentloopoutput._Looppower_NOPWR</c>, <c>currentloopoutput._Looppower_LOWPWR</c>
-         *   and <c>currentloopoutput._Looppower_POWEROK</c> corresponding to the loop powerstate
+         *   a value among <c>YCurrentLoopOutput.LOOPPOWER_NOPWR</c>, <c>YCurrentLoopOutput.LOOPPOWER_LOWPWR</c>
+         *   and <c>YCurrentLoopOutput.LOOPPOWER_POWEROK</c> corresponding to the loop powerstate
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>currentloopoutput._Looppower_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCurrentLoopOutput.LOOPPOWER_INVALID</c>.
          * </para>
          */
         public int get_loopPower()
@@ -523,7 +523,7 @@ namespace YoctoProxyAPI
          *   total duration of the transition, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          */
         public virtual int currentMove(double mA_target, int ms_duration)

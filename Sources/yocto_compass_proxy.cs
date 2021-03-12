@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_compass_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_compass_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YCompassProxy, the Proxy API for Compass
  *
@@ -245,17 +245,17 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Returns the measure update frequency, measured in Hz.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>compass._Bandwidth_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCompass.BANDWIDTH_INVALID</c>.
          * </para>
          */
         public int get_bandwidth()
@@ -273,7 +273,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Changes the measure update frequency, measured in Hz.
          * <para>
          *   When the
          *   frequency is lower, the device performs averaging.
@@ -284,12 +284,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -307,7 +307,7 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access (configuration)
-        /// <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
+        /// <value>Measure update frequency, measured in Hz.</value>
         public int Bandwidth
         {
             get
@@ -357,7 +357,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the magnetic heading, regardless of the configured bearing
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>compass._Magneticheading_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCompass.MAGNETICHEADING_INVALID</c>.
          * </para>
          */
         public double get_magneticHeading()

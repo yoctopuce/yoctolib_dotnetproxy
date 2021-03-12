@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_spiport_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
+ *  $Id: yocto_spiport_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YSpiPortProxy, the Proxy API for SpiPort
  *
@@ -293,7 +293,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Rxcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.RXCOUNT_INVALID</c>.
          * </para>
          */
         public int get_rxCount()
@@ -321,7 +321,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of bytes transmitted since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Txcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.TXCOUNT_INVALID</c>.
          * </para>
          */
         public int get_txCount()
@@ -349,7 +349,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of communication errors detected since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Errcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.ERRCOUNT_INVALID</c>.
          * </para>
          */
         public int get_errCount()
@@ -377,7 +377,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages received since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Rxmsgcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.RXMSGCOUNT_INVALID</c>.
          * </para>
          */
         public int get_rxMsgCount()
@@ -405,7 +405,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of messages send since last reset
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Txmsgcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.TXMSGCOUNT_INVALID</c>.
          * </para>
          */
         public int get_txMsgCount()
@@ -433,7 +433,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest message fully received (for Line and Frame protocols)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Lastmsg_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.LASTMSG_INVALID</c>.
          * </para>
          */
         public string get_lastMsg()
@@ -456,7 +456,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the job file currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Currentjob_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.CURRENTJOB_INVALID</c>.
          * </para>
          */
         public string get_currentJob()
@@ -483,7 +483,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -512,7 +512,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the job file to use when the device is powered on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Startupjob_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.STARTUPJOB_INVALID</c>.
          * </para>
          */
         public string get_startupJob()
@@ -539,7 +539,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -607,7 +607,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximum number of tasks in a job that the device can handle
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Jobmaxtask_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.JOBMAXTASK_INVALID</c>.
          * </para>
          */
         public int get_jobMaxTask()
@@ -651,7 +651,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to maximum size allowed for job files
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Jobmaxsize_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.JOBMAXSIZE_INVALID</c>.
          * </para>
          */
         public int get_jobMaxSize()
@@ -699,7 +699,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the type of protocol used over the serial line, as a string
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Protocol_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.PROTOCOL_INVALID</c>.
          * </para>
          */
         public string get_protocol()
@@ -732,7 +732,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -797,14 +797,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>spiport._Voltagelevel_OFF</c>, <c>spiport._Voltagelevel_TTL3V</c>,
-         *   <c>spiport._Voltagelevel_TTL3VR</c>, <c>spiport._Voltagelevel_TTL5V</c>,
-         *   <c>spiport._Voltagelevel_TTL5VR</c>, <c>spiport._Voltagelevel_RS232</c>,
-         *   <c>spiport._Voltagelevel_RS485</c> and <c>spiport._Voltagelevel_TTL1V8</c> corresponding to the
+         *   a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
+         *   <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
+         *   <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
+         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
          *   voltage level used on the serial line
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Voltagelevel_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.VOLTAGELEVEL_INVALID</c>.
          * </para>
          */
         public int get_voltageLevel()
@@ -832,16 +832,16 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>spiport._Voltagelevel_OFF</c>, <c>spiport._Voltagelevel_TTL3V</c>,
-         *   <c>spiport._Voltagelevel_TTL3VR</c>, <c>spiport._Voltagelevel_TTL5V</c>,
-         *   <c>spiport._Voltagelevel_TTL5VR</c>, <c>spiport._Voltagelevel_RS232</c>,
-         *   <c>spiport._Voltagelevel_RS485</c> and <c>spiport._Voltagelevel_TTL1V8</c> corresponding to the
+         *   a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
+         *   <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
+         *   <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
+         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
          *   voltage type used on the serial line
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -915,7 +915,7 @@ namespace YoctoProxyAPI
          *   "125000,0,msb"
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Spimode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.SPIMODE_INVALID</c>.
          * </para>
          */
         public string get_spiMode()
@@ -946,7 +946,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1011,11 +1011,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>spiport._Sspolarity_ACTIVE_LOW</c> or <c>spiport._Sspolarity_ACTIVE_HIGH</c>, according
+         *   either <c>YSpiPort.SSPOLARITY_ACTIVE_LOW</c> or <c>YSpiPort.SSPOLARITY_ACTIVE_HIGH</c>, according
          *   to the SS line polarity
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Sspolarity_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.SSPOLARITY_INVALID</c>.
          * </para>
          */
         public int get_ssPolarity()
@@ -1038,13 +1038,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>spiport._Sspolarity_ACTIVE_LOW</c> or <c>spiport._Sspolarity_ACTIVE_HIGH</c>, according
+         *   either <c>YSpiPort.SSPOLARITY_ACTIVE_LOW</c> or <c>YSpiPort.SSPOLARITY_ACTIVE_HIGH</c>, according
          *   to the SS line polarity
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1111,11 +1111,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>spiport._Shiftsampling_OFF</c> or <c>spiport._Shiftsampling_ON</c>, according to true
+         *   either <c>YSpiPort.SHIFTSAMPLING_OFF</c> or <c>YSpiPort.SHIFTSAMPLING_ON</c>, according to true
          *   when the SDI line phase is shifted with regards to the SDO line
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>spiport._Shiftsampling_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YSpiPort.SHIFTSAMPLING_INVALID</c>.
          * </para>
          */
         public int get_shiftSampling()
@@ -1141,13 +1141,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>spiport._Shiftsampling_OFF</c> or <c>spiport._Shiftsampling_ON</c>, according to the SDI
+         *   either <c>YSpiPort.SHIFTSAMPLING_OFF</c> or <c>YSpiPort.SHIFTSAMPLING_ON</c>, according to the SDI
          *   line sampling shift
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1407,7 +1407,7 @@ namespace YoctoProxyAPI
          *   a string containing a JSON definition of the job
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1436,7 +1436,7 @@ namespace YoctoProxyAPI
          *   name of the job file (on the device filesystem)
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1459,7 +1459,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1483,7 +1483,7 @@ namespace YoctoProxyAPI
          *   the byte to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1507,7 +1507,7 @@ namespace YoctoProxyAPI
          *   the text string to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1531,7 +1531,7 @@ namespace YoctoProxyAPI
          *   the binary buffer to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1555,7 +1555,7 @@ namespace YoctoProxyAPI
          *   a list of byte codes
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1579,7 +1579,7 @@ namespace YoctoProxyAPI
          *   a string of hexadecimal byte codes
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1603,7 +1603,7 @@ namespace YoctoProxyAPI
          *   the text string to send
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1756,7 +1756,7 @@ namespace YoctoProxyAPI
          *   1 to turn SS active, 0 to release SS.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_wakeupmonitor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YWakeUpMonitorProxy, the Proxy API for WakeUpMonitor
  *
@@ -263,7 +263,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the maximal wake up time (in seconds) before automatically going to sleep
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupmonitor._Powerduration_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpMonitor.POWERDURATION_INVALID</c>.
          * </para>
          */
         public int get_powerDuration()
@@ -295,7 +295,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -363,7 +363,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the delay before the  next sleep period
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupmonitor._Sleepcountdown_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpMonitor.SLEEPCOUNTDOWN_INVALID</c>.
          * </para>
          */
         public int get_sleepCountdown()
@@ -393,7 +393,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -422,7 +422,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the next scheduled wake up date/time (UNIX format)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupmonitor._Nextwakeup_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpMonitor.NEXTWAKEUP_INVALID</c>.
          * </para>
          */
         public long get_nextWakeUp()
@@ -452,7 +452,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -523,13 +523,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>wakeupmonitor._Wakeupreason_USBPOWER</c>, <c>wakeupmonitor._Wakeupreason_EXTPOWER</c>,
-         *   <c>wakeupmonitor._Wakeupreason_ENDOFSLEEP</c>, <c>wakeupmonitor._Wakeupreason_EXTSIG1</c>,
-         *   <c>wakeupmonitor._Wakeupreason_SCHEDULE1</c> and <c>wakeupmonitor._Wakeupreason_SCHEDULE2</c>
+         *   a value among <c>YWakeUpMonitor.WAKEUPREASON_USBPOWER</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTPOWER</c>,
+         *   <c>YWakeUpMonitor.WAKEUPREASON_ENDOFSLEEP</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTSIG1</c>,
+         *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c> and <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c>
          *   corresponding to the latest wake up reason
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupmonitor._Wakeupreason_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPREASON_INVALID</c>.
          * </para>
          */
         public int get_wakeUpReason()
@@ -550,11 +550,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>wakeupmonitor._Wakeupstate_SLEEPING</c> or <c>wakeupmonitor._Wakeupstate_AWAKE</c>,
+         *   either <c>YWakeUpMonitor.WAKEUPSTATE_SLEEPING</c> or <c>YWakeUpMonitor.WAKEUPSTATE_AWAKE</c>,
          *   according to  the current state of the monitor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupmonitor._Wakeupstate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPSTATE_INVALID</c>.
          * </para>
          */
         public int get_wakeUpState()
@@ -592,7 +592,7 @@ namespace YoctoProxyAPI
          *   number of seconds before going into sleep mode,
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -622,7 +622,7 @@ namespace YoctoProxyAPI
          *   number of seconds before going into sleep mode
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -652,7 +652,7 @@ namespace YoctoProxyAPI
          *   number of seconds before going into sleep mode
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -673,7 +673,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */

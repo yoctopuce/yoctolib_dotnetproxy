@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multiaxiscontroller_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: yocto_multiaxiscontroller_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YMultiAxisControllerProxy, the Proxy API for MultiAxisController
  *
@@ -255,7 +255,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of synchronized controllers
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multiaxiscontroller._Naxis_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiAxisController.NAXIS_INVALID</c>.
          * </para>
          */
         public int get_nAxis()
@@ -285,7 +285,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -311,13 +311,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>multiaxiscontroller._Globalstate_ABSENT</c>,
-         *   <c>multiaxiscontroller._Globalstate_ALERT</c>, <c>multiaxiscontroller._Globalstate_HI_Z</c>,
-         *   <c>multiaxiscontroller._Globalstate_STOP</c>, <c>multiaxiscontroller._Globalstate_RUN</c> and
-         *   <c>multiaxiscontroller._Globalstate_BATCH</c> corresponding to the stepper motor set overall state
+         *   a value among <c>YMultiAxisController.GLOBALSTATE_ABSENT</c>,
+         *   <c>YMultiAxisController.GLOBALSTATE_ALERT</c>, <c>YMultiAxisController.GLOBALSTATE_HI_Z</c>,
+         *   <c>YMultiAxisController.GLOBALSTATE_STOP</c>, <c>YMultiAxisController.GLOBALSTATE_RUN</c> and
+         *   <c>YMultiAxisController.GLOBALSTATE_BATCH</c> corresponding to the stepper motor set overall state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multiaxiscontroller._Globalstate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiAxisController.GLOBALSTATE_INVALID</c>.
          * </para>
          */
         public int get_globalState()
@@ -336,7 +336,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -358,7 +358,7 @@ namespace YoctoProxyAPI
          *   desired speed for all axis, in steps per second.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -383,7 +383,7 @@ namespace YoctoProxyAPI
          *   absolute position, measured in steps from each origin.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -408,7 +408,7 @@ namespace YoctoProxyAPI
          *   relative position, measured in steps from the current position.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -430,7 +430,7 @@ namespace YoctoProxyAPI
          *   wait time, specified in milliseconds.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -449,7 +449,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -468,7 +468,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */
@@ -487,7 +487,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          *   On failure, throws an exception or returns a negative error code.
          * </returns>
          */

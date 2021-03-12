@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: svn_id $
+ *  $Id: yocto_spisnoopingrecord_proxy.cs 43337 2021-01-18 10:36:22Z web $
  *
  *  Implements YSpiSnoopingRecordProxy, the Proxy API for SpiSnoopingRecord
  *

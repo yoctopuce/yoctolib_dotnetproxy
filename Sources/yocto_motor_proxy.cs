@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_motor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_motor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YMotorProxy, the Proxy API for Motor
  *
@@ -288,13 +288,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>motor._Motorstatus_IDLE</c>, <c>motor._Motorstatus_BRAKE</c>,
-         *   <c>motor._Motorstatus_FORWD</c>, <c>motor._Motorstatus_BACKWD</c>,
-         *   <c>motor._Motorstatus_LOVOLT</c>, <c>motor._Motorstatus_HICURR</c>,
-         *   <c>motor._Motorstatus_HIHEAT</c> and <c>motor._Motorstatus_FAILSF</c>
+         *   a value among <c>YMotor.MOTORSTATUS_IDLE</c>, <c>YMotor.MOTORSTATUS_BRAKE</c>,
+         *   <c>YMotor.MOTORSTATUS_FORWD</c>, <c>YMotor.MOTORSTATUS_BACKWD</c>,
+         *   <c>YMotor.MOTORSTATUS_LOVOLT</c>, <c>YMotor.MOTORSTATUS_HICURR</c>,
+         *   <c>YMotor.MOTORSTATUS_HIHEAT</c> and <c>YMotor.MOTORSTATUS_FAILSF</c>
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Motorstatus_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.MOTORSTATUS_INVALID</c>.
          * </para>
          */
         public int get_motorStatus()
@@ -394,7 +394,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -423,7 +423,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the power sent to the motor, as a percentage between -100% and +100%
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Drivingforce_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.DRIVINGFORCE_INVALID</c>.
          * </para>
          */
         public double get_drivingForce()
@@ -455,7 +455,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -485,7 +485,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the braking force applied to the motor, as a percentage
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Brakingforce_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.BRAKINGFORCE_INVALID</c>.
          * </para>
          */
         public double get_brakingForce()
@@ -524,7 +524,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -558,7 +558,7 @@ namespace YoctoProxyAPI
          *   and prevents further current draw
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Cutoffvoltage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.CUTOFFVOLTAGE_INVALID</c>.
          * </para>
          */
         public double get_cutOffVoltage()
@@ -628,7 +628,7 @@ namespace YoctoProxyAPI
          *   switches to error state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Overcurrentlimit_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.OVERCURRENTLIMIT_INVALID</c>.
          * </para>
          */
         public int get_overCurrentLimit()
@@ -664,7 +664,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -739,7 +739,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -768,7 +768,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM frequency used to control the motor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Frequency_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.FREQUENCY_INVALID</c>.
          * </para>
          */
         public double get_frequency()
@@ -837,7 +837,7 @@ namespace YoctoProxyAPI
          *   it start up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Startertime_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.STARTERTIME_INVALID</c>.
          * </para>
          */
         public int get_starterTime()
@@ -871,7 +871,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -944,7 +944,7 @@ namespace YoctoProxyAPI
          *   receiving any instruction from the control process
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>motor._Failsafetimeout_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMotor.FAILSAFETIMEOUT_INVALID</c>.
          * </para>
          */
         public int get_failSafeTimeout()
@@ -981,7 +981,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1086,7 +1086,7 @@ namespace YoctoProxyAPI
          *   duration (in ms) of the transition
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1113,7 +1113,7 @@ namespace YoctoProxyAPI
          *   duration (in ms) of the transition
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

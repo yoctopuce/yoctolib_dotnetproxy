@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_files_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_files_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YFilesProxy, the Proxy API for Files
  *
@@ -149,7 +149,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the filesystem, for instance
-         *   <c>YBUZZER2.files</c>.
+         *   <c>YRGBLED2.files</c>.
          * </param>
          * <returns>
          *   a <c>YFiles</c> object allowing you to drive the filesystem.
@@ -252,7 +252,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of files currently loaded in the filesystem
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>files._Filescount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YFiles.FILESCOUNT_INVALID</c>.
          * </para>
          */
         public int get_filesCount()
@@ -302,7 +302,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the free space for uploading new files to the filesystem, in bytes
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>files._Freespace_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YFiles.FREESPACE_INVALID</c>.
          * </para>
          */
         public int get_freeSpace()
@@ -326,7 +326,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -442,7 +442,7 @@ namespace YoctoProxyAPI
          *   binary buffer with the content to set
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -471,7 +471,7 @@ namespace YoctoProxyAPI
          *   path and name of the file to remove.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

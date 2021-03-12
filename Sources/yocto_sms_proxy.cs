@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sms_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: yocto_sms_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YSmsProxy, the Proxy API for Sms
  *
@@ -95,7 +95,7 @@ namespace YoctoProxyAPI
          *   the text to be sent in the message
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          */
         public virtual int addText(string val)
@@ -117,7 +117,7 @@ namespace YoctoProxyAPI
          *   an array of special unicode characters
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          */
         public virtual int addUnicodeData(int[] val)
@@ -136,7 +136,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

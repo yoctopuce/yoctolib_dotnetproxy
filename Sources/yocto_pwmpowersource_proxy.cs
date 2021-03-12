@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmpowersource_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_pwmpowersource_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YPwmPowerSourceProxy, the Proxy API for PwmPowerSource
  *
@@ -250,12 +250,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>pwmpowersource._Powermode_USB_5V</c>, <c>pwmpowersource._Powermode_USB_3V</c>,
-         *   <c>pwmpowersource._Powermode_EXT_V</c> and <c>pwmpowersource._Powermode_OPNDRN</c> corresponding to
+         *   a value among <c>YPwmPowerSource.POWERMODE_USB_5V</c>, <c>YPwmPowerSource.POWERMODE_USB_3V</c>,
+         *   <c>YPwmPowerSource.POWERMODE_EXT_V</c> and <c>YPwmPowerSource.POWERMODE_OPNDRN</c> corresponding to
          *   the selected power source for the PWM on the same device
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmpowersource._Powermode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmPowerSource.POWERMODE_INVALID</c>.
          * </para>
          */
         public int get_powerMode()
@@ -283,14 +283,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>pwmpowersource._Powermode_USB_5V</c>, <c>pwmpowersource._Powermode_USB_3V</c>,
-         *   <c>pwmpowersource._Powermode_EXT_V</c> and <c>pwmpowersource._Powermode_OPNDRN</c> corresponding to
+         *   a value among <c>YPwmPowerSource.POWERMODE_USB_5V</c>, <c>YPwmPowerSource.POWERMODE_USB_3V</c>,
+         *   <c>YPwmPowerSource.POWERMODE_EXT_V</c> and <c>YPwmPowerSource.POWERMODE_OPNDRN</c> corresponding to
          *    the PWM power source
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

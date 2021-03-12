@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_led_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_led_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YLedProxy, the Proxy API for Led
  *
@@ -259,10 +259,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>led._Power_OFF</c> or <c>led._Power_ON</c>, according to the current LED state
+         *   either <c>YLed.POWER_OFF</c> or <c>YLed.POWER_ON</c>, according to the current LED state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>led._Power_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YLed.POWER_INVALID</c>.
          * </para>
          */
         public int get_power()
@@ -283,12 +283,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>led._Power_OFF</c> or <c>led._Power_ON</c>, according to the state of the LED
+         *   either <c>YLed.POWER_OFF</c> or <c>YLed.POWER_ON</c>, according to the state of the LED
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -318,7 +318,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current LED intensity (in per cent)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>led._Luminosity_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YLed.LUMINOSITY_INVALID</c>.
          * </para>
          */
         public int get_luminosity()
@@ -350,7 +350,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -415,12 +415,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>led._Blinking_STILL</c>, <c>led._Blinking_RELAX</c>, <c>led._Blinking_AWARE</c>,
-         *   <c>led._Blinking_RUN</c>, <c>led._Blinking_CALL</c> and <c>led._Blinking_PANIC</c> corresponding to
+         *   a value among <c>YLed.BLINKING_STILL</c>, <c>YLed.BLINKING_RELAX</c>, <c>YLed.BLINKING_AWARE</c>,
+         *   <c>YLed.BLINKING_RUN</c>, <c>YLed.BLINKING_CALL</c> and <c>YLed.BLINKING_PANIC</c> corresponding to
          *   the current LED signaling mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>led._Blinking_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YLed.BLINKING_INVALID</c>.
          * </para>
          */
         public int get_blinking()
@@ -441,14 +441,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>led._Blinking_STILL</c>, <c>led._Blinking_RELAX</c>, <c>led._Blinking_AWARE</c>,
-         *   <c>led._Blinking_RUN</c>, <c>led._Blinking_CALL</c> and <c>led._Blinking_PANIC</c> corresponding to
+         *   a value among <c>YLed.BLINKING_STILL</c>, <c>YLed.BLINKING_RELAX</c>, <c>YLed.BLINKING_AWARE</c>,
+         *   <c>YLed.BLINKING_RUN</c>, <c>YLed.BLINKING_CALL</c> and <c>YLed.BLINKING_PANIC</c> corresponding to
          *   the current LED signaling mode
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

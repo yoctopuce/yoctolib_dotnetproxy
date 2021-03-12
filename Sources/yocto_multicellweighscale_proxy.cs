@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multicellweighscale_proxy.cs 41108 2020-06-29 12:29:07Z seb $
+ *  $Id: yocto_multicellweighscale_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YMultiCellWeighScaleProxy, the Proxy API for MultiCellWeighScale
  *
@@ -163,6 +163,9 @@ namespace YoctoProxyAPI
         //--- (end of YMultiCellWeighScale class start)
         //--- (YMultiCellWeighScale definitions)
         public const int _CellCount_INVALID = -1;
+        public const int _ExternalSense_INVALID = 0;
+        public const int _ExternalSense_FALSE = 1;
+        public const int _ExternalSense_TRUE = 2;
         public const int _Excitation_INVALID = 0;
         public const int _Excitation_OFF = 1;
         public const int _Excitation_DC = 2;
@@ -179,6 +182,7 @@ namespace YoctoProxyAPI
         protected new YMultiCellWeighScale _func;
         // property cache
         protected int _cellCount = _CellCount_INVALID;
+        protected int _externalSense = _ExternalSense_INVALID;
         protected int _excitation = _Excitation_INVALID;
         protected double _tempAvgAdaptRatio = _TempAvgAdaptRatio_INVALID;
         protected double _tempChgAdaptRatio = _TempChgAdaptRatio_INVALID;
@@ -254,6 +258,7 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _cellCount = _func.get_cellCount();
+            _externalSense = _func.get_externalSense()+1;
             _excitation = _func.get_excitation()+1;
             _tempAvgAdaptRatio = _func.get_tempAvgAdaptRatio();
             _tempChgAdaptRatio = _func.get_tempChgAdaptRatio();
@@ -276,7 +281,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -305,7 +310,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of load cells in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Cellcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.CELLCOUNT_INVALID</c>.
          * </para>
          */
         public int get_cellCount()
@@ -337,7 +342,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -395,6 +400,108 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
+         *   Returns true if entry 4 is used as external sense for 6-wires load cells.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>YMultiCellWeighScale.EXTERNALSENSE_FALSE</c> or <c>YMultiCellWeighScale.EXTERNALSENSE_TRUE</c>,
+         *   according to true if entry 4 is used as external sense for 6-wires load cells
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.EXTERNALSENSE_INVALID</c>.
+         * </para>
+         */
+        public int get_externalSense()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_externalSense()+1;
+        }
+
+        /**
+         * <summary>
+         *   Changes the configuration to tell if entry 4 is used as external sense for
+         *   6-wires load cells.
+         * <para>
+         *   Remember to call the <c>saveToFlash()</c> method of the
+         *   module if the modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   either <c>YMultiCellWeighScale.EXTERNALSENSE_FALSE</c> or <c>YMultiCellWeighScale.EXTERNALSENSE_TRUE</c>,
+         *   according to the configuration to tell if entry 4 is used as external sense for
+         *   6-wires load cells
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_externalSense(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiCellWeighScale connected");
+            }
+            if (newval == _ExternalSense_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_externalSense(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>True if entry 4 is used as external sense for 6-wires load cells.</value>
+        public int ExternalSense
+        {
+            get
+            {
+                if (_func == null) {
+                    return _ExternalSense_INVALID;
+                }
+                if (_online) {
+                    return _externalSense;
+                }
+                return _ExternalSense_INVALID;
+            }
+            set
+            {
+                setprop_externalSense(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_externalSense(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _ExternalSense_INVALID) {
+                return;
+            }
+            if (newval == _externalSense) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_externalSense(newval-1);
+            _externalSense = newval;
+        }
+
+        /**
+         * <summary>
          *   Returns the current load cell bridge excitation method.
          * <para>
          * </para>
@@ -402,11 +509,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>multicellweighscale._Excitation_OFF</c>, <c>multicellweighscale._Excitation_DC</c>
-         *   and <c>multicellweighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>YMultiCellWeighScale.EXCITATION_OFF</c>, <c>YMultiCellWeighScale.EXCITATION_DC</c>
+         *   and <c>YMultiCellWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Excitation_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.EXCITATION_INVALID</c>.
          * </para>
          */
         public int get_excitation()
@@ -429,13 +536,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>multicellweighscale._Excitation_OFF</c>, <c>multicellweighscale._Excitation_DC</c>
-         *   and <c>multicellweighscale._Excitation_AC</c> corresponding to the current load cell bridge excitation method
+         *   a value among <c>YMultiCellWeighScale.EXCITATION_OFF</c>, <c>YMultiCellWeighScale.EXCITATION_DC</c>
+         *   and <c>YMultiCellWeighScale.EXCITATION_AC</c> corresponding to the current load cell bridge excitation method
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -513,7 +620,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -546,7 +653,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the averaged temperature update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Tempavgadaptratio_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.TEMPAVGADAPTRATIO_INVALID</c>.
          * </para>
          */
         public double get_tempAvgAdaptRatio()
@@ -620,7 +727,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -652,7 +759,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the temperature change update rate, in per mille
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Tempchgadaptratio_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.TEMPCHGADAPTRATIO_INVALID</c>.
          * </para>
          */
         public double get_tempChgAdaptRatio()
@@ -719,7 +826,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current averaged temperature, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Comptempavg_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.COMPTEMPAVG_INVALID</c>.
          * </para>
          */
         public double get_compTempAvg()
@@ -747,7 +854,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current temperature variation, used for thermal compensation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Comptempchg_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.COMPTEMPCHG_INVALID</c>.
          * </para>
          */
         public double get_compTempChg()
@@ -775,7 +882,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current current thermal compensation value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Compensation_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.COMPENSATION_INVALID</c>.
          * </para>
          */
         public double get_compensation()
@@ -810,7 +917,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -842,7 +949,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the zero tracking threshold value
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>multicellweighscale._Zerotracking_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMultiCellWeighScale.ZEROTRACKING_INVALID</c>.
          * </para>
          */
         public double get_zeroTracking()
@@ -909,7 +1016,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -939,7 +1046,7 @@ namespace YoctoProxyAPI
          *   maximum weight to be expected on the load cell.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

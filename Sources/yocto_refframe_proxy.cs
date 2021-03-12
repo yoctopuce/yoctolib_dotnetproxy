@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_refframe_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_refframe_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YRefFrameProxy, the Proxy API for RefFrame
  *
@@ -96,8 +96,8 @@ namespace YoctoProxyAPI
  *   sensors.
  * <para>
  *   Thanks to this, orientation functions relative to the earth surface plane
- *   can use the proper reference frame. The class also implements a tridimensional
- *   sensor calibration process, which can compensate for local variations
+ *   can use the proper reference frame. For some devices, the class also implements a
+ *   tridimensional sensor calibration process, which can compensate for local variations
  *   of standard gravity and improve the precision of the tilt sensors.
  * </para>
  * <para>
@@ -171,6 +171,9 @@ namespace YoctoProxyAPI
         public const int _FusionMode_M4G = 3;
         public const int _FusionMode_COMPASS = 4;
         public const int _FusionMode_IMU = 5;
+        public const int _FusionMode_INCLIN_90DEG_1G8 = 6;
+        public const int _FusionMode_INCLIN_90DEG_3G6 = 7;
+        public const int _FusionMode_INCLIN_10DEG = 8;
         public const int _MOUNTPOSITION_INVALID = 0;
         public const int _MOUNTPOSITION_BOTTOM = 1;
         public const int _MOUNTPOSITION_TOP = 2;
@@ -370,7 +373,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -402,7 +405,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the reference bearing used by the compass
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>refframe._Bearing_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRefFrame.BEARING_INVALID</c>.
          * </para>
          */
         public double get_bearing()
@@ -459,20 +462,22 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the BNO055 fusion mode.
+         *   Returns the sensor fusion mode.
          * <para>
-         *   Note this feature is only availabe on Yocto-3D-V2.
+         *   Note that available sensor fusion modes depend on the sensor type.
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>refframe._Fusionmode_NDOF</c>, <c>refframe._Fusionmode_NDOF_FMC_OFF</c>,
-         *   <c>refframe._Fusionmode_M4G</c>, <c>refframe._Fusionmode_COMPASS</c> and
-         *   <c>refframe._Fusionmode_IMU</c> corresponding to the BNO055 fusion mode
+         *   a value among <c>YRefFrame.FUSIONMODE_NDOF</c>, <c>YRefFrame.FUSIONMODE_NDOF_FMC_OFF</c>,
+         *   <c>YRefFrame.FUSIONMODE_M4G</c>, <c>YRefFrame.FUSIONMODE_COMPASS</c>,
+         *   <c>YRefFrame.FUSIONMODE_IMU</c>, <c>YRefFrame.FUSIONMODE_INCLIN_90DEG_1G8</c>,
+         *   <c>YRefFrame.FUSIONMODE_INCLIN_90DEG_3G6</c> and <c>YRefFrame.FUSIONMODE_INCLIN_10DEG</c>
+         *   corresponding to the sensor fusion mode
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>refframe._Fusionmode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YRefFrame.FUSIONMODE_INVALID</c>.
          * </para>
          */
         public int get_fusionMode()
@@ -486,22 +491,24 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Change the BNO055 fusion mode.
+         *   Change the sensor fusion mode.
          * <para>
-         *   Note: this feature is only availabe on Yocto-3D-V2.
+         *   Note that available sensor fusion modes depend on the sensor type.
          *   Remember to call the matching module <c>saveToFlash()</c> method to save the setting permanently.
          * </para>
          * <para>
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>refframe._Fusionmode_NDOF</c>, <c>refframe._Fusionmode_NDOF_FMC_OFF</c>,
-         *   <c>refframe._Fusionmode_M4G</c>, <c>refframe._Fusionmode_COMPASS</c> and <c>refframe._Fusionmode_IMU</c>
+         *   a value among <c>YRefFrame.FUSIONMODE_NDOF</c>, <c>YRefFrame.FUSIONMODE_NDOF_FMC_OFF</c>,
+         *   <c>YRefFrame.FUSIONMODE_M4G</c>, <c>YRefFrame.FUSIONMODE_COMPASS</c>,
+         *   <c>YRefFrame.FUSIONMODE_IMU</c>, <c>YRefFrame.FUSIONMODE_INCLIN_90DEG_1G8</c>,
+         *   <c>YRefFrame.FUSIONMODE_INCLIN_90DEG_3G6</c> and <c>YRefFrame.FUSIONMODE_INCLIN_10DEG</c>
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -520,7 +527,7 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access (configuration)
-        /// <value>BNO055 fusion mode. Note this feature is only availabe on Yocto-3D-V2.</value>
+        /// <value>Sensor fusion mode. Note that available sensor fusion modes depend on the sensor type.</value>
         public int FusionMode
         {
             get
@@ -570,10 +577,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among the <c>Y_MOUNTPOSITION</c> enumeration
-         *   (<c>refframe._Mountposition_BOTTOM</c>,   <c>refframe._Mountposition_TOP</c>,
-         *   <c>refframe._Mountposition_FRONT</c>,    <c>refframe._Mountposition_RIGHT</c>,
-         *   <c>refframe._Mountposition_REAR</c>,     <c>refframe._Mountposition_LEFT</c>),
+         *   a value among the <c>YRefFrame.MOUNTPOSITION</c> enumeration
+         *   (<c>YRefFrame.MOUNTPOSITION_BOTTOM</c>,  <c>YRefFrame.MOUNTPOSITION_TOP</c>,
+         *   <c>YRefFrame.MOUNTPOSITION_FRONT</c>,    <c>YRefFrame.MOUNTPOSITION_RIGHT</c>,
+         *   <c>YRefFrame.MOUNTPOSITION_REAR</c>,     <c>YRefFrame.MOUNTPOSITION_LEFT</c>),
          *   corresponding to the installation in a box, on one of the six faces.
          * </returns>
          * <para>
@@ -599,9 +606,9 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among the enumeration <c>Y_MOUNTORIENTATION</c>
-         *   (<c>refframe._Mountorientation_TWELVE</c>, <c>refframe._Mountorientation_THREE</c>,
-         *   <c>refframe._Mountorientation_SIX</c>,     <c>refframe._Mountorientation_NINE</c>)
+         *   a value among the enumeration <c>YRefFrame.MOUNTORIENTATION</c>
+         *   (<c>YRefFrame.MOUNTORIENTATION_TWELVE</c>, <c>YRefFrame.MOUNTORIENTATION_THREE</c>,
+         *   <c>YRefFrame.MOUNTORIENTATION_SIX</c>,     <c>YRefFrame.MOUNTORIENTATION_NINE</c>)
          *   corresponding to the orientation of the "X" arrow on the device,
          *   as on a clock dial seen from an observer in the center of the box.
          *   On the bottom face, the 12H orientation points to the front, while
@@ -633,16 +640,16 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="position">
-         *   a value among the <c>Y_MOUNTPOSITION</c> enumeration
-         *   (<c>refframe._Mountposition_BOTTOM</c>,   <c>refframe._Mountposition_TOP</c>,
-         *   <c>refframe._Mountposition_FRONT</c>,    <c>refframe._Mountposition_RIGHT</c>,
-         *   <c>refframe._Mountposition_REAR</c>,     <c>refframe._Mountposition_LEFT</c>),
+         *   a value among the <c>YRefFrame.MOUNTPOSITION</c> enumeration
+         *   (<c>YRefFrame.MOUNTPOSITION_BOTTOM</c>,  <c>YRefFrame.MOUNTPOSITION_TOP</c>,
+         *   <c>YRefFrame.MOUNTPOSITION_FRONT</c>,    <c>YRefFrame.MOUNTPOSITION_RIGHT</c>,
+         *   <c>YRefFrame.MOUNTPOSITION_REAR</c>,     <c>YRefFrame.MOUNTPOSITION_LEFT</c>),
          *   corresponding to the installation in a box, on one of the six faces.
          * </param>
          * <param name="orientation">
-         *   a value among the enumeration <c>Y_MOUNTORIENTATION</c>
-         *   (<c>refframe._Mountorientation_TWELVE</c>, <c>refframe._Mountorientation_THREE</c>,
-         *   <c>refframe._Mountorientation_SIX</c>,     <c>refframe._Mountorientation_NINE</c>)
+         *   a value among the enumeration <c>YRefFrame.MOUNTORIENTATION</c>
+         *   (<c>YRefFrame.MOUNTORIENTATION_TWELVE</c>, <c>YRefFrame.MOUNTORIENTATION_THREE</c>,
+         *   <c>YRefFrame.MOUNTORIENTATION_SIX</c>,     <c>YRefFrame.MOUNTORIENTATION_NINE</c>)
          *   corresponding to the orientation of the "X" arrow on the device,
          *   as on a clock dial seen from an observer in the center of the box.
          *   On the bottom face, the 12H orientation points to the front, while

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellular_proxy.cs 41769 2020-09-03 17:34:23Z mvuilleu $
+ *  $Id: yocto_cellular_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YCellularProxy, the Proxy API for Cellular
  *
@@ -295,7 +295,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the link quality, expressed in percent
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Linkquality_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.LINKQUALITY_INVALID</c>.
          * </para>
          */
         public int get_linkQuality()
@@ -362,7 +362,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the name of the cell operator currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Celloperator_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.CELLOPERATOR_INVALID</c>.
          * </para>
          */
         public string get_cellOperator()
@@ -385,7 +385,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the unique identifier of the cellular antenna in use: MCC, MNC, LAC and Cell ID
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Cellidentifier_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.CELLIDENTIFIER_INVALID</c>.
          * </para>
          */
         public string get_cellIdentifier()
@@ -405,13 +405,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>cellular._Celltype_GPRS</c>, <c>cellular._Celltype_EGPRS</c>,
-         *   <c>cellular._Celltype_WCDMA</c>, <c>cellular._Celltype_HSDPA</c>, <c>cellular._Celltype_NONE</c>,
-         *   <c>cellular._Celltype_CDMA</c>, <c>cellular._Celltype_LTE_M</c>, <c>cellular._Celltype_NB_IOT</c>
-         *   and <c>cellular._Celltype_EC_GSM_IOT</c>
+         *   a value among <c>YCellular.CELLTYPE_GPRS</c>, <c>YCellular.CELLTYPE_EGPRS</c>,
+         *   <c>YCellular.CELLTYPE_WCDMA</c>, <c>YCellular.CELLTYPE_HSDPA</c>, <c>YCellular.CELLTYPE_NONE</c>,
+         *   <c>YCellular.CELLTYPE_CDMA</c>, <c>YCellular.CELLTYPE_LTE_M</c>, <c>YCellular.CELLTYPE_NB_IOT</c>
+         *   and <c>YCellular.CELLTYPE_EC_GSM_IOT</c>
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Celltype_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.CELLTYPE_INVALID</c>.
          * </para>
          */
         public int get_cellType()
@@ -440,7 +440,7 @@ namespace YoctoProxyAPI
          *   the SIM card
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Imsi_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.IMSI_INVALID</c>.
          * </para>
          */
         public string get_imsi()
@@ -463,7 +463,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the latest status message from the wireless interface
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Message_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.MESSAGE_INVALID</c>.
          * </para>
          */
         public string get_message()
@@ -490,7 +490,7 @@ namespace YoctoProxyAPI
          *   was rejected by the SIM card
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Pin_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.PIN_INVALID</c>.
          * </para>
          */
         public string get_pin()
@@ -526,7 +526,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -598,7 +598,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the type of protocol used over the serial line, as a string
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Radioconfig_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.RADIOCONFIG_INVALID</c>.
          * </para>
          */
         public string get_radioConfig()
@@ -631,7 +631,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -703,7 +703,7 @@ namespace YoctoProxyAPI
          *   cell operators
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Lockedoperator_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.LOCKEDOPERATOR_INVALID</c>.
          * </para>
          */
         public string get_lockedOperator()
@@ -733,7 +733,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -798,11 +798,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>cellular._Airplanemode_OFF</c> or <c>cellular._Airplanemode_ON</c>, according to true if
+         *   either <c>YCellular.AIRPLANEMODE_OFF</c> or <c>YCellular.AIRPLANEMODE_ON</c>, according to true if
          *   the airplane mode is active (radio turned off)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Airplanemode_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.AIRPLANEMODE_INVALID</c>.
          * </para>
          */
         public int get_airplaneMode()
@@ -823,13 +823,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>cellular._Airplanemode_OFF</c> or <c>cellular._Airplanemode_ON</c>, according to the
+         *   either <c>YCellular.AIRPLANEMODE_OFF</c> or <c>YCellular.AIRPLANEMODE_ON</c>, according to the
          *   activation state of airplane mode (radio turned off)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -857,12 +857,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>cellular._Enabledata_HOMENETWORK</c>, <c>cellular._Enabledata_ROAMING</c>,
-         *   <c>cellular._Enabledata_NEVER</c> and <c>cellular._Enabledata_NEUTRALITY</c> corresponding to the
+         *   a value among <c>YCellular.ENABLEDATA_HOMENETWORK</c>, <c>YCellular.ENABLEDATA_ROAMING</c>,
+         *   <c>YCellular.ENABLEDATA_NEVER</c> and <c>YCellular.ENABLEDATA_NEUTRALITY</c> corresponding to the
          *   condition for enabling IP data services (GPRS)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Enabledata_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.ENABLEDATA_INVALID</c>.
          * </para>
          */
         public int get_enableData()
@@ -891,14 +891,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>cellular._Enabledata_HOMENETWORK</c>, <c>cellular._Enabledata_ROAMING</c>,
-         *   <c>cellular._Enabledata_NEVER</c> and <c>cellular._Enabledata_NEUTRALITY</c> corresponding to the
+         *   a value among <c>YCellular.ENABLEDATA_HOMENETWORK</c>, <c>YCellular.ENABLEDATA_ROAMING</c>,
+         *   <c>YCellular.ENABLEDATA_NEVER</c> and <c>YCellular.ENABLEDATA_NEUTRALITY</c> corresponding to the
          *   condition for enabling IP data services (GPRS)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -969,7 +969,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the Access Point Name (APN) to be used, if needed
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Apn_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.APN_INVALID</c>.
          * </para>
          */
         public string get_apn()
@@ -997,7 +997,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1068,7 +1068,7 @@ namespace YoctoProxyAPI
          *   in the device, or an empty string otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Apnsecret_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.APNSECRET_INVALID</c>.
          * </para>
          */
         public string get_apnSecret()
@@ -1091,7 +1091,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the automated connectivity check interval, in seconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Pinginterval_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.PINGINTERVAL_INVALID</c>.
          * </para>
          */
         public int get_pingInterval()
@@ -1123,7 +1123,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1191,7 +1191,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of bytes sent so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Datasent_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.DATASENT_INVALID</c>.
          * </para>
          */
         public int get_dataSent()
@@ -1221,7 +1221,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1250,7 +1250,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of bytes received so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>cellular._Datareceived_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCellular.DATARECEIVED_INVALID</c>.
          * </para>
          */
         public int get_dataReceived()
@@ -1280,7 +1280,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1317,7 +1317,7 @@ namespace YoctoProxyAPI
          *   new PIN code to configure into the SIM card
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1348,7 +1348,7 @@ namespace YoctoProxyAPI
          *   APN password
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1369,7 +1369,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

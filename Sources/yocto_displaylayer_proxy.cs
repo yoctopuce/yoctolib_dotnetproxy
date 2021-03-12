@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_displaylayer_proxy.cs 40244 2020-05-03 15:22:34Z mvuilleu $
+ *  $Id: yocto_displaylayer_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YDisplayLayerProxy, the Proxy API for DisplayLayer
  *
@@ -52,10 +52,10 @@ namespace YoctoProxyAPI
     //--- (YDisplayLayer class start)
     public class YDisplayLayerProxy
     {
-        private YDisplayLayer _objref;
-        internal YDisplayLayerProxy(YDisplayLayer objref)
+        private YDisplayLayer _objptr;
+        internal YDisplayLayerProxy(YDisplayLayer objptr)
         {
-             _objref = objref;
+             _objptr = objptr;
         }
         //--- (end of YDisplayLayer class start)
         //--- (YDisplayLayer definitions)
@@ -167,7 +167,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -175,7 +175,7 @@ namespace YoctoProxyAPI
          */
         public virtual int reset()
         {
-            return _objref.reset();
+            return _objptr.reset();
         }
 
         /**
@@ -188,7 +188,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -196,7 +196,7 @@ namespace YoctoProxyAPI
          */
         public virtual int clear()
         {
-            return _objref.clear();
+            return _objptr.clear();
         }
 
         /**
@@ -213,7 +213,7 @@ namespace YoctoProxyAPI
          *   the desired pen color, as a 24-bit RGB value
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -221,7 +221,7 @@ namespace YoctoProxyAPI
          */
         public virtual int selectColorPen(int color)
         {
-            return _objref.selectColorPen(color);
+            return _objptr.selectColorPen(color);
         }
 
         /**
@@ -240,7 +240,7 @@ namespace YoctoProxyAPI
          *   the desired gray level, from 0 to 255
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -248,7 +248,7 @@ namespace YoctoProxyAPI
          */
         public virtual int selectGrayPen(int graylevel)
         {
-            return _objref.selectGrayPen(graylevel);
+            return _objptr.selectGrayPen(graylevel);
         }
 
         /**
@@ -262,7 +262,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -270,7 +270,7 @@ namespace YoctoProxyAPI
          */
         public virtual int selectEraser()
         {
-            return _objref.selectEraser();
+            return _objptr.selectEraser();
         }
 
         /**
@@ -290,7 +290,7 @@ namespace YoctoProxyAPI
          *   disable it.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -298,7 +298,7 @@ namespace YoctoProxyAPI
          */
         public virtual int setAntialiasingMode(bool mode)
         {
-            return _objref.setAntialiasingMode(mode);
+            return _objptr.setAntialiasingMode(mode);
         }
 
         /**
@@ -314,7 +314,7 @@ namespace YoctoProxyAPI
          *   the distance from top of layer, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -322,7 +322,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawPixel(int x, int y)
         {
-            return _objref.drawPixel(x, y);
+            return _objptr.drawPixel(x, y);
         }
 
         /**
@@ -344,7 +344,7 @@ namespace YoctoProxyAPI
          *   the distance from top of layer to the bottom border of the rectangle, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -352,7 +352,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawRect(int x1, int y1, int x2, int y2)
         {
-            return _objref.drawRect(x1, y1, x2, y2);
+            return _objptr.drawRect(x1, y1, x2, y2);
         }
 
         /**
@@ -374,7 +374,7 @@ namespace YoctoProxyAPI
          *   the distance from top of layer to the bottom border of the rectangle, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -382,7 +382,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawBar(int x1, int y1, int x2, int y2)
         {
-            return _objref.drawBar(x1, y1, x2, y2);
+            return _objptr.drawBar(x1, y1, x2, y2);
         }
 
         /**
@@ -401,7 +401,7 @@ namespace YoctoProxyAPI
          *   the radius of the circle, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -409,7 +409,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawCircle(int x, int y, int r)
         {
-            return _objref.drawCircle(x, y, r);
+            return _objptr.drawCircle(x, y, r);
         }
 
         /**
@@ -428,7 +428,7 @@ namespace YoctoProxyAPI
          *   the radius of the disc, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -436,7 +436,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawDisc(int x, int y, int r)
         {
-            return _objref.drawDisc(x, y, r);
+            return _objptr.drawDisc(x, y, r);
         }
 
         /**
@@ -455,7 +455,7 @@ namespace YoctoProxyAPI
          *   Yocto-MiniDisplay).
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -463,7 +463,7 @@ namespace YoctoProxyAPI
          */
         public virtual int selectFont(string fontname)
         {
-            return _objref.selectFont(fontname);
+            return _objptr.selectFont(fontname);
         }
 
         /**
@@ -482,21 +482,21 @@ namespace YoctoProxyAPI
          *   the distance from top of layer to the text anchor point, in pixels
          * </param>
          * <param name="anchor">
-         *   the text anchor point, chosen among the <c>Y_ALIGN</c> enumeration:
-         *   <c>displaylayer._Align_TOP_LEFT</c>,    <c>displaylayer._Align_CENTER_LEFT</c>,   
-         *   <c>displaylayer._Align_BASELINE_LEFT</c>,    <c>displaylayer._Align_BOTTOM_LEFT</c>,
-         *   <c>displaylayer._Align_TOP_CENTER</c>,  <c>displaylayer._Align_CENTER</c>,        
-         *   <c>displaylayer._Align_BASELINE_CENTER</c>,  <c>displaylayer._Align_BOTTOM_CENTER</c>,
-         *   <c>displaylayer._Align_TOP_DECIMAL</c>, <c>displaylayer._Align_CENTER_DECIMAL</c>,
-         *   <c>displaylayer._Align_BASELINE_DECIMAL</c>, <c>displaylayer._Align_BOTTOM_DECIMAL</c>,
-         *   <c>displaylayer._Align_TOP_RIGHT</c>,   <c>displaylayer._Align_CENTER_RIGHT</c>,  
-         *   <c>displaylayer._Align_BASELINE_RIGHT</c>,   <c>displaylayer._Align_BOTTOM_RIGHT</c>.
+         *   the text anchor point, chosen among the <c>YDisplayLayer.ALIGN</c> enumeration:
+         *   <c>YDisplayLayer.ALIGN_TOP_LEFT</c>,         <c>YDisplayLayer.ALIGN_CENTER_LEFT</c>,
+         *   <c>YDisplayLayer.ALIGN_BASELINE_LEFT</c>,    <c>YDisplayLayer.ALIGN_BOTTOM_LEFT</c>,
+         *   <c>YDisplayLayer.ALIGN_TOP_CENTER</c>,       <c>YDisplayLayer.ALIGN_CENTER</c>,
+         *   <c>YDisplayLayer.ALIGN_BASELINE_CENTER</c>,  <c>YDisplayLayer.ALIGN_BOTTOM_CENTER</c>,
+         *   <c>YDisplayLayer.ALIGN_TOP_DECIMAL</c>,      <c>YDisplayLayer.ALIGN_CENTER_DECIMAL</c>,
+         *   <c>YDisplayLayer.ALIGN_BASELINE_DECIMAL</c>, <c>YDisplayLayer.ALIGN_BOTTOM_DECIMAL</c>,
+         *   <c>YDisplayLayer.ALIGN_TOP_RIGHT</c>,        <c>YDisplayLayer.ALIGN_CENTER_RIGHT</c>,
+         *   <c>YDisplayLayer.ALIGN_BASELINE_RIGHT</c>,   <c>YDisplayLayer.ALIGN_BOTTOM_RIGHT</c>.
          * </param>
          * <param name="text">
          *   the text string to draw
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -504,7 +504,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawText(int x, int y, int anchor, string text)
         {
-            return _objref.drawText(x, y, _Int2ALIGN(anchor), text);
+            return _objptr.drawText(x, y, _Int2ALIGN(anchor), text);
         }
 
         /**
@@ -527,7 +527,7 @@ namespace YoctoProxyAPI
          *   the GIF file name
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -535,7 +535,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawImage(int x, int y, string imagename)
         {
-            return _objref.drawImage(x, y, imagename);
+            return _objptr.drawImage(x, y, imagename);
         }
 
         /**
@@ -568,7 +568,7 @@ namespace YoctoProxyAPI
          *   255 = white), or -1 to leave the pixels unchanged
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -576,7 +576,7 @@ namespace YoctoProxyAPI
          */
         public virtual int drawBitmap(int x, int y, int w, byte[] bitmap, int bgcol)
         {
-            return _objref.drawBitmap(x, y, w, bitmap, bgcol);
+            return _objptr.drawBitmap(x, y, w, bitmap, bgcol);
         }
 
         /**
@@ -592,7 +592,7 @@ namespace YoctoProxyAPI
          *   the distance from top of layer, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -600,7 +600,7 @@ namespace YoctoProxyAPI
          */
         public virtual int moveTo(int x, int y)
         {
-            return _objref.moveTo(x, y);
+            return _objptr.moveTo(x, y);
         }
 
         /**
@@ -618,7 +618,7 @@ namespace YoctoProxyAPI
          *   the distance from top of layer to the end point of the line, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -626,7 +626,7 @@ namespace YoctoProxyAPI
          */
         public virtual int lineTo(int x, int y)
         {
-            return _objref.lineTo(x, y);
+            return _objptr.lineTo(x, y);
         }
 
         /**
@@ -643,7 +643,7 @@ namespace YoctoProxyAPI
          *   the message to display
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -651,7 +651,7 @@ namespace YoctoProxyAPI
          */
         public virtual int consoleOut(string text)
         {
-            return _objref.consoleOut(text);
+            return _objptr.consoleOut(text);
         }
 
         /**
@@ -673,7 +673,7 @@ namespace YoctoProxyAPI
          *   the distance from top of layer to the bottom margin, in pixels
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -681,7 +681,7 @@ namespace YoctoProxyAPI
          */
         public virtual int setConsoleMargins(int x1, int y1, int x2, int y2)
         {
-            return _objref.setConsoleMargins(x1, y1, x2, y2);
+            return _objptr.setConsoleMargins(x1, y1, x2, y2);
         }
 
         /**
@@ -696,7 +696,7 @@ namespace YoctoProxyAPI
          *   255 = white), or -1 for transparent
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -704,7 +704,7 @@ namespace YoctoProxyAPI
          */
         public virtual int setConsoleBackground(int bgcol)
         {
-            return _objref.setConsoleBackground(bgcol);
+            return _objptr.setConsoleBackground(bgcol);
         }
 
         /**
@@ -718,7 +718,7 @@ namespace YoctoProxyAPI
          *   <c>false</c> to wrap on the last column anyway.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -726,7 +726,7 @@ namespace YoctoProxyAPI
          */
         public virtual int setConsoleWordWrap(bool wordwrap)
         {
-            return _objref.setConsoleWordWrap(wordwrap);
+            return _objptr.setConsoleWordWrap(wordwrap);
         }
 
         /**
@@ -737,7 +737,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -745,7 +745,7 @@ namespace YoctoProxyAPI
          */
         public virtual int clearConsole()
         {
-            return _objref.clearConsole();
+            return _objptr.clearConsole();
         }
 
         /**
@@ -767,7 +767,7 @@ namespace YoctoProxyAPI
          *   0 if the scrolling should be immediate.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -775,7 +775,7 @@ namespace YoctoProxyAPI
          */
         public virtual int setLayerPosition(int x, int y, int scrollTime)
         {
-            return _objref.setLayerPosition(x, y, scrollTime);
+            return _objptr.setLayerPosition(x, y, scrollTime);
         }
 
         /**
@@ -789,7 +789,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -797,7 +797,7 @@ namespace YoctoProxyAPI
          */
         public virtual int hide()
         {
-            return _objref.hide();
+            return _objptr.hide();
         }
 
         /**
@@ -808,7 +808,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -816,7 +816,7 @@ namespace YoctoProxyAPI
          */
         public virtual int unhide()
         {
-            return _objref.unhide();
+            return _objptr.unhide();
         }
 
         /**
@@ -832,7 +832,7 @@ namespace YoctoProxyAPI
          */
         public virtual YDisplayProxy get_display()
         {
-            return YDisplayProxy.FindDisplay(_objref.get_display().get_serialNumber());
+            return YDisplayProxy.FindDisplay(_objptr.get_display().get_serialNumber());
         }
 
         /**
@@ -850,7 +850,7 @@ namespace YoctoProxyAPI
          */
         public virtual int get_displayWidth()
         {
-            return _objref.get_displayWidth();
+            return _objptr.get_displayWidth();
         }
 
         /**
@@ -868,7 +868,7 @@ namespace YoctoProxyAPI
          */
         public virtual int get_displayHeight()
         {
-            return _objref.get_displayHeight();
+            return _objptr.get_displayHeight();
         }
 
         /**
@@ -886,7 +886,7 @@ namespace YoctoProxyAPI
          */
         public virtual int get_layerWidth()
         {
-            return _objref.get_layerWidth();
+            return _objptr.get_layerWidth();
         }
 
         /**
@@ -904,7 +904,7 @@ namespace YoctoProxyAPI
          */
         public virtual int get_layerHeight()
         {
-            return _objref.get_layerHeight();
+            return _objptr.get_layerHeight();
         }
     }
     //--- (end of YDisplayLayer implementation)

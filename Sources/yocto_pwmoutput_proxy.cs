@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmoutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_pwmoutput_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YPwmOutputProxy, the Proxy API for PwmOutput
  *
@@ -267,11 +267,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>pwmoutput._Enabled_FALSE</c> or <c>pwmoutput._Enabled_TRUE</c>, according to the state of
+         *   either <c>YPwmOutput.ENABLED_FALSE</c> or <c>YPwmOutput.ENABLED_TRUE</c>, according to the state of
          *   the PWM generators
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmoutput._Enabled_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmOutput.ENABLED_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -292,12 +292,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>pwmoutput._Enabled_FALSE</c> or <c>pwmoutput._Enabled_TRUE</c>
+         *   either <c>YPwmOutput.ENABLED_FALSE</c> or <c>YPwmOutput.ENABLED_TRUE</c>
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -336,7 +336,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -365,7 +365,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM frequency in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmoutput._Frequency_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmOutput.FREQUENCY_INVALID</c>.
          * </para>
          */
         public double get_frequency()
@@ -439,7 +439,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -468,7 +468,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM period in milliseconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmoutput._Period_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmOutput.PERIOD_INVALID</c>.
          * </para>
          */
         public double get_period()
@@ -537,7 +537,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -566,7 +566,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM duty cycle, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmoutput._Dutycycle_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmOutput.DUTYCYCLE_INVALID</c>.
          * </para>
          */
         public double get_dutyCycle()
@@ -687,7 +687,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -716,7 +716,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the PWM pulse length in milliseconds, as a floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmoutput._Pulseduration_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmOutput.PULSEDURATION_INVALID</c>.
          * </para>
          */
         public double get_pulseDuration()
@@ -741,11 +741,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>pwmoutput._Enabledatpoweron_FALSE</c> or <c>pwmoutput._Enabledatpoweron_TRUE</c>,
+         *   either <c>YPwmOutput.ENABLEDATPOWERON_FALSE</c> or <c>YPwmOutput.ENABLEDATPOWERON_TRUE</c>,
          *   according to the state of the PWM at device power on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmoutput._Enabledatpoweron_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmOutput.ENABLEDATPOWERON_INVALID</c>.
          * </para>
          */
         public int get_enabledAtPowerOn()
@@ -768,13 +768,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>pwmoutput._Enabledatpoweron_FALSE</c> or <c>pwmoutput._Enabledatpoweron_TRUE</c>,
+         *   either <c>YPwmOutput.ENABLEDATPOWERON_FALSE</c> or <c>YPwmOutput.ENABLEDATPOWERON_TRUE</c>,
          *   according to the state of the PWM at device power on
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -848,7 +848,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -878,7 +878,7 @@ namespace YoctoProxyAPI
          *   floating point number between 0 and 100
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>pwmoutput._Dutycycleatpoweron_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPwmOutput.DUTYCYCLEATPOWERON_INVALID</c>.
          * </para>
          */
         public double get_dutyCycleAtPowerOn()
@@ -948,7 +948,7 @@ namespace YoctoProxyAPI
          *   total duration of the transition, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -977,7 +977,7 @@ namespace YoctoProxyAPI
          *   total duration of the transition, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1005,7 +1005,7 @@ namespace YoctoProxyAPI
          *   total duration of the transition, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1037,7 +1037,7 @@ namespace YoctoProxyAPI
          *   total duration of the transition, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1066,7 +1066,7 @@ namespace YoctoProxyAPI
          *   desired pulse count
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1095,7 +1095,7 @@ namespace YoctoProxyAPI
          *   desired pulse count
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1123,7 +1123,7 @@ namespace YoctoProxyAPI
          *   desired pulse count
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

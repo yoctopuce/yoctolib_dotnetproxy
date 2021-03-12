@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_watchdog_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_watchdog_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YWatchdogProxy, the Proxy API for Watchdog
  *
@@ -286,11 +286,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>watchdog._State_A</c> or <c>watchdog._State_B</c>, according to the state of the watchdog
+         *   either <c>YWatchdog.STATE_A</c> or <c>YWatchdog.STATE_B</c>, according to the state of the watchdog
          *   (A for the idle position, B for the active position)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._State_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.STATE_INVALID</c>.
          * </para>
          */
         public int get_state()
@@ -311,13 +311,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>watchdog._State_A</c> or <c>watchdog._State_B</c>, according to the state of the watchdog
+         *   either <c>YWatchdog.STATE_A</c> or <c>YWatchdog.STATE_B</c>, according to the state of the watchdog
          *   (A for the idle position, B for the active position)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -396,13 +396,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>watchdog._Stateatpoweron_UNCHANGED</c>, <c>watchdog._Stateatpoweron_A</c> and
-         *   <c>watchdog._Stateatpoweron_B</c> corresponding to the state of the watchdog at device startup (A
+         *   a value among <c>YWatchdog.STATEATPOWERON_UNCHANGED</c>, <c>YWatchdog.STATEATPOWERON_A</c> and
+         *   <c>YWatchdog.STATEATPOWERON_B</c> corresponding to the state of the watchdog at device startup (A
          *   for the idle position,
          *   B for the active position, UNCHANGED to leave the relay state as is)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Stateatpoweron_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.STATEATPOWERON_INVALID</c>.
          * </para>
          */
         public int get_stateAtPowerOn()
@@ -426,15 +426,15 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>watchdog._Stateatpoweron_UNCHANGED</c>, <c>watchdog._Stateatpoweron_A</c> and
-         *   <c>watchdog._Stateatpoweron_B</c> corresponding to the state of the watchdog at device startup (A
+         *   a value among <c>YWatchdog.STATEATPOWERON_UNCHANGED</c>, <c>YWatchdog.STATEATPOWERON_A</c> and
+         *   <c>YWatchdog.STATEATPOWERON_B</c> corresponding to the state of the watchdog at device startup (A
          *   for the idle position,
          *   B for the active position, UNCHANGED to leave the relay state as is)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -507,7 +507,7 @@ namespace YoctoProxyAPI
          *   A before automatically switching back in to B state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Maxtimeonstatea_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.MAXTIMEONSTATEA_INVALID</c>.
          * </para>
          */
         public long get_maxTimeOnStateA()
@@ -537,7 +537,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -607,7 +607,7 @@ namespace YoctoProxyAPI
          *   an integer
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Maxtimeonstateb_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.MAXTIMEONSTATEB_INVALID</c>.
          * </para>
          */
         public long get_maxTimeOnStateB()
@@ -637,7 +637,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -702,11 +702,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>watchdog._Output_OFF</c> or <c>watchdog._Output_ON</c>, according to the output state of
+         *   either <c>YWatchdog.OUTPUT_OFF</c> or <c>YWatchdog.OUTPUT_ON</c>, according to the output state of
          *   the watchdog, when used as a simple switch (single throw)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Output_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.OUTPUT_INVALID</c>.
          * </para>
          */
         public int get_output()
@@ -727,13 +727,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>watchdog._Output_OFF</c> or <c>watchdog._Output_ON</c>, according to the output state of
+         *   either <c>YWatchdog.OUTPUT_OFF</c> or <c>YWatchdog.OUTPUT_ON</c>, according to the output state of
          *   the watchdog, when used as a simple switch (single throw)
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -767,7 +767,7 @@ namespace YoctoProxyAPI
          *   (state A), during a measured pulse generation
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Pulsetimer_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.PULSETIMER_INVALID</c>.
          * </para>
          */
         public long get_pulseTimer()
@@ -793,7 +793,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -824,7 +824,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -852,7 +852,7 @@ namespace YoctoProxyAPI
          *   When there is no scheduled pulse, returns zero
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Countdown_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.COUNTDOWN_INVALID</c>.
          * </para>
          */
         public long get_countdown()
@@ -872,11 +872,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>watchdog._Autostart_OFF</c> or <c>watchdog._Autostart_ON</c>, according to the watchdog
+         *   either <c>YWatchdog.AUTOSTART_OFF</c> or <c>YWatchdog.AUTOSTART_ON</c>, according to the watchdog
          *   running state at module power on
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Autostart_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.AUTOSTART_INVALID</c>.
          * </para>
          */
         public int get_autoStart()
@@ -899,13 +899,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>watchdog._Autostart_OFF</c> or <c>watchdog._Autostart_ON</c>, according to the watchdog
+         *   either <c>YWatchdog.AUTOSTART_OFF</c> or <c>YWatchdog.AUTOSTART_ON</c>, according to the watchdog
          *   running state at module power on
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -972,10 +972,10 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>watchdog._Running_OFF</c> or <c>watchdog._Running_ON</c>, according to the watchdog running state
+         *   either <c>YWatchdog.RUNNING_OFF</c> or <c>YWatchdog.RUNNING_ON</c>, according to the watchdog running state
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Running_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.RUNNING_INVALID</c>.
          * </para>
          */
         public int get_running()
@@ -996,13 +996,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>watchdog._Running_OFF</c> or <c>watchdog._Running_ON</c>, according to the running state
+         *   either <c>YWatchdog.RUNNING_OFF</c> or <c>YWatchdog.RUNNING_ON</c>, according to the running state
          *   of the watchdog
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1070,7 +1070,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1097,7 +1097,7 @@ namespace YoctoProxyAPI
          *   watchdog, in milliseconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Triggerdelay_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.TRIGGERDELAY_INVALID</c>.
          * </para>
          */
         public long get_triggerDelay()
@@ -1126,7 +1126,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1194,7 +1194,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the duration of resets caused by the watchdog, in milliseconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>watchdog._Triggerduration_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWatchdog.TRIGGERDURATION_INVALID</c>.
          * </para>
          */
         public long get_triggerDuration()
@@ -1221,7 +1221,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -1284,7 +1284,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

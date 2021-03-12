@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_poweroutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_poweroutput_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YPowerOutputProxy, the Proxy API for PowerOutput
  *
@@ -251,12 +251,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>poweroutput._Voltage_OFF</c>, <c>poweroutput._Voltage_OUT3V3</c>,
-         *   <c>poweroutput._Voltage_OUT5V</c>, <c>poweroutput._Voltage_OUT4V7</c> and
-         *   <c>poweroutput._Voltage_OUT1V8</c> corresponding to the voltage on the power output featured by the module
+         *   a value among <c>YPowerOutput.VOLTAGE_OFF</c>, <c>YPowerOutput.VOLTAGE_OUT3V3</c>,
+         *   <c>YPowerOutput.VOLTAGE_OUT5V</c>, <c>YPowerOutput.VOLTAGE_OUT4V7</c> and
+         *   <c>YPowerOutput.VOLTAGE_OUT1V8</c> corresponding to the voltage on the power output featured by the module
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>poweroutput._Voltage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerOutput.VOLTAGE_INVALID</c>.
          * </para>
          */
         public int get_voltage()
@@ -280,15 +280,15 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>poweroutput._Voltage_OFF</c>, <c>poweroutput._Voltage_OUT3V3</c>,
-         *   <c>poweroutput._Voltage_OUT5V</c>, <c>poweroutput._Voltage_OUT4V7</c> and
-         *   <c>poweroutput._Voltage_OUT1V8</c> corresponding to the voltage on the power output provided by the
+         *   a value among <c>YPowerOutput.VOLTAGE_OFF</c>, <c>YPowerOutput.VOLTAGE_OUT3V3</c>,
+         *   <c>YPowerOutput.VOLTAGE_OUT5V</c>, <c>YPowerOutput.VOLTAGE_OUT4V7</c> and
+         *   <c>YPowerOutput.VOLTAGE_OUT1V8</c> corresponding to the voltage on the power output provided by the
          *   module
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_power_proxy.cs 41290 2020-07-24 10:02:23Z mvuilleu $
+ *  $Id: yocto_power_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YPowerProxy, the Proxy API for Power
  *
@@ -255,7 +255,7 @@ namespace YoctoProxyAPI
          *   measured in W, and the apparent power provided, measured in VA)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>power._Cosphi_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPower.COSPHI_INVALID</c>.
          * </para>
          */
         public double get_cosPhi()
@@ -287,7 +287,7 @@ namespace YoctoProxyAPI
          *   but only when positive
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>power._Meter_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPower.METER_INVALID</c>.
          * </para>
          */
         public double get_meter()
@@ -319,7 +319,7 @@ namespace YoctoProxyAPI
          *   but only when positive
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>power._Deliveredenergymeter_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPower.DELIVEREDENERGYMETER_INVALID</c>.
          * </para>
          */
         public double get_deliveredEnergyMeter()
@@ -351,7 +351,7 @@ namespace YoctoProxyAPI
          *   but only when negative
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>power._Receivedenergymeter_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPower.RECEIVEDENERGYMETER_INVALID</c>.
          * </para>
          */
         public double get_receivedEnergyMeter()
@@ -379,7 +379,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the elapsed time since last energy counter reset, in seconds
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>power._Metertimer_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPower.METERTIMER_INVALID</c>.
          * </para>
          */
         public int get_meterTimer()
@@ -402,7 +402,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

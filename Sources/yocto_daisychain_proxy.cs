@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_daisychain_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_daisychain_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YDaisyChainProxy, the Proxy API for DaisyChain
  *
@@ -254,12 +254,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>daisychain._Daisystate_READY</c>, <c>daisychain._Daisystate_IS_CHILD</c>,
-         *   <c>daisychain._Daisystate_FIRMWARE_MISMATCH</c>, <c>daisychain._Daisystate_CHILD_MISSING</c> and
-         *   <c>daisychain._Daisystate_CHILD_LOST</c> corresponding to the state of the daisy-link between modules
+         *   a value among <c>YDaisyChain.DAISYSTATE_READY</c>, <c>YDaisyChain.DAISYSTATE_IS_CHILD</c>,
+         *   <c>YDaisyChain.DAISYSTATE_FIRMWARE_MISMATCH</c>, <c>YDaisyChain.DAISYSTATE_CHILD_MISSING</c> and
+         *   <c>YDaisyChain.DAISYSTATE_CHILD_LOST</c> corresponding to the state of the daisy-link between modules
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>daisychain._Daisystate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDaisyChain.DAISYSTATE_INVALID</c>.
          * </para>
          */
         public int get_daisyState()
@@ -283,7 +283,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of child nodes currently detected
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>daisychain._Childcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDaisyChain.CHILDCOUNT_INVALID</c>.
          * </para>
          */
         public int get_childCount()
@@ -311,7 +311,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of child nodes expected in normal conditions
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>daisychain._Requiredchildcount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YDaisyChain.REQUIREDCHILDCOUNT_INVALID</c>.
          * </para>
          */
         public int get_requiredChildCount()
@@ -345,7 +345,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

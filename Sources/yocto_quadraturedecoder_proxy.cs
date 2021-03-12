@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_quadraturedecoder_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_quadraturedecoder_proxy.cs 44023 2021-02-25 09:23:38Z web $
  *
  *  Implements YQuadratureDecoderProxy, the Proxy API for QuadratureDecoder
  *
@@ -163,6 +163,8 @@ namespace YoctoProxyAPI
         public const int _Decoding_INVALID = 0;
         public const int _Decoding_OFF = 1;
         public const int _Decoding_ON = 2;
+        public const int _Decoding_DIV2 = 3;
+        public const int _Decoding_DIV4 = 4;
 
         // reference to real YoctoAPI object
         protected new YQuadratureDecoder _func;
@@ -256,7 +258,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -285,7 +287,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the increments frequency, in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>quadraturedecoder._Speed_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YQuadratureDecoder.SPEED_INVALID</c>.
          * </para>
          */
         public double get_speed()
@@ -310,11 +312,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>quadraturedecoder._Decoding_OFF</c> or <c>quadraturedecoder._Decoding_ON</c>, according
+         *   a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
+         *   <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
          *   to the current activation state of the quadrature decoder
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>quadraturedecoder._Decoding_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YQuadratureDecoder.DECODING_INVALID</c>.
          * </para>
          */
         public int get_decoding()
@@ -337,13 +340,14 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>quadraturedecoder._Decoding_OFF</c> or <c>quadraturedecoder._Decoding_ON</c>, according
+         *   a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
+         *   <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
          *   to the activation state of the quadrature decoder
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

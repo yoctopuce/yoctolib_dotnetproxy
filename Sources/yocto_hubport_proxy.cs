@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_hubport_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_hubport_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YHubPortProxy, the Proxy API for HubPort
  *
@@ -258,11 +258,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>hubport._Enabled_FALSE</c> or <c>hubport._Enabled_TRUE</c>, according to true if the
+         *   either <c>YHubPort.ENABLED_FALSE</c> or <c>YHubPort.ENABLED_TRUE</c>, according to true if the
          *   YoctoHub port is powered, false otherwise
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>hubport._Enabled_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YHubPort.ENABLED_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -285,13 +285,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>hubport._Enabled_FALSE</c> or <c>hubport._Enabled_TRUE</c>, according to the activation
+         *   either <c>YHubPort.ENABLED_FALSE</c> or <c>YHubPort.ENABLED_TRUE</c>, according to the activation
          *   of the YoctoHub port
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -318,12 +318,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>hubport._Portstate_OFF</c>, <c>hubport._Portstate_OVRLD</c>,
-         *   <c>hubport._Portstate_ON</c>, <c>hubport._Portstate_RUN</c> and <c>hubport._Portstate_PROG</c>
+         *   a value among <c>YHubPort.PORTSTATE_OFF</c>, <c>YHubPort.PORTSTATE_OVRLD</c>,
+         *   <c>YHubPort.PORTSTATE_ON</c>, <c>YHubPort.PORTSTATE_RUN</c> and <c>YHubPort.PORTSTATE_PROG</c>
          *   corresponding to the current state of the YoctoHub port
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>hubport._Portstate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YHubPort.PORTSTATE_INVALID</c>.
          * </para>
          */
         public int get_portState()
@@ -432,7 +432,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the current baud rate used by this YoctoHub port, in kbps
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>hubport._Baudrate_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YHubPort.BAUDRATE_INVALID</c>.
          * </para>
          */
         public int get_baudRate()

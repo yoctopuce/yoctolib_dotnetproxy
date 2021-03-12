@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_quadraturedecoder.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_quadraturedecoder.cs 44023 2021-02-25 09:23:38Z web $
  *
  *  Implements yFindQuadratureDecoder(), the high-level API for QuadratureDecoder functions
  *
@@ -77,6 +77,8 @@ public class YQuadratureDecoder : YSensor
     public const double SPEED_INVALID = YAPI.INVALID_DOUBLE;
     public const int DECODING_OFF = 0;
     public const int DECODING_ON = 1;
+    public const int DECODING_DIV2 = 2;
+    public const int DECODING_DIV4 = 3;
     public const int DECODING_INVALID = -1;
     protected double _speed = SPEED_INVALID;
     protected int _decoding = DECODING_INVALID;
@@ -102,7 +104,7 @@ public class YQuadratureDecoder : YSensor
         }
         if (json_val.has("decoding"))
         {
-            _decoding = json_val.getInt("decoding") > 0 ? 1 : 0;
+            _decoding = json_val.getInt("decoding");
         }
         base._parseAttr(json_val);
     }
@@ -177,7 +179,8 @@ public class YQuadratureDecoder : YSensor
      * </para>
      * </summary>
      * <returns>
-     *   either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
+     *   a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
+     *   <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
      *   to the current activation state of the quadrature decoder
      * </returns>
      * <para>
@@ -209,7 +212,8 @@ public class YQuadratureDecoder : YSensor
      * </para>
      * </summary>
      * <param name="newval">
-     *   either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
+     *   a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
+     *   <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
      *   to the activation state of the quadrature decoder
      * </param>
      * <para>
@@ -225,7 +229,7 @@ public class YQuadratureDecoder : YSensor
     {
         string rest_val;
         lock (_thisLock) {
-            rest_val = (newval > 0 ? "1" : "0");
+            rest_val = (newval).ToString();
             return _setAttr("decoding", rest_val);
         }
     }

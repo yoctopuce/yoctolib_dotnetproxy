@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gyro_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_gyro_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YGyroProxy, the Proxy API for Gyro
  *
@@ -246,17 +246,17 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Returns the measure update frequency, measured in Hz.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>gyro._Bandwidth_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGyro.BANDWIDTH_INVALID</c>.
          * </para>
          */
         public int get_bandwidth()
@@ -274,7 +274,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+         *   Changes the measure update frequency, measured in Hz.
          * <para>
          *   When the
          *   frequency is lower, the device performs averaging.
@@ -285,12 +285,12 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+         *   an integer corresponding to the measure update frequency, measured in Hz
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -308,7 +308,7 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access (configuration)
-        /// <value>Measure update frequency, measured in Hz (Yocto-3D-V2 only).</value>
+        /// <value>Measure update frequency, measured in Hz.</value>
         public int Bandwidth
         {
             get
@@ -359,7 +359,7 @@ namespace YoctoProxyAPI
          *   floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>gyro._Xvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGyro.XVALUE_INVALID</c>.
          * </para>
          */
         public double get_xValue()
@@ -388,7 +388,7 @@ namespace YoctoProxyAPI
          *   floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>gyro._Yvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGyro.YVALUE_INVALID</c>.
          * </para>
          */
         public double get_yValue()
@@ -417,7 +417,7 @@ namespace YoctoProxyAPI
          *   floating point number
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>gyro._Zvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGyro.ZVALUE_INVALID</c>.
          * </para>
          */
         public double get_zValue()

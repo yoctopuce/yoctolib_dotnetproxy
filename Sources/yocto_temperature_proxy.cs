@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_temperature_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_temperature_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YTemperatureProxy, the Proxy API for Temperature
  *
@@ -286,7 +286,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -312,19 +312,19 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>temperature._Sensortype_DIGITAL</c>, <c>temperature._Sensortype_TYPE_K</c>,
-         *   <c>temperature._Sensortype_TYPE_E</c>, <c>temperature._Sensortype_TYPE_J</c>,
-         *   <c>temperature._Sensortype_TYPE_N</c>, <c>temperature._Sensortype_TYPE_R</c>,
-         *   <c>temperature._Sensortype_TYPE_S</c>, <c>temperature._Sensortype_TYPE_T</c>,
-         *   <c>temperature._Sensortype_PT100_4WIRES</c>, <c>temperature._Sensortype_PT100_3WIRES</c>,
-         *   <c>temperature._Sensortype_PT100_2WIRES</c>, <c>temperature._Sensortype_RES_OHM</c>,
-         *   <c>temperature._Sensortype_RES_NTC</c>, <c>temperature._Sensortype_RES_LINEAR</c>,
-         *   <c>temperature._Sensortype_RES_INTERNAL</c>, <c>temperature._Sensortype_IR</c>,
-         *   <c>temperature._Sensortype_RES_PT1000</c> and <c>temperature._Sensortype_CHANNEL_OFF</c>
+         *   a value among <c>YTemperature.SENSORTYPE_DIGITAL</c>, <c>YTemperature.SENSORTYPE_TYPE_K</c>,
+         *   <c>YTemperature.SENSORTYPE_TYPE_E</c>, <c>YTemperature.SENSORTYPE_TYPE_J</c>,
+         *   <c>YTemperature.SENSORTYPE_TYPE_N</c>, <c>YTemperature.SENSORTYPE_TYPE_R</c>,
+         *   <c>YTemperature.SENSORTYPE_TYPE_S</c>, <c>YTemperature.SENSORTYPE_TYPE_T</c>,
+         *   <c>YTemperature.SENSORTYPE_PT100_4WIRES</c>, <c>YTemperature.SENSORTYPE_PT100_3WIRES</c>,
+         *   <c>YTemperature.SENSORTYPE_PT100_2WIRES</c>, <c>YTemperature.SENSORTYPE_RES_OHM</c>,
+         *   <c>YTemperature.SENSORTYPE_RES_NTC</c>, <c>YTemperature.SENSORTYPE_RES_LINEAR</c>,
+         *   <c>YTemperature.SENSORTYPE_RES_INTERNAL</c>, <c>YTemperature.SENSORTYPE_IR</c>,
+         *   <c>YTemperature.SENSORTYPE_RES_PT1000</c> and <c>YTemperature.SENSORTYPE_CHANNEL_OFF</c>
          *   corresponding to the temperature sensor type
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>temperature._Sensortype_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YTemperature.SENSORTYPE_INVALID</c>.
          * </para>
          */
         public int get_sensorType()
@@ -350,21 +350,21 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>temperature._Sensortype_DIGITAL</c>, <c>temperature._Sensortype_TYPE_K</c>,
-         *   <c>temperature._Sensortype_TYPE_E</c>, <c>temperature._Sensortype_TYPE_J</c>,
-         *   <c>temperature._Sensortype_TYPE_N</c>, <c>temperature._Sensortype_TYPE_R</c>,
-         *   <c>temperature._Sensortype_TYPE_S</c>, <c>temperature._Sensortype_TYPE_T</c>,
-         *   <c>temperature._Sensortype_PT100_4WIRES</c>, <c>temperature._Sensortype_PT100_3WIRES</c>,
-         *   <c>temperature._Sensortype_PT100_2WIRES</c>, <c>temperature._Sensortype_RES_OHM</c>,
-         *   <c>temperature._Sensortype_RES_NTC</c>, <c>temperature._Sensortype_RES_LINEAR</c>,
-         *   <c>temperature._Sensortype_RES_INTERNAL</c>, <c>temperature._Sensortype_IR</c>,
-         *   <c>temperature._Sensortype_RES_PT1000</c> and <c>temperature._Sensortype_CHANNEL_OFF</c>
+         *   a value among <c>YTemperature.SENSORTYPE_DIGITAL</c>, <c>YTemperature.SENSORTYPE_TYPE_K</c>,
+         *   <c>YTemperature.SENSORTYPE_TYPE_E</c>, <c>YTemperature.SENSORTYPE_TYPE_J</c>,
+         *   <c>YTemperature.SENSORTYPE_TYPE_N</c>, <c>YTemperature.SENSORTYPE_TYPE_R</c>,
+         *   <c>YTemperature.SENSORTYPE_TYPE_S</c>, <c>YTemperature.SENSORTYPE_TYPE_T</c>,
+         *   <c>YTemperature.SENSORTYPE_PT100_4WIRES</c>, <c>YTemperature.SENSORTYPE_PT100_3WIRES</c>,
+         *   <c>YTemperature.SENSORTYPE_PT100_2WIRES</c>, <c>YTemperature.SENSORTYPE_RES_OHM</c>,
+         *   <c>YTemperature.SENSORTYPE_RES_NTC</c>, <c>YTemperature.SENSORTYPE_RES_LINEAR</c>,
+         *   <c>YTemperature.SENSORTYPE_RES_INTERNAL</c>, <c>YTemperature.SENSORTYPE_IR</c>,
+         *   <c>YTemperature.SENSORTYPE_RES_PT1000</c> and <c>YTemperature.SENSORTYPE_CHANNEL_OFF</c>
          *   corresponding to the temperature sensor type
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -434,7 +434,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current value of the electrical signal measured by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>temperature._Signalvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YTemperature.SIGNALVALUE_INVALID</c>.
          * </para>
          */
         public double get_signalValue()
@@ -462,7 +462,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the measuring unit of the electrical signal used by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>temperature._Signalunit_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YTemperature.SIGNALUNIT_INVALID</c>.
          * </para>
          */
         public string get_signalUnit()
@@ -508,7 +508,7 @@ namespace YoctoProxyAPI
          *   Beta value
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -544,7 +544,7 @@ namespace YoctoProxyAPI
          *   argument, index by index.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

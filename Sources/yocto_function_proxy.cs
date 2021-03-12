@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: svn_id $
+ *  $Id: yocto_function_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YFunctionProxy, the Proxy API for Function
  *
@@ -227,7 +227,7 @@ namespace YoctoProxyAPI
          *   a string that uniquely identifies the function (ex: <c>RELAYLO1-123456.relay1</c>)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns  <c>function._Hardwareid_INVALID</c>.
+         *   On failure, throws an exception or returns  <c>YFunction.HARDWAREID_INVALID</c>.
          * </para>
          */
         public virtual string get_hardwareId()
@@ -267,7 +267,7 @@ namespace YoctoProxyAPI
          *   a string that identifies the function (ex: <c>relay1</c>)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns  <c>function._Functionid_INVALID</c>.
+         *   On failure, throws an exception or returns  <c>YFunction.FUNCTIONID_INVALID</c>.
          * </para>
          */
         public string get_functionId()
@@ -301,7 +301,7 @@ namespace YoctoProxyAPI
          *   (ex: <c>MyCustomName.relay1</c>)
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns  <c>function._Friendlyname_INVALID</c>.
+         *   On failure, throws an exception or returns  <c>YFunction.FRIENDLYNAME_INVALID</c>.
          * </para>
          */
         public virtual string get_friendlyName()
@@ -655,7 +655,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the logical name of the function
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>function._Logicalname_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YFunction.LOGICALNAME_INVALID</c>.
          * </para>
          */
         public string get_logicalName()
@@ -684,7 +684,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -755,7 +755,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to a short string representing the current state of the function
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>function._Advertisedvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YFunction.ADVERTISEDVALUE_INVALID</c>.
          * </para>
          */
         public string get_advertisedValue()
@@ -777,7 +777,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -801,7 +801,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -874,7 +874,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the serial number of the module, as set by the factory.
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns YModule.SERIALNUMBER_INVALID.
+         *   On failure, throws an exception or returns YFunction.SERIALNUMBER_INVALID.
          * </para>
          */
         public virtual string get_serialNumber()

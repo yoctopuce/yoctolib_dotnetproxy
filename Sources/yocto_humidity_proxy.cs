@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_humidity_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: yocto_humidity_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YHumidityProxy, the Proxy API for Humidity
  *
@@ -259,7 +259,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -288,7 +288,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current relative humidity, in per cents
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>humidity._Relhum_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YHumidity.RELHUM_INVALID</c>.
          * </para>
          */
         public double get_relHum()
@@ -316,7 +316,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current absolute humidity, in grams per cubic meter of air
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>humidity._Abshum_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YHumidity.ABSHUM_INVALID</c>.
          * </para>
          */
         public double get_absHum()

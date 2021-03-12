@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupschedule_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_wakeupschedule_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YWakeUpScheduleProxy, the Proxy API for WakeUpSchedule
  *
@@ -268,7 +268,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minutes in the 00-29 interval of each hour scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupschedule._Minutesa_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MINUTESA_INVALID</c>.
          * </para>
          */
         public int get_minutesA()
@@ -300,7 +300,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -368,7 +368,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the minutes in the 30-59 interval of each hour scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupschedule._Minutesb_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MINUTESB_INVALID</c>.
          * </para>
          */
         public int get_minutesB()
@@ -400,7 +400,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -468,7 +468,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the hours scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupschedule._Hours_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.HOURS_INVALID</c>.
          * </para>
          */
         public int get_hours()
@@ -500,7 +500,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -568,7 +568,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the days of the week scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupschedule._Weekdays_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.WEEKDAYS_INVALID</c>.
          * </para>
          */
         public int get_weekDays()
@@ -600,7 +600,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -668,7 +668,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the days of the month scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupschedule._Monthdays_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MONTHDAYS_INVALID</c>.
          * </para>
          */
         public int get_monthDays()
@@ -700,7 +700,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -768,7 +768,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the months scheduled for wake up
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupschedule._Months_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.MONTHS_INVALID</c>.
          * </para>
          */
         public int get_months()
@@ -800,7 +800,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -868,7 +868,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the date/time (seconds) of the next wake up occurrence
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>wakeupschedule._Nextoccurence_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.NEXTOCCURENCE_INVALID</c>.
          * </para>
          */
         public long get_nextOccurence()
@@ -931,7 +931,7 @@ namespace YoctoProxyAPI
          *   Minutes 00-59 of each hour scheduled for wake up.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_voltageoutput_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_voltageoutput_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YVoltageOutputProxy, the Proxy API for VoltageOutput
  *
@@ -254,7 +254,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -283,7 +283,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the output voltage set point, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>voltageoutput._Currentvoltage_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YVoltageOutput.CURRENTVOLTAGE_INVALID</c>.
          * </para>
          */
         public double get_currentVoltage()
@@ -360,7 +360,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -389,7 +389,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the selected voltage output at device startup, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>voltageoutput._Voltageatstartup_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YVoltageOutput.VOLTAGEATSTARTUP_INVALID</c>.
          * </para>
          */
         public double get_voltageAtStartUp()
@@ -460,7 +460,7 @@ namespace YoctoProxyAPI
          *   total duration of the transition, in milliseconds
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          */
         public virtual int voltageMove(double V_target, int ms_duration)

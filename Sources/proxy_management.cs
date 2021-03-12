@@ -406,7 +406,7 @@ namespace YoctoProxyAPI
          *   root URL of the hub to monitor
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -435,7 +435,7 @@ namespace YoctoProxyAPI
          *   root URL of the hub to monitor
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -491,7 +491,7 @@ namespace YoctoProxyAPI
          *   the number of millisecond available to test the connection.
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure returns a negative error code.

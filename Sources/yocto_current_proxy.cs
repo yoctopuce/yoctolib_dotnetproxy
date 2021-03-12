@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_current_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_current_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YCurrentProxy, the Proxy API for Current
  *
@@ -249,11 +249,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>current._Enabled_FALSE</c> or <c>current._Enabled_TRUE</c>, according to the activation
+         *   either <c>YCurrent.ENABLED_FALSE</c> or <c>YCurrent.ENABLED_TRUE</c>, according to the activation
          *   state of this input
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>current._Enabled_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YCurrent.ENABLED_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -280,13 +280,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>current._Enabled_FALSE</c> or <c>current._Enabled_TRUE</c>, according to the activation
+         *   either <c>YCurrent.ENABLED_FALSE</c> or <c>YCurrent.ENABLED_TRUE</c>, according to the activation
          *   state of this voltage input
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

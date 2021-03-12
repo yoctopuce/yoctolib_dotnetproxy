@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_messagebox_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_messagebox_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YMessageBoxProxy, the Proxy API for MessageBox
  *
@@ -253,7 +253,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of message storage slots currently in use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>messagebox._Slotsinuse_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMessageBox.SLOTSINUSE_INVALID</c>.
          * </para>
          */
         public int get_slotsInUse()
@@ -303,7 +303,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the total number of message storage slots on the SIM card
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>messagebox._Slotscount_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMessageBox.SLOTSCOUNT_INVALID</c>.
          * </para>
          */
         public int get_slotsCount()
@@ -331,7 +331,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of SMS units sent so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>messagebox._Pdusent_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMessageBox.PDUSENT_INVALID</c>.
          * </para>
          */
         public int get_pduSent()
@@ -361,7 +361,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -390,7 +390,7 @@ namespace YoctoProxyAPI
          *   an integer corresponding to the number of SMS units received so far
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>messagebox._Pdureceived_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YMessageBox.PDURECEIVED_INVALID</c>.
          * </para>
          */
         public int get_pduReceived()
@@ -420,7 +420,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -444,7 +444,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -477,7 +477,7 @@ namespace YoctoProxyAPI
          *   the text to be sent in the message
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -511,7 +511,7 @@ namespace YoctoProxyAPI
          *   the text to be sent in the message
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -536,7 +536,7 @@ namespace YoctoProxyAPI
          *   national number, or in international format starting with a plus sign
          * </param>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> when the call succeeds.
+         *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_genericsensor_proxy.cs 40656 2020-05-25 14:13:34Z mvuilleu $
+ *  $Id: yocto_genericsensor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
  *
  *  Implements YGenericSensorProxy, the Proxy API for GenericSensor
  *
@@ -280,7 +280,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -309,7 +309,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the current value of the electrical signal measured by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>genericsensor._Signalvalue_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALVALUE_INVALID</c>.
          * </para>
          */
         public double get_signalValue()
@@ -337,7 +337,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the measuring unit of the electrical signal used by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>genericsensor._Signalunit_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALUNIT_INVALID</c>.
          * </para>
          */
         public string get_signalUnit()
@@ -376,7 +376,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the input signal range used by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>genericsensor._Signalrange_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALRANGE_INVALID</c>.
          * </para>
          */
         public string get_signalRange()
@@ -414,7 +414,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -482,7 +482,7 @@ namespace YoctoProxyAPI
          *   a string corresponding to the physical value range measured by the sensor
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>genericsensor._Valuerange_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGenericSensor.VALUERANGE_INVALID</c>.
          * </para>
          */
         public string get_valueRange()
@@ -517,7 +517,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -591,7 +591,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -622,7 +622,7 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the electric signal bias for zero shift adjustment
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>genericsensor._Signalbias_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALBIAS_INVALID</c>.
          * </para>
          */
         public double get_signalBias()
@@ -691,13 +691,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>genericsensor._Signalsampling_HIGH_RATE</c>,
-         *   <c>genericsensor._Signalsampling_HIGH_RATE_FILTERED</c>, <c>genericsensor._Signalsampling_LOW_NOISE</c>,
-         *   <c>genericsensor._Signalsampling_LOW_NOISE_FILTERED</c> and <c>genericsensor._Signalsampling_HIGHEST_RATE</c>
+         *   a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
+         *   <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
+         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
          *   corresponding to the electric signal sampling method to use
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>genericsensor._Signalsampling_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALSAMPLING_INVALID</c>.
          * </para>
          */
         public int get_signalSampling()
@@ -725,15 +725,15 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>genericsensor._Signalsampling_HIGH_RATE</c>,
-         *   <c>genericsensor._Signalsampling_HIGH_RATE_FILTERED</c>, <c>genericsensor._Signalsampling_LOW_NOISE</c>,
-         *   <c>genericsensor._Signalsampling_LOW_NOISE_FILTERED</c> and <c>genericsensor._Signalsampling_HIGHEST_RATE</c>
+         *   a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
+         *   <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
+         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
          *   corresponding to the electric signal sampling method to use
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -800,11 +800,11 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>genericsensor._Enabled_FALSE</c> or <c>genericsensor._Enabled_TRUE</c>, according to the
+         *   either <c>YGenericSensor.ENABLED_FALSE</c> or <c>YGenericSensor.ENABLED_TRUE</c>, according to the
          *   activation state of this input
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>genericsensor._Enabled_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YGenericSensor.ENABLED_INVALID</c>.
          * </para>
          */
         public int get_enabled()
@@ -830,13 +830,13 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>genericsensor._Enabled_FALSE</c> or <c>genericsensor._Enabled_TRUE</c>, according to the
+         *   either <c>YGenericSensor.ENABLED_FALSE</c> or <c>YGenericSensor.ENABLED_TRUE</c>, according to the
          *   activation state of this input
          * </param>
          * <para>
          * </para>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.
@@ -904,7 +904,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   <c>YAPI.SUCCESS</c> if the call succeeds.
+         *   <c>0</c> if the call succeeds.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns a negative error code.

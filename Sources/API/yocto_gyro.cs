@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_gyro.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ * $Id: yocto_gyro.cs 42951 2020-12-14 09:43:29Z seb $
  *
  * Implements yFindGyro(), the high-level API for Gyro functions
  *
@@ -434,14 +434,14 @@ public class YGyro : YSensor
 
     /**
      * <summary>
-     *   Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+     *   Returns the measure update frequency, measured in Hz.
      * <para>
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+     *   an integer corresponding to the measure update frequency, measured in Hz
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YGyro.BANDWIDTH_INVALID</c>.
@@ -463,7 +463,7 @@ public class YGyro : YSensor
 
     /**
      * <summary>
-     *   Changes the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+     *   Changes the measure update frequency, measured in Hz.
      * <para>
      *   When the
      *   frequency is lower, the device performs averaging.
@@ -474,7 +474,7 @@ public class YGyro : YSensor
      * </para>
      * </summary>
      * <param name="newval">
-     *   an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+     *   an integer corresponding to the measure update frequency, measured in Hz
      * </param>
      * <para>
      * </para>
