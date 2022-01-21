@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_files.cs 43478 2021-01-21 13:49:12Z mvuilleu $
+ * $Id: yocto_files.cs 48017 2022-01-12 08:17:52Z seb $
  *
  * Implements yFindFiles(), the high-level API for Files functions
  *
@@ -385,7 +385,7 @@ public class YFiles : YFunction
      */
     public virtual int format_fs()
     {
-        byte[] json;
+        byte[] json = new byte[0];
         string res;
         json = this.sendCommand("format");
         res = this._json_get_key(json, "res");
@@ -419,7 +419,7 @@ public class YFiles : YFunction
      */
     public virtual List<YFileRecord> get_list(string pattern)
     {
-        byte[] json;
+        byte[] json = new byte[0];
         List<string> filelist = new List<string>();
         List<YFileRecord> res = new List<YFileRecord>();
         json = this.sendCommand("dir&f="+pattern);
@@ -450,7 +450,7 @@ public class YFiles : YFunction
      */
     public virtual bool fileExist(string filename)
     {
-        byte[] json;
+        byte[] json = new byte[0];
         List<string> filelist = new List<string>();
         if ((filename).Length == 0) {
             return false;
@@ -535,7 +535,7 @@ public class YFiles : YFunction
      */
     public virtual int remove(string pathname)
     {
-        byte[] json;
+        byte[] json = new byte[0];
         string res;
         json = this.sendCommand("del&f="+pathname);
         res  = this._json_get_key(json, "res");

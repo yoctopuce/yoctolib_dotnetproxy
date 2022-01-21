@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_lightsensor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_lightsensor_proxy.cs 45292 2021-05-25 23:27:54Z mvuilleu $
  *
  *  Implements YLightSensorProxy, the Proxy API for LightSensor
  *
@@ -151,7 +151,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the light sensor, for instance
-         *   <c>LIGHTMK3.lightSensor</c>.
+         *   <c>LIGHTMK4.lightSensor</c>.
          * </param>
          * <returns>
          *   a <c>YLightSensor</c> object allowing you to drive the light sensor.

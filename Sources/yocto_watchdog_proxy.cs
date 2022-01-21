@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_watchdog_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_watchdog_proxy.cs 44548 2021-04-13 09:56:42Z mvuilleu $
  *
  *  Implements YWatchdogProxy, the Proxy API for Watchdog
  *
@@ -186,6 +186,7 @@ namespace YoctoProxyAPI
         public const int _Running_ON = 2;
         public const long _TriggerDelay_INVALID = YAPI.INVALID_LONG;
         public const long _TriggerDuration_INVALID = YAPI.INVALID_LONG;
+        public const int _LastTrigger_INVALID = -1;
 
         // reference to real YoctoAPI object
         protected new YWatchdog _func;
@@ -1275,6 +1276,34 @@ namespace YoctoProxyAPI
             }
             _func.set_triggerDuration(newval);
             _triggerDuration = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the number of seconds spent since the last output power-up event.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the number of seconds spent since the last output power-up event
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YWatchdog.LASTTRIGGER_INVALID</c>.
+         * </para>
+         */
+        public int get_lastTrigger()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Watchdog connected");
+            }
+            res = _func.get_lastTrigger();
+            if (res == YAPI.INVALID_INT) {
+                res = _LastTrigger_INVALID;
+            }
+            return res;
         }
 
         /**

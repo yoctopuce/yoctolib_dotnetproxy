@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 44114 2021-03-03 17:47:55Z mvuilleu $
+ * $Id: yocto_api.cs 48017 2022-01-12 08:17:52Z seb $
  *
  * High-level programming interface, common to all modules
  *
@@ -2799,7 +2799,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "44175";
+    public const string YOCTO_API_BUILD_NO = "48220";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -2846,6 +2846,7 @@ public class YAPI
     public const int UNAUTHORIZED = -12;            // unauthorized access to password-protected device
     public const int RTC_NOT_READY = -13;           // real-time clock has not been initialized (or time was lost)
     public const int FILE_NOT_FOUND = -14;          // the file is not found
+    public const int SSL_ERROR = -15;               // Error reported by mbedSSL
     //--- (end of generated code: YFunction return codes)
 
     /*
@@ -4277,7 +4278,7 @@ public class YAPI
     }
 
 
-    
+
     private static void native_HubDiscoveryCallback(IntPtr serial_ptr, IntPtr url_ptr)
     {
         String serial = Marshal.PtrToStringAnsi(serial_ptr);
@@ -5168,7 +5169,8 @@ public class YAPI
      * <summary>
      *   Setup the Yoctopuce library to use modules connected on a given machine.
      * <para>
-     *   The
+     *   Idealy this
+     *   call will be made once at the begining of your application.  The
      *   parameter will determine how the API will work. Use the following values:
      * </para>
      * <para>
@@ -5208,7 +5210,9 @@ public class YAPI
      *   <c>http://username:password@address:port</c>
      * </para>
      * <para>
-     *   You can call <i>RegisterHub</i> several times to connect to several machines.
+     *   You can call <i>RegisterHub</i> several times to connect to several machines. On
+     *   the other hand, it is useless and even counterproductive to call <i>RegisterHub</i>
+     *   with to same address multiple times during the life of the application.
      * </para>
      * <para>
      * </para>
@@ -5397,15 +5401,12 @@ public class YAPI
         }
 
         res = yapiUpdateDeviceList(0, ref errmsg);
-        if (YISERR(res)) {
-            return res;
-        }
-
-        errbuffer.Length = 0;
-        res = SafeNativeMethods._yapiHandleEvents(errbuffer);
-        if (YISERR(res)) {
-            errmsg = errbuffer.ToString();
-            return res;
+        if (!YISERR(res)) {
+            errbuffer.Length = 0;
+            res = SafeNativeMethods._yapiHandleEvents(errbuffer);
+            if (YISERR(res)) {
+                errmsg = errbuffer.ToString();
+            }
         }
 
         while (_PlugEvents.Count > 0) {
@@ -5416,7 +5417,7 @@ public class YAPI
             p.invoke();
         }
 
-        return SUCCESS;
+        return res;
     }
 
 
@@ -6151,7 +6152,7 @@ public class YFirmwareUpdate
     //--- (generated code: YFirmwareUpdate definitions)
 
     protected string _serial;
-    protected byte[] _settings;
+    protected byte[] _settings = new byte[0];
     protected string _firmwarepath;
     protected string _progress_msg;
     protected int _progress_c = 0;
@@ -6641,16 +6642,26 @@ public class YDataStream
         if (this._isAvg) {
             while (idx + 3 < udat.Count) {
                 dat.Clear();
-                dat.Add(this._decodeVal(udat[idx + 2] + (((udat[idx + 3]) << (16)))));
-                dat.Add(this._decodeAvg(udat[idx] + (((((udat[idx + 1]) ^ (0x8000))) << (16))), 1));
-                dat.Add(this._decodeVal(udat[idx + 4] + (((udat[idx + 5]) << (16)))));
+                if ((udat[idx] == 65535) && (udat[idx + 1] == 65535)) {
+                    dat.Add(Double.NaN);
+                    dat.Add(Double.NaN);
+                    dat.Add(Double.NaN);
+                } else {
+                    dat.Add(this._decodeVal(udat[idx + 2] + (((udat[idx + 3]) << (16)))));
+                    dat.Add(this._decodeAvg(udat[idx] + (((((udat[idx + 1]) ^ (0x8000))) << (16))), 1));
+                    dat.Add(this._decodeVal(udat[idx + 4] + (((udat[idx + 5]) << (16)))));
+                }
                 idx = idx + 6;
                 this._values.Add(new List<double>(dat));
             }
         } else {
             while (idx + 1 < udat.Count) {
                 dat.Clear();
-                dat.Add(this._decodeAvg(udat[idx] + (((((udat[idx + 1]) ^ (0x8000))) << (16))), 1));
+                if ((udat[idx] == 65535) && (udat[idx + 1] == 65535)) {
+                    dat.Add(Double.NaN);
+                } else {
+                    dat.Add(this._decodeAvg(udat[idx] + (((((udat[idx + 1]) ^ (0x8000))) << (16))), 1));
+                }
                 this._values.Add(new List<double>(dat));
                 idx = idx + 2;
             }
@@ -7563,6 +7574,7 @@ public class YDataSet
         double tim;
         double itv;
         double fitv;
+        double avgv;
         double end_;
         int nCols;
         int minCol;
@@ -7613,8 +7625,9 @@ public class YDataSet
             } else {
                 end_ = tim + itv;
             }
-            if ((end_ > this._startTimeMs) && ((this._endTimeMs == 0) || (tim < this._endTimeMs))) {
-                this._measures.Add(new YMeasure(tim / 1000, end_ / 1000, dataRows[ii][minCol], dataRows[ii][avgCol], dataRows[ii][maxCol]));
+            avgv = dataRows[ii][avgCol];
+            if ((end_ > this._startTimeMs) && ((this._endTimeMs == 0) || (tim < this._endTimeMs)) && !(Double.IsNaN(avgv))) {
+                this._measures.Add(new YMeasure(tim / 1000, end_ / 1000, dataRows[ii][minCol], avgv, dataRows[ii][maxCol]));
             }
             tim = end_;
         }
@@ -9086,7 +9099,7 @@ public class YFunction
     public virtual string loadAttribute(string attrName)
     {
         string url;
-        byte[] attrVal;
+        byte[] attrVal = new byte[0];
         url = "api/"+ this.get_functionId()+"/"+attrName;
         attrVal = this._download(url);
         return YAPI.DefaultEncoding.GetString(attrVal);
@@ -10917,7 +10930,7 @@ public class YModule : YFunction
     public virtual YFirmwareUpdate updateFirmwareEx(string path, bool force)
     {
         string serial;
-        byte[] settings;
+        byte[] settings = new byte[0];
 
         serial = this.get_serialNumber();
         settings = this.get_allSettings();
@@ -10971,9 +10984,9 @@ public class YModule : YFunction
      */
     public virtual byte[] get_allSettings()
     {
-        byte[] settings;
-        byte[] json;
-        byte[] res;
+        byte[] settings = new byte[0];
+        byte[] json = new byte[0];
+        byte[] res = new byte[0];
         string sep;
         string name;
         string item;
@@ -10981,8 +10994,8 @@ public class YModule : YFunction
         string id;
         string url;
         string file_data;
-        byte[] file_data_bin;
-        byte[] temp_data_bin;
+        byte[] file_data_bin = new byte[0];
+        byte[] temp_data_bin = new byte[0];
         string ext_settings;
         List<string> filelist = new List<string>();
         List<string> templist = new List<string>();
@@ -11104,7 +11117,7 @@ public class YModule : YFunction
      */
     public virtual int set_allSettingsAndFiles(byte[] settings)
     {
-        byte[] down;
+        byte[] down = new byte[0];
         string json;
         string json_api;
         string json_files;
@@ -11544,12 +11557,12 @@ public class YModule : YFunction
     public virtual int set_allSettings(byte[] settings)
     {
         List<string> restoreLast = new List<string>();
-        byte[] old_json_flat;
+        byte[] old_json_flat = new byte[0];
         List<string> old_dslist = new List<string>();
         List<string> old_jpath = new List<string>();
         List<int> old_jpath_len = new List<int>();
         List<string> old_val_arr = new List<string>();
-        byte[] actualSettings;
+        byte[] actualSettings = new byte[0];
         List<string> new_dslist = new List<string>();
         List<string> new_jpath = new List<string>();
         List<int> new_jpath_len = new List<int>();
@@ -11927,7 +11940,7 @@ public class YModule : YFunction
      */
     public virtual string get_lastLogs()
     {
-        byte[] content;
+        byte[] content = new byte[0];
 
         content = this._download("logs.txt");
         return YAPI.DefaultEncoding.GetString(content);
@@ -13465,7 +13478,7 @@ public class YSensor : YFunction
      */
     public virtual int startDataLogger()
     {
-        byte[] res;
+        byte[] res = new byte[0];
 
         res = this._download("api/dataLogger/recording?recording=1");
         if (!((res).Length>0)) {
@@ -13488,7 +13501,7 @@ public class YSensor : YFunction
      */
     public virtual int stopDataLogger()
     {
-        byte[] res;
+        byte[] res = new byte[0];
 
         res = this._download("api/dataLogger/recording?recording=0");
         if (!((res).Length>0)) {
@@ -14423,7 +14436,7 @@ public class YDataLogger : YFunction
      * </summary>
      * <param name="func">
      *   a string that uniquely characterizes the data logger, for instance
-     *   <c>LIGHTMK3.dataLogger</c>.
+     *   <c>LIGHTMK4.dataLogger</c>.
      * </param>
      * <returns>
      *   a <c>YDataLogger</c> object allowing you to drive the data logger.

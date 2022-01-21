@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_spiport.cs 41171 2020-07-02 17:49:00Z mvuilleu $
+ *  $Id: yocto_spiport.cs 48017 2022-01-12 08:17:52Z seb $
  *
  *  Implements yFindSpiPort(), the high-level API for SpiPort functions
  *
@@ -201,7 +201,7 @@ public class YSpiPort : YFunction
     protected int _shiftSampling = SHIFTSAMPLING_INVALID;
     protected ValueCallback _valueCallbackSpiPort = null;
     protected int _rxptr = 0;
-    protected byte[] _rxbuff;
+    protected byte[] _rxbuff = new byte[0];
     protected int _rxbuffptr = 0;
     //--- (end of generated code: YSpiPort definitions)
 
@@ -1156,7 +1156,7 @@ public class YSpiPort : YFunction
     public virtual string readLine()
     {
         string url;
-        byte[] msgbin;
+        byte[] msgbin = new byte[0];
         List<string> msgarr = new List<string>();
         int msglen;
         string res;
@@ -1214,7 +1214,7 @@ public class YSpiPort : YFunction
     public virtual List<string> readMessages(string pattern, int maxWait)
     {
         string url;
-        byte[] msgbin;
+        byte[] msgbin = new byte[0];
         List<string> msgarr = new List<string>();
         int msglen;
         List<string> res = new List<string>();
@@ -1291,7 +1291,7 @@ public class YSpiPort : YFunction
      */
     public virtual int read_avail()
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int res;
 
@@ -1329,7 +1329,7 @@ public class YSpiPort : YFunction
     public virtual string queryLine(string query, int maxWait)
     {
         string url;
-        byte[] msgbin;
+        byte[] msgbin = new byte[0];
         List<string> msgarr = new List<string>();
         int msglen;
         string res;
@@ -1377,7 +1377,7 @@ public class YSpiPort : YFunction
     public virtual string queryHex(string hexString, int maxWait)
     {
         string url;
-        byte[] msgbin;
+        byte[] msgbin = new byte[0];
         List<string> msgarr = new List<string>();
         int msglen;
         string res;
@@ -1519,7 +1519,7 @@ public class YSpiPort : YFunction
      */
     public virtual int writeStr(string text)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int idx;
         int ch;
@@ -1586,7 +1586,7 @@ public class YSpiPort : YFunction
      */
     public virtual int writeArray(List<int> byteList)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int idx;
         int hexb;
@@ -1623,7 +1623,7 @@ public class YSpiPort : YFunction
      */
     public virtual int writeHex(string hexString)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int idx;
         int hexb;
@@ -1664,7 +1664,7 @@ public class YSpiPort : YFunction
      */
     public virtual int writeLine(string text)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int idx;
         int ch;
@@ -1710,7 +1710,7 @@ public class YSpiPort : YFunction
     {
         int currpos;
         int reqlen;
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int mult;
         int endpos;
@@ -1787,7 +1787,7 @@ public class YSpiPort : YFunction
      */
     public virtual string readStr(int nChars)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int mult;
         int endpos;
@@ -1831,12 +1831,12 @@ public class YSpiPort : YFunction
      */
     public virtual byte[] readBin(int nChars)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int mult;
         int endpos;
         int idx;
-        byte[] res;
+        byte[] res = new byte[0];
         if (nChars > 65535) {
             nChars = 65535;
         }
@@ -1881,7 +1881,7 @@ public class YSpiPort : YFunction
      */
     public virtual List<int> readArray(int nChars)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int mult;
         int endpos;
@@ -1933,7 +1933,7 @@ public class YSpiPort : YFunction
      */
     public virtual string readHex(int nBytes)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         int bufflen;
         int mult;
         int endpos;
@@ -2015,7 +2015,7 @@ public class YSpiPort : YFunction
     public virtual List<YSpiSnoopingRecord> snoopMessages(int maxWait)
     {
         string url;
-        byte[] msgbin;
+        byte[] msgbin = new byte[0];
         List<string> msgarr = new List<string>();
         int msglen;
         List<YSpiSnoopingRecord> res = new List<YSpiSnoopingRecord>();

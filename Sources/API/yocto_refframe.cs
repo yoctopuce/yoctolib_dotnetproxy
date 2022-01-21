@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_refframe.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_refframe.cs 48017 2022-01-12 08:17:52Z seb $
  *
  *  Implements yFindRefFrame(), the high-level API for RefFrame functions
  *
@@ -782,7 +782,7 @@ public class YRefFrame : YFunction
     public virtual int more3DCalibrationV1()
     {
         int currTick;
-        byte[] jsonData;
+        byte[] jsonData = new byte[0];
         double xVal;
         double yVal;
         double zVal;
@@ -984,7 +984,7 @@ public class YRefFrame : YFunction
     public virtual int more3DCalibrationV2()
     {
         int currTick;
-        byte[] calibParam;
+        byte[] calibParam = new byte[0];
         List<int> iCalib = new List<int>();
         int cal3;
         int calAcc;

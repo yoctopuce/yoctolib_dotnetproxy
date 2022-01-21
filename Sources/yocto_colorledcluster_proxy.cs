@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorledcluster_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_colorledcluster_proxy.cs 44921 2021-05-06 08:03:05Z mvuilleu $
  *
  *  Implements YColorLedClusterProxy, the Proxy API for ColorLedCluster
  *
@@ -169,6 +169,7 @@ namespace YoctoProxyAPI
         public const int _LedType_INVALID = 0;
         public const int _LedType_RGB = 1;
         public const int _LedType_RGBW = 2;
+        public const int _LedType_WS2811 = 3;
         public const int _MaxLedCount_INVALID = -1;
         public const int _BlinkSeqMaxCount_INVALID = -1;
         public const int _BlinkSeqMaxSize_INVALID = -1;
@@ -368,8 +369,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-         *   the RGB LED type currently handled by the device
+         *   a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+         *   <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YColorLedCluster.LEDTYPE_INVALID</c>.
@@ -395,8 +396,8 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-         *   the RGB LED type currently handled by the device
+         *   a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+         *   <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
          * </param>
          * <para>
          * </para>

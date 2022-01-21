@@ -75,6 +75,7 @@
     <Compile Include="API\yocto_hubport.cs"/>
     <Compile Include="API\yocto_humidity.cs"/>
     <Compile Include="API\yocto_i2cport.cs"/>
+    <Compile Include="API\yocto_inputchain.cs"/>
     <Compile Include="API\yocto_latitude.cs"/>
     <Compile Include="API\yocto_led.cs"/>
     <Compile Include="API\yocto_lightsensor.cs"/>
@@ -144,6 +145,7 @@
     <Compile Include="yocto_hubport_proxy.cs"/>
     <Compile Include="yocto_humidity_proxy.cs"/>
     <Compile Include="yocto_i2cport_proxy.cs"/>
+    <Compile Include="yocto_inputchain_proxy.cs"/>
     <Compile Include="yocto_latitude_proxy.cs"/>
     <Compile Include="yocto_led_proxy.cs"/>
     <Compile Include="yocto_lightsensor_proxy.cs"/>

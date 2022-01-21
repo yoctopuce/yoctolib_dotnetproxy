@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupschedule_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_wakeupschedule_proxy.cs 48183 2022-01-20 10:26:11Z mvuilleu $
  *
  *  Implements YWakeUpScheduleProxy, the Proxy API for WakeUpSchedule
  *
@@ -148,7 +148,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the wake up schedule, for instance
-         *   <c>YHUBGSM3.wakeUpSchedule1</c>.
+         *   <c>YHUBGSM5.wakeUpSchedule1</c>.
          * </param>
          * <returns>
          *   a <c>YWakeUpSchedule</c> object allowing you to drive the wake up schedule.

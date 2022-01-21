@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_quadraturedecoder_proxy.cs 44023 2021-02-25 09:23:38Z web $
+ *  $Id: yocto_quadraturedecoder_proxy.cs 45843 2021-08-04 07:51:59Z mvuilleu $
  *
  *  Implements YQuadratureDecoderProxy, the Proxy API for QuadratureDecoder
  *
@@ -147,7 +147,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the quadrature decoder, for instance
-         *   <c>YPWMRX01.quadratureDecoder</c>.
+         *   <c>YMXBTN01.quadratureDecoder1</c>.
          * </param>
          * <returns>
          *   a <c>YQuadratureDecoder</c> object allowing you to drive the quadrature decoder.
@@ -163,13 +163,13 @@ namespace YoctoProxyAPI
         public const int _Decoding_INVALID = 0;
         public const int _Decoding_OFF = 1;
         public const int _Decoding_ON = 2;
-        public const int _Decoding_DIV2 = 3;
-        public const int _Decoding_DIV4 = 4;
+        public const int _EdgesPerCycle_INVALID = -1;
 
         // reference to real YoctoAPI object
         protected new YQuadratureDecoder _func;
         // property cache
         protected int _decoding = _Decoding_INVALID;
+        protected int _edgesPerCycle = _EdgesPerCycle_INVALID;
         //--- (end of YQuadratureDecoder definitions)
 
         //--- (YQuadratureDecoder implementation)
@@ -241,6 +241,7 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _decoding = _func.get_decoding()+1;
+            _edgesPerCycle = _func.get_edgesPerCycle();
         }
 
         /**
@@ -277,14 +278,14 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the increments frequency, in Hz.
+         *   Returns the cycle frequency, in Hz.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a floating point number corresponding to the increments frequency, in Hz
+         *   a floating point number corresponding to the cycle frequency, in Hz
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YQuadratureDecoder.SPEED_INVALID</c>.
@@ -312,8 +313,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
-         *   <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
+         *   either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
          *   to the current activation state of the quadrature decoder
          * </returns>
          * <para>
@@ -340,8 +340,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
-         *   <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
+         *   either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
          *   to the activation state of the quadrature decoder
          * </param>
          * <para>
@@ -403,6 +402,106 @@ namespace YoctoProxyAPI
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_decoding(newval-1);
             _decoding = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the edge count per full cycle configuration setting.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the edge count per full cycle configuration setting
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YQuadratureDecoder.EDGESPERCYCLE_INVALID</c>.
+         * </para>
+         */
+        public int get_edgesPerCycle()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No QuadratureDecoder connected");
+            }
+            res = _func.get_edgesPerCycle();
+            if (res == YAPI.INVALID_INT) {
+                res = _EdgesPerCycle_INVALID;
+            }
+            return res;
+        }
+
+        /**
+         * <summary>
+         *   Changes the edge count per full cycle configuration setting.
+         * <para>
+         *   Remember to call the <c>saveToFlash()</c>
+         *   method of the module if the modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   an integer corresponding to the edge count per full cycle configuration setting
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_edgesPerCycle(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No QuadratureDecoder connected");
+            }
+            if (newval == _EdgesPerCycle_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            return _func.set_edgesPerCycle(newval);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Edge count per full cycle configuration setting.</value>
+        public int EdgesPerCycle
+        {
+            get
+            {
+                if (_func == null) {
+                    return _EdgesPerCycle_INVALID;
+                }
+                if (_online) {
+                    return _edgesPerCycle;
+                }
+                return _EdgesPerCycle_INVALID;
+            }
+            set
+            {
+                setprop_edgesPerCycle(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_edgesPerCycle(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _EdgesPerCycle_INVALID) {
+                return;
+            }
+            if (newval == _edgesPerCycle) {
+                return;
+            }
+            _func.set_edgesPerCycle(newval);
+            _edgesPerCycle = newval;
         }
     }
     //--- (end of YQuadratureDecoder implementation)

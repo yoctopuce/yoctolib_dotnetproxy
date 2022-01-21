@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_wakeupmonitor_proxy.cs 48183 2022-01-20 10:26:11Z mvuilleu $
  *
  *  Implements YWakeUpMonitorProxy, the Proxy API for WakeUpMonitor
  *
@@ -146,7 +146,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the wake-up monitor, for instance
-         *   <c>YHUBGSM3.wakeUpMonitor</c>.
+         *   <c>YHUBGSM5.wakeUpMonitor</c>.
          * </param>
          * <returns>
          *   a <c>YWakeUpMonitor</c> object allowing you to drive the wake-up monitor.

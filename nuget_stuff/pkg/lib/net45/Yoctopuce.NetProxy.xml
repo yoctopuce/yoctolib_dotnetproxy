@@ -66,7 +66,8 @@
             <summary>
               Setup the Yoctopuce library to use modules connected on a given machine.
             <para>
-              The
+              Idealy this
+              call will be made once at the begining of your application.  The
               parameter will determine how the API will work. Use the following values:
             </para>
             <para>
@@ -106,7 +107,9 @@
               <c>http://username:password@address:port</c>
             </para>
             <para>
-              You can call <i>RegisterHub</i> several times to connect to several machines.
+              You can call <i>RegisterHub</i> several times to connect to several machines. On
+              the other hand, it is useless and even counterproductive to call <i>RegisterHub</i>
+              with to same address multiple times during the life of the application.
             </para>
             <para>
             </para>
@@ -5232,8 +5235,8 @@
             </para>
             </summary>
             <returns>
-              either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-              the RGB LED type currently handled by the device
+              a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+              <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorLedCluster.LEDTYPE_INVALID</c>.
@@ -5250,8 +5253,8 @@
             </para>
             </summary>
             <param name="newval">
-              either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-              the RGB LED type currently handled by the device
+              a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+              <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
             </param>
             <para>
             </para>
@@ -6827,7 +6830,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the data logger, for instance
-              <c>LIGHTMK3.dataLogger</c>.
+              <c>LIGHTMK4.dataLogger</c>.
             </param>
             <returns>
               a <c>YDataLogger</c> object allowing you to drive the data logger.
@@ -10889,6 +10892,409 @@
               On failure, throws an exception or returns an empty array.
             </para>
         </member>
+        <member name="T:YoctoProxyAPI.YInputChainProxy">
+            <summary>
+              The <c>YInputChain</c> class provides access to separate
+              digital inputs connected in a chain.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.FindInputChain(System.String)">
+            <summary>
+              Retrieves a digital input chain for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the digital input chain is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YInputChain.isOnline()</c> to test if the digital input chain is
+              indeed online at a given time. In case of ambiguity when looking for
+              a digital input chain by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the digital input chain, for instance
+              <c>MyDevice.inputChain</c>.
+            </param>
+            <returns>
+              a <c>YInputChain</c> object allowing you to drive the digital input chain.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.GetSimilarFunctions">
+            <summary>
+              Enumerates all functions of type InputChain available on the devices
+              currently reachable by the library, and returns their unique hardware ID.
+            <para>
+              Each of these IDs can be provided as argument to the method
+              <c>YInputChain.FindInputChain</c> to obtain an object that can control the
+              corresponding device.
+            </para>
+            </summary>
+            <returns>
+              an array of strings, each string containing the unique hardwareId
+              of a device function currently connected.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_expectedNodes">
+            <summary>
+              Returns the number of nodes expected in the chain.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of nodes expected in the chain
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.EXPECTEDNODES_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.set_expectedNodes(System.Int32)">
+            <summary>
+              Changes the number of nodes expected in the chain.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the number of nodes expected in the chain
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputChainProxy.ExpectedNodes">
+            <value>Number of nodes expected in the chain.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_detectedNodes">
+            <summary>
+              Returns the number of nodes detected in the chain.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of nodes detected in the chain
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.DETECTEDNODES_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_refreshRate">
+            <summary>
+              Returns the desired refresh rate, measured in Hz.
+            <para>
+              The higher the refresh rate is set, the higher the
+              communication speed on the chain will be.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the desired refresh rate, measured in Hz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.REFRESHRATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.set_refreshRate(System.Int32)">
+            <summary>
+              Changes the desired refresh rate, measured in Hz.
+            <para>
+              The higher the refresh rate is set, the higher the
+              communication speed on the chain will be.
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the desired refresh rate, measured in Hz
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputChainProxy.RefreshRate">
+            <value>Desired refresh rate, measured in Hz.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_bitChain1">
+            <summary>
+              Returns the state of input 1 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 1 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN1_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_bitChain2">
+            <summary>
+              Returns the state of input 2 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 2 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN2_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_bitChain3">
+            <summary>
+              Returns the state of input 3 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 3 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN3_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_bitChain4">
+            <summary>
+              Returns the state of input 4 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 4 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN4_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_bitChain5">
+            <summary>
+              Returns the state of input 5 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 5 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN5_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_bitChain6">
+            <summary>
+              Returns the state of input 6 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 6 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN6_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_bitChain7">
+            <summary>
+              Returns the state of input 7 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 7 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN7_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_watchdogPeriod">
+            <summary>
+              Returns the wait time in seconds before triggering an inactivity
+              timeout error.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the wait time in seconds before triggering an inactivity
+              timeout error
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.WATCHDOGPERIOD_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.set_watchdogPeriod(System.Int32)">
+            <summary>
+              Changes the wait time in seconds before triggering an inactivity
+              timeout error.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method
+              of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the wait time in seconds before triggering an inactivity
+              timeout error
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputChainProxy.WatchdogPeriod">
+            <value>Wait time in seconds before triggering an inactivity</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_chainDiags">
+            <summary>
+              Returns the controller state diagnostics.
+            <para>
+              Bit 0 indicates a chain length
+              error, bit 1 indicates an inactivity timeout and bit 2 indicates
+              a loopback test failure.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the controller state diagnostics
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.CHAINDIAGS_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.resetWatchdog">
+            <summary>
+              Resets the application watchdog countdown.
+            <para>
+              If you have setup a non-zero <c>watchdogPeriod</c>, you should
+              call this function on a regular basis to prevent the application
+              inactivity error to be triggered.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_lastEvents">
+            <summary>
+              Returns a string with last events observed on the digital input chain.
+            <para>
+              This method return only events that are still buffered in the device memory.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string with last events observed (one per line).
+            </returns>
+            <para>
+              On failure, throws an exception or returns  <c>YAPI.INVALID_STRING</c>.
+            </para>
+        </member>
         <member name="T:YoctoProxyAPI.YLatitudeProxy">
             <summary>
               The <c>YLatitude</c> class allows you to read and configure Yoctopuce latitude sensors.
@@ -11220,7 +11626,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the light sensor, for instance
-              <c>LIGHTMK3.lightSensor</c>.
+              <c>LIGHTMK4.lightSensor</c>.
             </param>
             <returns>
               a <c>YLightSensor</c> object allowing you to drive the light sensor.
@@ -16726,7 +17132,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the quadrature decoder, for instance
-              <c>YPWMRX01.quadratureDecoder</c>.
+              <c>YMXBTN01.quadratureDecoder1</c>.
             </param>
             <returns>
               a <c>YQuadratureDecoder</c> object allowing you to drive the quadrature decoder.
@@ -16770,14 +17176,14 @@
         </member>
         <member name="M:YoctoProxyAPI.YQuadratureDecoderProxy.get_speed">
             <summary>
-              Returns the increments frequency, in Hz.
+              Returns the cycle frequency, in Hz.
             <para>
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a floating point number corresponding to the increments frequency, in Hz
+              a floating point number corresponding to the cycle frequency, in Hz
             </returns>
             <para>
               On failure, throws an exception or returns <c>YQuadratureDecoder.SPEED_INVALID</c>.
@@ -16792,8 +17198,7 @@
             </para>
             </summary>
             <returns>
-              a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
-              <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
+              either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
               to the current activation state of the quadrature decoder
             </returns>
             <para>
@@ -16811,8 +17216,7 @@
             </para>
             </summary>
             <param name="newval">
-              a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
-              <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
+              either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
               to the activation state of the quadrature decoder
             </param>
             <para>
@@ -16826,6 +17230,46 @@
         </member>
         <member name="P:YoctoProxyAPI.YQuadratureDecoderProxy.Decoding">
             <value>Current activation state of the quadrature decoder.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YQuadratureDecoderProxy.get_edgesPerCycle">
+            <summary>
+              Returns the edge count per full cycle configuration setting.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the edge count per full cycle configuration setting
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YQuadratureDecoder.EDGESPERCYCLE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YQuadratureDecoderProxy.set_edgesPerCycle(System.Int32)">
+            <summary>
+              Changes the edge count per full cycle configuration setting.
+            <para>
+              Remember to call the <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the edge count per full cycle configuration setting
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YQuadratureDecoderProxy.EdgesPerCycle">
+            <value>Edge count per full cycle configuration setting.</value>
         </member>
         <member name="T:YoctoProxyAPI.YRangeFinderProxy">
             <summary>
@@ -17206,7 +17650,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the real-time clock, for instance
-              <c>YHUBGSM3.realTimeClock</c>.
+              <c>YHUBGSM5.realTimeClock</c>.
             </param>
             <returns>
               a <c>YRealTimeClock</c> object allowing you to drive the real-time clock.
@@ -22210,7 +22654,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the wake-up monitor, for instance
-              <c>YHUBGSM3.wakeUpMonitor</c>.
+              <c>YHUBGSM5.wakeUpMonitor</c>.
             </param>
             <returns>
               a <c>YWakeUpMonitor</c> object allowing you to drive the wake-up monitor.
@@ -22513,7 +22957,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the wake up schedule, for instance
-              <c>YHUBGSM3.wakeUpSchedule1</c>.
+              <c>YHUBGSM5.wakeUpSchedule1</c>.
             </param>
             <returns>
               a <c>YWakeUpSchedule</c> object allowing you to drive the wake up schedule.
@@ -23373,6 +23817,21 @@
         </member>
         <member name="P:YoctoProxyAPI.YWatchdogProxy.TriggerDuration">
             <value>Duration of resets caused by the watchdog, in milliseconds.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YWatchdogProxy.get_lastTrigger">
+            <summary>
+              Returns the number of seconds spent since the last output power-up event.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of seconds spent since the last output power-up event
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YWatchdog.LASTTRIGGER_INVALID</c>.
+            </para>
         </member>
         <member name="M:YoctoProxyAPI.YWatchdogProxy.toggle">
             <summary>
@@ -25636,7 +26095,8 @@
             <summary>
               Setup the Yoctopuce library to use modules connected on a given machine.
             <para>
-              The
+              Idealy this
+              call will be made once at the begining of your application.  The
               parameter will determine how the API will work. Use the following values:
             </para>
             <para>
@@ -25676,7 +26136,9 @@
               <c>http://username:password@address:port</c>
             </para>
             <para>
-              You can call <i>RegisterHub</i> several times to connect to several machines.
+              You can call <i>RegisterHub</i> several times to connect to several machines. On
+              the other hand, it is useless and even counterproductive to call <i>RegisterHub</i>
+              with to same address multiple times during the life of the application.
             </para>
             <para>
             </para>
@@ -29034,7 +29496,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the data logger, for instance
-              <c>LIGHTMK3.dataLogger</c>.
+              <c>LIGHTMK4.dataLogger</c>.
             </param>
             <returns>
               a <c>YDataLogger</c> object allowing you to drive the data logger.
@@ -33034,8 +33496,8 @@
             </para>
             </summary>
             <returns>
-              either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-              the RGB LED type currently handled by the device
+              a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+              <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorLedCluster.LEDTYPE_INVALID</c>.
@@ -33052,8 +33514,8 @@
             </para>
             </summary>
             <param name="newval">
-              either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-              the RGB LED type currently handled by the device
+              a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+              <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
             </param>
             <para>
             </para>
@@ -39781,6 +40243,448 @@
               if there are none.
             </returns>
         </member>
+        <member name="T:YoctoLib.YInputChain">
+            <summary>
+              The <c>YInputChain</c> class provides access to separate
+              digital inputs connected in a chain.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_expectedNodes">
+            <summary>
+              Returns the number of nodes expected in the chain.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of nodes expected in the chain
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.EXPECTEDNODES_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.set_expectedNodes(System.Int32)">
+            <summary>
+              Changes the number of nodes expected in the chain.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the number of nodes expected in the chain
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_detectedNodes">
+            <summary>
+              Returns the number of nodes detected in the chain.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of nodes detected in the chain
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.DETECTEDNODES_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_refreshRate">
+            <summary>
+              Returns the desired refresh rate, measured in Hz.
+            <para>
+              The higher the refresh rate is set, the higher the
+              communication speed on the chain will be.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the desired refresh rate, measured in Hz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.REFRESHRATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.set_refreshRate(System.Int32)">
+            <summary>
+              Changes the desired refresh rate, measured in Hz.
+            <para>
+              The higher the refresh rate is set, the higher the
+              communication speed on the chain will be.
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the desired refresh rate, measured in Hz
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_bitChain1">
+            <summary>
+              Returns the state of input 1 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 1 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN1_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_bitChain2">
+            <summary>
+              Returns the state of input 2 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 2 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN2_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_bitChain3">
+            <summary>
+              Returns the state of input 3 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 3 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN3_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_bitChain4">
+            <summary>
+              Returns the state of input 4 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 4 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN4_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_bitChain5">
+            <summary>
+              Returns the state of input 5 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 5 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN5_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_bitChain6">
+            <summary>
+              Returns the state of input 6 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 6 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN6_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_bitChain7">
+            <summary>
+              Returns the state of input 7 for all nodes of the input chain,
+              as a hexadecimal string.
+            <para>
+              The node nearest to the controller
+              is the lowest bit of the result.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the state of input 7 for all nodes of the input chain,
+              as a hexadecimal string
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.BITCHAIN7_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_watchdogPeriod">
+            <summary>
+              Returns the wait time in seconds before triggering an inactivity
+              timeout error.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the wait time in seconds before triggering an inactivity
+              timeout error
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.WATCHDOGPERIOD_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.set_watchdogPeriod(System.Int32)">
+            <summary>
+              Changes the wait time in seconds before triggering an inactivity
+              timeout error.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method
+              of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the wait time in seconds before triggering an inactivity
+              timeout error
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_chainDiags">
+            <summary>
+              Returns the controller state diagnostics.
+            <para>
+              Bit 0 indicates a chain length
+              error, bit 1 indicates an inactivity timeout and bit 2 indicates
+              a loopback test failure.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the controller state diagnostics
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.CHAINDIAGS_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.FindInputChain(System.String)">
+            <summary>
+              Retrieves a digital input chain for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the digital input chain is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YInputChain.isOnline()</c> to test if the digital input chain is
+              indeed online at a given time. In case of ambiguity when looking for
+              a digital input chain by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the digital input chain, for instance
+              <c>MyDevice.inputChain</c>.
+            </param>
+            <returns>
+              a <c>YInputChain</c> object allowing you to drive the digital input chain.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputChain.registerValueCallback(YoctoLib.YInputChain.ValueCallback)">
+            <summary>
+              Registers the callback function that is invoked on every change of advertised value.
+            <para>
+              The callback is invoked only during the execution of <c>ySleep</c> or <c>yHandleEvents</c>.
+              This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+              one of these two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer. The callback function should take two
+              arguments: the function object of which the value has changed, and the character string describing
+              the new advertised value.
+            @noreturn
+            </param>
+        </member>
+        <member name="M:YoctoLib.YInputChain.resetWatchdog">
+            <summary>
+              Resets the application watchdog countdown.
+            <para>
+              If you have setup a non-zero <c>watchdogPeriod</c>, you should
+              call this function on a regular basis to prevent the application
+              inactivity error to be triggered.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.get_lastEvents">
+            <summary>
+              Returns a string with last events observed on the digital input chain.
+            <para>
+              This method return only events that are still buffered in the device memory.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string with last events observed (one per line).
+            </returns>
+            <para>
+              On failure, throws an exception or returns  <c>YAPI.INVALID_STRING</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.registerEventCallback(YoctoLib.YInputChain.YEventCallback)">
+            <summary>
+              Registers a callback function to be called each time that an event is detected on the
+              input chain.
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer.
+              The callback function should take four arguments:
+              the <c>YInputChain</c> object that emitted the event, the
+              UTC timestamp of the event, a character string describing
+              the type of event and a character string with the event data.
+              On failure, throws an exception or returns a negative error code.
+            </param>
+        </member>
+        <member name="M:YoctoLib.YInputChain.nextInputChain">
+            <summary>
+              Continues the enumeration of digital input chains started using <c>yFirstInputChain()</c>.
+            <para>
+              Caution: You can't make any assumption about the returned digital input chains order.
+              If you want to find a specific a digital input chain, use <c>InputChain.findInputChain()</c>
+              and a hardwareID or a logical name.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YInputChain</c> object, corresponding to
+              a digital input chain currently online, or a <c>null</c> pointer
+              if there are no more digital input chains to enumerate.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputChain.FirstInputChain">
+            <summary>
+              Starts the enumeration of digital input chains currently accessible.
+            <para>
+              Use the method <c>YInputChain.nextInputChain()</c> to iterate on
+              next digital input chains.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YInputChain</c> object, corresponding to
+              the first digital input chain currently online, or a <c>null</c> pointer
+              if there are none.
+            </returns>
+        </member>
         <member name="T:YoctoLib.YLatitude">
             <summary>
               The <c>YLatitude</c> class allows you to read and configure Yoctopuce latitude sensors.
@@ -40256,7 +41160,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the light sensor, for instance
-              <c>LIGHTMK3.lightSensor</c>.
+              <c>LIGHTMK4.lightSensor</c>.
             </param>
             <returns>
               a <c>YLightSensor</c> object allowing you to drive the light sensor.
@@ -46221,14 +47125,14 @@
         </member>
         <member name="M:YoctoLib.YQuadratureDecoder.get_speed">
             <summary>
-              Returns the increments frequency, in Hz.
+              Returns the cycle frequency, in Hz.
             <para>
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a floating point number corresponding to the increments frequency, in Hz
+              a floating point number corresponding to the cycle frequency, in Hz
             </returns>
             <para>
               On failure, throws an exception or returns <c>YQuadratureDecoder.SPEED_INVALID</c>.
@@ -46243,8 +47147,7 @@
             </para>
             </summary>
             <returns>
-              a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
-              <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
+              either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
               to the current activation state of the quadrature decoder
             </returns>
             <para>
@@ -46262,9 +47165,45 @@
             </para>
             </summary>
             <param name="newval">
-              a value among <c>YQuadratureDecoder.DECODING_OFF</c>, <c>YQuadratureDecoder.DECODING_ON</c>,
-              <c>YQuadratureDecoder.DECODING_DIV2</c> and <c>YQuadratureDecoder.DECODING_DIV4</c> corresponding
+              either <c>YQuadratureDecoder.DECODING_OFF</c> or <c>YQuadratureDecoder.DECODING_ON</c>, according
               to the activation state of the quadrature decoder
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YQuadratureDecoder.get_edgesPerCycle">
+            <summary>
+              Returns the edge count per full cycle configuration setting.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the edge count per full cycle configuration setting
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YQuadratureDecoder.EDGESPERCYCLE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YQuadratureDecoder.set_edgesPerCycle(System.Int32)">
+            <summary>
+              Changes the edge count per full cycle configuration setting.
+            <para>
+              Remember to call the <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the edge count per full cycle configuration setting
             </param>
             <para>
             </para>
@@ -46319,7 +47258,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the quadrature decoder, for instance
-              <c>YPWMRX01.quadratureDecoder</c>.
+              <c>YMXBTN01.quadratureDecoder1</c>.
             </param>
             <returns>
               a <c>YQuadratureDecoder</c> object allowing you to drive the quadrature decoder.
@@ -46915,7 +47854,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the real-time clock, for instance
-              <c>YHUBGSM3.realTimeClock</c>.
+              <c>YHUBGSM5.realTimeClock</c>.
             </param>
             <returns>
               a <c>YRealTimeClock</c> object allowing you to drive the real-time clock.
@@ -52482,7 +53421,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the wake-up monitor, for instance
-              <c>YHUBGSM3.wakeUpMonitor</c>.
+              <c>YHUBGSM5.wakeUpMonitor</c>.
             </param>
             <returns>
               a <c>YWakeUpMonitor</c> object allowing you to drive the wake-up monitor.
@@ -52907,7 +53846,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the wake up schedule, for instance
-              <c>YHUBGSM3.wakeUpSchedule1</c>.
+              <c>YHUBGSM5.wakeUpSchedule1</c>.
             </param>
             <returns>
               a <c>YWakeUpSchedule</c> object allowing you to drive the wake up schedule.
@@ -53451,6 +54390,21 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YWatchdog.get_lastTrigger">
+            <summary>
+              Returns the number of seconds spent since the last output power-up event.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of seconds spent since the last output power-up event
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YWatchdog.LASTTRIGGER_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoLib.YWatchdog.FindWatchdog(System.String)">

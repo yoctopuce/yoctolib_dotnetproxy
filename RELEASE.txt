@@ -1,3 +1,5 @@
-DotNetProxy v1.10.44175
+DotNetProxy v1.10.48220
 
-- Add Yocto-CO2-V2 forced calibration method
+- Fix YSMS addText method
+- Fix search feature in HTML documentation
+- Fix reconnexion isssue with WebSocket

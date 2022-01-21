@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_realtimeclock_proxy.cs 48183 2022-01-20 10:26:11Z mvuilleu $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *
@@ -150,7 +150,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the real-time clock, for instance
-         *   <c>YHUBGSM3.realTimeClock</c>.
+         *   <c>YHUBGSM5.realTimeClock</c>.
          * </param>
          * <returns>
          *   a <c>YRealTimeClock</c> object allowing you to drive the real-time clock.

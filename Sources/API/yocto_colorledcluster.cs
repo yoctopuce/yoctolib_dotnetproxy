@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_colorledcluster.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_colorledcluster.cs 48017 2022-01-12 08:17:52Z seb $
  *
  *  Implements yFindColorLedCluster(), the high-level API for ColorLedCluster functions
  *
@@ -83,6 +83,7 @@ public class YColorLedCluster : YFunction
     public const int ACTIVELEDCOUNT_INVALID = YAPI.INVALID_UINT;
     public const int LEDTYPE_RGB = 0;
     public const int LEDTYPE_RGBW = 1;
+    public const int LEDTYPE_WS2811 = 2;
     public const int LEDTYPE_INVALID = -1;
     public const int MAXLEDCOUNT_INVALID = YAPI.INVALID_UINT;
     public const int BLINKSEQMAXCOUNT_INVALID = YAPI.INVALID_UINT;
@@ -207,8 +208,8 @@ public class YColorLedCluster : YFunction
      * </para>
      * </summary>
      * <returns>
-     *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-     *   the RGB LED type currently handled by the device
+     *   a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+     *   <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YColorLedCluster.LEDTYPE_INVALID</c>.
@@ -239,8 +240,8 @@ public class YColorLedCluster : YFunction
      * </para>
      * </summary>
      * <param name="newval">
-     *   either <c>YColorLedCluster.LEDTYPE_RGB</c> or <c>YColorLedCluster.LEDTYPE_RGBW</c>, according to
-     *   the RGB LED type currently handled by the device
+     *   a value among <c>YColorLedCluster.LEDTYPE_RGB</c>, <c>YColorLedCluster.LEDTYPE_RGBW</c> and
+     *   <c>YColorLedCluster.LEDTYPE_WS2811</c> corresponding to the RGB LED type currently handled by the device
      * </param>
      * <para>
      * </para>
@@ -1189,7 +1190,7 @@ public class YColorLedCluster : YFunction
     public virtual int set_rgbColorArray(int ledIndex, List<int> rgbList)
     {
         int listlen;
-        byte[] buff;
+        byte[] buff = new byte[0];
         int idx;
         int rgb;
         int res;
@@ -1237,7 +1238,7 @@ public class YColorLedCluster : YFunction
     public virtual int rgbArrayOfs_move(int ledIndex, List<int> rgbList, int delay)
     {
         int listlen;
-        byte[] buff;
+        byte[] buff = new byte[0];
         int idx;
         int rgb;
         int res;
@@ -1339,7 +1340,7 @@ public class YColorLedCluster : YFunction
     public virtual int set_hslColorArray(int ledIndex, List<int> hslList)
     {
         int listlen;
-        byte[] buff;
+        byte[] buff = new byte[0];
         int idx;
         int hsl;
         int res;
@@ -1418,7 +1419,7 @@ public class YColorLedCluster : YFunction
     public virtual int hslArrayOfs_move(int ledIndex, List<int> hslList, int delay)
     {
         int listlen;
-        byte[] buff;
+        byte[] buff = new byte[0];
         int idx;
         int hsl;
         int res;
@@ -1489,7 +1490,7 @@ public class YColorLedCluster : YFunction
      */
     public virtual List<int> get_rgbColorArray(int ledIndex, int count)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         List<int> res = new List<int>();
         int idx;
         int r;
@@ -1533,7 +1534,7 @@ public class YColorLedCluster : YFunction
      */
     public virtual List<int> get_rgbColorArrayAtPowerOn(int ledIndex, int count)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         List<int> res = new List<int>();
         int idx;
         int r;
@@ -1578,7 +1579,7 @@ public class YColorLedCluster : YFunction
      */
     public virtual List<int> get_linkedSeqArray(int ledIndex, int count)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         List<int> res = new List<int>();
         int idx;
         int seq;
@@ -1618,7 +1619,7 @@ public class YColorLedCluster : YFunction
      */
     public virtual List<int> get_blinkSeqSignatures(int seqIndex, int count)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         List<int> res = new List<int>();
         int idx;
         int hh;
@@ -1662,7 +1663,7 @@ public class YColorLedCluster : YFunction
      */
     public virtual List<int> get_blinkSeqStateSpeed(int seqIndex, int count)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         List<int> res = new List<int>();
         int idx;
         int lh;
@@ -1702,7 +1703,7 @@ public class YColorLedCluster : YFunction
      */
     public virtual List<int> get_blinkSeqStateAtPowerOn(int seqIndex, int count)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         List<int> res = new List<int>();
         int idx;
         int started;
@@ -1740,7 +1741,7 @@ public class YColorLedCluster : YFunction
      */
     public virtual List<int> get_blinkSeqState(int seqIndex, int count)
     {
-        byte[] buff;
+        byte[] buff = new byte[0];
         List<int> res = new List<int>();
         int idx;
         int started;

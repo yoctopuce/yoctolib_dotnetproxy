@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.10.44175</Version>
+    <Version>1.10.48220</Version>
     <Authors>Yoctopuce Dev Team</Authors>
     <Company>Yoctopuce</Company>
     <Product />
@@ -48,6 +48,7 @@
     <Compile Include="..\..\Sources\API\yocto_hubport.cs" Link="yocto_hubport.cs" />
     <Compile Include="..\..\Sources\API\yocto_humidity.cs" Link="yocto_humidity.cs" />
     <Compile Include="..\..\Sources\API\yocto_i2cport.cs" Link="yocto_i2cport.cs" />
+    <Compile Include="..\..\Sources\API\yocto_inputchain.cs" Link="yocto_inputchain.cs" />
     <Compile Include="..\..\Sources\API\yocto_latitude.cs" Link="yocto_latitude.cs" />
     <Compile Include="..\..\Sources\API\yocto_led.cs" Link="yocto_led.cs" />
     <Compile Include="..\..\Sources\API\yocto_lightsensor.cs" Link="yocto_lightsensor.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="..\..\Sources\yocto_hubport_proxy.cs" Link="yocto_hubport_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_humidity_proxy.cs" Link="yocto_humidity_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_i2cport_proxy.cs" Link="yocto_i2cport_proxy.cs" />
+    <Compile Include="..\..\Sources\yocto_inputchain_proxy.cs" Link="yocto_inputchain_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_latitude_proxy.cs" Link="yocto_latitude_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_led_proxy.cs" Link="yocto_led_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_lightsensor_proxy.cs" Link="yocto_lightsensor_proxy.cs" />
