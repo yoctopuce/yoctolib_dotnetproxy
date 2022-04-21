@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_network_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_network_proxy.cs 48692 2022-02-24 22:30:52Z mvuilleu $
  *
  *  Implements YNetworkProxy, the Proxy API for Network
  *
@@ -164,6 +164,7 @@ namespace YoctoProxyAPI
         public const string _IpAddress_INVALID = YAPI.INVALID_STRING;
         public const string _SubnetMask_INVALID = YAPI.INVALID_STRING;
         public const string _Router_INVALID = YAPI.INVALID_STRING;
+        public const string _CurrentDNS_INVALID = YAPI.INVALID_STRING;
         public const string _IpConfig_INVALID = YAPI.INVALID_STRING;
         public const string _PrimaryDNS_INVALID = YAPI.INVALID_STRING;
         public const string _SecondaryDNS_INVALID = YAPI.INVALID_STRING;
@@ -518,6 +519,29 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No Network connected");
             }
             return _func.get_router();
+        }
+
+        /**
+         * <summary>
+         *   Returns the IP address of the DNS server currently used by the device.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a string corresponding to the IP address of the DNS server currently used by the device
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YNetwork.CURRENTDNS_INVALID</c>.
+         * </para>
+         */
+        public string get_currentDNS()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
+            }
+            return _func.get_currentDNS();
         }
 
         /**

@@ -11022,6 +11022,47 @@
               On failure, throws an exception or returns <c>YInputChain.DETECTEDNODES_INVALID</c>.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.get_loopbackTest">
+            <summary>
+              Returns the activation state of the exhaustive chain connectivity test.
+            <para>
+              The connectivity test requires a cable connecting the end of the chain
+              to the loopback test connector.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YInputChain.LOOPBACKTEST_OFF</c> or <c>YInputChain.LOOPBACKTEST_ON</c>, according to the
+              activation state of the exhaustive chain connectivity test
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.LOOPBACKTEST_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputChainProxy.set_loopbackTest(System.Int32)">
+            <summary>
+              Changes the activation state of the exhaustive chain connectivity test.
+            <para>
+              The connectivity test requires a cable connecting the end of the chain
+              to the loopback test connector.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YInputChain.LOOPBACKTEST_OFF</c> or <c>YInputChain.LOOPBACKTEST_ON</c>, according to the
+              activation state of the exhaustive chain connectivity test
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
         <member name="M:YoctoProxyAPI.YInputChainProxy.get_refreshRate">
             <summary>
               Returns the desired refresh rate, measured in Hz.
@@ -13510,7 +13551,7 @@
               <c>saveToFlash()</c> method of the module if the
               modification must be kept. It is recommended to restart the
               device with  <c>module->reboot()</c> after modifying
-              (and saving) this settings
+              (and saving) this settings.
             </para>
             <para>
             </para>
@@ -13584,15 +13625,36 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YMultiSensControllerProxy.get_lastAddressDetected">
+            <summary>
+              Returns the I2C address of the most recently detected sensor.
+            <para>
+              This method can
+              be used to in case of I2C communication error to determine what is the
+              last sensor that can be reached, or after a call to <c>setupAddress</c>
+              to make sure that the address change was properly processed.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the I2C address of the most recently detected sensor
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMultiSensController.LASTADDRESSDETECTED_INVALID</c>.
+            </para>
+        </member>
         <member name="M:YoctoProxyAPI.YMultiSensControllerProxy.setupAddress(System.Int32)">
             <summary>
               Configures the I2C address of the only sensor connected to the device.
             <para>
               It is recommended to put the the device in maintenance mode before
               changing sensor addresses.  This method is only intended to work with a single
-              sensor connected to the device, if several sensors are connected, the result
+              sensor connected to the device. If several sensors are connected, the result
               is unpredictable.
-              Note that the device is probably expecting to find a string of sensors with specific
+            </para>
+            <para>
+              Note that the device is expecting to find a sensor or a string of sensors with specific
               addresses. Check the device documentation to find out which addresses should be used.
             </para>
             </summary>
@@ -13603,6 +13665,21 @@
               <c>0</c> if the call succeeds.
               On failure, throws an exception or returns a negative error code.
             </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YMultiSensControllerProxy.get_sensorAddress">
+            <summary>
+              Triggers the I2C address detection procedure for the only sensor connected to the device.
+            <para>
+              This method is only intended to work with a single sensor connected to the device.
+              If several sensors are connected, the result is unpredictable.
+            </para>
+            </summary>
+            <returns>
+              the I2C address of the detected sensor, or 0 if none is found
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
         </member>
         <member name="T:YoctoProxyAPI.YNetworkProxy">
             <c>YNetwork</c> objects provide access to TCP/IP parameters of Yoctopuce
@@ -13776,6 +13853,21 @@
             </returns>
             <para>
               On failure, throws an exception or returns <c>YNetwork.ROUTER_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YNetworkProxy.get_currentDNS">
+            <summary>
+              Returns the IP address of the DNS server currently used by the device.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the IP address of the DNS server currently used by the device
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.CURRENTDNS_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_ipConfig">
@@ -19510,6 +19602,28 @@
             </param>
             <returns>
               a string with receive buffer contents, encoded in hexadecimal
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YSerialPortProxy.sendBreak(System.Int32)">
+            <summary>
+              Emits a BREAK condition on the serial interface.
+            <para>
+              When the specified
+              duration is 0, the BREAK signal will be exactly one character wide.
+              When the duration is between 1 and 100, the BREAK condition will
+              be hold for the specified number of milliseconds.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="duration">
+              0 for a standard BREAK, or duration between 1 and 100 ms
+            </param>
+            <returns>
+              <c>0</c> if the call succeeds.
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
@@ -40305,6 +40419,47 @@
               On failure, throws an exception or returns <c>YInputChain.DETECTEDNODES_INVALID</c>.
             </para>
         </member>
+        <member name="M:YoctoLib.YInputChain.get_loopbackTest">
+            <summary>
+              Returns the activation state of the exhaustive chain connectivity test.
+            <para>
+              The connectivity test requires a cable connecting the end of the chain
+              to the loopback test connector.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YInputChain.LOOPBACKTEST_OFF</c> or <c>YInputChain.LOOPBACKTEST_ON</c>, according to the
+              activation state of the exhaustive chain connectivity test
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputChain.LOOPBACKTEST_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputChain.set_loopbackTest(System.Int32)">
+            <summary>
+              Changes the activation state of the exhaustive chain connectivity test.
+            <para>
+              The connectivity test requires a cable connecting the end of the chain
+              to the loopback test connector.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YInputChain.LOOPBACKTEST_OFF</c> or <c>YInputChain.LOOPBACKTEST_ON</c>, according to the
+              activation state of the exhaustive chain connectivity test
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
         <member name="M:YoctoLib.YInputChain.get_refreshRate">
             <summary>
               Returns the desired refresh rate, measured in Hz.
@@ -43231,7 +43386,7 @@
               <c>saveToFlash()</c> method of the module if the
               modification must be kept. It is recommended to restart the
               device with  <c>module->reboot()</c> after modifying
-              (and saving) this settings
+              (and saving) this settings.
             </para>
             <para>
             </para>
@@ -43300,6 +43455,25 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMultiSensController.get_lastAddressDetected">
+            <summary>
+              Returns the I2C address of the most recently detected sensor.
+            <para>
+              This method can
+              be used to in case of I2C communication error to determine what is the
+              last sensor that can be reached, or after a call to <c>setupAddress</c>
+              to make sure that the address change was properly processed.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the I2C address of the most recently detected sensor
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMultiSensController.LASTADDRESSDETECTED_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoLib.YMultiSensController.FindMultiSensController(System.String)">
@@ -43376,9 +43550,11 @@
             <para>
               It is recommended to put the the device in maintenance mode before
               changing sensor addresses.  This method is only intended to work with a single
-              sensor connected to the device, if several sensors are connected, the result
+              sensor connected to the device. If several sensors are connected, the result
               is unpredictable.
-              Note that the device is probably expecting to find a string of sensors with specific
+            </para>
+            <para>
+              Note that the device is expecting to find a sensor or a string of sensors with specific
               addresses. Check the device documentation to find out which addresses should be used.
             </para>
             </summary>
@@ -43389,6 +43565,21 @@
               <c>YAPI.SUCCESS</c> if the call succeeds.
               On failure, throws an exception or returns a negative error code.
             </returns>
+        </member>
+        <member name="M:YoctoLib.YMultiSensController.get_sensorAddress">
+            <summary>
+              Triggers the I2C address detection procedure for the only sensor connected to the device.
+            <para>
+              This method is only intended to work with a single sensor connected to the device.
+              If several sensors are connected, the result is unpredictable.
+            </para>
+            </summary>
+            <returns>
+              the I2C address of the detected sensor, or 0 if none is found
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
         </member>
         <member name="M:YoctoLib.YMultiSensController.nextMultiSensController">
             <summary>
@@ -43518,6 +43709,21 @@
             </returns>
             <para>
               On failure, throws an exception or returns <c>YNetwork.ROUTER_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YNetwork.get_currentDNS">
+            <summary>
+              Returns the IP address of the DNS server currently used by the device.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the IP address of the DNS server currently used by the device
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.CURRENTDNS_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoLib.YNetwork.get_ipConfig">
@@ -49731,6 +49937,28 @@
             </param>
             <returns>
               a string with receive buffer contents, encoded in hexadecimal
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YSerialPort.sendBreak(System.Int32)">
+            <summary>
+              Emits a BREAK condition on the serial interface.
+            <para>
+              When the specified
+              duration is 0, the BREAK signal will be exactly one character wide.
+              When the duration is between 1 and 100, the BREAK condition will
+              be hold for the specified number of milliseconds.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="duration">
+              0 for a standard BREAK, or duration between 1 and 100 ms
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.

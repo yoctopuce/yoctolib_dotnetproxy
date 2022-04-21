@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = Yoctopuce.NetProxy
+build_property.ProjectDir = c:\tmp\tmp_build\yoctoprod\yoctolib\v1.0\Public\DotNetProxy\nuget_stuff\core20\

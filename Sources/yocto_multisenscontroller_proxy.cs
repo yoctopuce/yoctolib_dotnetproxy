@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multisenscontroller_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_multisenscontroller_proxy.cs 49501 2022-04-21 07:09:25Z mvuilleu $
  *
  *  Implements YMultiSensControllerProxy, the Proxy API for MultiSensController
  *
@@ -163,6 +163,7 @@ namespace YoctoProxyAPI
         public const int _MaintenanceMode_INVALID = 0;
         public const int _MaintenanceMode_FALSE = 1;
         public const int _MaintenanceMode_TRUE = 2;
+        public const int _LastAddressDetected_INVALID = -1;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
 
         // reference to real YoctoAPI object
@@ -278,7 +279,7 @@ namespace YoctoProxyAPI
          *   <c>saveToFlash()</c> method of the module if the
          *   modification must be kept. It is recommended to restart the
          *   device with  <c>module->reboot()</c> after modifying
-         *   (and saving) this settings
+         *   (and saving) this settings.
          * </para>
          * <para>
          * </para>
@@ -435,13 +436,47 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
+         *   Returns the I2C address of the most recently detected sensor.
+         * <para>
+         *   This method can
+         *   be used to in case of I2C communication error to determine what is the
+         *   last sensor that can be reached, or after a call to <c>setupAddress</c>
+         *   to make sure that the address change was properly processed.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the I2C address of the most recently detected sensor
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YMultiSensController.LASTADDRESSDETECTED_INVALID</c>.
+         * </para>
+         */
+        public int get_lastAddressDetected()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
+            }
+            res = _func.get_lastAddressDetected();
+            if (res == YAPI.INVALID_INT) {
+                res = _LastAddressDetected_INVALID;
+            }
+            return res;
+        }
+
+        /**
+         * <summary>
          *   Configures the I2C address of the only sensor connected to the device.
          * <para>
          *   It is recommended to put the the device in maintenance mode before
          *   changing sensor addresses.  This method is only intended to work with a single
-         *   sensor connected to the device, if several sensors are connected, the result
+         *   sensor connected to the device. If several sensors are connected, the result
          *   is unpredictable.
-         *   Note that the device is probably expecting to find a string of sensors with specific
+         * </para>
+         * <para>
+         *   Note that the device is expecting to find a sensor or a string of sensors with specific
          *   addresses. Check the device documentation to find out which addresses should be used.
          * </para>
          * </summary>
@@ -459,6 +494,29 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No MultiSensController connected");
             }
             return _func.setupAddress(addr);
+        }
+
+        /**
+         * <summary>
+         *   Triggers the I2C address detection procedure for the only sensor connected to the device.
+         * <para>
+         *   This method is only intended to work with a single sensor connected to the device.
+         *   If several sensors are connected, the result is unpredictable.
+         * </para>
+         * </summary>
+         * <returns>
+         *   the I2C address of the detected sensor, or 0 if none is found
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public virtual int get_sensorAddress()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MultiSensController connected");
+            }
+            return _func.get_sensorAddress();
         }
     }
     //--- (end of YMultiSensController implementation)

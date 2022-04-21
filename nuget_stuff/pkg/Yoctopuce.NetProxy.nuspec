@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata minClientVersion="3.3.0">
     <id>Yoctopuce.NetProxy</id>
-    <version>1.10.48220</version>
+    <version>1.10.49504</version>
     <authors>Yoctopuce Dev Team</authors>
     <owners>Yoctopuce Dev Team</owners>
     <projectUrl>https://www.yoctopuce.com/EN/libraries.php</projectUrl>

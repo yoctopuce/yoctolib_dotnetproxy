@@ -1,13 +1,13 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "cfe1dc2a80602aef150a12815387068463a61a0d"
+    "signature": ""
   },
   "compilationOptions": {},
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Yoctopuce.NetProxy/1.10.48220": {
+      "Yoctopuce.NetProxy/1.10.49504": {
         "dependencies": {
           "NETStandard.Library": "2.0.3"
         },
@@ -24,7 +24,7 @@
     }
   },
   "libraries": {
-    "Yoctopuce.NetProxy/1.10.48220": {
+    "Yoctopuce.NetProxy/1.10.49504": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -160,6 +160,9 @@ namespace YoctoProxyAPI
         //--- (YInputChain definitions)
         public const int _ExpectedNodes_INVALID = -1;
         public const int _DetectedNodes_INVALID = -1;
+        public const int _LoopbackTest_INVALID = 0;
+        public const int _LoopbackTest_OFF = 1;
+        public const int _LoopbackTest_ON = 2;
         public const int _RefreshRate_INVALID = -1;
         public const string _BitChain1_INVALID = YAPI.INVALID_STRING;
         public const string _BitChain2_INVALID = YAPI.INVALID_STRING;
@@ -378,6 +381,68 @@ namespace YoctoProxyAPI
                 res = _DetectedNodes_INVALID;
             }
             return res;
+        }
+
+        /**
+         * <summary>
+         *   Returns the activation state of the exhaustive chain connectivity test.
+         * <para>
+         *   The connectivity test requires a cable connecting the end of the chain
+         *   to the loopback test connector.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>YInputChain.LOOPBACKTEST_OFF</c> or <c>YInputChain.LOOPBACKTEST_ON</c>, according to the
+         *   activation state of the exhaustive chain connectivity test
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YInputChain.LOOPBACKTEST_INVALID</c>.
+         * </para>
+         */
+        public int get_loopbackTest()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No InputChain connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_loopbackTest()+1;
+        }
+
+        /**
+         * <summary>
+         *   Changes the activation state of the exhaustive chain connectivity test.
+         * <para>
+         *   The connectivity test requires a cable connecting the end of the chain
+         *   to the loopback test connector.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   either <c>YInputChain.LOOPBACKTEST_OFF</c> or <c>YInputChain.LOOPBACKTEST_ON</c>, according to the
+         *   activation state of the exhaustive chain connectivity test
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_loopbackTest(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No InputChain connected");
+            }
+            if (newval == _LoopbackTest_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_loopbackTest(newval-1);
         }
 
         /**
