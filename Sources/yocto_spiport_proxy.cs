@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_spiport_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_spiport_proxy.cs 49744 2022-05-11 15:13:45Z mvuilleu $
  *
  *  Implements YSpiPortProxy, the Proxy API for SpiPort
  *
@@ -182,6 +182,7 @@ namespace YoctoProxyAPI
         public const int _VoltageLevel_RS232 = 6;
         public const int _VoltageLevel_RS485 = 7;
         public const int _VoltageLevel_TTL1V8 = 8;
+        public const int _VoltageLevel_SDI12 = 9;
         public const string _SpiMode_INVALID = YAPI.INVALID_STRING;
         public const int _SsPolarity_INVALID = 0;
         public const int _SsPolarity_ACTIVE_LOW = 1;
@@ -800,8 +801,8 @@ namespace YoctoProxyAPI
          *   a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
          *   <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
          *   <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
-         *   voltage level used on the serial line
+         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c>, <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> and
+         *   <c>YSpiPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage level used on the serial line
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YSpiPort.VOLTAGELEVEL_INVALID</c>.
@@ -835,8 +836,8 @@ namespace YoctoProxyAPI
          *   a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
          *   <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
          *   <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
-         *   voltage type used on the serial line
+         *   <c>YSpiPort.VOLTAGELEVEL_RS485</c>, <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> and
+         *   <c>YSpiPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage type used on the serial line
          * </param>
          * <para>
          * </para>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_serialport_proxy.cs 48954 2022-03-14 09:55:13Z seb $
+ *  $Id: yocto_serialport_proxy.cs 49744 2022-05-11 15:13:45Z mvuilleu $
  *
  *  Implements YSerialPortProxy, the Proxy API for SerialPort
  *
@@ -182,6 +182,7 @@ namespace YoctoProxyAPI
         public const int _VoltageLevel_RS232 = 6;
         public const int _VoltageLevel_RS485 = 7;
         public const int _VoltageLevel_TTL1V8 = 8;
+        public const int _VoltageLevel_SDI12 = 9;
         public const string _SerialMode_INVALID = YAPI.INVALID_STRING;
 
         // reference to real YoctoAPI object
@@ -800,8 +801,8 @@ namespace YoctoProxyAPI
          *   a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
          *   <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
          *   <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
-         *   the voltage level used on the serial line
+         *   <c>YSerialPort.VOLTAGELEVEL_RS485</c>, <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> and
+         *   <c>YSerialPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage level used on the serial line
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YSerialPort.VOLTAGELEVEL_INVALID</c>.
@@ -835,8 +836,8 @@ namespace YoctoProxyAPI
          *   a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
          *   <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
          *   <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-         *   <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
-         *   the voltage type used on the serial line
+         *   <c>YSerialPort.VOLTAGELEVEL_RS485</c>, <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> and
+         *   <c>YSerialPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage type used on the serial line
          * </param>
          * <para>
          * </para>

@@ -43,59 +43,77 @@ namespace YoctoProxyAPI
             }
         }
 
-        public static bool initYoctopuceLibrary(ref string errmsg, bool silent)
+    public static bool initYoctopuceLibrary(ref string errmsg, bool silent)
+    {
+      if (LibraryAPIInitialized) return true;
+      log(".NET Proxy library initialization");
+      apiMutex.WaitOne();
+
+      LibraryAPIInitialized = YAPI.InitAPI(YAPI.DETECT_NONE, ref errmsg) == YAPI.SUCCESS;
+      YAPI.RegisterLogFunction(apilog);
+      apiMutex.ReleaseMutex();
+      if (!silent)
+      {
+        string msg = "Yoctopuce low-level API initialization failed (" + errmsg + ")";
+        throw new YoctoApiProxyException(msg);
+      }
+      if (LibraryAPIInitialized)
+      {
+        //InternalStuff.log("registering arrival/removal");
+        YAPI.RegisterDeviceArrivalCallback(YFunctionProxy.deviceArrival);
+        YAPI.RegisterDeviceRemovalCallback(YFunctionProxy.deviceRemoval);
+      }
+
+      new Thread(() =>
+      {
+        Thread.CurrentThread.IsBackground = true;
+        InternalStuff.log("Starting inner processing thread...");
+        bool aborting = false;
+        string err = "";
+        while (!InnerThreadMustStop && !aborting)
         {
-            if (LibraryAPIInitialized) return true;
-            log(".NET Proxy library initialization");
-            apiMutex.WaitOne();
 
-            LibraryAPIInitialized = YAPI.InitAPI(YAPI.DETECT_NONE, ref errmsg) == YAPI.SUCCESS;
-            YAPI.RegisterLogFunction(apilog);
-            apiMutex.ReleaseMutex();
-            if (!silent)
+          //InternalStuff.log("YAPI processing...");
+           try { if (LibraryAPIInitialized) YAPI.UpdateDeviceList(ref err); }
+          catch (System.Threading.ThreadAbortException)
+          {
+            InternalStuff.log("Inner processing thead is aborting during UpdateDeviceList!");
+            aborting = true;
+            YAPI.FreeAPI();
+            LibraryAPIInitialized = false;
+            InternalStuff.log("API has been freed in a hurry");
+          }
+          catch (Exception e) { InternalStuff.log("YUpdateDeviceList error !!(" + e.Message + ")"); }
+          for (int i = 0; i < 20 & !InnerThreadMustStop & !aborting; i++)
+            try
             {
-                string msg = "Yoctopuce low-level API initialization failed (" + errmsg + ")";
-                throw new YoctoApiProxyException(msg);
+              if (LibraryAPIInitialized) YAPI.Sleep(100, ref err);
             }
-            if (LibraryAPIInitialized)
+            catch (System.Threading.ThreadAbortException)
             {
-                //InternalStuff.log("registering arrival/removal");
-                YAPI.RegisterDeviceArrivalCallback(YFunctionProxy.deviceArrival);
-                YAPI.RegisterDeviceRemovalCallback(YFunctionProxy.deviceRemoval);
+              InternalStuff.log("Inner processing thead is aborting during ysleep!");
+              aborting = true;
+              YAPI.FreeAPI();
+              LibraryAPIInitialized = false;
+              InternalStuff.log("API has been freed in a hurry");
             }
+            catch (Exception e){InternalStuff.log("YSleep error (" + e.GetType().ToString() + " " + e.Message + ")! ");}
 
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                InternalStuff.log("Starting inner processing thread...");
-                string err = "";
-                while (!InnerThreadMustStop)
-                {
-                    //InternalStuff.log("YAPI processing...");
-                    try
-                    {
-                        if (LibraryAPIInitialized) YAPI.UpdateDeviceList(ref err);
-                    }
-                    catch (Exception e) {
-                        InternalStuff.log("YUpdateDeviceList error !!(" + e.Message + ")");
-                    }
-                    for (int i = 0; i < 20 & !InnerThreadMustStop; i++)
-                        try
-                        {
-                            if (LibraryAPIInitialized) YAPI.Sleep(100, ref err);
-                        }
-                        catch (Exception e) { InternalStuff.log("YSleep error (" + e.Message + ")"); }
-
-                }
-                InternalStuff.log("Stopping inner processing thread...");
-                InnerThreadMustStop = false;
-            }).Start();
-
-
-            return LibraryAPIInitialized;
         }
 
-        public static void FreeLibrary()
+        InternalStuff.log("Stopping inner processing thread...");
+
+
+        InnerThreadMustStop = false;
+      }).Start();
+
+
+
+
+      return LibraryAPIInitialized;
+    }
+
+    public static void FreeLibrary()
         {
             InternalStuff.log("Freeing  Yoctopuce library");
             if (!LibraryAPIInitialized) return;
@@ -125,8 +143,8 @@ namespace YoctoProxyAPI
         {
            string line = DateTime.Now.ToString("yyyyMMdd hh:mm:ss.fff ") + str.TrimEnd('\r', '\n');
           logBuffer.Add(line);
-
-           if (logBuffer.Count > LogBufferMaxCount) logBuffer.RemoveRange(0, logBuffer.Count - LogBufferMaxCount);
+         //  File.AppendAllText(@"C:\tmp\@log.txt", line+"\r\n");
+         if (logBuffer.Count > LogBufferMaxCount) logBuffer.RemoveRange(0, logBuffer.Count - LogBufferMaxCount);
 
         }
 

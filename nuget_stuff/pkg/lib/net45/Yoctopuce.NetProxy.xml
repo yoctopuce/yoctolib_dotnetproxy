@@ -8420,7 +8420,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the filesystem, for instance
-              <c>YRGBLED2.files</c>.
+              <c>YMAXBUZ1.files</c>.
             </param>
             <returns>
               a <c>YFiles</c> object allowing you to drive the filesystem.
@@ -19141,8 +19141,8 @@
               a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
-              the voltage level used on the serial line
+              <c>YSerialPort.VOLTAGELEVEL_RS485</c>, <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSerialPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage level used on the serial line
             </returns>
             <para>
               On failure, throws an exception or returns <c>YSerialPort.VOLTAGELEVEL_INVALID</c>.
@@ -19167,8 +19167,8 @@
               a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
-              the voltage type used on the serial line
+              <c>YSerialPort.VOLTAGELEVEL_RS485</c>, <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSerialPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage type used on the serial line
             </param>
             <para>
             </para>
@@ -20650,8 +20650,8 @@
               a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
-              voltage level used on the serial line
+              <c>YSpiPort.VOLTAGELEVEL_RS485</c>, <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSpiPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage level used on the serial line
             </returns>
             <para>
               On failure, throws an exception or returns <c>YSpiPort.VOLTAGELEVEL_INVALID</c>.
@@ -20676,8 +20676,8 @@
               a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
-              voltage type used on the serial line
+              <c>YSpiPort.VOLTAGELEVEL_RS485</c>, <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSpiPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage type used on the serial line
             </param>
             <para>
             </para>
@@ -25048,9 +25048,6 @@
             <summary>
               Returns a list of all the modules in "firmware update" mode.
             <para>
-              Only devices
-              connected over USB are listed. For devices connected to a YoctoHub, you
-              must connect yourself to the YoctoHub web interface.
             </para>
             <para>
             </para>
@@ -26702,9 +26699,6 @@
             <summary>
               Returns a list of all the modules in "firmware update" mode.
             <para>
-              Only devices
-              connected over USB are listed. For devices connected to a YoctoHub, you
-              must connect yourself to the YoctoHub web interface.
             </para>
             <para>
             </para>
@@ -37441,7 +37435,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the filesystem, for instance
-              <c>YRGBLED2.files</c>.
+              <c>YMAXBUZ1.files</c>.
             </param>
             <returns>
               a <c>YFiles</c> object allowing you to drive the filesystem.
@@ -49414,8 +49408,8 @@
               a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
-              the voltage level used on the serial line
+              <c>YSerialPort.VOLTAGELEVEL_RS485</c>, <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSerialPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage level used on the serial line
             </returns>
             <para>
               On failure, throws an exception or returns <c>YSerialPort.VOLTAGELEVEL_INVALID</c>.
@@ -49440,8 +49434,8 @@
               a value among <c>YSerialPort.VOLTAGELEVEL_OFF</c>, <c>YSerialPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSerialPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSerialPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSerialPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSerialPort.VOLTAGELEVEL_RS485</c> and <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> corresponding to
-              the voltage type used on the serial line
+              <c>YSerialPort.VOLTAGELEVEL_RS485</c>, <c>YSerialPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSerialPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage type used on the serial line
             </param>
             <para>
             </para>
@@ -50024,6 +50018,22 @@
             <para>
               On failure, throws an exception or returns an empty array.
             </para>
+        </member>
+        <member name="M:YoctoLib.YSerialPort.registerSnoopingCallback(YoctoLib.YSerialPort.YSnoopingCallback)">
+            <summary>
+              Registers a callback function to be called each time that a message is sent or
+              received by the serial port.
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer.
+              The callback function should take four arguments:
+              the <c>YSerialPort</c> object that emitted the event, and
+              the <c>SnoopingRecord</c> object that describes the message
+              sent or received.
+              On failure, throws an exception or returns a negative error code.
+            </param>
         </member>
         <member name="M:YoctoLib.YSerialPort.writeStxEtx(System.String)">
             <summary>
@@ -50981,8 +50991,8 @@
               a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
-              voltage level used on the serial line
+              <c>YSpiPort.VOLTAGELEVEL_RS485</c>, <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSpiPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage level used on the serial line
             </returns>
             <para>
               On failure, throws an exception or returns <c>YSpiPort.VOLTAGELEVEL_INVALID</c>.
@@ -51007,8 +51017,8 @@
               a value among <c>YSpiPort.VOLTAGELEVEL_OFF</c>, <c>YSpiPort.VOLTAGELEVEL_TTL3V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL3VR</c>, <c>YSpiPort.VOLTAGELEVEL_TTL5V</c>,
               <c>YSpiPort.VOLTAGELEVEL_TTL5VR</c>, <c>YSpiPort.VOLTAGELEVEL_RS232</c>,
-              <c>YSpiPort.VOLTAGELEVEL_RS485</c> and <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> corresponding to the
-              voltage type used on the serial line
+              <c>YSpiPort.VOLTAGELEVEL_RS485</c>, <c>YSpiPort.VOLTAGELEVEL_TTL1V8</c> and
+              <c>YSpiPort.VOLTAGELEVEL_SDI12</c> corresponding to the voltage type used on the serial line
             </param>
             <para>
             </para>

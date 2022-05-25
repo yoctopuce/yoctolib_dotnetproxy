@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_firmwareupdate_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: yocto_firmwareupdate_proxy.cs 49750 2022-05-13 07:10:42Z seb $
  *
  *  Implements YFirmwareUpdateProxy, the Proxy API for FirmwareUpdate
  *
@@ -66,9 +66,6 @@ namespace YoctoProxyAPI
          * <summary>
          *   Returns a list of all the modules in "firmware update" mode.
          * <para>
-         *   Only devices
-         *   connected over USB are listed. For devices connected to a YoctoHub, you
-         *   must connect yourself to the YoctoHub web interface.
          * </para>
          * <para>
          * </para>

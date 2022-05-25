@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_files_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_files_proxy.cs 49755 2022-05-13 09:48:35Z mvuilleu $
  *
  *  Implements YFilesProxy, the Proxy API for Files
  *
@@ -149,7 +149,7 @@ namespace YoctoProxyAPI
          * </summary>
          * <param name="func">
          *   a string that uniquely characterizes the filesystem, for instance
-         *   <c>YRGBLED2.files</c>.
+         *   <c>YMAXBUZ1.files</c>.
          * </param>
          * <returns>
          *   a <c>YFiles</c> object allowing you to drive the filesystem.
