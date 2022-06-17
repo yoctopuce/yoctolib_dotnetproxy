@@ -8874,8 +8874,8 @@
             <returns>
               a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
               <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
-              corresponding to the electric signal sampling method to use
+              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+              and <c>YGenericSensor.SIGNALSAMPLING_AC</c> corresponding to the electric signal sampling method to use
             </returns>
             <para>
               On failure, throws an exception or returns <c>YGenericSensor.SIGNALSAMPLING_INVALID</c>.
@@ -8899,8 +8899,8 @@
             <param name="newval">
               a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
               <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
-              corresponding to the electric signal sampling method to use
+              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+              and <c>YGenericSensor.SIGNALSAMPLING_AC</c> corresponding to the electric signal sampling method to use
             </param>
             <para>
             </para>
@@ -37811,8 +37811,8 @@
             <returns>
               a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
               <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
-              corresponding to the electric signal sampling method to use
+              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+              and <c>YGenericSensor.SIGNALSAMPLING_AC</c> corresponding to the electric signal sampling method to use
             </returns>
             <para>
               On failure, throws an exception or returns <c>YGenericSensor.SIGNALSAMPLING_INVALID</c>.
@@ -37836,8 +37836,8 @@
             <param name="newval">
               a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
               <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
-              corresponding to the electric signal sampling method to use
+              <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+              and <c>YGenericSensor.SIGNALSAMPLING_AC</c> corresponding to the electric signal sampling method to use
             </param>
             <para>
             </para>
@@ -40792,7 +40792,13 @@
         <member name="M:YoctoLib.YInputChain.registerEventCallback(YoctoLib.YInputChain.YEventCallback)">
             <summary>
               Registers a callback function to be called each time that an event is detected on the
-              input chain.
+              i
+            <para>
+              nput chain.The callback is invoked only during the execution of
+              <c>ySleep</c> or <c>yHandleEvents</c>. This provides control over the time when
+              the callback is triggered. For good responsiveness, remember to call one of these
+              two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
             <para>
             </para>
             </summary>
@@ -50024,13 +50030,19 @@
               Registers a callback function to be called each time that a message is sent or
               received by the serial port.
             <para>
+              The callback is invoked only during the execution of
+              <c>ySleep</c> or <c>yHandleEvents</c>. This provides control over the time when
+              the callback is triggered. For good responsiveness, remember to call one of these
+              two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
             </para>
             </summary>
             <param name="callback">
               the callback function to call, or a null pointer.
               The callback function should take four arguments:
               the <c>YSerialPort</c> object that emitted the event, and
-              the <c>SnoopingRecord</c> object that describes the message
+              the <c>YSnoopingRecord</c> object that describes the message
               sent or received.
               On failure, throws an exception or returns a negative error code.
             </param>

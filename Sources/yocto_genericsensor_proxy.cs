@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_genericsensor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_genericsensor_proxy.cs 49903 2022-05-25 14:18:36Z mvuilleu $
  *
  *  Implements YGenericSensorProxy, the Proxy API for GenericSensor
  *
@@ -173,6 +173,7 @@ namespace YoctoProxyAPI
         public const int _SignalSampling_LOW_NOISE = 3;
         public const int _SignalSampling_LOW_NOISE_FILTERED = 4;
         public const int _SignalSampling_HIGHEST_RATE = 5;
+        public const int _SignalSampling_AC = 6;
         public const int _Enabled_INVALID = 0;
         public const int _Enabled_FALSE = 1;
         public const int _Enabled_TRUE = 2;
@@ -693,8 +694,8 @@ namespace YoctoProxyAPI
          * <returns>
          *   a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
          *   <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
-         *   corresponding to the electric signal sampling method to use
+         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+         *   and <c>YGenericSensor.SIGNALSAMPLING_AC</c> corresponding to the electric signal sampling method to use
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YGenericSensor.SIGNALSAMPLING_INVALID</c>.
@@ -727,8 +728,8 @@ namespace YoctoProxyAPI
          * <param name="newval">
          *   a value among <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE</c>,
          *   <c>YGenericSensor.SIGNALSAMPLING_HIGH_RATE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE</c>,
-         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c> and <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
-         *   corresponding to the electric signal sampling method to use
+         *   <c>YGenericSensor.SIGNALSAMPLING_LOW_NOISE_FILTERED</c>, <c>YGenericSensor.SIGNALSAMPLING_HIGHEST_RATE</c>
+         *   and <c>YGenericSensor.SIGNALSAMPLING_AC</c> corresponding to the electric signal sampling method to use
          * </param>
          * <para>
          * </para>
