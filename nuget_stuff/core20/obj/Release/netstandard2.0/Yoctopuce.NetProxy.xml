@@ -7089,6 +7089,19 @@
               a string containing the corresponding cell operator brand name.
             </returns>
         </member>
+        <member name="M:YoctoLib.YCellular.get_communicationProfiles">
+            <summary>
+              Returns the list available radio communication profiles, as a string array
+              (YoctoHub-GSM-4G only).
+            <para>
+              Each string is a made of a numerical ID, followed by a colon,
+              followed by the profile description.
+            </para>
+            </summary>
+            <returns>
+              a list of string describing available radio communication profiles.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YCellular.nextCellular">
             <summary>
               Continues the enumeration of cellular interfaces started using <c>yFirstCellular()</c>.
@@ -7611,6 +7624,21 @@
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorLedCluster.MAXLEDCOUNT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorLedCluster.get_dynamicLedCount">
+            <summary>
+              Returns the maximum number of LEDs that can perform autonomous transitions and sequences.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the maximum number of LEDs that can perform autonomous transitions and sequences
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorLedCluster.DYNAMICLEDCOUNT_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoLib.YColorLedCluster.get_blinkSeqMaxCount">
@@ -34464,6 +34492,19 @@
               a string containing the corresponding cell operator brand name.
             </returns>
         </member>
+        <member name="M:YoctoProxyAPI.YCellularProxy.get_communicationProfiles">
+            <summary>
+              Returns the list available radio communication profiles, as a string array
+              (YoctoHub-GSM-4G only).
+            <para>
+              Each string is a made of a numerical ID, followed by a colon,
+              followed by the profile description.
+            </para>
+            </summary>
+            <returns>
+              a list of string describing available radio communication profiles.
+            </returns>
+        </member>
         <member name="T:YoctoProxyAPI.YColorLedProxy">
             <summary>
               The <c>ColorLed</c> class allows you to drive a color LED.
@@ -35012,6 +35053,24 @@
         </member>
         <member name="P:YoctoProxyAPI.YColorLedClusterProxy.MaxLedCount">
             <value>Maximum number of LEDs that the device can handle.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorLedClusterProxy.get_dynamicLedCount">
+            <summary>
+              Returns the maximum number of LEDs that can perform autonomous transitions and sequences.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the maximum number of LEDs that can perform autonomous transitions and sequences
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorLedCluster.DYNAMICLEDCOUNT_INVALID</c>.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorLedClusterProxy.DynamicLedCount">
+            <value>Maximum number of LEDs that can perform autonomous transitions and sequences.</value>
         </member>
         <member name="M:YoctoProxyAPI.YColorLedClusterProxy.get_blinkSeqMaxCount">
             <summary>

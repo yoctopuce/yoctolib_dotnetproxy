@@ -48,10 +48,19 @@ namespace YoctoProxyAPI
       if (LibraryAPIInitialized) return true;
       log(".NET Proxy library initialization");
       apiMutex.WaitOne();
-
-      LibraryAPIInitialized = YAPI.InitAPI(YAPI.DETECT_NONE, ref errmsg) == YAPI.SUCCESS;
       YAPI.RegisterLogFunction(apilog);
+      LibraryAPIInitialized = YAPI.InitAPI(YAPI.DETECT_NONE, ref errmsg) == YAPI.SUCCESS;
+     
       apiMutex.ReleaseMutex();
+      if (LibraryAPIInitialized)  
+        {
+          InternalStuff.log("yapi.dll version is " + YoctoProxyManager.DllVersion);
+          InternalStuff.log("yapi.dll file is " + YAPI.GetYAPIDllPath());
+          InternalStuff.log("yapi.dll architecture is " + YoctoProxyManager.DllArchitecture);
+        }
+      
+
+
       if (!silent)
       {
         string msg = "Yoctopuce low-level API initialization failed (" + errmsg + ")";
@@ -62,7 +71,7 @@ namespace YoctoProxyAPI
         //InternalStuff.log("registering arrival/removal");
         YAPI.RegisterDeviceArrivalCallback(YFunctionProxy.deviceArrival);
         YAPI.RegisterDeviceRemovalCallback(YFunctionProxy.deviceRemoval);
-      }
+
 
       new Thread(() =>
       {
@@ -107,7 +116,11 @@ namespace YoctoProxyAPI
         InnerThreadMustStop = false;
       }).Start();
 
-
+      }
+      else
+      {
+        InternalStuff.log("YAPI not initialized, innerthread creation canceled.");
+      }
 
 
       return LibraryAPIInitialized;
@@ -135,7 +148,8 @@ namespace YoctoProxyAPI
             InternalStuff.log("+---------------------+");
             InternalStuff.log("|       START         |");
             InternalStuff.log("+---------------------+");
-            InternalStuff.log("DLL path is " + System.Reflection.Assembly.GetExecutingAssembly().Location);
+            InternalStuff.log("DotNetProxyLibrary DLL file is " + System.Reflection.Assembly.GetExecutingAssembly().Location);
+            
             apiMutex = new Mutex();
         }
 
@@ -747,6 +761,7 @@ namespace YoctoProxyAPI
       if (YAPI.RegisterHub(addr, ref errmsg) != YAPI.SUCCESS)
       {
         string msg = addr + " Hub registering failed (" + errmsg + ")";
+        InternalStuff.log(msg);
         return msg;
       }
 
@@ -763,6 +778,7 @@ namespace YoctoProxyAPI
       if (YAPI.PreregisterHub(addr, ref errmsg) != YAPI.SUCCESS)
       {
         string msg = addr + " Hub  asynch registering failed (" + errmsg + ")";
+        InternalStuff.log(msg);
         return msg;
       }
 

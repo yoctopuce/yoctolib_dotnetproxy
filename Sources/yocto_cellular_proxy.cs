@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellular_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_cellular_proxy.cs 50281 2022-06-30 07:21:14Z mvuilleu $
  *
  *  Implements YCellularProxy, the Proxy API for Cellular
  *
@@ -1485,6 +1485,27 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No Cellular connected");
             }
             return _func.decodePLMN(mccmnc);
+        }
+
+        /**
+         * <summary>
+         *   Returns the list available radio communication profiles, as a string array
+         *   (YoctoHub-GSM-4G only).
+         * <para>
+         *   Each string is a made of a numerical ID, followed by a colon,
+         *   followed by the profile description.
+         * </para>
+         * </summary>
+         * <returns>
+         *   a list of string describing available radio communication profiles.
+         * </returns>
+         */
+        public virtual string[] get_communicationProfiles()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Cellular connected");
+            }
+            return _func.get_communicationProfiles().ToArray();
         }
     }
     //--- (end of YCellular implementation)

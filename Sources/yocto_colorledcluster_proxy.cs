@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorledcluster_proxy.cs 44921 2021-05-06 08:03:05Z mvuilleu $
+ *  $Id: yocto_colorledcluster_proxy.cs 50281 2022-06-30 07:21:14Z mvuilleu $
  *
  *  Implements YColorLedClusterProxy, the Proxy API for ColorLedCluster
  *
@@ -171,6 +171,7 @@ namespace YoctoProxyAPI
         public const int _LedType_RGBW = 2;
         public const int _LedType_WS2811 = 3;
         public const int _MaxLedCount_INVALID = -1;
+        public const int _DynamicLedCount_INVALID = -1;
         public const int _BlinkSeqMaxCount_INVALID = -1;
         public const int _BlinkSeqMaxSize_INVALID = -1;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
@@ -181,6 +182,7 @@ namespace YoctoProxyAPI
         protected int _activeLedCount = _ActiveLedCount_INVALID;
         protected int _ledType = _LedType_INVALID;
         protected int _maxLedCount = _MaxLedCount_INVALID;
+        protected int _dynamicLedCount = _DynamicLedCount_INVALID;
         protected int _blinkSeqMaxCount = _BlinkSeqMaxCount_INVALID;
         protected int _blinkSeqMaxSize = _BlinkSeqMaxSize_INVALID;
         //--- (end of YColorLedCluster definitions)
@@ -249,6 +251,7 @@ namespace YoctoProxyAPI
         {
             base.functionArrival();
             _maxLedCount = _func.get_maxLedCount();
+            _dynamicLedCount = _func.get_dynamicLedCount();
             _blinkSeqMaxCount = _func.get_blinkSeqMaxCount();
             _blinkSeqMaxSize = _func.get_blinkSeqMaxSize();
         }
@@ -501,6 +504,50 @@ namespace YoctoProxyAPI
                     return _maxLedCount;
                 }
                 return _MaxLedCount_INVALID;
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the maximum number of LEDs that can perform autonomous transitions and sequences.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the maximum number of LEDs that can perform autonomous transitions and sequences
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YColorLedCluster.DYNAMICLEDCOUNT_INVALID</c>.
+         * </para>
+         */
+        public int get_dynamicLedCount()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLedCluster connected");
+            }
+            res = _func.get_dynamicLedCount();
+            if (res == YAPI.INVALID_INT) {
+                res = _DynamicLedCount_INVALID;
+            }
+            return res;
+        }
+
+        // property with cached value for instant access (constant value)
+        /// <value>Maximum number of LEDs that can perform autonomous transitions and sequences.</value>
+        public int DynamicLedCount
+        {
+            get
+            {
+                if (_func == null) {
+                    return _DynamicLedCount_INVALID;
+                }
+                if (_online) {
+                    return _dynamicLedCount;
+                }
+                return _DynamicLedCount_INVALID;
             }
         }
 
