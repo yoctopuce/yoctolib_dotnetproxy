@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_module_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_module_proxy.cs 51265 2022-10-10 07:03:22Z seb $
  *
  *  Implements YModuleProxy, the Proxy API for Module
  *
@@ -1100,6 +1100,31 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No Module connected");
             }
             return _func.set_allSettings(settings);
+        }
+
+        /**
+         * <summary>
+         *   Adds a file to the uploaded data at the next HTTP callback.
+         * <para>
+         *   This function only affects the next HTTP callback and only works in
+         *   HTTP callback mode.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="filename">
+         *   the name of the file to upload at the next HTTP callback
+         * </param>
+         * <returns>
+         *   nothing.
+         * </returns>
+         */
+        public virtual int addFileToHTTPCallback(string filename)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Module connected");
+            }
+            return _func.addFileToHTTPCallback(filename);
         }
 
         /**

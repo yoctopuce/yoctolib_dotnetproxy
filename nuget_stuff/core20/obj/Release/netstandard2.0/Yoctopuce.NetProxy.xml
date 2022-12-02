@@ -2466,6 +2466,23 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoLib.YModule.addFileToHTTPCallback(System.String)">
+            <summary>
+              Adds a file to the uploaded data at the next HTTP callback.
+            <para>
+              This function only affects the next HTTP callback and only works in
+              HTTP callback mode.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="filename">
+              the name of the file to upload at the next HTTP callback
+            </param>
+            <returns>
+              nothing.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YModule.get_hardwareId">
             <summary>
               Returns the unique hardware identifier of the module.
@@ -11427,7 +11444,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the filesystem, for instance
-              <c>YMAXBUZ1.files</c>.
+              <c>YRGBLED2.files</c>.
             </param>
             <returns>
               a <c>YFiles</c> object allowing you to drive the filesystem.
@@ -22008,6 +22025,47 @@
               On failure, throws an exception or returns <c>YRealTimeClock.TIMESET_INVALID</c>.
             </para>
         </member>
+        <member name="M:YoctoLib.YRealTimeClock.get_disableHostSync">
+            <summary>
+              Returns true if the automatic clock synchronization with host has been disabled,
+              and false otherwise.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YRealTimeClock.DISABLEHOSTSYNC_FALSE</c> or <c>YRealTimeClock.DISABLEHOSTSYNC_TRUE</c>,
+              according to true if the automatic clock synchronization with host has been disabled,
+              and false otherwise
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YRealTimeClock.DISABLEHOSTSYNC_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YRealTimeClock.set_disableHostSync(System.Int32)">
+            <summary>
+              Changes the automatic clock synchronization with host working state.
+            <para>
+              To disable automatic synchronization, set the value to true.
+              To enable automatic synchronization (default), set the value to false.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YRealTimeClock.DISABLEHOSTSYNC_FALSE</c> or <c>YRealTimeClock.DISABLEHOSTSYNC_TRUE</c>,
+              according to the automatic clock synchronization with host working state
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
         <member name="M:YoctoLib.YRealTimeClock.FindRealTimeClock(System.String)">
             <summary>
               Retrieves a real-time clock for a given identifier.
@@ -30539,6 +30597,23 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YModuleProxy.addFileToHTTPCallback(System.String)">
+            <summary>
+              Adds a file to the uploaded data at the next HTTP callback.
+            <para>
+              This function only affects the next HTTP callback and only works in
+              HTTP callback mode.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="filename">
+              the name of the file to upload at the next HTTP callback
+            </param>
+            <returns>
+              nothing.
+            </returns>
+        </member>
         <member name="M:YoctoProxyAPI.YModuleProxy.get_hardwareId">
             <summary>
               Returns the unique hardware identifier of the module.
@@ -38206,7 +38281,7 @@
             </summary>
             <param name="func">
               a string that uniquely characterizes the filesystem, for instance
-              <c>YMAXBUZ1.files</c>.
+              <c>YRGBLED2.files</c>.
             </param>
             <returns>
               a <c>YFiles</c> object allowing you to drive the filesystem.
@@ -47655,6 +47730,47 @@
             </returns>
             <para>
               On failure, throws an exception or returns <c>YRealTimeClock.TIMESET_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRealTimeClockProxy.get_disableHostSync">
+            <summary>
+              Returns true if the automatic clock synchronization with host has been disabled,
+              and false otherwise.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YRealTimeClock.DISABLEHOSTSYNC_FALSE</c> or <c>YRealTimeClock.DISABLEHOSTSYNC_TRUE</c>,
+              according to true if the automatic clock synchronization with host has been disabled,
+              and false otherwise
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YRealTimeClock.DISABLEHOSTSYNC_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRealTimeClockProxy.set_disableHostSync(System.Int32)">
+            <summary>
+              Changes the automatic clock synchronization with host working state.
+            <para>
+              To disable automatic synchronization, set the value to true.
+              To enable automatic synchronization (default), set the value to false.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YRealTimeClock.DISABLEHOSTSYNC_FALSE</c> or <c>YRealTimeClock.DISABLEHOSTSYNC_TRUE</c>,
+              according to the automatic clock synchronization with host working state
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
             </para>
         </member>
         <member name="T:YoctoProxyAPI.YRefFrameProxy">

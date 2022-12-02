@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 48183 2022-01-20 10:26:11Z mvuilleu $
+ *  $Id: yocto_realtimeclock_proxy.cs 50595 2022-07-28 07:54:15Z mvuilleu $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *
@@ -169,6 +169,9 @@ namespace YoctoProxyAPI
         public const int _TimeSet_INVALID = 0;
         public const int _TimeSet_FALSE = 1;
         public const int _TimeSet_TRUE = 2;
+        public const int _DisableHostSync_INVALID = 0;
+        public const int _DisableHostSync_FALSE = 1;
+        public const int _DisableHostSync_TRUE = 2;
 
         // reference to real YoctoAPI object
         protected new YRealTimeClock _func;
@@ -460,6 +463,68 @@ namespace YoctoProxyAPI
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.get_timeSet()+1;
+        }
+
+        /**
+         * <summary>
+         *   Returns true if the automatic clock synchronization with host has been disabled,
+         *   and false otherwise.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>YRealTimeClock.DISABLEHOSTSYNC_FALSE</c> or <c>YRealTimeClock.DISABLEHOSTSYNC_TRUE</c>,
+         *   according to true if the automatic clock synchronization with host has been disabled,
+         *   and false otherwise
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YRealTimeClock.DISABLEHOSTSYNC_INVALID</c>.
+         * </para>
+         */
+        public int get_disableHostSync()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_disableHostSync()+1;
+        }
+
+        /**
+         * <summary>
+         *   Changes the automatic clock synchronization with host working state.
+         * <para>
+         *   To disable automatic synchronization, set the value to true.
+         *   To enable automatic synchronization (default), set the value to false.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   either <c>YRealTimeClock.DISABLEHOSTSYNC_FALSE</c> or <c>YRealTimeClock.DISABLEHOSTSYNC_TRUE</c>,
+         *   according to the automatic clock synchronization with host working state
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_disableHostSync(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No RealTimeClock connected");
+            }
+            if (newval == _DisableHostSync_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_disableHostSync(newval-1);
         }
     }
     //--- (end of YRealTimeClock implementation)

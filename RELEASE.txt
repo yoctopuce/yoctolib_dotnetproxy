@@ -1,4 +1,4 @@
-DotNetProxy v1.10.50357
+DotNetProxy v1.10.52094
 
-- Add support for retrieving communication profiles list on YoctoHub-GSM-4G
-- Add informative logs to diagnose problems loading yapi.dll
+- Add support for connecting to VirtualHub-4web
+- Improve error message when YoctoHub is not reacheable.
