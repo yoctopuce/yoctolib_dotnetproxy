@@ -79,9 +79,16 @@
             <para>
               <b><i>x.x.x.x</i></b> or <b><i>hostname</i></b>: The API will use the devices connected to the
               host with the given IP address or hostname. That host can be a regular computer
-              running a VirtualHub, or a networked YoctoHub such as YoctoHub-Ethernet or
+              running a <i>native VirtualHub</i>, a <i>VirtualHub for web</i> hosted on a server,
+              or a networked YoctoHub such as YoctoHub-Ethernet or
               YoctoHub-Wireless. If you want to use the VirtualHub running on you local
-              computer, use the IP address 127.0.0.1.
+              computer, use the IP address 127.0.0.1. If the given IP is unresponsive, <c>yRegisterHub</c>
+              will not return until a time-out defined by <c>ySetNetworkTimeout</c> has elapsed.
+              However, it is possible to preventively test a connection  with <c>yTestHub</c>.
+              If you cannot afford a network time-out, you can use the non blocking <c>yPregisterHub</c>
+              function that will establish the connection as soon as it is available.
+            </para>
+            <para>
             </para>
             <para>
               <b>callback</b>: that keyword make the API run in "<i>HTTP Callback</i>" mode.
@@ -132,7 +139,8 @@
               This function has the same
               purpose and same arguments as <c>yRegisterHub()</c>, but does not trigger
               an error when the selected hub is not available at the time of the function call.
-              This makes it possible to register a network hub independently of the current
+              If the connexion cannot be established immediately, a background task will automatically
+              perform periodic retries. This makes it possible to register a network hub independently of the current
               connectivity, and to try to contact it only when a device is actively needed.
             </para>
             <para>
@@ -1576,7 +1584,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YDataSetProxy.loadMore">
             <summary>
-              Loads the the next block of measures from the dataLogger, and updates
+              Loads the next block of measures from the dataLogger, and updates
               the progress indicator.
             <para>
             </para>
@@ -10940,6 +10948,433 @@
               On failure, throws an exception or returns an empty array.
             </para>
         </member>
+        <member name="T:YoctoProxyAPI.YInputCaptureProxy">
+            <summary>
+              The <c>YInputCapture</c> class allows you to access data samples
+              measured by a Yoctopuce electrical sensor.
+            <para>
+              The data capture can be
+              triggered manually, or be configured to detect specific events.
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.FindInputCapture(System.String)">
+            <summary>
+              Retrieves an instant snapshot trigger for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the instant snapshot trigger is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YInputCapture.isOnline()</c> to test if the instant snapshot trigger is
+              indeed online at a given time. In case of ambiguity when looking for
+              an instant snapshot trigger by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the instant snapshot trigger, for instance
+              <c>MyDevice.inputCapture</c>.
+            </param>
+            <returns>
+              a <c>YInputCapture</c> object allowing you to drive the instant snapshot trigger.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.GetSimilarFunctions">
+            <summary>
+              Enumère toutes les fonctions de type InputCapture.
+            <para>
+              Returns an array of strings representing hardware identifiers for all InputCapture functions
+              presently connected.
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_lastCaptureTime">
+            <summary>
+              Returns the number of elapsed milliseconds between the module power on
+              and the last capture (time of trigger), or zero if no capture has been done.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of elapsed milliseconds between the module power on
+              and the last capture (time of trigger), or zero if no capture has been done
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.LASTCAPTURETIME_INVALID</c>.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputCaptureProxy.LastCaptureTime">
+            <value>Number of elapsed milliseconds between the module power on</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputCaptureProxy.CondValue">
+            <value>Current threshold value for automatic conditional capture.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_nSamples">
+            <summary>
+              Returns the number of samples that will be captured.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of samples that will be captured
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.NSAMPLES_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.set_nSamples(System.Int32)">
+            <summary>
+              Changes the type of automatic conditional capture.
+            <para>
+              The maximum number of samples depends on the device memory.
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the type of automatic conditional capture
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputCaptureProxy.NSamples">
+            <value>Number of samples that will be captured.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_samplingRate">
+            <summary>
+              Returns the sampling frequency, in Hz.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the sampling frequency, in Hz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.SAMPLINGRATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_captureType">
+            <summary>
+              Returns the type of automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YInputCapture.CAPTURETYPE_NONE</c>, <c>YInputCapture.CAPTURETYPE_TIMED</c>,
+              <c>YInputCapture.CAPTURETYPE_V_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_PF_MIN</c> and <c>YInputCapture.CAPTURETYPE_DPF_MIN</c> corresponding
+              to the type of automatic conditional capture
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CAPTURETYPE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.set_captureType(System.Int32)">
+            <summary>
+              Changes the type of automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a value among <c>YInputCapture.CAPTURETYPE_NONE</c>, <c>YInputCapture.CAPTURETYPE_TIMED</c>,
+              <c>YInputCapture.CAPTURETYPE_V_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_PF_MIN</c> and <c>YInputCapture.CAPTURETYPE_DPF_MIN</c> corresponding
+              to the type of automatic conditional capture
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.set_condValue(System.Double)">
+            <summary>
+              Changes current threshold value for automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to current threshold value for automatic conditional capture
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_condValue">
+            <summary>
+              Returns current threshold value for automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to current threshold value for automatic conditional capture
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CONDVALUE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_condAlign">
+            <summary>
+              Returns the relative position of the trigger event within the capture window.
+            <para>
+              When the value is 50%, the capture is centered on the event.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the relative position of the trigger event within the capture window
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CONDALIGN_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.set_condAlign(System.Int32)">
+            <summary>
+              Changes the relative position of the trigger event within the capture window.
+            <para>
+              The new value must be between 10% (on the left) and 90% (on the right).
+              When the value is 50%, the capture is centered on the event.
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the relative position of the trigger event within the capture window
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputCaptureProxy.CondAlign">
+            <value>Relative position of the trigger event within the capture window.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_captureTypeAtStartup">
+            <summary>
+              Returns the type of automatic conditional capture
+              applied at device power on.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YInputCapture.CAPTURETYPEATSTARTUP_NONE</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_TIMED</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_PF_MIN</c>
+              and <c>YInputCapture.CAPTURETYPEATSTARTUP_DPF_MIN</c> corresponding to the type of automatic conditional capture
+              applied at device power on
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CAPTURETYPEATSTARTUP_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.set_captureTypeAtStartup(System.Int32)">
+            <summary>
+              Changes the type of automatic conditional capture
+              applied at device power on.
+            <para>
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a value among <c>YInputCapture.CAPTURETYPEATSTARTUP_NONE</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_TIMED</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_PF_MIN</c>
+              and <c>YInputCapture.CAPTURETYPEATSTARTUP_DPF_MIN</c> corresponding to the type of automatic conditional capture
+              applied at device power on
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputCaptureProxy.CaptureTypeAtStartup">
+            <value>Type of automatic conditional capture</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.set_condValueAtStartup(System.Double)">
+            <summary>
+              Changes current threshold value for automatic conditional
+              capture applied at device power on.
+            <para>
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to current threshold value for automatic conditional
+              capture applied at device power on
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_condValueAtStartup">
+            <summary>
+              Returns the threshold value for automatic conditional
+              capture applied at device power on.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the threshold value for automatic conditional
+              capture applied at device power on
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CONDVALUEATSTARTUP_INVALID</c>.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputCaptureProxy.CondValueAtStartup">
+            <value>Threshold value for automatic conditional</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_lastCapture">
+            <summary>
+              Returns all details about the last automatic input capture.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an <c>YInputCaptureData</c> object including
+              data series and all related meta-information.
+              On failure, throws an exception or returns an capture object.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_immediateCapture(System.Int32)">
+            <summary>
+              Returns a new immediate capture of the device inputs.
+            <para>
+            </para>
+            </summary>
+            <param name="msDuration">
+              duration of the capture window,
+              in milliseconds (eg. between 20 and 1000).
+            </param>
+            <returns>
+              an <c>YInputCaptureData</c> object including
+              data series for the specified duration.
+              On failure, throws an exception or returns an capture object.
+            </returns>
+        </member>
         <member name="T:YoctoProxyAPI.YInputChainProxy">
             <summary>
               The <c>YInputChain</c> class provides access to separate
@@ -11096,6 +11531,10 @@
               to the loopback test connector.
             </para>
             <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
             </para>
             </summary>
             <param name="newval">
@@ -11110,6 +11549,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YInputChainProxy.LoopbackTest">
+            <value>Activation state of the exhaustive chain connectivity test.</value>
         </member>
         <member name="M:YoctoProxyAPI.YInputChainProxy.get_refreshRate">
             <summary>
@@ -14476,6 +14918,55 @@
         <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackEncoding">
             <value>Encoding standard to use for representing notification values.</value>
         </member>
+        <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackTemplate">
+            <summary>
+              Returns the activation state of the custom template file to customize callback
+              format.
+            <para>
+              If the custom callback template is disabled, it will be ignored even
+              if present on the YoctoHub.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YNetwork.CALLBACKTEMPLATE_OFF</c> or <c>YNetwork.CALLBACKTEMPLATE_ON</c>, according to
+              the activation state of the custom template file to customize callback
+              format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.CALLBACKTEMPLATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YNetworkProxy.set_callbackTemplate(System.Int32)">
+            <summary>
+              Enable the use of a template file to customize callbacks format.
+            <para>
+              When the custom callback template file is enabled, the template file
+              will be loaded for each callback in order to build the data to post to the
+              server. If template file does not exist on the YoctoHub, the callback will
+              fail with an error message indicating the name of the expected template file.
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YNetwork.CALLBACKTEMPLATE_OFF</c> or <c>YNetwork.CALLBACKTEMPLATE_ON</c>
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.CallbackTemplate">
+            <value>Activation state of the custom template file to customize callback</value>
+        </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_callbackCredentials">
             <summary>
               Returns a hashed version of the notification callback credentials if set,
@@ -15036,18 +15527,37 @@
               of a device function currently connected.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YPowerProxy.get_cosPhi">
+        <member name="M:YoctoProxyAPI.YPowerProxy.get_powerFactor">
             <summary>
-              Returns the power factor (the ratio between the real power consumed,
-              measured in W, and the apparent power provided, measured in VA).
+              Returns the power factor (PF), i.e.
             <para>
+              ratio between the active power consumed (in W)
+              and the apparent power provided (VA).
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a floating point number corresponding to the power factor (the ratio between the real power consumed,
-              measured in W, and the apparent power provided, measured in VA)
+              a floating point number corresponding to the power factor (PF), i.e
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPower.POWERFACTOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YPowerProxy.get_cosPhi">
+            <summary>
+              Returns the Displacement Power factor (DPF), i.e.
+            <para>
+              cosine of the phase shift between
+              the voltage and current fundamentals.
+              On the Yocto-Watt (V1), the value returned by this method correponds to the
+              power factor as this device is cannot estimate the true DPF.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the Displacement Power factor (DPF), i.e
             </returns>
             <para>
               On failure, throws an exception or returns <c>YPower.COSPHI_INVALID</c>.
@@ -15055,18 +15565,19 @@
         </member>
         <member name="M:YoctoProxyAPI.YPowerProxy.get_meter">
             <summary>
-              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
-              but only when positive.
+              Returns the energy counter, maintained by the wattmeter by integrating the
+              power consumption over time.
             <para>
-              Note that this counter is reset at each start of the device.
+              This is the sum of forward and backwad energy transfers,
+              if you are insterested in only one direction, use  get_receivedEnergyMeter() or
+              get_deliveredEnergyMeter(). Note that this counter is reset at each start of the device.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a floating point number corresponding to the energy counter, maintained by the wattmeter by
-              integrating the power consumption over time,
-              but only when positive
+              a floating point number corresponding to the energy counter, maintained by the wattmeter by integrating the
+              power consumption over time
             </returns>
             <para>
               On failure, throws an exception or returns <c>YPower.METER_INVALID</c>.
@@ -17673,7 +18184,7 @@
             <summary>
               Triggers the photon detector hardware calibration.
             <para>
-              This function is part of the calibration procedure to compensate for the the effect
+              This function is part of the calibration procedure to compensate for the effect
               of a cover glass. Make sure to read the chapter about hardware calibration for details
               on the calibration procedure for proper results.
             </para>
@@ -17705,7 +18216,7 @@
             <summary>
               Triggers the hardware cross-talk calibration of the distance sensor.
             <para>
-              This function is part of the calibration procedure to compensate for the the effect
+              This function is part of the calibration procedure to compensate for the effect
               of a cover glass. Make sure to read the chapter about hardware calibration for details
               on the calibration procedure for proper results.
             </para>
@@ -17945,6 +18456,10 @@
               To enable automatic synchronization (default), set the value to false.
             </para>
             <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
             </para>
             </summary>
             <param name="newval">
@@ -17959,6 +18474,9 @@
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YRealTimeClockProxy.DisableHostSync">
+            <value>True if the automatic clock synchronization with host has been disabled,</value>
         </member>
         <member name="T:YoctoProxyAPI.YRefFrameProxy">
             <summary>
@@ -25108,16 +25626,16 @@
         </member>
         <member name="M:YoctoProxyAPI.YFunctionProxy.isReadOnly">
             <summary>
-              Test if the function is readOnly.
+              Indicates whether changes to the function are prohibited or allowed.
             <para>
-              Return <c>true</c> if the function is write protected
-              or that the function is not available.
+              Returns <c>true</c> if the function is blocked by an admin password
+              or if the function is not available.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              <c>true</c> if the function is readOnly or not online.
+              <c>true</c> if the function is write-protected or not online.
             </returns>
         </member>
         <member name="M:YoctoProxyAPI.YFunctionProxy.get_serialNumber">
@@ -26129,6 +26647,189 @@
               the message content.
             </returns>
         </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serieCount">
+            <summary>
+              Returns the number of series available in the capture.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of
+              simultaneous data series available.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_recordCount">
+            <summary>
+              Returns the number of records captured (in a serie).
+            <para>
+              In the exceptional case where it was not possible
+              to transfer all data in time, the number of records
+              actually present in the series might be lower than
+              the number of records captured
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of
+              records expected in each serie.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_samplingRate">
+            <summary>
+              Returns the effective sampling rate of the device.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of
+              samples taken each second.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_captureType">
+            <summary>
+              Returns the type of automatic conditional capture
+              that triggered the capture of this data sequence.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the type of conditional capture.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_triggerValue">
+            <summary>
+              Returns the threshold value that triggered
+              this automatic conditional capture, if it was
+              not an instant captured triggered manually.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the conditional threshold value
+              at the time of capture.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_triggerPosition">
+            <summary>
+              Returns the index in the series of the sample
+              corresponding to the exact time when the capture
+              was triggered.
+            <para>
+              In case of trigger based on average
+              or RMS value, the trigger index corresponds to
+              the end of the averaging period.
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to a position
+              in the data serie.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_triggerRealTimeUTC">
+            <summary>
+              Returns the absolute time when the capture was
+              triggered, as a Unix timestamp.
+            <para>
+              Milliseconds are
+              included in this timestamp (floating-point number).
+            </para>
+            </summary>
+            <returns>
+              a floating-point number corresponding to
+              the number of seconds between the Jan 1,
+              1970 and the moment where the capture
+              was triggered.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serie1Unit">
+            <summary>
+              Returns the unit of measurement for data points in
+              the first serie.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string containing to a physical unit of
+              measurement.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serie2Unit">
+            <summary>
+              Returns the unit of measurement for data points in
+              the second serie.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string containing to a physical unit of
+              measurement.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serie3Unit">
+            <summary>
+              Returns the unit of measurement for data points in
+              the third serie.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string containing to a physical unit of
+              measurement.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serie1Values">
+            <summary>
+              Returns the sampled data corresponding to the first serie.
+            <para>
+              The corresponding physical unit can be obtained
+              using the method <c>get_serie1Unit()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a list of real numbers corresponding to all
+              samples received for serie 1.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serie2Values">
+            <summary>
+              Returns the sampled data corresponding to the second serie.
+            <para>
+              The corresponding physical unit can be obtained
+              using the method <c>get_serie2Unit()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a list of real numbers corresponding to all
+              samples received for serie 2.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serie3Values">
+            <summary>
+              Returns the sampled data corresponding to the third serie.
+            <para>
+              The corresponding physical unit can be obtained
+              using the method <c>get_serie3Unit()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a list of real numbers corresponding to all
+              samples received for serie 3.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
         <member name="M:YoctoLib.YAPI.DisableExceptions">
             <summary>
               Disables the use of exceptions to report runtime errors.
@@ -26308,9 +27009,16 @@
             <para>
               <b><i>x.x.x.x</i></b> or <b><i>hostname</i></b>: The API will use the devices connected to the
               host with the given IP address or hostname. That host can be a regular computer
-              running a VirtualHub, or a networked YoctoHub such as YoctoHub-Ethernet or
+              running a <i>native VirtualHub</i>, a <i>VirtualHub for web</i> hosted on a server,
+              or a networked YoctoHub such as YoctoHub-Ethernet or
               YoctoHub-Wireless. If you want to use the VirtualHub running on you local
-              computer, use the IP address 127.0.0.1.
+              computer, use the IP address 127.0.0.1. If the given IP is unresponsive, <c>yRegisterHub</c>
+              will not return until a time-out defined by <c>ySetNetworkTimeout</c> has elapsed.
+              However, it is possible to preventively test a connection  with <c>yTestHub</c>.
+              If you cannot afford a network time-out, you can use the non blocking <c>yPregisterHub</c>
+              function that will establish the connection as soon as it is available.
+            </para>
+            <para>
             </para>
             <para>
               <b>callback</b>: that keyword make the API run in "<i>HTTP Callback</i>" mode.
@@ -26364,7 +27072,8 @@
               This function has the same
               purpose and same arguments as <c>yRegisterHub()</c>, but does not trigger
               an error when the selected hub is not available at the time of the function call.
-              This makes it possible to register a network hub independently of the current
+              If the connexion cannot be established immediately, a background task will automatically
+              perform periodic retries. This makes it possible to register a network hub independently of the current
               connectivity, and to try to contact it only when a device is actively needed.
             </para>
             <para>
@@ -27363,7 +28072,7 @@
         </member>
         <member name="M:YoctoLib.YDataSet.loadMore">
             <summary>
-              Loads the the next block of measures from the dataLogger, and updates
+              Loads the next block of measures from the dataLogger, and updates
               the progress indicator.
             <para>
             </para>
@@ -27751,16 +28460,16 @@
         </member>
         <member name="M:YoctoLib.YFunction.isReadOnly">
             <summary>
-              Test if the function is readOnly.
+              Indicates whether changes to the function are prohibited or allowed.
             <para>
-              Return <c>true</c> if the function is write protected
-              or that the function is not available.
+              Returns <c>true</c> if the function is blocked by an admin password
+              or if the function is not available.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              <c>true</c> if the function is readOnly or not online.
+              <c>true</c> if the function is write-protected or not online.
             </returns>
         </member>
         <member name="M:YoctoLib.YFunction.get_serialNumber">
@@ -40485,6 +41194,632 @@
               if there are none.
             </returns>
         </member>
+        <member name="T:YoctoLib.YInputCaptureData">
+            <c>InputCaptureData</c> objects represent raw data
+            sampled by the analog/digital converter present in
+            a Yoctopuce electrical sensor. When several inputs
+            are samples simultaneously, their data are provided
+            as distinct series.
+            <para>
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_serieCount">
+            <summary>
+              Returns the number of series available in the capture.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of
+              simultaneous data series available.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_recordCount">
+            <summary>
+              Returns the number of records captured (in a serie).
+            <para>
+              In the exceptional case where it was not possible
+              to transfer all data in time, the number of records
+              actually present in the series might be lower than
+              the number of records captured
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of
+              records expected in each serie.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_samplingRate">
+            <summary>
+              Returns the effective sampling rate of the device.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of
+              samples taken each second.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_captureType">
+            <summary>
+              Returns the type of automatic conditional capture
+              that triggered the capture of this data sequence.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the type of conditional capture.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_triggerValue">
+            <summary>
+              Returns the threshold value that triggered
+              this automatic conditional capture, if it was
+              not an instant captured triggered manually.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the conditional threshold value
+              at the time of capture.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_triggerPosition">
+            <summary>
+              Returns the index in the series of the sample
+              corresponding to the exact time when the capture
+              was triggered.
+            <para>
+              In case of trigger based on average
+              or RMS value, the trigger index corresponds to
+              the end of the averaging period.
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to a position
+              in the data serie.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_triggerRealTimeUTC">
+            <summary>
+              Returns the absolute time when the capture was
+              triggered, as a Unix timestamp.
+            <para>
+              Milliseconds are
+              included in this timestamp (floating-point number).
+            </para>
+            </summary>
+            <returns>
+              a floating-point number corresponding to
+              the number of seconds between the Jan 1,
+              1970 and the moment where the capture
+              was triggered.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_serie1Unit">
+            <summary>
+              Returns the unit of measurement for data points in
+              the first serie.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string containing to a physical unit of
+              measurement.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_serie2Unit">
+            <summary>
+              Returns the unit of measurement for data points in
+              the second serie.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string containing to a physical unit of
+              measurement.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_serie3Unit">
+            <summary>
+              Returns the unit of measurement for data points in
+              the third serie.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string containing to a physical unit of
+              measurement.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_serie1Values">
+            <summary>
+              Returns the sampled data corresponding to the first serie.
+            <para>
+              The corresponding physical unit can be obtained
+              using the method <c>get_serie1Unit()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a list of real numbers corresponding to all
+              samples received for serie 1.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_serie2Values">
+            <summary>
+              Returns the sampled data corresponding to the second serie.
+            <para>
+              The corresponding physical unit can be obtained
+              using the method <c>get_serie2Unit()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a list of real numbers corresponding to all
+              samples received for serie 2.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCaptureData.get_serie3Values">
+            <summary>
+              Returns the sampled data corresponding to the third serie.
+            <para>
+              The corresponding physical unit can be obtained
+              using the method <c>get_serie3Unit()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a list of real numbers corresponding to all
+              samples received for serie 3.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
+        <member name="T:YoctoLib.YInputCapture">
+            <summary>
+              The <c>YInputCapture</c> class allows you to access data samples
+              measured by a Yoctopuce electrical sensor.
+            <para>
+              The data capture can be
+              triggered manually, or be configured to detect specific events.
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_lastCaptureTime">
+            <summary>
+              Returns the number of elapsed milliseconds between the module power on
+              and the last capture (time of trigger), or zero if no capture has been done.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of elapsed milliseconds between the module power on
+              and the last capture (time of trigger), or zero if no capture has been done
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.LASTCAPTURETIME_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_nSamples">
+            <summary>
+              Returns the number of samples that will be captured.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the number of samples that will be captured
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.NSAMPLES_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.set_nSamples(System.Int32)">
+            <summary>
+              Changes the type of automatic conditional capture.
+            <para>
+              The maximum number of samples depends on the device memory.
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the type of automatic conditional capture
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_samplingRate">
+            <summary>
+              Returns the sampling frequency, in Hz.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the sampling frequency, in Hz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.SAMPLINGRATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_captureType">
+            <summary>
+              Returns the type of automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YInputCapture.CAPTURETYPE_NONE</c>, <c>YInputCapture.CAPTURETYPE_TIMED</c>,
+              <c>YInputCapture.CAPTURETYPE_V_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_PF_MIN</c> and <c>YInputCapture.CAPTURETYPE_DPF_MIN</c> corresponding
+              to the type of automatic conditional capture
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CAPTURETYPE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.set_captureType(System.Int32)">
+            <summary>
+              Changes the type of automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a value among <c>YInputCapture.CAPTURETYPE_NONE</c>, <c>YInputCapture.CAPTURETYPE_TIMED</c>,
+              <c>YInputCapture.CAPTURETYPE_V_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_V_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_V_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_I_RMS_MAX</c>, <c>YInputCapture.CAPTURETYPE_I_RMS_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_P_AVG_MAX</c>, <c>YInputCapture.CAPTURETYPE_P_AVG_MIN</c>,
+              <c>YInputCapture.CAPTURETYPE_PF_MIN</c> and <c>YInputCapture.CAPTURETYPE_DPF_MIN</c> corresponding
+              to the type of automatic conditional capture
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.set_condValue(System.Double)">
+            <summary>
+              Changes current threshold value for automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to current threshold value for automatic conditional capture
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_condValue">
+            <summary>
+              Returns current threshold value for automatic conditional capture.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to current threshold value for automatic conditional capture
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CONDVALUE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_condAlign">
+            <summary>
+              Returns the relative position of the trigger event within the capture window.
+            <para>
+              When the value is 50%, the capture is centered on the event.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the relative position of the trigger event within the capture window
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CONDALIGN_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.set_condAlign(System.Int32)">
+            <summary>
+              Changes the relative position of the trigger event within the capture window.
+            <para>
+              The new value must be between 10% (on the left) and 90% (on the right).
+              When the value is 50%, the capture is centered on the event.
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the relative position of the trigger event within the capture window
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_captureTypeAtStartup">
+            <summary>
+              Returns the type of automatic conditional capture
+              applied at device power on.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YInputCapture.CAPTURETYPEATSTARTUP_NONE</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_TIMED</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_PF_MIN</c>
+              and <c>YInputCapture.CAPTURETYPEATSTARTUP_DPF_MIN</c> corresponding to the type of automatic conditional capture
+              applied at device power on
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CAPTURETYPEATSTARTUP_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.set_captureTypeAtStartup(System.Int32)">
+            <summary>
+              Changes the type of automatic conditional capture
+              applied at device power on.
+            <para>
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a value among <c>YInputCapture.CAPTURETYPEATSTARTUP_NONE</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_TIMED</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_V_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_I_RMS_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MAX</c>,
+              <c>YInputCapture.CAPTURETYPEATSTARTUP_P_AVG_MIN</c>, <c>YInputCapture.CAPTURETYPEATSTARTUP_PF_MIN</c>
+              and <c>YInputCapture.CAPTURETYPEATSTARTUP_DPF_MIN</c> corresponding to the type of automatic conditional capture
+              applied at device power on
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.set_condValueAtStartup(System.Double)">
+            <summary>
+              Changes current threshold value for automatic conditional
+              capture applied at device power on.
+            <para>
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to current threshold value for automatic conditional
+              capture applied at device power on
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_condValueAtStartup">
+            <summary>
+              Returns the threshold value for automatic conditional
+              capture applied at device power on.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the threshold value for automatic conditional
+              capture applied at device power on
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YInputCapture.CONDVALUEATSTARTUP_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.FindInputCapture(System.String)">
+            <summary>
+              Retrieves an instant snapshot trigger for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the instant snapshot trigger is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YInputCapture.isOnline()</c> to test if the instant snapshot trigger is
+              indeed online at a given time. In case of ambiguity when looking for
+              an instant snapshot trigger by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the instant snapshot trigger, for instance
+              <c>MyDevice.inputCapture</c>.
+            </param>
+            <returns>
+              a <c>YInputCapture</c> object allowing you to drive the instant snapshot trigger.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.registerValueCallback(YoctoLib.YInputCapture.ValueCallback)">
+            <summary>
+              Registers the callback function that is invoked on every change of advertised value.
+            <para>
+              The callback is invoked only during the execution of <c>ySleep</c> or <c>yHandleEvents</c>.
+              This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+              one of these two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer. The callback function should take two
+              arguments: the function object of which the value has changed, and the character string describing
+              the new advertised value.
+            @noreturn
+            </param>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_lastCapture">
+            <summary>
+              Returns all details about the last automatic input capture.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an <c>YInputCaptureData</c> object including
+              data series and all related meta-information.
+              On failure, throws an exception or returns an capture object.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.get_immediateCapture(System.Int32)">
+            <summary>
+              Returns a new immediate capture of the device inputs.
+            <para>
+            </para>
+            </summary>
+            <param name="msDuration">
+              duration of the capture window,
+              in milliseconds (eg. between 20 and 1000).
+            </param>
+            <returns>
+              an <c>YInputCaptureData</c> object including
+              data series for the specified duration.
+              On failure, throws an exception or returns an capture object.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.nextInputCapture">
+            <summary>
+              c
+            <para>
+              omment from .yc definition
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YInputCapture.FirstInputCapture">
+            <summary>
+              c
+            <para>
+              omment from .yc definition
+            </para>
+            </summary>
+        </member>
         <member name="T:YoctoLib.YInputChain">
             <summary>
               The <c>YInputChain</c> class provides access to separate
@@ -40571,6 +41906,10 @@
             <para>
               The connectivity test requires a cable connecting the end of the chain
               to the loopback test connector.
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
             </para>
             <para>
             </para>
@@ -44382,6 +45721,52 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoLib.YNetwork.get_callbackTemplate">
+            <summary>
+              Returns the activation state of the custom template file to customize callback
+              format.
+            <para>
+              If the custom callback template is disabled, it will be ignored even
+              if present on the YoctoHub.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YNetwork.CALLBACKTEMPLATE_OFF</c> or <c>YNetwork.CALLBACKTEMPLATE_ON</c>, according to
+              the activation state of the custom template file to customize callback
+              format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.CALLBACKTEMPLATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YNetwork.set_callbackTemplate(System.Int32)">
+            <summary>
+              Enable the use of a template file to customize callbacks format.
+            <para>
+              When the custom callback template file is enabled, the template file
+              will be loaded for each callback in order to build the data to post to the
+              server. If template file does not exist on the YoctoHub, the callback will
+              fail with an error message indicating the name of the expected template file.
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YNetwork.CALLBACKTEMPLATE_OFF</c> or <c>YNetwork.CALLBACKTEMPLATE_ON</c>
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
         <member name="M:YoctoLib.YNetwork.get_callbackCredentials">
             <summary>
               Returns a hashed version of the notification callback credentials if set,
@@ -44991,18 +46376,37 @@
             </para>
             </summary>
         </member>
-        <member name="M:YoctoLib.YPower.get_cosPhi">
+        <member name="M:YoctoLib.YPower.get_powerFactor">
             <summary>
-              Returns the power factor (the ratio between the real power consumed,
-              measured in W, and the apparent power provided, measured in VA).
+              Returns the power factor (PF), i.e.
             <para>
+              ratio between the active power consumed (in W)
+              and the apparent power provided (VA).
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a floating point number corresponding to the power factor (the ratio between the real power consumed,
-              measured in W, and the apparent power provided, measured in VA)
+              a floating point number corresponding to the power factor (PF), i.e
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPower.POWERFACTOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPower.get_cosPhi">
+            <summary>
+              Returns the Displacement Power factor (DPF), i.e.
+            <para>
+              cosine of the phase shift between
+              the voltage and current fundamentals.
+              On the Yocto-Watt (V1), the value returned by this method correponds to the
+              power factor as this device is cannot estimate the true DPF.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the Displacement Power factor (DPF), i.e
             </returns>
             <para>
               On failure, throws an exception or returns <c>YPower.COSPHI_INVALID</c>.
@@ -45010,18 +46414,19 @@
         </member>
         <member name="M:YoctoLib.YPower.get_meter">
             <summary>
-              Returns the energy counter, maintained by the wattmeter by integrating the power consumption over time,
-              but only when positive.
+              Returns the energy counter, maintained by the wattmeter by integrating the
+              power consumption over time.
             <para>
-              Note that this counter is reset at each start of the device.
+              This is the sum of forward and backwad energy transfers,
+              if you are insterested in only one direction, use  get_receivedEnergyMeter() or
+              get_deliveredEnergyMeter(). Note that this counter is reset at each start of the device.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              a floating point number corresponding to the energy counter, maintained by the wattmeter by
-              integrating the power consumption over time,
-              but only when positive
+              a floating point number corresponding to the energy counter, maintained by the wattmeter by integrating the
+              power consumption over time
             </returns>
             <para>
               On failure, throws an exception or returns <c>YPower.METER_INVALID</c>.
@@ -47943,7 +49348,7 @@
             <summary>
               Triggers the photon detector hardware calibration.
             <para>
-              This function is part of the calibration procedure to compensate for the the effect
+              This function is part of the calibration procedure to compensate for the effect
               of a cover glass. Make sure to read the chapter about hardware calibration for details
               on the calibration procedure for proper results.
             </para>
@@ -47975,7 +49380,7 @@
             <summary>
               Triggers the hardware cross-talk calibration of the distance sensor.
             <para>
-              This function is part of the calibration procedure to compensate for the the effect
+              This function is part of the calibration procedure to compensate for the effect
               of a cover glass. Make sure to read the chapter about hardware calibration for details
               on the calibration procedure for proper results.
             </para>
@@ -48174,6 +49579,10 @@
             <para>
               To disable automatic synchronization, set the value to true.
               To enable automatic synchronization (default), set the value to false.
+            </para>
+            <para>
+              If you want the change to be kept after a device reboot,
+              make sure  to call the matching module <c>saveToFlash()</c>.
             </para>
             <para>
             </para>

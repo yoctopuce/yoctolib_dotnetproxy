@@ -178,6 +178,7 @@ namespace YoctoProxyAPI
         protected new YInputChain _func;
         // property cache
         protected int _expectedNodes = _ExpectedNodes_INVALID;
+        protected int _loopbackTest = _LoopbackTest_INVALID;
         protected int _refreshRate = _RefreshRate_INVALID;
         protected int _watchdogPeriod = _WatchdogPeriod_INVALID;
         //--- (end of YInputChain definitions)
@@ -251,6 +252,7 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _expectedNodes = _func.get_expectedNodes();
+            _loopbackTest = _func.get_loopbackTest()+1;
             _refreshRate = _func.get_refreshRate();
             _watchdogPeriod = _func.get_watchdogPeriod();
         }
@@ -418,6 +420,10 @@ namespace YoctoProxyAPI
          *   to the loopback test connector.
          * </para>
          * <para>
+         *   If you want the change to be kept after a device reboot,
+         *   make sure  to call the matching module <c>saveToFlash()</c>.
+         * </para>
+         * <para>
          * </para>
          * </summary>
          * <param name="newval">
@@ -443,6 +449,46 @@ namespace YoctoProxyAPI
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_loopbackTest(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Activation state of the exhaustive chain connectivity test.</value>
+        public int LoopbackTest
+        {
+            get
+            {
+                if (_func == null) {
+                    return _LoopbackTest_INVALID;
+                }
+                if (_online) {
+                    return _loopbackTest;
+                }
+                return _LoopbackTest_INVALID;
+            }
+            set
+            {
+                setprop_loopbackTest(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_loopbackTest(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _LoopbackTest_INVALID) {
+                return;
+            }
+            if (newval == _loopbackTest) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_loopbackTest(newval-1);
+            _loopbackTest = newval;
         }
 
         /**

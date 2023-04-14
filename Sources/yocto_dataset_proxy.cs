@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_dataset_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_dataset_proxy.cs 52848 2023-01-20 15:49:48Z mvuilleu $
  *
  *  Implements YDataSetProxy, the Proxy API for DataSet
  *
@@ -205,7 +205,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Loads the the next block of measures from the dataLogger, and updates
+         *   Loads the next block of measures from the dataLogger, and updates
          *   the progress indicator.
          * <para>
          * </para>

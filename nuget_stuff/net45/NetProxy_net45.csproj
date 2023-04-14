@@ -133,6 +133,9 @@
     <Compile Include="..\..\Sources\API\yocto_i2cport.cs">
       <Link>yocto_i2cport.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\API\yocto_inputcapture.cs">
+      <Link>yocto_inputcapture.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\API\yocto_inputchain.cs">
       <Link>yocto_inputchain.cs</Link>
     </Compile>
@@ -343,6 +346,9 @@
     <Compile Include="..\..\Sources\yocto_i2cport_proxy.cs">
       <Link>yocto_i2cport_proxy.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\yocto_inputcapture_proxy.cs">
+      <Link>yocto_inputcapture_proxy.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\yocto_inputchain_proxy.cs">
       <Link>yocto_inputchain_proxy.cs</Link>
     </Compile>
@@ -475,6 +481,9 @@
     <Compile Include="..\..\Sources\yocto_function_proxy.cs">
       <Link>yocto_function_proxy.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\yocto_hub_proxy.cs">
+      <Link>yocto_hub_proxy.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\yocto_firmwareupdate_proxy.cs">
       <Link>yocto_firmwareupdate_proxy.cs</Link>
     </Compile>
@@ -501,6 +510,9 @@
     </Compile>
     <Compile Include="..\..\Sources\yocto_i2csnoopingrecord_proxy.cs">
       <Link>yocto_i2csnoopingrecord_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_inputcapturedata_proxy.cs">
+      <Link>yocto_inputcapturedata_proxy.cs</Link>
     </Compile>
 <!-- yocto_patch_stop -->
     <Compile Include="Properties\AssemblyInfo.cs" />

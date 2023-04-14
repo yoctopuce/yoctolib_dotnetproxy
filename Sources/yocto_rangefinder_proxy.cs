@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_rangefinder_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_rangefinder_proxy.cs 52848 2023-01-20 15:49:48Z mvuilleu $
  *
  *  Implements YRangeFinderProxy, the Proxy API for RangeFinder
  *
@@ -630,7 +630,7 @@ namespace YoctoProxyAPI
          * <summary>
          *   Triggers the photon detector hardware calibration.
          * <para>
-         *   This function is part of the calibration procedure to compensate for the the effect
+         *   This function is part of the calibration procedure to compensate for the effect
          *   of a cover glass. Make sure to read the chapter about hardware calibration for details
          *   on the calibration procedure for proper results.
          * </para>
@@ -678,7 +678,7 @@ namespace YoctoProxyAPI
          * <summary>
          *   Triggers the hardware cross-talk calibration of the distance sensor.
          * <para>
-         *   This function is part of the calibration procedure to compensate for the the effect
+         *   This function is part of the calibration procedure to compensate for the effect
          *   of a cover glass. Make sure to read the chapter about hardware calibration for details
          *   on the calibration procedure for proper results.
          * </para>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_function_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_function_proxy.cs 53689 2023-03-22 11:17:15Z mvuilleu $
  *
  *  Implements YFunctionProxy, the Proxy API for Function
  *
@@ -844,16 +844,16 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Test if the function is readOnly.
+         *   Indicates whether changes to the function are prohibited or allowed.
          * <para>
-         *   Return <c>true</c> if the function is write protected
-         *   or that the function is not available.
+         *   Returns <c>true</c> if the function is blocked by an admin password
+         *   or if the function is not available.
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   <c>true</c> if the function is readOnly or not online.
+         *   <c>true</c> if the function is write-protected or not online.
          * </returns>
          */
         public virtual bool isReadOnly()

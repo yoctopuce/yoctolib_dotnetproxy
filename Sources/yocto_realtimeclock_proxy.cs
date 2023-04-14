@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 50595 2022-07-28 07:54:15Z mvuilleu $
+ *  $Id: yocto_realtimeclock_proxy.cs 53863 2023-04-04 16:20:17Z mvuilleu $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *
@@ -178,6 +178,7 @@ namespace YoctoProxyAPI
         // property cache
         protected string _clock = _Clock_INVALID;
         protected int _utcOffset = _UtcOffset_INVALID;
+        protected int _disableHostSync = _DisableHostSync_INVALID;
         //--- (end of YRealTimeClock definitions)
 
         //--- (YRealTimeClock implementation)
@@ -249,6 +250,7 @@ namespace YoctoProxyAPI
        	{
             base.moduleConfigHasChanged();
             _utcOffset = _func.get_utcOffset();
+            _disableHostSync = _func.get_disableHostSync()+1;
         }
 
         // property with cached value for instant access (derived from advertisedValue)
@@ -500,6 +502,10 @@ namespace YoctoProxyAPI
          *   To enable automatic synchronization (default), set the value to false.
          * </para>
          * <para>
+         *   If you want the change to be kept after a device reboot,
+         *   make sure  to call the matching module <c>saveToFlash()</c>.
+         * </para>
+         * <para>
          * </para>
          * </summary>
          * <param name="newval">
@@ -525,6 +531,46 @@ namespace YoctoProxyAPI
             }
             // our enums start at 0 instead of the 'usual' -1 for invalid
             return _func.set_disableHostSync(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>True if the automatic clock synchronization with host has been disabled,</value>
+        public int DisableHostSync
+        {
+            get
+            {
+                if (_func == null) {
+                    return _DisableHostSync_INVALID;
+                }
+                if (_online) {
+                    return _disableHostSync;
+                }
+                return _DisableHostSync_INVALID;
+            }
+            set
+            {
+                setprop_disableHostSync(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_disableHostSync(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _DisableHostSync_INVALID) {
+                return;
+            }
+            if (newval == _disableHostSync) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_disableHostSync(newval-1);
+            _disableHostSync = newval;
         }
     }
     //--- (end of YRealTimeClock implementation)

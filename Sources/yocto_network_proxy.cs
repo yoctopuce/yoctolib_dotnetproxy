@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_network_proxy.cs 48692 2022-02-24 22:30:52Z mvuilleu $
+ *  $Id: yocto_network_proxy.cs 53886 2023-04-05 08:06:39Z mvuilleu $
  *
  *  Implements YNetworkProxy, the Proxy API for Network
  *
@@ -196,6 +196,9 @@ namespace YoctoProxyAPI
         public const int _CallbackEncoding_YOCTO_API_JZON = 11;
         public const int _CallbackEncoding_PRTG = 12;
         public const int _CallbackEncoding_INFLUXDB_V2 = 13;
+        public const int _CallbackTemplate_INVALID = 0;
+        public const int _CallbackTemplate_OFF = 1;
+        public const int _CallbackTemplate_ON = 2;
         public const string _CallbackCredentials_INVALID = YAPI.INVALID_STRING;
         public const int _CallbackInitialDelay_INVALID = -1;
         public const string _CallbackSchedule_INVALID = YAPI.INVALID_STRING;
@@ -220,6 +223,7 @@ namespace YoctoProxyAPI
         protected string _callbackUrl = _CallbackUrl_INVALID;
         protected int _callbackMethod = _CallbackMethod_INVALID;
         protected int _callbackEncoding = _CallbackEncoding_INVALID;
+        protected int _callbackTemplate = _CallbackTemplate_INVALID;
         protected string _callbackCredentials = _CallbackCredentials_INVALID;
         protected int _callbackInitialDelay = _CallbackInitialDelay_INVALID;
         protected string _callbackSchedule = _CallbackSchedule_INVALID;
@@ -310,6 +314,7 @@ namespace YoctoProxyAPI
             _callbackUrl = _func.get_callbackUrl();
             _callbackMethod = _func.get_callbackMethod()+1;
             _callbackEncoding = _func.get_callbackEncoding()+1;
+            _callbackTemplate = _func.get_callbackTemplate()+1;
             _callbackCredentials = _func.get_callbackCredentials();
             _callbackInitialDelay = _func.get_callbackInitialDelay();
             _callbackSchedule = _func.get_callbackSchedule();
@@ -1787,6 +1792,113 @@ namespace YoctoProxyAPI
             // our enums start at 0 instead of the 'usual' -1 for invalid
             _func.set_callbackEncoding(newval-1);
             _callbackEncoding = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the activation state of the custom template file to customize callback
+         *   format.
+         * <para>
+         *   If the custom callback template is disabled, it will be ignored even
+         *   if present on the YoctoHub.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>YNetwork.CALLBACKTEMPLATE_OFF</c> or <c>YNetwork.CALLBACKTEMPLATE_ON</c>, according to
+         *   the activation state of the custom template file to customize callback
+         *   format
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YNetwork.CALLBACKTEMPLATE_INVALID</c>.
+         * </para>
+         */
+        public int get_callbackTemplate()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_callbackTemplate()+1;
+        }
+
+        /**
+         * <summary>
+         *   Enable the use of a template file to customize callbacks format.
+         * <para>
+         *   When the custom callback template file is enabled, the template file
+         *   will be loaded for each callback in order to build the data to post to the
+         *   server. If template file does not exist on the YoctoHub, the callback will
+         *   fail with an error message indicating the name of the expected template file.
+         *   Remember to call the <c>saveToFlash()</c> method of the module if the
+         *   modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   either <c>YNetwork.CALLBACKTEMPLATE_OFF</c> or <c>YNetwork.CALLBACKTEMPLATE_ON</c>
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_callbackTemplate(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
+            }
+            if (newval == _CallbackTemplate_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_callbackTemplate(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Activation state of the custom template file to customize callback</value>
+        public int CallbackTemplate
+        {
+            get
+            {
+                if (_func == null) {
+                    return _CallbackTemplate_INVALID;
+                }
+                if (_online) {
+                    return _callbackTemplate;
+                }
+                return _CallbackTemplate_INVALID;
+            }
+            set
+            {
+                setprop_callbackTemplate(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_callbackTemplate(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _CallbackTemplate_INVALID) {
+                return;
+            }
+            if (newval == _callbackTemplate) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_callbackTemplate(newval-1);
+            _callbackTemplate = newval;
         }
 
         /**

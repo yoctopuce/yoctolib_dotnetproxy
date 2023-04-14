@@ -1,4 +1,3 @@
-DotNetProxy v1.10.52094
+DotNetProxy v1.10.54037
 
-- Add support for connecting to VirtualHub-4web
-- Improve error message when YoctoHub is not reacheable.
+- Add YInputCapture class
