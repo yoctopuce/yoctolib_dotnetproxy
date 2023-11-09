@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_groundspeed.cs 39658 2020-03-12 15:36:29Z seb $
+ *  $Id: yocto_groundspeed.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindGroundSpeed(), the high-level API for GroundSpeed functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YGroundSpeed return codes)
-    //--- (end of YGroundSpeed return codes)
+#pragma warning disable 1591
+//--- (YGroundSpeed return codes)
+//--- (end of YGroundSpeed return codes)
 //--- (YGroundSpeed dlldef)
 //--- (end of YGroundSpeed dlldef)
 //--- (YGroundSpeed yapiwrapper)
@@ -320,10 +320,9 @@ public class YGroundSpeed : YSensor
         return FindGroundSpeed(serial + "." + funcId);
     }
 
-
-
     //--- (end of YGroundSpeed functions)
 }
 #pragma warning restore 1591
+
 
 }

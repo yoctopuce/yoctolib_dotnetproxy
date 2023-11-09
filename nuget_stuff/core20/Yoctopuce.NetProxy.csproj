@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.10.54037</Version>
+    <Version>1.10.57762</Version>
     <Authors>Yoctopuce Dev Team</Authors>
     <Company>Yoctopuce</Company>
     <Product />
@@ -75,6 +75,8 @@
     <Compile Include="..\..\Sources\API\yocto_realtimeclock.cs" Link="yocto_realtimeclock.cs" />
     <Compile Include="..\..\Sources\API\yocto_refframe.cs" Link="yocto_refframe.cs" />
     <Compile Include="..\..\Sources\API\yocto_relay.cs" Link="yocto_relay.cs" />
+    <Compile Include="..\..\Sources\API\yocto_rfidreader.cs" Link="yocto_rfidreader.cs" />
+    <Compile Include="..\..\Sources\API\yocto_sdi12port.cs" Link="yocto_sdi12port.cs" />
     <Compile Include="..\..\Sources\API\yocto_segmenteddisplay.cs" Link="yocto_segmenteddisplay.cs" />
     <Compile Include="..\..\Sources\API\yocto_serialport.cs" Link="yocto_serialport.cs" />
     <Compile Include="..\..\Sources\API\yocto_servo.cs" Link="yocto_servo.cs" />
@@ -147,6 +149,8 @@
     <Compile Include="..\..\Sources\yocto_realtimeclock_proxy.cs" Link="yocto_realtimeclock_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_refframe_proxy.cs" Link="yocto_refframe_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_relay_proxy.cs" Link="yocto_relay_proxy.cs" />
+    <Compile Include="..\..\Sources\yocto_rfidreader_proxy.cs" Link="yocto_rfidreader_proxy.cs" />
+    <Compile Include="..\..\Sources\yocto_sdi12port_proxy.cs" Link="yocto_sdi12port_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_segmenteddisplay_proxy.cs" Link="yocto_segmenteddisplay_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_serialport_proxy.cs" Link="yocto_serialport_proxy.cs" />
     <Compile Include="..\..\Sources\yocto_servo_proxy.cs" Link="yocto_servo_proxy.cs" />
@@ -174,7 +178,12 @@
     <Compile Include="..\..\Sources\yocto_snoopingrecord_proxy.cs" Link="yocto_snoopingrecord_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_spisnoopingrecord_proxy.cs" Link="yocto_spisnoopingrecord_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_i2csnoopingrecord_proxy.cs" Link="yocto_i2csnoopingrecord_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_sdi12snoopingrecord_proxy.cs" Link="yocto_sdi12snoopingrecord_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_sdi12sensor_proxy.cs" Link="yocto_sdi12sensor_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_inputcapturedata_proxy.cs" Link="yocto_inputcapturedata_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_rfidtaginfo_proxy.cs" Link="yocto_rfidtaginfo_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_rfidoptions_proxy.cs" Link="yocto_rfidoptions_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_rfidstatus_proxy.cs" Link="yocto_rfidstatus_proxy.cs"/>
 <!-- yocto_patch_stop -->
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_carbondioxide.cs 44175 2021-03-11 11:27:12Z mvuilleu $
+ *  $Id: yocto_carbondioxide.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindCarbonDioxide(), the high-level API for CarbonDioxide functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YCarbonDioxide return codes)
-    //--- (end of YCarbonDioxide return codes)
+#pragma warning disable 1591
+//--- (YCarbonDioxide return codes)
+//--- (end of YCarbonDioxide return codes)
 //--- (YCarbonDioxide dlldef)
 //--- (end of YCarbonDioxide dlldef)
 //--- (YCarbonDioxide yapiwrapper)
@@ -524,10 +524,9 @@ public class YCarbonDioxide : YSensor
         return FindCarbonDioxide(serial + "." + funcId);
     }
 
-
-
     //--- (end of YCarbonDioxide functions)
 }
 #pragma warning restore 1591
+
 
 }

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_audioout.cs 38899 2019-12-20 17:21:03Z mvuilleu $
+ *  $Id: yocto_audioout.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindAudioOut(), the high-level API for AudioOut functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YAudioOut return codes)
-    //--- (end of YAudioOut return codes)
+#pragma warning disable 1591
+//--- (YAudioOut return codes)
+//--- (end of YAudioOut return codes)
 //--- (YAudioOut dlldef)
 //--- (end of YAudioOut dlldef)
 //--- (YAudioOut yapiwrapper)
@@ -522,10 +522,9 @@ public class YAudioOut : YFunction
         return FindAudioOut(serial + "." + funcId);
     }
 
-
-
     //--- (end of YAudioOut functions)
 }
 #pragma warning restore 1591
+
 
 }

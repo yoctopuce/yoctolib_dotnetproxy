@@ -52,7 +52,7 @@ namespace YoctoProxyAPI
     //--- (YInputCaptureData class start)
     public class YInputCaptureDataProxy
     {
-        private YInputCaptureData _objref;
+        public YInputCaptureData _objref;
         internal YInputCaptureDataProxy(YInputCaptureData objref)
         {
              _objref = objref;

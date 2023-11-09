@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_quadraturedecoder.cs 50689 2022-08-17 14:37:15Z mvuilleu $
+ *  $Id: yocto_quadraturedecoder.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindQuadratureDecoder(), the high-level API for QuadratureDecoder functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YQuadratureDecoder return codes)
-    //--- (end of YQuadratureDecoder return codes)
+#pragma warning disable 1591
+//--- (YQuadratureDecoder return codes)
+//--- (end of YQuadratureDecoder return codes)
 //--- (YQuadratureDecoder dlldef)
 //--- (end of YQuadratureDecoder dlldef)
 //--- (YQuadratureDecoder yapiwrapper)
@@ -524,10 +524,9 @@ public class YQuadratureDecoder : YSensor
         return FindQuadratureDecoder(serial + "." + funcId);
     }
 
-
-
     //--- (end of YQuadratureDecoder functions)
 }
 #pragma warning restore 1591
+
 
 }

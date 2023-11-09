@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_powersupply_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_powersupply_proxy.cs 55576 2023-07-25 06:26:34Z mvuilleu $
  *
  *  Implements YPowerSupplyProxy, the Proxy API for PowerSupply
  *
@@ -94,8 +94,8 @@ namespace YoctoProxyAPI
  * <summary>
  *   The <c>YPowerSupply</c> class allows you to drive a Yoctopuce power supply.
  * <para>
- *   It can be use to change the voltage set point,
- *   the current limit and the enable/disable the output.
+ *   It can be use to change the voltage and current limits, and to enable/disable
+ *   the output.
  * </para>
  * <para>
  * </para>
@@ -159,29 +159,28 @@ namespace YoctoProxyAPI
         }
         //--- (end of YPowerSupply class start)
         //--- (YPowerSupply definitions)
-        public const double _VoltageSetPoint_INVALID = Double.NaN;
+        public const double _VoltageLimit_INVALID = Double.NaN;
         public const double _CurrentLimit_INVALID = Double.NaN;
         public const int _PowerOutput_INVALID = 0;
         public const int _PowerOutput_OFF = 1;
         public const int _PowerOutput_ON = 2;
-        public const int _VoltageSense_INVALID = 0;
-        public const int _VoltageSense_INT = 1;
-        public const int _VoltageSense_EXT = 2;
         public const double _MeasuredVoltage_INVALID = Double.NaN;
         public const double _MeasuredCurrent_INVALID = Double.NaN;
         public const double _InputVoltage_INVALID = Double.NaN;
-        public const double _VInt_INVALID = Double.NaN;
-        public const double _LdoTemperature_INVALID = Double.NaN;
         public const string _VoltageTransition_INVALID = YAPI.INVALID_STRING;
-        public const double _VoltageAtStartUp_INVALID = Double.NaN;
-        public const double _CurrentAtStartUp_INVALID = Double.NaN;
+        public const double _VoltageLimitAtStartUp_INVALID = Double.NaN;
+        public const double _CurrentLimitAtStartUp_INVALID = Double.NaN;
+        public const int _PowerOutputAtStartUp_INVALID = 0;
+        public const int _PowerOutputAtStartUp_OFF = 1;
+        public const int _PowerOutputAtStartUp_ON = 2;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
 
         // reference to real YoctoAPI object
         protected new YPowerSupply _func;
         // property cache
-        protected double _voltageAtStartUp = _VoltageAtStartUp_INVALID;
-        protected double _currentAtStartUp = _CurrentAtStartUp_INVALID;
+        protected double _voltageLimitAtStartUp = _VoltageLimitAtStartUp_INVALID;
+        protected double _currentLimitAtStartUp = _CurrentLimitAtStartUp_INVALID;
+        protected int _powerOutputAtStartUp = _PowerOutputAtStartUp_INVALID;
         //--- (end of YPowerSupply definitions)
 
         //--- (YPowerSupply implementation)
@@ -252,20 +251,21 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
-            _voltageAtStartUp = _func.get_voltageAtStartUp();
-            _currentAtStartUp = _func.get_currentAtStartUp();
+            _voltageLimitAtStartUp = _func.get_voltageLimitAtStartUp();
+            _currentLimitAtStartUp = _func.get_currentLimitAtStartUp();
+            _powerOutputAtStartUp = _func.get_powerOutputAtStartUp()+1;
         }
 
         /**
          * <summary>
-         *   Changes the voltage set point, in V.
+         *   Changes the voltage limit, in V.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <param name="newval">
-         *   a floating point number corresponding to the voltage set point, in V
+         *   a floating point number corresponding to the voltage limit, in V
          * </param>
          * <para>
          * </para>
@@ -276,39 +276,39 @@ namespace YoctoProxyAPI
          *   On failure, throws an exception or returns a negative error code.
          * </para>
          */
-        public int set_voltageSetPoint(double newval)
+        public int set_voltageLimit(double newval)
         {
             if (_func == null) {
                 throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (newval == _VoltageSetPoint_INVALID) {
+            if (newval == _VoltageLimit_INVALID) {
                 return YAPI.SUCCESS;
             }
-            return _func.set_voltageSetPoint(newval);
+            return _func.set_voltageLimit(newval);
         }
 
         /**
          * <summary>
-         *   Returns the voltage set point, in V.
+         *   Returns the voltage limit, in V.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a floating point number corresponding to the voltage set point, in V
+         *   a floating point number corresponding to the voltage limit, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGESETPOINT_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGELIMIT_INVALID</c>.
          * </para>
          */
-        public double get_voltageSetPoint()
+        public double get_voltageLimit()
         {
             double res;
             if (_func == null) {
                 throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            res = _func.get_voltageSetPoint();
+            res = _func.get_voltageLimit();
             if (res == YAPI.INVALID_DOUBLE) {
                 res = Double.NaN;
             }
@@ -434,64 +434,6 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the output voltage control point.
-         * <para>
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <returns>
-         *   either <c>YPowerSupply.VOLTAGESENSE_INT</c> or <c>YPowerSupply.VOLTAGESENSE_EXT</c>, according to
-         *   the output voltage control point
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGESENSE_INVALID</c>.
-         * </para>
-         */
-        public int get_voltageSense()
-        {
-            if (_func == null) {
-                throw new YoctoApiProxyException("No PowerSupply connected");
-            }
-            // our enums start at 0 instead of the 'usual' -1 for invalid
-            return _func.get_voltageSense()+1;
-        }
-
-        /**
-         * <summary>
-         *   Changes the voltage control point.
-         * <para>
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <param name="newval">
-         *   either <c>YPowerSupply.VOLTAGESENSE_INT</c> or <c>YPowerSupply.VOLTAGESENSE_EXT</c>, according to
-         *   the voltage control point
-         * </param>
-         * <para>
-         * </para>
-         * <returns>
-         *   <c>0</c> if the call succeeds.
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns a negative error code.
-         * </para>
-         */
-        public int set_voltageSense(int newval)
-        {
-            if (_func == null) {
-                throw new YoctoApiProxyException("No PowerSupply connected");
-            }
-            if (newval == _VoltageSense_INVALID) {
-                return YAPI.SUCCESS;
-            }
-            // our enums start at 0 instead of the 'usual' -1 for invalid
-            return _func.set_voltageSense(newval-1);
-        }
-
-        /**
-         * <summary>
          *   Returns the measured output voltage, in V.
          * <para>
          * </para>
@@ -576,62 +518,6 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the internal voltage, in V.
-         * <para>
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <returns>
-         *   a floating point number corresponding to the internal voltage, in V
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns <c>YPowerSupply.VINT_INVALID</c>.
-         * </para>
-         */
-        public double get_vInt()
-        {
-            double res;
-            if (_func == null) {
-                throw new YoctoApiProxyException("No PowerSupply connected");
-            }
-            res = _func.get_vInt();
-            if (res == YAPI.INVALID_DOUBLE) {
-                res = Double.NaN;
-            }
-            return res;
-        }
-
-        /**
-         * <summary>
-         *   Returns the LDO temperature, in Celsius.
-         * <para>
-         * </para>
-         * <para>
-         * </para>
-         * </summary>
-         * <returns>
-         *   a floating point number corresponding to the LDO temperature, in Celsius
-         * </returns>
-         * <para>
-         *   On failure, throws an exception or returns <c>YPowerSupply.LDOTEMPERATURE_INVALID</c>.
-         * </para>
-         */
-        public double get_ldoTemperature()
-        {
-            double res;
-            if (_func == null) {
-                throw new YoctoApiProxyException("No PowerSupply connected");
-            }
-            res = _func.get_ldoTemperature();
-            if (res == YAPI.INVALID_DOUBLE) {
-                res = Double.NaN;
-            }
-            return res;
-        }
-
-        /**
-         * <summary>
          *   Changes the voltage set point at device start up.
          * <para>
          *   Remember to call the matching
@@ -652,39 +538,39 @@ namespace YoctoProxyAPI
          *   On failure, throws an exception or returns a negative error code.
          * </para>
          */
-        public int set_voltageAtStartUp(double newval)
+        public int set_voltageLimitAtStartUp(double newval)
         {
             if (_func == null) {
                 throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (newval == _VoltageAtStartUp_INVALID) {
+            if (newval == _VoltageLimitAtStartUp_INVALID) {
                 return YAPI.SUCCESS;
             }
-            return _func.set_voltageAtStartUp(newval);
+            return _func.set_voltageLimitAtStartUp(newval);
         }
 
         /**
          * <summary>
-         *   Returns the selected voltage set point at device startup, in V.
+         *   Returns the selected voltage limit at device startup, in V.
          * <para>
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   a floating point number corresponding to the selected voltage set point at device startup, in V
+         *   a floating point number corresponding to the selected voltage limit at device startup, in V
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGEATSTARTUP_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGELIMITATSTARTUP_INVALID</c>.
          * </para>
          */
-        public double get_voltageAtStartUp()
+        public double get_voltageLimitAtStartUp()
         {
             double res;
             if (_func == null) {
                 throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            res = _func.get_voltageAtStartUp();
+            res = _func.get_voltageLimitAtStartUp();
             if (res == YAPI.INVALID_DOUBLE) {
                 res = Double.NaN;
             }
@@ -692,27 +578,27 @@ namespace YoctoProxyAPI
         }
 
         // property with cached value for instant access (configuration)
-        /// <value>Selected voltage set point at device startup, in V.</value>
-        public double VoltageAtStartUp
+        /// <value>Selected voltage limit at device startup, in V.</value>
+        public double VoltageLimitAtStartUp
         {
             get
             {
                 if (_func == null) {
-                    return _VoltageAtStartUp_INVALID;
+                    return _VoltageLimitAtStartUp_INVALID;
                 }
                 if (_online) {
-                    return _voltageAtStartUp;
+                    return _voltageLimitAtStartUp;
                 }
-                return _VoltageAtStartUp_INVALID;
+                return _VoltageLimitAtStartUp_INVALID;
             }
             set
             {
-                setprop_voltageAtStartUp(value);
+                setprop_voltageLimitAtStartUp(value);
             }
         }
 
         // private helper for magic property
-        private void setprop_voltageAtStartUp(double newval)
+        private void setprop_voltageLimitAtStartUp(double newval)
         {
             if (_func == null) {
                 return;
@@ -720,14 +606,14 @@ namespace YoctoProxyAPI
             if (!(_online)) {
                 return;
             }
-            if (newval == _VoltageAtStartUp_INVALID) {
+            if (newval == _VoltageLimitAtStartUp_INVALID) {
                 return;
             }
-            if (newval == _voltageAtStartUp) {
+            if (newval == _voltageLimitAtStartUp) {
                 return;
             }
-            _func.set_voltageAtStartUp(newval);
-            _voltageAtStartUp = newval;
+            _func.set_voltageLimitAtStartUp(newval);
+            _voltageLimitAtStartUp = newval;
         }
 
         /**
@@ -752,15 +638,15 @@ namespace YoctoProxyAPI
          *   On failure, throws an exception or returns a negative error code.
          * </para>
          */
-        public int set_currentAtStartUp(double newval)
+        public int set_currentLimitAtStartUp(double newval)
         {
             if (_func == null) {
                 throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            if (newval == _CurrentAtStartUp_INVALID) {
+            if (newval == _CurrentLimitAtStartUp_INVALID) {
                 return YAPI.SUCCESS;
             }
-            return _func.set_currentAtStartUp(newval);
+            return _func.set_currentLimitAtStartUp(newval);
         }
 
         /**
@@ -775,16 +661,16 @@ namespace YoctoProxyAPI
          *   a floating point number corresponding to the selected current limit at device startup, in mA
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns <c>YPowerSupply.CURRENTATSTARTUP_INVALID</c>.
+         *   On failure, throws an exception or returns <c>YPowerSupply.CURRENTLIMITATSTARTUP_INVALID</c>.
          * </para>
          */
-        public double get_currentAtStartUp()
+        public double get_currentLimitAtStartUp()
         {
             double res;
             if (_func == null) {
                 throw new YoctoApiProxyException("No PowerSupply connected");
             }
-            res = _func.get_currentAtStartUp();
+            res = _func.get_currentLimitAtStartUp();
             if (res == YAPI.INVALID_DOUBLE) {
                 res = Double.NaN;
             }
@@ -793,26 +679,26 @@ namespace YoctoProxyAPI
 
         // property with cached value for instant access (configuration)
         /// <value>Selected current limit at device startup, in mA.</value>
-        public double CurrentAtStartUp
+        public double CurrentLimitAtStartUp
         {
             get
             {
                 if (_func == null) {
-                    return _CurrentAtStartUp_INVALID;
+                    return _CurrentLimitAtStartUp_INVALID;
                 }
                 if (_online) {
-                    return _currentAtStartUp;
+                    return _currentLimitAtStartUp;
                 }
-                return _CurrentAtStartUp_INVALID;
+                return _CurrentLimitAtStartUp_INVALID;
             }
             set
             {
-                setprop_currentAtStartUp(value);
+                setprop_currentLimitAtStartUp(value);
             }
         }
 
         // private helper for magic property
-        private void setprop_currentAtStartUp(double newval)
+        private void setprop_currentLimitAtStartUp(double newval)
         {
             if (_func == null) {
                 return;
@@ -820,14 +706,114 @@ namespace YoctoProxyAPI
             if (!(_online)) {
                 return;
             }
-            if (newval == _CurrentAtStartUp_INVALID) {
+            if (newval == _CurrentLimitAtStartUp_INVALID) {
                 return;
             }
-            if (newval == _currentAtStartUp) {
+            if (newval == _currentLimitAtStartUp) {
                 return;
             }
-            _func.set_currentAtStartUp(newval);
-            _currentAtStartUp = newval;
+            _func.set_currentLimitAtStartUp(newval);
+            _currentLimitAtStartUp = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the power supply output switch state.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>YPowerSupply.POWEROUTPUTATSTARTUP_OFF</c> or <c>YPowerSupply.POWEROUTPUTATSTARTUP_ON</c>,
+         *   according to the power supply output switch state
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YPowerSupply.POWEROUTPUTATSTARTUP_INVALID</c>.
+         * </para>
+         */
+        public int get_powerOutputAtStartUp()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_powerOutputAtStartUp()+1;
+        }
+
+        /**
+         * <summary>
+         *   Changes the power supply output switch state at device start up.
+         * <para>
+         *   Remember to call the matching
+         *   module <c>saveToFlash()</c> method, otherwise this call has no effect.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   either <c>YPowerSupply.POWEROUTPUTATSTARTUP_OFF</c> or <c>YPowerSupply.POWEROUTPUTATSTARTUP_ON</c>,
+         *   according to the power supply output switch state at device start up
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_powerOutputAtStartUp(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PowerSupply connected");
+            }
+            if (newval == _PowerOutputAtStartUp_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_powerOutputAtStartUp(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Power supply output switch state.</value>
+        public int PowerOutputAtStartUp
+        {
+            get
+            {
+                if (_func == null) {
+                    return _PowerOutputAtStartUp_INVALID;
+                }
+                if (_online) {
+                    return _powerOutputAtStartUp;
+                }
+                return _PowerOutputAtStartUp_INVALID;
+            }
+            set
+            {
+                setprop_powerOutputAtStartUp(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_powerOutputAtStartUp(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _PowerOutputAtStartUp_INVALID) {
+                return;
+            }
+            if (newval == _powerOutputAtStartUp) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_powerOutputAtStartUp(newval-1);
+            _powerOutputAtStartUp = newval;
         }
 
         /**

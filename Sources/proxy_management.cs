@@ -451,7 +451,7 @@ namespace YoctoProxyAPI
          *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns a negative error code.
+         *   On failure returns a negative error code.
          * </para>
          */
         public static string RegisterHub(string url)
@@ -481,7 +481,7 @@ namespace YoctoProxyAPI
          *   <c>0</c> when the call succeeds.
          * </returns>
          * <para>
-         *   On failure, throws an exception or returns a negative error code.
+         *   On failure returns a negative error code.
          * </para>
          */
         public static string PreregisterHub(string url)

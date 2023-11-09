@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_relay.cs 41109 2020-06-29 12:40:42Z seb $
+ *  $Id: yocto_relay.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindRelay(), the high-level API for Relay functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YRelay return codes)
-    //--- (end of YRelay return codes)
+#pragma warning disable 1591
+//--- (YRelay return codes)
+//--- (end of YRelay return codes)
 //--- (YRelay dlldef)
 //--- (end of YRelay dlldef)
 //--- (YRelay yapiwrapper)
@@ -874,10 +874,9 @@ public class YRelay : YFunction
         return FindRelay(serial + "." + funcId);
     }
 
-
-
     //--- (end of YRelay functions)
 }
 #pragma warning restore 1591
+
 
 }

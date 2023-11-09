@@ -214,6 +214,12 @@
     <Compile Include="..\..\Sources\API\yocto_relay.cs">
       <Link>yocto_relay.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\API\yocto_rfidreader.cs">
+      <Link>yocto_rfidreader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\API\yocto_sdi12port.cs">
+      <Link>yocto_sdi12port.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\API\yocto_segmenteddisplay.cs">
       <Link>yocto_segmenteddisplay.cs</Link>
     </Compile>
@@ -430,6 +436,12 @@
     <Compile Include="..\..\Sources\yocto_relay_proxy.cs">
       <Link>yocto_relay_proxy.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\yocto_rfidreader_proxy.cs">
+      <Link>yocto_rfidreader_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_sdi12port_proxy.cs">
+      <Link>yocto_sdi12port_proxy.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\yocto_segmenteddisplay_proxy.cs">
       <Link>yocto_segmenteddisplay_proxy.cs</Link>
     </Compile>
@@ -511,8 +523,23 @@
     <Compile Include="..\..\Sources\yocto_i2csnoopingrecord_proxy.cs">
       <Link>yocto_i2csnoopingrecord_proxy.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\yocto_sdi12snoopingrecord_proxy.cs">
+      <Link>yocto_sdi12snoopingrecord_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_sdi12sensor_proxy.cs">
+      <Link>yocto_sdi12sensor_proxy.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\yocto_inputcapturedata_proxy.cs">
       <Link>yocto_inputcapturedata_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_rfidtaginfo_proxy.cs">
+      <Link>yocto_rfidtaginfo_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_rfidoptions_proxy.cs">
+      <Link>yocto_rfidoptions_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_rfidstatus_proxy.cs">
+      <Link>yocto_rfidstatus_proxy.cs</Link>
     </Compile>
 <!-- yocto_patch_stop -->
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupschedule_proxy.cs 48183 2022-01-20 10:26:11Z mvuilleu $
+ *  $Id: yocto_wakeupschedule_proxy.cs 56230 2023-08-21 15:20:59Z mvuilleu $
  *
  *  Implements YWakeUpScheduleProxy, the Proxy API for WakeUpSchedule
  *
@@ -166,6 +166,7 @@ namespace YoctoProxyAPI
         public const int _WeekDays_INVALID = -1;
         public const int _MonthDays_INVALID = -1;
         public const int _Months_INVALID = -1;
+        public const int _SecondsBefore_INVALID = -1;
         public const long _NextOccurence_INVALID = YAPI.INVALID_LONG;
 
         // reference to real YoctoAPI object
@@ -177,6 +178,7 @@ namespace YoctoProxyAPI
         protected int _weekDays = _WeekDays_INVALID;
         protected int _monthDays = _MonthDays_INVALID;
         protected int _months = _Months_INVALID;
+        protected int _secondsBefore = _SecondsBefore_INVALID;
         protected long _nextOccurence = _NextOccurence_INVALID;
         //--- (end of YWakeUpSchedule definitions)
 
@@ -254,6 +256,7 @@ namespace YoctoProxyAPI
             _weekDays = _func.get_weekDays();
             _monthDays = _func.get_monthDays();
             _months = _func.get_months();
+            _secondsBefore = _func.get_secondsBefore();
         }
 
         /**
@@ -854,6 +857,110 @@ namespace YoctoProxyAPI
             }
             _func.set_months(newval);
             _months = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the number of seconds to anticipate wake-up time to allow
+         *   the system to power-up.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the number of seconds to anticipate wake-up time to allow
+         *   the system to power-up
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YWakeUpSchedule.SECONDSBEFORE_INVALID</c>.
+         * </para>
+         */
+        public int get_secondsBefore()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
+            }
+            res = _func.get_secondsBefore();
+            if (res == YAPI.INVALID_INT) {
+                res = _SecondsBefore_INVALID;
+            }
+            return res;
+        }
+
+        /**
+         * <summary>
+         *   Changes the number of seconds to anticipate wake-up time to allow
+         *   the system to power-up.
+         * <para>
+         *   Remember to call the <c>saveToFlash()</c> method of the module if the
+         *   modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   an integer corresponding to the number of seconds to anticipate wake-up time to allow
+         *   the system to power-up
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_secondsBefore(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No WakeUpSchedule connected");
+            }
+            if (newval == _SecondsBefore_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            return _func.set_secondsBefore(newval);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Number of seconds to anticipate wake-up time to allow</value>
+        public int SecondsBefore
+        {
+            get
+            {
+                if (_func == null) {
+                    return _SecondsBefore_INVALID;
+                }
+                if (_online) {
+                    return _secondsBefore;
+                }
+                return _SecondsBefore_INVALID;
+            }
+            set
+            {
+                setprop_secondsBefore(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_secondsBefore(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _SecondsBefore_INVALID) {
+                return;
+            }
+            if (newval == _secondsBefore) {
+                return;
+            }
+            _func.set_secondsBefore(newval);
+            _secondsBefore = newval;
         }
 
         /**

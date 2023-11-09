@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_cellular.cs 53886 2023-04-05 08:06:39Z mvuilleu $
+ * $Id: yocto_cellular.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  * Implements yFindCellular(), the high-level API for Cellular functions
  *
@@ -51,9 +51,9 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 
     //--- (generated code: YCellRecord return codes)
-    //--- (end of generated code: YCellRecord return codes)
+//--- (end of generated code: YCellRecord return codes)
     //--- (generated code: YCellular return codes)
-    //--- (end of generated code: YCellular return codes)
+//--- (end of generated code: YCellular return codes)
 
 //--- (generated code: YCellRecord dlldef)
 //--- (end of generated code: YCellRecord dlldef)
@@ -220,8 +220,6 @@ public class YCellRecord
     //--- (end of generated code: YCellRecord implementation)
 
     //--- (generated code: YCellRecord functions)
-
-
 
     //--- (end of generated code: YCellRecord functions)
 }
@@ -6219,8 +6217,6 @@ public class YCellular : YFunction
             return null;
         return FindCellular(serial + "." + funcId);
     }
-
-
 
     //--- (end of generated code: YCellular functions)
 }

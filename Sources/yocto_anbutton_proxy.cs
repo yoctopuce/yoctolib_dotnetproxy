@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_anbutton_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_anbutton_proxy.cs 56268 2023-08-25 17:43:56Z mvuilleu $
  *
  *  Implements YAnButtonProxy, the Proxy API for AnButton
  *
@@ -182,6 +182,7 @@ namespace YoctoProxyAPI
         public const int _InputType_ANALOG_FAST = 1;
         public const int _InputType_DIGITAL4 = 2;
         public const int _InputType_ANALOG_SMOOTH = 3;
+        public const int _InputType_DIGITAL_FAST = 4;
 
         // reference to real YoctoAPI object
         protected new YAnButton _func;
@@ -916,9 +917,9 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   a value among <c>YAnButton.INPUTTYPE_ANALOG_FAST</c>, <c>YAnButton.INPUTTYPE_DIGITAL4</c> and
-         *   <c>YAnButton.INPUTTYPE_ANALOG_SMOOTH</c> corresponding to the decoding method applied to the input
-         *   (analog or multiplexed binary switches)
+         *   a value among <c>YAnButton.INPUTTYPE_ANALOG_FAST</c>, <c>YAnButton.INPUTTYPE_DIGITAL4</c>,
+         *   <c>YAnButton.INPUTTYPE_ANALOG_SMOOTH</c> and <c>YAnButton.INPUTTYPE_DIGITAL_FAST</c> corresponding
+         *   to the decoding method applied to the input (analog or multiplexed binary switches)
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YAnButton.INPUTTYPE_INVALID</c>.
@@ -943,9 +944,9 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   a value among <c>YAnButton.INPUTTYPE_ANALOG_FAST</c>, <c>YAnButton.INPUTTYPE_DIGITAL4</c> and
-         *   <c>YAnButton.INPUTTYPE_ANALOG_SMOOTH</c> corresponding to the decoding method applied to the input
-         *   (analog or multiplexed binary switches)
+         *   a value among <c>YAnButton.INPUTTYPE_ANALOG_FAST</c>, <c>YAnButton.INPUTTYPE_DIGITAL4</c>,
+         *   <c>YAnButton.INPUTTYPE_ANALOG_SMOOTH</c> and <c>YAnButton.INPUTTYPE_DIGITAL_FAST</c> corresponding
+         *   to the decoding method applied to the input (analog or multiplexed binary switches)
          * </param>
          * <para>
          * </para>

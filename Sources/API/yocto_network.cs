@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_network.cs 53886 2023-04-05 08:06:39Z mvuilleu $
+ *  $Id: yocto_network.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindNetwork(), the high-level API for Network functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YNetwork return codes)
-    //--- (end of YNetwork return codes)
+#pragma warning disable 1591
+//--- (YNetwork return codes)
+//--- (end of YNetwork return codes)
 //--- (YNetwork dlldef)
 //--- (end of YNetwork dlldef)
 //--- (YNetwork yapiwrapper)
@@ -2105,10 +2105,9 @@ public class YNetwork : YFunction
         return FindNetwork(serial + "." + funcId);
     }
 
-
-
     //--- (end of YNetwork functions)
 }
 #pragma warning restore 1591
+
 
 }

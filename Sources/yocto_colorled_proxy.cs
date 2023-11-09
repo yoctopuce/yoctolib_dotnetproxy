@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorled_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_colorled_proxy.cs 56017 2023-08-14 08:47:38Z mvuilleu $
  *
  *  Implements YColorLedProxy, the Proxy API for ColorLed
  *
@@ -427,7 +427,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Changes the current color of the LED, using a color HSL.
+         *   Changes the current color of the LED, using a specific HSL color.
          * <para>
          *   Encoding is done as follows: 0xHHSSLL.
          * </para>
@@ -435,7 +435,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <param name="newval">
-         *   an integer corresponding to the current color of the LED, using a color HSL
+         *   an integer corresponding to the current color of the LED, using a specific HSL color
          * </param>
          * <para>
          * </para>
@@ -693,7 +693,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Return the blinking sequence signature.
+         *   Returns the blinking sequence signature.
          * <para>
          *   Since blinking
          *   sequences cannot be read from the device, this can be used
@@ -704,7 +704,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   an integer
+         *   an integer corresponding to the blinking sequence signature
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YColorLed.BLINKSEQSIGNATURE_INVALID</c>.

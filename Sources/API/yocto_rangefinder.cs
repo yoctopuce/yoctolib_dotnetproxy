@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_rangefinder.cs 52848 2023-01-20 15:49:48Z mvuilleu $
+ *  $Id: yocto_rangefinder.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindRangeFinder(), the high-level API for RangeFinder functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YRangeFinder return codes)
-    //--- (end of YRangeFinder return codes)
+#pragma warning disable 1591
+//--- (YRangeFinder return codes)
+//--- (end of YRangeFinder return codes)
 //--- (YRangeFinder dlldef)
 //--- (end of YRangeFinder dlldef)
 //--- (YRangeFinder yapiwrapper)
@@ -784,10 +784,9 @@ public class YRangeFinder : YSensor
         return FindRangeFinder(serial + "." + funcId);
     }
 
-
-
     //--- (end of YRangeFinder functions)
 }
 #pragma warning restore 1591
+
 
 }

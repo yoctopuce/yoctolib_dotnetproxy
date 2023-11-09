@@ -51,7 +51,7 @@ using YFUN_DESCR = System.Int32;
 
 #pragma warning disable 1591
 //--- (generated code: YInputCaptureData return codes)
-    //--- (end of generated code: YInputCaptureData return codes)
+//--- (end of generated code: YInputCaptureData return codes)
 //--- (generated code: YInputCaptureData dlldef)
 //--- (end of generated code: YInputCaptureData dlldef)
 //--- (generated code: YInputCaptureData yapiwrapper)
@@ -157,6 +157,9 @@ public class YInputCaptureData
         int ms;
         int recSize;
         int count;
+        int mult1;
+        int mult2;
+        int mult3;
         double v;
 
         buffSize = (sdata).Length;
@@ -222,11 +225,31 @@ public class YInputCaptureData
                 recOfs = recOfs + 1;
             }
         }
+        if (((recOfs) & (1)) == 1) {
+            // align to next word
+            recOfs = recOfs + 1;
+        }
+        mult1 = 1;
+        mult2 = 1;
+        mult3 = 1;
+        if (recOfs < this._recOfs) {
+            // load optional value multiplier
+            mult1 = this._decodeU16(sdata, this._recOfs);
+            recOfs = recOfs + 2;
+            if (this._var2size > 0) {
+                mult2 = this._decodeU16(sdata, this._recOfs);
+                recOfs = recOfs + 2;
+            }
+            if (this._var3size > 0) {
+                mult3 = this._decodeU16(sdata, this._recOfs);
+                recOfs = recOfs + 2;
+            }
+        }
         recOfs = this._recOfs;
         count = this._nRecs;
         while ((count > 0) && (recOfs + this._var1size <= buffSize)) {
             v = this._decodeVal(sdata, recOfs, this._var1size) / 1000.0;
-            this._var1samples.Add(v);
+            this._var1samples.Add(v*mult1);
             recOfs = recOfs + recSize;
         }
         if (this._var2size > 0) {
@@ -234,7 +257,7 @@ public class YInputCaptureData
             count = this._nRecs;
             while ((count > 0) && (recOfs + this._var2size <= buffSize)) {
                 v = this._decodeVal(sdata, recOfs, this._var2size) / 1000.0;
-                this._var2samples.Add(v);
+                this._var2samples.Add(v*mult2);
                 recOfs = recOfs + recSize;
             }
         }
@@ -243,7 +266,7 @@ public class YInputCaptureData
             count = this._nRecs;
             while ((count > 0) && (recOfs + this._var3size <= buffSize)) {
                 v = this._decodeVal(sdata, recOfs, this._var3size) / 1000.0;
-                this._var3samples.Add(v);
+                this._var3samples.Add(v*mult3);
                 recOfs = recOfs + recSize;
             }
         }
@@ -531,13 +554,11 @@ public class YInputCaptureData
 
     //--- (generated code: YInputCaptureData functions)
 
-
-
     //--- (end of generated code: YInputCaptureData functions)
 }
 
 //--- (generated code: YInputCapture return codes)
-    //--- (end of generated code: YInputCapture return codes)
+//--- (end of generated code: YInputCapture return codes)
 //--- (generated code: YInputCapture dlldef)
 //--- (end of generated code: YInputCapture dlldef)
 //--- (generated code: YInputCapture yapiwrapper)
@@ -1378,8 +1399,6 @@ public class YInputCapture : YFunction
             return null;
         return FindInputCapture(serial + "." + funcId);
     }
-
-
 
     //--- (end of generated code: YInputCapture functions)
 }

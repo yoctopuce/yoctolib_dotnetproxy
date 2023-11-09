@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_powersupply.cs 50689 2022-08-17 14:37:15Z mvuilleu $
+ *  $Id: yocto_powersupply.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindPowerSupply(), the high-level API for PowerSupply functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YPowerSupply return codes)
-    //--- (end of YPowerSupply return codes)
+#pragma warning disable 1591
+//--- (YPowerSupply return codes)
+//--- (end of YPowerSupply return codes)
 //--- (YPowerSupply dlldef)
 //--- (end of YPowerSupply dlldef)
 //--- (YPowerSupply yapiwrapper)
@@ -60,8 +60,8 @@ using YFUN_DESCR = System.Int32;
  * <summary>
  *   The <c>YPowerSupply</c> class allows you to drive a Yoctopuce power supply.
  * <para>
- *   It can be use to change the voltage set point,
- *   the current limit and the enable/disable the output.
+ *   It can be use to change the voltage and current limits, and to enable/disable
+ *   the output.
  * </para>
  * <para>
  * </para>
@@ -74,35 +74,31 @@ public class YPowerSupply : YFunction
     public new delegate void ValueCallback(YPowerSupply func, string value);
     public new delegate void TimedReportCallback(YPowerSupply func, YMeasure measure);
 
-    public const double VOLTAGESETPOINT_INVALID = YAPI.INVALID_DOUBLE;
+    public const double VOLTAGELIMIT_INVALID = YAPI.INVALID_DOUBLE;
     public const double CURRENTLIMIT_INVALID = YAPI.INVALID_DOUBLE;
     public const int POWEROUTPUT_OFF = 0;
     public const int POWEROUTPUT_ON = 1;
     public const int POWEROUTPUT_INVALID = -1;
-    public const int VOLTAGESENSE_INT = 0;
-    public const int VOLTAGESENSE_EXT = 1;
-    public const int VOLTAGESENSE_INVALID = -1;
     public const double MEASUREDVOLTAGE_INVALID = YAPI.INVALID_DOUBLE;
     public const double MEASUREDCURRENT_INVALID = YAPI.INVALID_DOUBLE;
     public const double INPUTVOLTAGE_INVALID = YAPI.INVALID_DOUBLE;
-    public const double VINT_INVALID = YAPI.INVALID_DOUBLE;
-    public const double LDOTEMPERATURE_INVALID = YAPI.INVALID_DOUBLE;
     public const string VOLTAGETRANSITION_INVALID = YAPI.INVALID_STRING;
-    public const double VOLTAGEATSTARTUP_INVALID = YAPI.INVALID_DOUBLE;
-    public const double CURRENTATSTARTUP_INVALID = YAPI.INVALID_DOUBLE;
+    public const double VOLTAGELIMITATSTARTUP_INVALID = YAPI.INVALID_DOUBLE;
+    public const double CURRENTLIMITATSTARTUP_INVALID = YAPI.INVALID_DOUBLE;
+    public const int POWEROUTPUTATSTARTUP_OFF = 0;
+    public const int POWEROUTPUTATSTARTUP_ON = 1;
+    public const int POWEROUTPUTATSTARTUP_INVALID = -1;
     public const string COMMAND_INVALID = YAPI.INVALID_STRING;
-    protected double _voltageSetPoint = VOLTAGESETPOINT_INVALID;
+    protected double _voltageLimit = VOLTAGELIMIT_INVALID;
     protected double _currentLimit = CURRENTLIMIT_INVALID;
     protected int _powerOutput = POWEROUTPUT_INVALID;
-    protected int _voltageSense = VOLTAGESENSE_INVALID;
     protected double _measuredVoltage = MEASUREDVOLTAGE_INVALID;
     protected double _measuredCurrent = MEASUREDCURRENT_INVALID;
     protected double _inputVoltage = INPUTVOLTAGE_INVALID;
-    protected double _vInt = VINT_INVALID;
-    protected double _ldoTemperature = LDOTEMPERATURE_INVALID;
     protected string _voltageTransition = VOLTAGETRANSITION_INVALID;
-    protected double _voltageAtStartUp = VOLTAGEATSTARTUP_INVALID;
-    protected double _currentAtStartUp = CURRENTATSTARTUP_INVALID;
+    protected double _voltageLimitAtStartUp = VOLTAGELIMITATSTARTUP_INVALID;
+    protected double _currentLimitAtStartUp = CURRENTLIMITATSTARTUP_INVALID;
+    protected int _powerOutputAtStartUp = POWEROUTPUTATSTARTUP_INVALID;
     protected string _command = COMMAND_INVALID;
     protected ValueCallback _valueCallbackPowerSupply = null;
     //--- (end of YPowerSupply definitions)
@@ -119,9 +115,9 @@ public class YPowerSupply : YFunction
 
     protected override void _parseAttr(YAPI.YJSONObject json_val)
     {
-        if (json_val.has("voltageSetPoint"))
+        if (json_val.has("voltageLimit"))
         {
-            _voltageSetPoint = Math.Round(json_val.getDouble("voltageSetPoint") / 65.536) / 1000.0;
+            _voltageLimit = Math.Round(json_val.getDouble("voltageLimit") / 65.536) / 1000.0;
         }
         if (json_val.has("currentLimit"))
         {
@@ -130,10 +126,6 @@ public class YPowerSupply : YFunction
         if (json_val.has("powerOutput"))
         {
             _powerOutput = json_val.getInt("powerOutput") > 0 ? 1 : 0;
-        }
-        if (json_val.has("voltageSense"))
-        {
-            _voltageSense = json_val.getInt("voltageSense");
         }
         if (json_val.has("measuredVoltage"))
         {
@@ -147,25 +139,21 @@ public class YPowerSupply : YFunction
         {
             _inputVoltage = Math.Round(json_val.getDouble("inputVoltage") / 65.536) / 1000.0;
         }
-        if (json_val.has("vInt"))
-        {
-            _vInt = Math.Round(json_val.getDouble("vInt") / 65.536) / 1000.0;
-        }
-        if (json_val.has("ldoTemperature"))
-        {
-            _ldoTemperature = Math.Round(json_val.getDouble("ldoTemperature") / 65.536) / 1000.0;
-        }
         if (json_val.has("voltageTransition"))
         {
             _voltageTransition = json_val.getString("voltageTransition");
         }
-        if (json_val.has("voltageAtStartUp"))
+        if (json_val.has("voltageLimitAtStartUp"))
         {
-            _voltageAtStartUp = Math.Round(json_val.getDouble("voltageAtStartUp") / 65.536) / 1000.0;
+            _voltageLimitAtStartUp = Math.Round(json_val.getDouble("voltageLimitAtStartUp") / 65.536) / 1000.0;
         }
-        if (json_val.has("currentAtStartUp"))
+        if (json_val.has("currentLimitAtStartUp"))
         {
-            _currentAtStartUp = Math.Round(json_val.getDouble("currentAtStartUp") / 65.536) / 1000.0;
+            _currentLimitAtStartUp = Math.Round(json_val.getDouble("currentLimitAtStartUp") / 65.536) / 1000.0;
+        }
+        if (json_val.has("powerOutputAtStartUp"))
+        {
+            _powerOutputAtStartUp = json_val.getInt("powerOutputAtStartUp") > 0 ? 1 : 0;
         }
         if (json_val.has("command"))
         {
@@ -176,14 +164,14 @@ public class YPowerSupply : YFunction
 
     /**
      * <summary>
-     *   Changes the voltage set point, in V.
+     *   Changes the voltage limit, in V.
      * <para>
      * </para>
      * <para>
      * </para>
      * </summary>
      * <param name="newval">
-     *   a floating point number corresponding to the voltage set point, in V
+     *   a floating point number corresponding to the voltage limit, in V
      * </param>
      * <para>
      * </para>
@@ -194,41 +182,41 @@ public class YPowerSupply : YFunction
      *   On failure, throws an exception or returns a negative error code.
      * </para>
      */
-    public int set_voltageSetPoint(double newval)
+    public int set_voltageLimit(double newval)
     {
         string rest_val;
         lock (_thisLock) {
             rest_val = Math.Round(newval * 65536.0).ToString();
-            return _setAttr("voltageSetPoint", rest_val);
+            return _setAttr("voltageLimit", rest_val);
         }
     }
 
 
     /**
      * <summary>
-     *   Returns the voltage set point, in V.
+     *   Returns the voltage limit, in V.
      * <para>
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   a floating point number corresponding to the voltage set point, in V
+     *   a floating point number corresponding to the voltage limit, in V
      * </returns>
      * <para>
-     *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGESETPOINT_INVALID</c>.
+     *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGELIMIT_INVALID</c>.
      * </para>
      */
-    public double get_voltageSetPoint()
+    public double get_voltageLimit()
     {
         double res;
         lock (_thisLock) {
             if (this._cacheExpiration <= YAPI.GetTickCount()) {
                 if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
-                    return VOLTAGESETPOINT_INVALID;
+                    return VOLTAGELIMIT_INVALID;
                 }
             }
-            res = this._voltageSetPoint;
+            res = this._voltageLimit;
         }
         return res;
     }
@@ -356,67 +344,6 @@ public class YPowerSupply : YFunction
 
     /**
      * <summary>
-     *   Returns the output voltage control point.
-     * <para>
-     * </para>
-     * <para>
-     * </para>
-     * </summary>
-     * <returns>
-     *   either <c>YPowerSupply.VOLTAGESENSE_INT</c> or <c>YPowerSupply.VOLTAGESENSE_EXT</c>, according to
-     *   the output voltage control point
-     * </returns>
-     * <para>
-     *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGESENSE_INVALID</c>.
-     * </para>
-     */
-    public int get_voltageSense()
-    {
-        int res;
-        lock (_thisLock) {
-            if (this._cacheExpiration <= YAPI.GetTickCount()) {
-                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
-                    return VOLTAGESENSE_INVALID;
-                }
-            }
-            res = this._voltageSense;
-        }
-        return res;
-    }
-
-    /**
-     * <summary>
-     *   Changes the voltage control point.
-     * <para>
-     * </para>
-     * <para>
-     * </para>
-     * </summary>
-     * <param name="newval">
-     *   either <c>YPowerSupply.VOLTAGESENSE_INT</c> or <c>YPowerSupply.VOLTAGESENSE_EXT</c>, according to
-     *   the voltage control point
-     * </param>
-     * <para>
-     * </para>
-     * <returns>
-     *   <c>YAPI.SUCCESS</c> if the call succeeds.
-     * </returns>
-     * <para>
-     *   On failure, throws an exception or returns a negative error code.
-     * </para>
-     */
-    public int set_voltageSense(int newval)
-    {
-        string rest_val;
-        lock (_thisLock) {
-            rest_val = (newval).ToString();
-            return _setAttr("voltageSense", rest_val);
-        }
-    }
-
-
-    /**
-     * <summary>
      *   Returns the measured output voltage, in V.
      * <para>
      * </para>
@@ -505,66 +432,6 @@ public class YPowerSupply : YFunction
     }
 
 
-    /**
-     * <summary>
-     *   Returns the internal voltage, in V.
-     * <para>
-     * </para>
-     * <para>
-     * </para>
-     * </summary>
-     * <returns>
-     *   a floating point number corresponding to the internal voltage, in V
-     * </returns>
-     * <para>
-     *   On failure, throws an exception or returns <c>YPowerSupply.VINT_INVALID</c>.
-     * </para>
-     */
-    public double get_vInt()
-    {
-        double res;
-        lock (_thisLock) {
-            if (this._cacheExpiration <= YAPI.GetTickCount()) {
-                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
-                    return VINT_INVALID;
-                }
-            }
-            res = this._vInt;
-        }
-        return res;
-    }
-
-
-    /**
-     * <summary>
-     *   Returns the LDO temperature, in Celsius.
-     * <para>
-     * </para>
-     * <para>
-     * </para>
-     * </summary>
-     * <returns>
-     *   a floating point number corresponding to the LDO temperature, in Celsius
-     * </returns>
-     * <para>
-     *   On failure, throws an exception or returns <c>YPowerSupply.LDOTEMPERATURE_INVALID</c>.
-     * </para>
-     */
-    public double get_ldoTemperature()
-    {
-        double res;
-        lock (_thisLock) {
-            if (this._cacheExpiration <= YAPI.GetTickCount()) {
-                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
-                    return LDOTEMPERATURE_INVALID;
-                }
-            }
-            res = this._ldoTemperature;
-        }
-        return res;
-    }
-
-
     public string get_voltageTransition()
     {
         string res;
@@ -610,41 +477,41 @@ public class YPowerSupply : YFunction
      *   On failure, throws an exception or returns a negative error code.
      * </para>
      */
-    public int set_voltageAtStartUp(double newval)
+    public int set_voltageLimitAtStartUp(double newval)
     {
         string rest_val;
         lock (_thisLock) {
             rest_val = Math.Round(newval * 65536.0).ToString();
-            return _setAttr("voltageAtStartUp", rest_val);
+            return _setAttr("voltageLimitAtStartUp", rest_val);
         }
     }
 
 
     /**
      * <summary>
-     *   Returns the selected voltage set point at device startup, in V.
+     *   Returns the selected voltage limit at device startup, in V.
      * <para>
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   a floating point number corresponding to the selected voltage set point at device startup, in V
+     *   a floating point number corresponding to the selected voltage limit at device startup, in V
      * </returns>
      * <para>
-     *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGEATSTARTUP_INVALID</c>.
+     *   On failure, throws an exception or returns <c>YPowerSupply.VOLTAGELIMITATSTARTUP_INVALID</c>.
      * </para>
      */
-    public double get_voltageAtStartUp()
+    public double get_voltageLimitAtStartUp()
     {
         double res;
         lock (_thisLock) {
             if (this._cacheExpiration <= YAPI.GetTickCount()) {
                 if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
-                    return VOLTAGEATSTARTUP_INVALID;
+                    return VOLTAGELIMITATSTARTUP_INVALID;
                 }
             }
-            res = this._voltageAtStartUp;
+            res = this._voltageLimitAtStartUp;
         }
         return res;
     }
@@ -671,12 +538,12 @@ public class YPowerSupply : YFunction
      *   On failure, throws an exception or returns a negative error code.
      * </para>
      */
-    public int set_currentAtStartUp(double newval)
+    public int set_currentLimitAtStartUp(double newval)
     {
         string rest_val;
         lock (_thisLock) {
             rest_val = Math.Round(newval * 65536.0).ToString();
-            return _setAttr("currentAtStartUp", rest_val);
+            return _setAttr("currentLimitAtStartUp", rest_val);
         }
     }
 
@@ -693,21 +560,84 @@ public class YPowerSupply : YFunction
      *   a floating point number corresponding to the selected current limit at device startup, in mA
      * </returns>
      * <para>
-     *   On failure, throws an exception or returns <c>YPowerSupply.CURRENTATSTARTUP_INVALID</c>.
+     *   On failure, throws an exception or returns <c>YPowerSupply.CURRENTLIMITATSTARTUP_INVALID</c>.
      * </para>
      */
-    public double get_currentAtStartUp()
+    public double get_currentLimitAtStartUp()
     {
         double res;
         lock (_thisLock) {
             if (this._cacheExpiration <= YAPI.GetTickCount()) {
                 if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
-                    return CURRENTATSTARTUP_INVALID;
+                    return CURRENTLIMITATSTARTUP_INVALID;
                 }
             }
-            res = this._currentAtStartUp;
+            res = this._currentLimitAtStartUp;
         }
         return res;
+    }
+
+
+    /**
+     * <summary>
+     *   Returns the power supply output switch state.
+     * <para>
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   either <c>YPowerSupply.POWEROUTPUTATSTARTUP_OFF</c> or <c>YPowerSupply.POWEROUTPUTATSTARTUP_ON</c>,
+     *   according to the power supply output switch state
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YPowerSupply.POWEROUTPUTATSTARTUP_INVALID</c>.
+     * </para>
+     */
+    public int get_powerOutputAtStartUp()
+    {
+        int res;
+        lock (_thisLock) {
+            if (this._cacheExpiration <= YAPI.GetTickCount()) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return POWEROUTPUTATSTARTUP_INVALID;
+                }
+            }
+            res = this._powerOutputAtStartUp;
+        }
+        return res;
+    }
+
+    /**
+     * <summary>
+     *   Changes the power supply output switch state at device start up.
+     * <para>
+     *   Remember to call the matching
+     *   module <c>saveToFlash()</c> method, otherwise this call has no effect.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="newval">
+     *   either <c>YPowerSupply.POWEROUTPUTATSTARTUP_OFF</c> or <c>YPowerSupply.POWEROUTPUTATSTARTUP_ON</c>,
+     *   according to the power supply output switch state at device start up
+     * </param>
+     * <para>
+     * </para>
+     * <returns>
+     *   <c>YAPI.SUCCESS</c> if the call succeeds.
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns a negative error code.
+     * </para>
+     */
+    public int set_powerOutputAtStartUp(int newval)
+    {
+        string rest_val;
+        lock (_thisLock) {
+            rest_val = (newval > 0 ? "1" : "0");
+            return _setAttr("powerOutputAtStartUp", rest_val);
+        }
     }
 
 
@@ -949,10 +879,9 @@ public class YPowerSupply : YFunction
         return FindPowerSupply(serial + "." + funcId);
     }
 
-
-
     //--- (end of YPowerSupply functions)
 }
 #pragma warning restore 1591
+
 
 }

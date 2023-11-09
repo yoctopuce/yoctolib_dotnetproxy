@@ -102,6 +102,8 @@
     <Compile Include="API\yocto_realtimeclock.cs"/>
     <Compile Include="API\yocto_refframe.cs"/>
     <Compile Include="API\yocto_relay.cs"/>
+    <Compile Include="API\yocto_rfidreader.cs"/>
+    <Compile Include="API\yocto_sdi12port.cs"/>
     <Compile Include="API\yocto_segmenteddisplay.cs"/>
     <Compile Include="API\yocto_serialport.cs"/>
     <Compile Include="API\yocto_servo.cs"/>
@@ -174,6 +176,8 @@
     <Compile Include="yocto_realtimeclock_proxy.cs"/>
     <Compile Include="yocto_refframe_proxy.cs"/>
     <Compile Include="yocto_relay_proxy.cs"/>
+    <Compile Include="yocto_rfidreader_proxy.cs"/>
+    <Compile Include="yocto_sdi12port_proxy.cs"/>
     <Compile Include="yocto_segmenteddisplay_proxy.cs"/>
     <Compile Include="yocto_serialport_proxy.cs"/>
     <Compile Include="yocto_servo_proxy.cs"/>
@@ -201,7 +205,12 @@
     <Compile Include="yocto_snoopingrecord_proxy.cs"/>
     <Compile Include="yocto_spisnoopingrecord_proxy.cs"/>
     <Compile Include="yocto_i2csnoopingrecord_proxy.cs"/>
+    <Compile Include="yocto_sdi12snoopingrecord_proxy.cs"/>
+    <Compile Include="yocto_sdi12sensor_proxy.cs"/>
     <Compile Include="yocto_inputcapturedata_proxy.cs"/>
+    <Compile Include="yocto_rfidtaginfo_proxy.cs"/>
+    <Compile Include="yocto_rfidoptions_proxy.cs"/>
+    <Compile Include="yocto_rfidstatus_proxy.cs"/>
 
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_steppermotor.cs 50689 2022-08-17 14:37:15Z mvuilleu $
+ *  $Id: yocto_steppermotor.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  *  Implements yFindStepperMotor(), the high-level API for StepperMotor functions
  *
@@ -48,9 +48,9 @@ using System.Text;
 using YDEV_DESCR = System.Int32;
 using YFUN_DESCR = System.Int32;
 
- #pragma warning disable 1591
-    //--- (YStepperMotor return codes)
-    //--- (end of YStepperMotor return codes)
+#pragma warning disable 1591
+//--- (YStepperMotor return codes)
+//--- (end of YStepperMotor return codes)
 //--- (YStepperMotor dlldef)
 //--- (end of YStepperMotor dlldef)
 //--- (YStepperMotor yapiwrapper)
@@ -1363,10 +1363,9 @@ public class YStepperMotor : YFunction
         return FindStepperMotor(serial + "." + funcId);
     }
 
-
-
     //--- (end of YStepperMotor functions)
 }
 #pragma warning restore 1591
+
 
 }

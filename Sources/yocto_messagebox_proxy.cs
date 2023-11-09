@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_messagebox_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_messagebox_proxy.cs 55576 2023-07-25 06:26:34Z mvuilleu $
  *
  *  Implements YMessageBoxProxy, the Proxy API for MessageBox
  *
@@ -163,12 +163,14 @@ namespace YoctoProxyAPI
         public const string _SlotsBitmap_INVALID = YAPI.INVALID_STRING;
         public const int _PduSent_INVALID = -1;
         public const int _PduReceived_INVALID = -1;
+        public const string _Obey_INVALID = YAPI.INVALID_STRING;
         public const string _Command_INVALID = YAPI.INVALID_STRING;
 
         // reference to real YoctoAPI object
         protected new YMessageBox _func;
         // property cache
         protected int _slotsInUse = _SlotsInUse_INVALID;
+        protected string _obey = _Obey_INVALID;
         //--- (end of YMessageBox definitions)
 
         //--- (YMessageBox implementation)
@@ -239,6 +241,7 @@ namespace YoctoProxyAPI
         protected override void moduleConfigHasChanged()
        	{
             base.moduleConfigHasChanged();
+            _obey = _func.get_obey();
         }
 
         /**
@@ -435,6 +438,114 @@ namespace YoctoProxyAPI
                 return YAPI.SUCCESS;
             }
             return _func.set_pduReceived(newval);
+        }
+
+        /**
+         * <summary>
+         *   Returns the phone number authorized to send remote management commands.
+         * <para>
+         *   When a phone number is specified, the hub will take contre of all incoming
+         *   SMS messages: it will execute commands coming from the authorized number,
+         *   and delete all messages once received (whether authorized or not).
+         *   If you need to receive SMS messages using your own software, leave this
+         *   attribute empty.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a string corresponding to the phone number authorized to send remote management commands
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YMessageBox.OBEY_INVALID</c>.
+         * </para>
+         */
+        public string get_obey()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
+            }
+            return _func.get_obey();
+        }
+
+        /**
+         * <summary>
+         *   Changes the phone number authorized to send remote management commands.
+         * <para>
+         *   The phone number usually starts with a '+' and does not include spacers.
+         *   When a phone number is specified, the hub will take contre of all incoming
+         *   SMS messages: it will execute commands coming from the authorized number,
+         *   and delete all messages once received (whether authorized or not).
+         *   If you need to receive SMS messages using your own software, leave this
+         *   attribute empty. Remember to call the <c>saveToFlash()</c> method of the
+         *   module if the modification must be kept.
+         * </para>
+         * <para>
+         *   This feature is only available since YoctoHub-GSM-4G.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   a string corresponding to the phone number authorized to send remote management commands
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_obey(string newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No MessageBox connected");
+            }
+            if (newval == _Obey_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            return _func.set_obey(newval);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Phone number authorized to send remote management commands.</value>
+        public string Obey
+        {
+            get
+            {
+                if (_func == null) {
+                    return _Obey_INVALID;
+                }
+                if (_online) {
+                    return _obey;
+                }
+                return _Obey_INVALID;
+            }
+            set
+            {
+                setprop_obey(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_obey(string newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _Obey_INVALID) {
+                return;
+            }
+            if (newval == _obey) {
+                return;
+            }
+            _func.set_obey(newval);
+            _obey = newval;
         }
 
         /**

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_display.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ * $Id: yocto_display.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  * Implements yFindDisplay(), the high-level API for Display functions
  *
@@ -932,8 +932,6 @@ public class YDisplayLayer
 
 
   //--- (generated code: YDisplayLayer functions)
-
-
 
     //--- (end of generated code: YDisplayLayer functions)
 }
@@ -2040,8 +2038,6 @@ public class YDisplay : YFunction
             return null;
         return FindDisplay(serial + "." + funcId);
     }
-
-
 
     //--- (end of generated code: YDisplay functions)
 }

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_gyro.cs 50689 2022-08-17 14:37:15Z mvuilleu $
+ * $Id: yocto_gyro.cs 56058 2023-08-15 07:38:35Z mvuilleu $
  *
  * Implements yFindGyro(), the high-level API for Gyro functions
  *
@@ -51,7 +51,7 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 
 //--- (generated code: YQt return codes)
-    //--- (end of generated code: YQt return codes)
+//--- (end of generated code: YQt return codes)
 //--- (generated code: YQt class start)
 /**
  * <summary>
@@ -323,15 +323,13 @@ public class YQt : YSensor
         return FindQt(serial + "." + funcId);
     }
 
-
-
     //--- (end of generated code: YQt functions)
 }
 
 
 
 //--- (generated code: YGyro return codes)
-    //--- (end of generated code: YGyro return codes)
+//--- (end of generated code: YGyro return codes)
 //--- (generated code: YGyro class start)
 /**
  * <summary>
@@ -1097,7 +1095,7 @@ public class YGyro : YSensor
 
     public virtual int _invokeGyroCallbacks(int qtIndex, double qtValue)
     {
-        switch(qtIndex - 1) {
+        switch (qtIndex - 1) {
         case 0:
             this._w = qtValue;
             break;
@@ -1195,8 +1193,6 @@ public class YGyro : YSensor
             return null;
         return FindGyro(serial + "." + funcId);
     }
-
-
 
     //--- (end of generated code: YGyro functions)
 }
