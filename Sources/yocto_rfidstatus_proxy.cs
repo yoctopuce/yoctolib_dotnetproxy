@@ -53,6 +53,10 @@ namespace YoctoProxyAPI
     public class YRfidStatusProxy
     {
         public YRfidStatus _objref;
+        public YRfidStatusProxy()
+        {
+             _objref = new YRfidStatus();
+        }
         internal YRfidStatusProxy(YRfidStatus objref)
         {
              _objref = objref;

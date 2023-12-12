@@ -164,6 +164,7 @@ namespace YoctoProxyAPI
         // reference to real YoctoAPI object
         protected new YRfidReader _func;
         // property cache
+        protected int _nTags = _NTags_INVALID;
         protected int _refreshRate = _RefreshRate_INVALID;
         //--- (end of YRfidReader definitions)
 
@@ -264,6 +265,28 @@ namespace YoctoProxyAPI
                 res = _NTags_INVALID;
             }
             return res;
+        }
+
+        // property with cached value for instant access (advertised value)
+        /// <value>Number of RFID tags currently detected.</value>
+        public int NTags
+        {
+            get
+            {
+                if (_func == null) {
+                    return _NTags_INVALID;
+                }
+                if (_online) {
+                    return _nTags;
+                }
+                return _NTags_INVALID;
+            }
+        }
+
+        protected override void valueChangeCallback(YFunction source, string value)
+        {
+            base.valueChangeCallback(source, value);
+            _nTags = YAPI._atoi((value).Substring((value).Length-4, 4));
         }
 
         /**
@@ -408,7 +431,7 @@ namespace YoctoProxyAPI
          *   the detailled status of the operation
          * </param>
          * <returns>
-         *   <c>0</c> if the call succeeds.
+         *   a <c>YRfidTagInfo</c> object.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns an empty <c>YRfidTagInfo</c> objact.

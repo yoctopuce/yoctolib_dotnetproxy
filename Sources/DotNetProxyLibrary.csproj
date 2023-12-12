@@ -110,6 +110,7 @@
     <Compile Include="API\yocto_spiport.cs"/>
     <Compile Include="API\yocto_steppermotor.cs"/>
     <Compile Include="API\yocto_temperature.cs"/>
+    <Compile Include="API\yocto_threshold.cs"/>
     <Compile Include="API\yocto_tilt.cs"/>
     <Compile Include="API\yocto_tvoc.cs"/>
     <Compile Include="API\yocto_voc.cs"/>
@@ -184,6 +185,7 @@
     <Compile Include="yocto_spiport_proxy.cs"/>
     <Compile Include="yocto_steppermotor_proxy.cs"/>
     <Compile Include="yocto_temperature_proxy.cs"/>
+    <Compile Include="yocto_threshold_proxy.cs"/>
     <Compile Include="yocto_tilt_proxy.cs"/>
     <Compile Include="yocto_tvoc_proxy.cs"/>
     <Compile Include="yocto_voc_proxy.cs"/>

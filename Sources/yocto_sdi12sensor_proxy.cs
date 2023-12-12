@@ -61,6 +61,264 @@ namespace YoctoProxyAPI
         //--- (YSdi12Sensor definitions)
         //--- (end of YSdi12Sensor definitions)
         //--- (YSdi12Sensor implementation)
+
+        /**
+         * <summary>
+         *   Returns the sensor address.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the sensor address.
+         * </returns>
+         */
+        public virtual string get_sensorAddress()
+        {
+            return _objref.get_sensorAddress();
+        }
+
+        // property with cached value for instant access (storage object)
+        public string SensorAddress
+        {
+            get
+            {
+                return this.get_sensorAddress();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the compatible SDI-12 version of the sensor.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the compatible SDI-12 version of the sensor.
+         * </returns>
+         */
+        public virtual string get_sensorProtocol()
+        {
+            return _objref.get_sensorProtocol();
+        }
+
+        // property with cached value for instant access (storage object)
+        public string SensorProtocol
+        {
+            get
+            {
+                return this.get_sensorProtocol();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the sensor vendor identification.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the sensor vendor identification.
+         * </returns>
+         */
+        public virtual string get_sensorVendor()
+        {
+            return _objref.get_sensorVendor();
+        }
+
+        // property with cached value for instant access (storage object)
+        public string SensorVendor
+        {
+            get
+            {
+                return this.get_sensorVendor();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the sensor model number.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the sensor model number.
+         * </returns>
+         */
+        public virtual string get_sensorModel()
+        {
+            return _objref.get_sensorModel();
+        }
+
+        // property with cached value for instant access (storage object)
+        public string SensorModel
+        {
+            get
+            {
+                return this.get_sensorModel();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the sensor version.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the sensor version.
+         * </returns>
+         */
+        public virtual string get_sensorVersion()
+        {
+            return _objref.get_sensorVersion();
+        }
+
+        // property with cached value for instant access (storage object)
+        public string SensorVersion
+        {
+            get
+            {
+                return this.get_sensorVersion();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the sensor serial number.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the sensor serial number.
+         * </returns>
+         */
+        public virtual string get_sensorSerial()
+        {
+            return _objref.get_sensorSerial();
+        }
+
+        // property with cached value for instant access (storage object)
+        public string SensorSerial
+        {
+            get
+            {
+                return this.get_sensorSerial();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the number of sensor measurements.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the number of sensor measurements.
+         * </returns>
+         */
+        public virtual int get_measureCount()
+        {
+            return _objref.get_measureCount();
+        }
+
+        // property with cached value for instant access (storage object)
+        public int MeasureCount
+        {
+            get
+            {
+                return this.get_measureCount();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the sensor measurement command.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="measureIndex">
+         *   measurement index
+         * </param>
+         * <returns>
+         *   the sensor measurement command.
+         * </returns>
+         */
+        public virtual string get_measureCommand(int measureIndex)
+        {
+            return _objref.get_measureCommand(measureIndex);
+        }
+
+        /**
+         * <summary>
+         *   Returns sensor measurement position.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="measureIndex">
+         *   measurement index
+         * </param>
+         * <returns>
+         *   the sensor measurement command.
+         * </returns>
+         */
+        public virtual int get_measurePosition(int measureIndex)
+        {
+            return _objref.get_measurePosition(measureIndex);
+        }
+
+        /**
+         * <summary>
+         *   Returns the measured value symbol.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="measureIndex">
+         *   measurement index
+         * </param>
+         * <returns>
+         *   the sensor measurement command.
+         * </returns>
+         */
+        public virtual string get_measureSymbol(int measureIndex)
+        {
+            return _objref.get_measureSymbol(measureIndex);
+        }
+
+        /**
+         * <summary>
+         *   Returns the unit of the measured value.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="measureIndex">
+         *   measurement index
+         * </param>
+         * <returns>
+         *   the sensor measurement command.
+         * </returns>
+         */
+        public virtual string get_measureUnit(int measureIndex)
+        {
+            return _objref.get_measureUnit(measureIndex);
+        }
+
+        /**
+         * <summary>
+         *   Returns the description of the measured value.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="measureIndex">
+         *   measurement index
+         * </param>
+         * <returns>
+         *   the sensor measurement command.
+         * </returns>
+         */
+        public virtual string get_measureDescription(int measureIndex)
+        {
+            return _objref.get_measureDescription(measureIndex);
+        }
     }
     //--- (end of YSdi12Sensor implementation)
 }

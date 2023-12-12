@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 56393 2023-09-05 08:36:51Z seb $
+ * $Id: yocto_api.cs 58112 2023-11-28 15:54:27Z mvuilleu $
  *
  * High-level programming interface, common to all modules
  *
@@ -3497,7 +3497,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "57762";
+    public const string YOCTO_API_BUILD_NO = "58438";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -4327,8 +4327,19 @@ public class YAPI
 
         public string getString(string key)
         {
-            YJSONString ystr = (YJSONString) parsed[key];
-            return ystr.getString();
+            if(parsed[key].getJSONType() == YJSONType.STRING)
+            {
+                YJSONString ystr = (YJSONString)parsed[key];
+                return ystr.getString();
+            }
+            else if (parsed[key].getJSONType() == YJSONType.NUMBER) {
+                YJSONNumber yint = (YJSONNumber)parsed[key];
+                return yint.getInt().ToString();
+            }
+            else
+            {
+                return "<JSON_getString_error>";
+            }
         }
 
         public int getInt(string key)

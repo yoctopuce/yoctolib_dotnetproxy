@@ -158,72 +158,207 @@ public class YSdi12Sensor
 
 
 
+    /**
+     * <summary>
+     *   Returns the sensor address.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the sensor address.
+     * </returns>
+     */
     public virtual string get_sensorAddress()
     {
         return this._addr;
     }
 
 
+    /**
+     * <summary>
+     *   Returns the compatible SDI-12 version of the sensor.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the compatible SDI-12 version of the sensor.
+     * </returns>
+     */
     public virtual string get_sensorProtocol()
     {
         return this._proto;
     }
 
 
+    /**
+     * <summary>
+     *   Returns the sensor vendor identification.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the sensor vendor identification.
+     * </returns>
+     */
     public virtual string get_sensorVendor()
     {
         return this._mfg;
     }
 
 
+    /**
+     * <summary>
+     *   Returns the sensor model number.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the sensor model number.
+     * </returns>
+     */
     public virtual string get_sensorModel()
     {
         return this._model;
     }
 
 
+    /**
+     * <summary>
+     *   Returns the sensor version.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the sensor version.
+     * </returns>
+     */
     public virtual string get_sensorVersion()
     {
         return this._ver;
     }
 
 
+    /**
+     * <summary>
+     *   Returns the sensor serial number.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the sensor serial number.
+     * </returns>
+     */
     public virtual string get_sensorSerial()
     {
         return this._sn;
     }
 
 
+    /**
+     * <summary>
+     *   Returns the number of sensor measurements.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the number of sensor measurements.
+     * </returns>
+     */
     public virtual int get_measureCount()
     {
         return this._valuesDesc.Count;
     }
 
 
+    /**
+     * <summary>
+     *   Returns the sensor measurement command.
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="measureIndex">
+     *   measurement index
+     * </param>
+     * <returns>
+     *   the sensor measurement command.
+     * </returns>
+     */
     public virtual string get_measureCommand(int measureIndex)
     {
         return this._valuesDesc[measureIndex][0];
     }
 
 
+    /**
+     * <summary>
+     *   Returns sensor measurement position.
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="measureIndex">
+     *   measurement index
+     * </param>
+     * <returns>
+     *   the sensor measurement command.
+     * </returns>
+     */
     public virtual int get_measurePosition(int measureIndex)
     {
         return YAPI._atoi(this._valuesDesc[measureIndex][2]);
     }
 
 
+    /**
+     * <summary>
+     *   Returns the measured value symbol.
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="measureIndex">
+     *   measurement index
+     * </param>
+     * <returns>
+     *   the sensor measurement command.
+     * </returns>
+     */
     public virtual string get_measureSymbol(int measureIndex)
     {
         return this._valuesDesc[measureIndex][3];
     }
 
 
+    /**
+     * <summary>
+     *   Returns the unit of the measured value.
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="measureIndex">
+     *   measurement index
+     * </param>
+     * <returns>
+     *   the sensor measurement command.
+     * </returns>
+     */
     public virtual string get_measureUnit(int measureIndex)
     {
         return this._valuesDesc[measureIndex][4];
     }
 
 
+    /**
+     * <summary>
+     *   Returns the description of the measured value.
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="measureIndex">
+     *   measurement index
+     * </param>
+     * <returns>
+     *   the sensor measurement command.
+     * </returns>
+     */
     public virtual string get_measureDescription(int measureIndex)
     {
         return this._valuesDesc[measureIndex][5];

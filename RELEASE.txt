@@ -1,3 +1,4 @@
-DotNetProxy v1.10.57762
+DotNetProxy v1.10.58438
 
-- Update code to use YAPI v1.10.57762
+- Fix missing constructor for YRfidStatusProxy
+- Add YThreshold class

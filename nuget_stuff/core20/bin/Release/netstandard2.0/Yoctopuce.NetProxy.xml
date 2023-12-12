@@ -24352,7 +24352,7 @@
               the detailled status of the operation
             </param>
             <returns>
-              <c>YAPI.SUCCESS</c> if the call succeeds.
+              a <c>YRfidTagInfo</c> object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty <c>YRfidTagInfo</c> objact.
@@ -24886,6 +24886,141 @@
             </summary>
             <returns>
               the message content.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_sensorAddress">
+            <summary>
+              Returns the sensor address.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor address.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_sensorProtocol">
+            <summary>
+              Returns the compatible SDI-12 version of the sensor.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the compatible SDI-12 version of the sensor.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_sensorVendor">
+            <summary>
+              Returns the sensor vendor identification.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor vendor identification.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_sensorModel">
+            <summary>
+              Returns the sensor model number.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor model number.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_sensorVersion">
+            <summary>
+              Returns the sensor version.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor version.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_sensorSerial">
+            <summary>
+              Returns the sensor serial number.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor serial number.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_measureCount">
+            <summary>
+              Returns the number of sensor measurements.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the number of sensor measurements.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_measureCommand(System.Int32)">
+            <summary>
+              Returns the sensor measurement command.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_measurePosition(System.Int32)">
+            <summary>
+              Returns sensor measurement position.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_measureSymbol(System.Int32)">
+            <summary>
+              Returns the measured value symbol.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_measureUnit(System.Int32)">
+            <summary>
+              Returns the unit of the measured value.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12Sensor.get_measureDescription(System.Int32)">
+            <summary>
+              Returns the description of the measured value.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
             </returns>
         </member>
         <member name="T:YoctoLib.YSdi12Port">
@@ -29569,6 +29704,218 @@
             <returns>
               a pointer to a <c>YTemperature</c> object, corresponding to
               the first temperature sensor currently online, or a <c>null</c> pointer
+              if there are none.
+            </returns>
+        </member>
+        <member name="T:YoctoLib.YThreshold">
+            <summary>
+              The <c>Threshold</c> class allows you define a threshold on a Yoctopuce sensor
+              to trigger a predefined action, on specific devices where this is implemented.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YThreshold.get_thresholdState">
+            <summary>
+              Returns current state of the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YThreshold.THRESHOLDSTATE_SAFE</c> or <c>YThreshold.THRESHOLDSTATE_ALERT</c>, according
+              to current state of the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.THRESHOLDSTATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YThreshold.get_targetSensor">
+            <summary>
+              Returns the name of the sensor monitored by the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the name of the sensor monitored by the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.TARGETSENSOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YThreshold.set_alertLevel(System.Double)">
+            <summary>
+              Changes the sensor alert level triggering the threshold function.
+            <para>
+              Remember to call the matching module <c>saveToFlash()</c>
+              method if you want to preserve the setting after reboot.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to the sensor alert level triggering the threshold function
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YThreshold.get_alertLevel">
+            <summary>
+              Returns the sensor alert level, triggering the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the sensor alert level, triggering the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.ALERTLEVEL_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YThreshold.set_safeLevel(System.Double)">
+            <summary>
+              Changes the sensor acceptable level for disabling the threshold function.
+            <para>
+              Remember to call the matching module <c>saveToFlash()</c>
+              method if you want to preserve the setting after reboot.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to the sensor acceptable level for disabling the threshold function
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YThreshold.get_safeLevel">
+            <summary>
+              Returns the sensor acceptable level for disabling the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the sensor acceptable level for disabling the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.SAFELEVEL_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YThreshold.FindThreshold(System.String)">
+            <summary>
+              Retrieves a threshold function for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the threshold function is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YThreshold.isOnline()</c> to test if the threshold function is
+              indeed online at a given time. In case of ambiguity when looking for
+              a threshold function by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the threshold function, for instance
+              <c>MyDevice.threshold1</c>.
+            </param>
+            <returns>
+              a <c>YThreshold</c> object allowing you to drive the threshold function.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YThreshold.registerValueCallback(YoctoLib.YThreshold.ValueCallback)">
+            <summary>
+              Registers the callback function that is invoked on every change of advertised value.
+            <para>
+              The callback is invoked only during the execution of <c>ySleep</c> or <c>yHandleEvents</c>.
+              This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+              one of these two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer. The callback function should take two
+              arguments: the function object of which the value has changed, and the character string describing
+              the new advertised value.
+            @noreturn
+            </param>
+        </member>
+        <member name="M:YoctoLib.YThreshold.nextThreshold">
+            <summary>
+              Continues the enumeration of threshold functions started using <c>yFirstThreshold()</c>.
+            <para>
+              Caution: You can't make any assumption about the returned threshold functions order.
+              If you want to find a specific a threshold function, use <c>Threshold.findThreshold()</c>
+              and a hardwareID or a logical name.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YThreshold</c> object, corresponding to
+              a threshold function currently online, or a <c>null</c> pointer
+              if there are no more threshold functions to enumerate.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YThreshold.FirstThreshold">
+            <summary>
+              Starts the enumeration of threshold functions currently accessible.
+            <para>
+              Use the method <c>YThreshold.nextThreshold()</c> to iterate on
+              next threshold functions.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YThreshold</c> object, corresponding to
+              the first threshold function currently online, or a <c>null</c> pointer
               if there are none.
             </returns>
         </member>
@@ -52125,6 +52472,9 @@
               On failure, throws an exception or returns <c>YRfidReader.NTAGS_INVALID</c>.
             </para>
         </member>
+        <member name="P:YoctoProxyAPI.YRfidReaderProxy.NTags">
+            <value>Number of RFID tags currently detected.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YRfidReaderProxy.get_refreshRate">
             <summary>
               Returns the tag list refresh rate, measured in Hz.
@@ -52199,7 +52549,7 @@
               the detailled status of the operation
             </param>
             <returns>
-              <c>0</c> if the call succeeds.
+              a <c>YRfidTagInfo</c> object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty <c>YRfidTagInfo</c> objact.
@@ -57069,6 +57419,195 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="T:YoctoProxyAPI.YThresholdProxy">
+            <summary>
+              The <c>Threshold</c> class allows you define a threshold on a Yoctopuce sensor
+              to trigger a predefined action, on specific devices where this is implemented.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.FindThreshold(System.String)">
+            <summary>
+              Retrieves a threshold function for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the threshold function is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YThreshold.isOnline()</c> to test if the threshold function is
+              indeed online at a given time. In case of ambiguity when looking for
+              a threshold function by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the threshold function, for instance
+              <c>MyDevice.threshold1</c>.
+            </param>
+            <returns>
+              a <c>YThreshold</c> object allowing you to drive the threshold function.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.GetSimilarFunctions">
+            <summary>
+              Enumerates all functions of type Threshold available on the devices
+              currently reachable by the library, and returns their unique hardware ID.
+            <para>
+              Each of these IDs can be provided as argument to the method
+              <c>YThreshold.FindThreshold</c> to obtain an object that can control the
+              corresponding device.
+            </para>
+            </summary>
+            <returns>
+              an array of strings, each string containing the unique hardwareId
+              of a device function currently connected.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.get_thresholdState">
+            <summary>
+              Returns current state of the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YThreshold.THRESHOLDSTATE_SAFE</c> or <c>YThreshold.THRESHOLDSTATE_ALERT</c>, according
+              to current state of the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.THRESHOLDSTATE_INVALID</c>.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YThresholdProxy.ThresholdState">
+            <value>Current state of the threshold function.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.get_targetSensor">
+            <summary>
+              Returns the name of the sensor monitored by the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the name of the sensor monitored by the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.TARGETSENSOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.set_alertLevel(System.Double)">
+            <summary>
+              Changes the sensor alert level triggering the threshold function.
+            <para>
+              Remember to call the matching module <c>saveToFlash()</c>
+              method if you want to preserve the setting after reboot.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to the sensor alert level triggering the threshold function
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.get_alertLevel">
+            <summary>
+              Returns the sensor alert level, triggering the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the sensor alert level, triggering the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.ALERTLEVEL_INVALID</c>.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YThresholdProxy.AlertLevel">
+            <value>Sensor alert level, triggering the threshold function.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.set_safeLevel(System.Double)">
+            <summary>
+              Changes the sensor acceptable level for disabling the threshold function.
+            <para>
+              Remember to call the matching module <c>saveToFlash()</c>
+              method if you want to preserve the setting after reboot.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to the sensor acceptable level for disabling the threshold function
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YThresholdProxy.get_safeLevel">
+            <summary>
+              Returns the sensor acceptable level for disabling the threshold function.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the sensor acceptable level for disabling the threshold function
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YThreshold.SAFELEVEL_INVALID</c>.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YThresholdProxy.SafeLevel">
+            <value>Sensor acceptable level for disabling the threshold function.</value>
+        </member>
         <member name="T:YoctoProxyAPI.YTiltProxy">
             <summary>
               The <c>YSensor</c> class is the parent class for all Yoctopuce sensor types.
@@ -61212,6 +61751,141 @@
             </summary>
             <returns>
               the message content.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorAddress">
+            <summary>
+              Returns the sensor address.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor address.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorProtocol">
+            <summary>
+              Returns the compatible SDI-12 version of the sensor.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the compatible SDI-12 version of the sensor.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorVendor">
+            <summary>
+              Returns the sensor vendor identification.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor vendor identification.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorModel">
+            <summary>
+              Returns the sensor model number.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor model number.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorVersion">
+            <summary>
+              Returns the sensor version.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor version.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorSerial">
+            <summary>
+              Returns the sensor serial number.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor serial number.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureCount">
+            <summary>
+              Returns the number of sensor measurements.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the number of sensor measurements.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureCommand(System.Int32)">
+            <summary>
+              Returns the sensor measurement command.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measurePosition(System.Int32)">
+            <summary>
+              Returns sensor measurement position.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureSymbol(System.Int32)">
+            <summary>
+              Returns the measured value symbol.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureUnit(System.Int32)">
+            <summary>
+              Returns the unit of the measured value.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureDescription(System.Int32)">
+            <summary>
+              Returns the description of the measured value.
+            <para>
+            </para>
+            </summary>
+            <param name="measureIndex">
+              measurement index
+            </param>
+            <returns>
+              the sensor measurement command.
             </returns>
         </member>
         <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serieCount">
