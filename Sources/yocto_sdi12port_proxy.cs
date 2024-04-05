@@ -107,7 +107,7 @@ namespace YoctoProxyAPI
     {
         /**
          * <summary>
-         *   Retrieves a SDI12 port for a given identifier.
+         *   Retrieves an SDI12 port for a given identifier.
          * <para>
          *   The identifier can be specified using several formats:
          * </para>
@@ -135,7 +135,7 @@ namespace YoctoProxyAPI
          *   it is invoked. The returned object is nevertheless valid.
          *   Use the method <c>YSdi12Port.isOnline()</c> to test if the SDI12 port is
          *   indeed online at a given time. In case of ambiguity when looking for
-         *   a SDI12 port by logical name, no error is notified: the first instance
+         *   an SDI12 port by logical name, no error is notified: the first instance
          *   found is returned. The search is performed first by hardware name,
          *   then by logical name.
          * </para>
@@ -1578,18 +1578,18 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   the reply returned by the sensor, as a YSdi12Sensor object.
+         *   the reply returned by the sensor, as a YSdi12SensorInfo object.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns an empty string.
          * </para>
          */
-        public virtual YSdi12SensorProxy discoverSingleSensor()
+        public virtual YSdi12SensorInfoProxy discoverSingleSensor()
         {
             if (_func == null) {
                 throw new YoctoApiProxyException("No Sdi12Port connected");
             }
-            return new YSdi12SensorProxy(_func.discoverSingleSensor());
+            return new YSdi12SensorInfoProxy(_func.discoverSingleSensor());
         }
 
         /**
@@ -1602,27 +1602,27 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   all the information from every connected sensor, as an array of YSdi12Sensor object.
+         *   all the information from every connected sensor, as an array of YSdi12SensorInfo object.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns an empty string.
          * </para>
          */
-        public virtual YSdi12SensorProxy[] discoverAllSensors()
+        public virtual YSdi12SensorInfoProxy[] discoverAllSensors()
         {
             if (_func == null) {
                 throw new YoctoApiProxyException("No Sdi12Port connected");
             }
             int i;
             int arrlen;
-            YSdi12Sensor[] std_res;
-            YSdi12SensorProxy[] proxy_res;
+            YSdi12SensorInfo[] std_res;
+            YSdi12SensorInfoProxy[] proxy_res;
             std_res = _func.discoverAllSensors().ToArray();
             arrlen = std_res.Length;
-            proxy_res = new YSdi12SensorProxy[arrlen];
+            proxy_res = new YSdi12SensorInfoProxy[arrlen];
             i = 0;
             while (i < arrlen) {
-                proxy_res[i] = new YSdi12SensorProxy(std_res[i]);
+                proxy_res[i] = new YSdi12SensorInfoProxy(std_res[i]);
                 i = i + 1;
             }
             return proxy_res;
@@ -1677,18 +1677,18 @@ namespace YoctoProxyAPI
          *   New sensor address, as a string
          * </param>
          * <returns>
-         *   the sensor address and information , as a YSdi12Sensor object.
+         *   the sensor address and information , as a YSdi12SensorInfo object.
          * </returns>
          * <para>
          *   On failure, throws an exception or returns an empty string.
          * </para>
          */
-        public virtual YSdi12SensorProxy changeAddress(string oldAddress, string newAddress)
+        public virtual YSdi12SensorInfoProxy changeAddress(string oldAddress, string newAddress)
         {
             if (_func == null) {
                 throw new YoctoApiProxyException("No Sdi12Port connected");
             }
-            return new YSdi12SensorProxy(_func.changeAddress(oldAddress, newAddress));
+            return new YSdi12SensorInfoProxy(_func.changeAddress(oldAddress, newAddress));
         }
 
         /**
@@ -1708,12 +1708,12 @@ namespace YoctoProxyAPI
          *   On failure, throws an exception or returns an empty string.
          * </para>
          */
-        public virtual YSdi12SensorProxy getSensorInformation(string sensorAddr)
+        public virtual YSdi12SensorInfoProxy getSensorInformation(string sensorAddr)
         {
             if (_func == null) {
                 throw new YoctoApiProxyException("No Sdi12Port connected");
             }
-            return new YSdi12SensorProxy(_func.getSensorInformation(sensorAddr));
+            return new YSdi12SensorInfoProxy(_func.getSensorInformation(sensorAddr));
         }
 
         /**
@@ -1764,6 +1764,50 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No Sdi12Port connected");
             }
             return _func.requestConcurrentMeasurements(sensorAddr);
+        }
+
+        /**
+         * <summary>
+         *   Retrieves messages (both direction) in the SDI12 port buffer, starting at current position.
+         * <para>
+         * </para>
+         * <para>
+         *   If no message is found, the search waits for one up to the specified maximum timeout
+         *   (in milliseconds).
+         * </para>
+         * </summary>
+         * <param name="maxWait">
+         *   the maximum number of milliseconds to wait for a message if none is found
+         *   in the receive buffer.
+         * </param>
+         * <param name="maxMsg">
+         *   the maximum number of messages to be returned by the function; up to 254.
+         * </param>
+         * <returns>
+         *   an array of <c>YSdi12SnoopingRecord</c> objects containing the messages found, if any.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns an empty array.
+         * </para>
+         */
+        public virtual YSdi12SnoopingRecordProxy[] snoopMessagesEx(int maxWait, int maxMsg)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Sdi12Port connected");
+            }
+            int i;
+            int arrlen;
+            YSdi12SnoopingRecord[] std_res;
+            YSdi12SnoopingRecordProxy[] proxy_res;
+            std_res = _func.snoopMessagesEx(maxWait, maxMsg).ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YSdi12SnoopingRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YSdi12SnoopingRecordProxy(std_res[i]);
+                i = i + 1;
+            }
+            return proxy_res;
         }
 
         /**

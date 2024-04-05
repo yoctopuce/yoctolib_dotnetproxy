@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_serialport.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ * $Id: yocto_serialport.cs 59641 2024-03-05 20:50:20Z mvuilleu $
  *
  * Implements yFindSerialPort(), the high-level API for SerialPort functions
  *
@@ -57,6 +57,7 @@ public class YSnoopingRecord
     //--- (generated code: YSnoopingRecord definitions)
 
     protected int _tim = 0;
+    protected int _pos = 0;
     protected int _dir = 0;
     protected string _msg;
     //--- (end of generated code: YSnoopingRecord definitions)
@@ -67,10 +68,17 @@ public class YSnoopingRecord
         //--- (end of generated code: YSnoopingRecord attributes initialization)
         YAPI.YJSONObject json = new YAPI.YJSONObject(data);
         json.parse();
-        this._tim = json.getInt("t");
-        string m = json.getString("m");
-        this._dir = (m[0] == '<' ? 1 : 0);
-        this._msg = m.Substring(1);
+        if (json.has("t")) {
+            this._tim = json.getInt("t");
+        }
+        if (json.has("p")) {
+            this._pos = json.getInt("p");
+        }
+        if (json.has("m")) {
+            string m = json.getString("m");
+            this._dir = (m[0] == '<' ? 1 : 0);
+            this._msg = m.Substring(1);
+        }
     }
 
   //--- (generated code: YSnoopingRecord implementation)
@@ -90,6 +98,22 @@ public class YSnoopingRecord
     public virtual int get_time()
     {
         return this._tim;
+    }
+
+
+    /**
+     * <summary>
+     *   Returns the absolute position of the message end.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   the absolute position of the message end.
+     * </returns>
+     */
+    public virtual int get_pos()
+    {
+        return this._pos;
     }
 
 
@@ -1982,6 +2006,9 @@ public class YSerialPort : YFunction
      *   the maximum number of milliseconds to wait for a message if none is found
      *   in the receive buffer.
      * </param>
+     * <param name="maxMsg">
+     *   the maximum number of messages to be returned by the function; up to 254.
+     * </param>
      * <returns>
      *   an array of <c>YSnoopingRecord</c> objects containing the messages found, if any.
      *   Binary messages are converted to hexadecimal representation.
@@ -1990,7 +2017,7 @@ public class YSerialPort : YFunction
      *   On failure, throws an exception or returns an empty array.
      * </para>
      */
-    public virtual List<YSnoopingRecord> snoopMessages(int maxWait)
+    public virtual List<YSnoopingRecord> snoopMessagesEx(int maxWait, int maxMsg)
     {
         string url;
         byte[] msgbin = new byte[0];
@@ -1999,7 +2026,7 @@ public class YSerialPort : YFunction
         List<YSnoopingRecord> res = new List<YSnoopingRecord>();
         int idx;
 
-        url = "rxmsg.json?pos="+Convert.ToString( this._rxptr)+"&maxw="+Convert.ToString(maxWait)+"&t=0";
+        url = "rxmsg.json?pos="+Convert.ToString( this._rxptr)+"&maxw="+Convert.ToString( maxWait)+"&t=0&len="+Convert.ToString(maxMsg);
         msgbin = this._download(url);
         msgarr = this._json_get_array(msgbin);
         msglen = msgarr.Count;
@@ -2015,6 +2042,36 @@ public class YSerialPort : YFunction
             idx = idx + 1;
         }
         return res;
+    }
+
+
+    /**
+     * <summary>
+     *   Retrieves messages (both direction) in the serial port buffer, starting at current position.
+     * <para>
+     *   This function will only compare and return printable characters in the message strings.
+     *   Binary protocols are handled as hexadecimal strings.
+     * </para>
+     * <para>
+     *   If no message is found, the search waits for one up to the specified maximum timeout
+     *   (in milliseconds).
+     * </para>
+     * </summary>
+     * <param name="maxWait">
+     *   the maximum number of milliseconds to wait for a message if none is found
+     *   in the receive buffer.
+     * </param>
+     * <returns>
+     *   an array of <c>YSnoopingRecord</c> objects containing the messages found, if any.
+     *   Binary messages are converted to hexadecimal representation.
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns an empty array.
+     * </para>
+     */
+    public virtual List<YSnoopingRecord> snoopMessages(int maxWait)
+    {
+        return this.snoopMessagesEx(maxWait, 255);
     }
 
 

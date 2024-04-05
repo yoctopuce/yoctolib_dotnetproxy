@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_snoopingrecord_proxy.cs 41171 2020-07-02 17:49:00Z mvuilleu $
+ *  $Id: yocto_snoopingrecord_proxy.cs 58892 2024-01-11 11:11:28Z mvuilleu $
  *
  *  Implements YSnoopingRecordProxy, the Proxy API for SnoopingRecord
  *
@@ -83,6 +83,30 @@ namespace YoctoProxyAPI
             get
             {
                 return this.get_time();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the absolute position of the message end.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the absolute position of the message end.
+         * </returns>
+         */
+        public virtual int get_pos()
+        {
+            return _objref.get_pos();
+        }
+
+        // property with cached value for instant access (storage object)
+        public int Pos
+        {
+            get
+            {
+                return this.get_pos();
             }
         }
 

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmoutput_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_pwmoutput_proxy.cs 58892 2024-01-11 11:11:28Z mvuilleu $
  *
  *  Implements YPwmOutputProxy, the Proxy API for PwmOutput
  *
@@ -167,6 +167,9 @@ namespace YoctoProxyAPI
         public const double _DutyCycle_INVALID = Double.NaN;
         public const double _PulseDuration_INVALID = Double.NaN;
         public const string _PwmTransition_INVALID = YAPI.INVALID_STRING;
+        public const int _InvertedOutput_INVALID = 0;
+        public const int _InvertedOutput_FALSE = 1;
+        public const int _InvertedOutput_TRUE = 2;
         public const int _EnabledAtPowerOn_INVALID = 0;
         public const int _EnabledAtPowerOn_FALSE = 1;
         public const int _EnabledAtPowerOn_TRUE = 2;
@@ -178,6 +181,7 @@ namespace YoctoProxyAPI
         protected double _frequency = _Frequency_INVALID;
         protected double _period = _Period_INVALID;
         protected double _dutyCycle = _DutyCycle_INVALID;
+        protected int _invertedOutput = _InvertedOutput_INVALID;
         protected int _enabledAtPowerOn = _EnabledAtPowerOn_INVALID;
         protected double _dutyCycleAtPowerOn = _DutyCycleAtPowerOn_INVALID;
         protected int _enabled = _Enabled_INVALID;
@@ -254,6 +258,7 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
             _frequency = _func.get_frequency();
             _period = _func.get_period();
+            _invertedOutput = _func.get_invertedOutput()+1;
             _enabledAtPowerOn = _func.get_enabledAtPowerOn()+1;
             _dutyCycleAtPowerOn = _func.get_dutyCycleAtPowerOn();
         }
@@ -730,6 +735,106 @@ namespace YoctoProxyAPI
                 res = Double.NaN;
             }
             return res;
+        }
+
+        /**
+         * <summary>
+         *   Returns true if the output signal is configured as inverted, and false otherwise.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   either <c>YPwmOutput.INVERTEDOUTPUT_FALSE</c> or <c>YPwmOutput.INVERTEDOUTPUT_TRUE</c>, according
+         *   to true if the output signal is configured as inverted, and false otherwise
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YPwmOutput.INVERTEDOUTPUT_INVALID</c>.
+         * </para>
+         */
+        public int get_invertedOutput()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_invertedOutput()+1;
+        }
+
+        /**
+         * <summary>
+         *   Changes the inversion mode of the output signal.
+         * <para>
+         *   Remember to call the matching module <c>saveToFlash()</c> method if you want
+         *   the change to be kept after power cycle.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   either <c>YPwmOutput.INVERTEDOUTPUT_FALSE</c> or <c>YPwmOutput.INVERTEDOUTPUT_TRUE</c>, according
+         *   to the inversion mode of the output signal
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_invertedOutput(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmOutput connected");
+            }
+            if (newval == _InvertedOutput_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_invertedOutput(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>True if the output signal is configured as inverted, and false otherwise.</value>
+        public int InvertedOutput
+        {
+            get
+            {
+                if (_func == null) {
+                    return _InvertedOutput_INVALID;
+                }
+                if (_online) {
+                    return _invertedOutput;
+                }
+                return _InvertedOutput_INVALID;
+            }
+            set
+            {
+                setprop_invertedOutput(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_invertedOutput(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _InvertedOutput_INVALID) {
+                return;
+            }
+            if (newval == _invertedOutput) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_invertedOutput(newval-1);
+            _invertedOutput = newval;
         }
 
         /**

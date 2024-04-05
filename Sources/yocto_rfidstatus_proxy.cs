@@ -169,6 +169,7 @@ namespace YoctoProxyAPI
     public const int INVLD_ACCESS_MODE_COMBINATION = -153;
     public const int INVALID_SIZE = -154;
     public const int BAD_PASSWORD_FORMAT = -155;
+    public const int RADIO_IS_OFF = -156;
         //--- (end of YRfidStatus definitions)
         //--- (YRfidStatus implementation)
 

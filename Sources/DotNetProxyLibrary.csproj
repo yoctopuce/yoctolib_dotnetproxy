@@ -208,7 +208,7 @@
     <Compile Include="yocto_spisnoopingrecord_proxy.cs"/>
     <Compile Include="yocto_i2csnoopingrecord_proxy.cs"/>
     <Compile Include="yocto_sdi12snoopingrecord_proxy.cs"/>
-    <Compile Include="yocto_sdi12sensor_proxy.cs"/>
+    <Compile Include="yocto_sdi12sensorinfo_proxy.cs"/>
     <Compile Include="yocto_inputcapturedata_proxy.cs"/>
     <Compile Include="yocto_rfidtaginfo_proxy.cs"/>
     <Compile Include="yocto_rfidoptions_proxy.cs"/>

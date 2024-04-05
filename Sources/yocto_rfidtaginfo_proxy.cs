@@ -219,8 +219,12 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the index of the first usable storage block on the RFID tag.
+         *   Returns the index of the block available for data storage on the RFID tag.
          * <para>
+         *   Some tags have special block used to configure the tag behavior, these
+         *   blocks must be handled with precaution. However, the  block return by
+         *   <c>get_tagFirstBlock()</c> can be locked, use <c>get_tagLockState()</c>
+         *   to find out  which block are locked.
          * </para>
          * </summary>
          * <returns>
@@ -243,7 +247,11 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the index of the last usable storage block on the RFID tag.
+         *   Returns the index of the last last black available for data storage on the RFID tag,
+         *   However, this block can be locked, use <c>get_tagLockState()</c> to find out
+         *   which block are locked.
+         * <para>
+         * </para>
          * <para>
          * </para>
          * </summary>

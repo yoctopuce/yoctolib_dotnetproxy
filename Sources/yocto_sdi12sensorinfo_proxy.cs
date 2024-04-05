@@ -2,7 +2,7 @@
  *
  *  $Id: svn_id $
  *
- *  Implements YSdi12SensorProxy, the Proxy API for Sdi12Sensor
+ *  Implements YSdi12SensorInfoProxy, the Proxy API for Sdi12SensorInfo
  *
  *  - - - - - - - - - License information: - - - - - - - - -
  *
@@ -49,18 +49,42 @@ using YoctoLib;
 
 namespace YoctoProxyAPI
 {
-    //--- (YSdi12Sensor class start)
-    public class YSdi12SensorProxy
+    //--- (YSdi12SensorInfo class start)
+    public class YSdi12SensorInfoProxy
     {
-        public YSdi12Sensor _objref;
-        internal YSdi12SensorProxy(YSdi12Sensor objref)
+        public YSdi12SensorInfo _objref;
+        internal YSdi12SensorInfoProxy(YSdi12SensorInfo objref)
         {
              _objref = objref;
         }
-        //--- (end of YSdi12Sensor class start)
-        //--- (YSdi12Sensor definitions)
-        //--- (end of YSdi12Sensor definitions)
-        //--- (YSdi12Sensor implementation)
+        //--- (end of YSdi12SensorInfo class start)
+        //--- (YSdi12SensorInfo definitions)
+        //--- (end of YSdi12SensorInfo definitions)
+        //--- (YSdi12SensorInfo implementation)
+
+        /**
+         * <summary>
+         *   Returns the sensor state.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the sensor state.
+         * </returns>
+         */
+        public virtual bool isValid()
+        {
+            return _objref.isValid();
+        }
+
+        // property with cached value for instant access (storage object)
+        public bool IsValid
+        {
+            get
+            {
+                return this.isValid();
+            }
+        }
 
         /**
          * <summary>
@@ -245,6 +269,7 @@ namespace YoctoProxyAPI
          * </param>
          * <returns>
          *   the sensor measurement command.
+         *   On failure, throws an exception or returns an empty string.
          * </returns>
          */
         public virtual string get_measureCommand(int measureIndex)
@@ -265,6 +290,7 @@ namespace YoctoProxyAPI
          * </param>
          * <returns>
          *   the sensor measurement command.
+         *   On failure, throws an exception or returns 0.
          * </returns>
          */
         public virtual int get_measurePosition(int measureIndex)
@@ -285,6 +311,7 @@ namespace YoctoProxyAPI
          * </param>
          * <returns>
          *   the sensor measurement command.
+         *   On failure, throws an exception or returns an empty string.
          * </returns>
          */
         public virtual string get_measureSymbol(int measureIndex)
@@ -305,6 +332,7 @@ namespace YoctoProxyAPI
          * </param>
          * <returns>
          *   the sensor measurement command.
+         *   On failure, throws an exception or returns an empty string.
          * </returns>
          */
         public virtual string get_measureUnit(int measureIndex)
@@ -325,6 +353,7 @@ namespace YoctoProxyAPI
          * </param>
          * <returns>
          *   the sensor measurement command.
+         *   On failure, throws an exception or returns an empty string.
          * </returns>
          */
         public virtual string get_measureDescription(int measureIndex)
@@ -332,6 +361,6 @@ namespace YoctoProxyAPI
             return _objref.get_measureDescription(measureIndex);
         }
     }
-    //--- (end of YSdi12Sensor implementation)
+    //--- (end of YSdi12SensorInfo implementation)
 }
 

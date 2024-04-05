@@ -532,8 +532,8 @@
     <Compile Include="..\..\Sources\yocto_sdi12snoopingrecord_proxy.cs">
       <Link>yocto_sdi12snoopingrecord_proxy.cs</Link>
     </Compile>
-    <Compile Include="..\..\Sources\yocto_sdi12sensor_proxy.cs">
-      <Link>yocto_sdi12sensor_proxy.cs</Link>
+    <Compile Include="..\..\Sources\yocto_sdi12sensorinfo_proxy.cs">
+      <Link>yocto_sdi12sensorinfo_proxy.cs</Link>
     </Compile>
     <Compile Include="..\..\Sources\yocto_inputcapturedata_proxy.cs">
       <Link>yocto_inputcapturedata_proxy.cs</Link>

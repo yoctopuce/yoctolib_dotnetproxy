@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_spiport_proxy.cs 49744 2022-05-11 15:13:45Z mvuilleu $
+ *  $Id: yocto_spiport_proxy.cs 59637 2024-03-05 18:23:38Z mvuilleu $
  *
  *  Implements YSpiPortProxy, the Proxy API for SpiPort
  *
@@ -107,7 +107,7 @@ namespace YoctoProxyAPI
     {
         /**
          * <summary>
-         *   Retrieves a SPI port for a given identifier.
+         *   Retrieves an SPI port for a given identifier.
          * <para>
          *   The identifier can be specified using several formats:
          * </para>
@@ -135,7 +135,7 @@ namespace YoctoProxyAPI
          *   it is invoked. The returned object is nevertheless valid.
          *   Use the method <c>YSpiPort.isOnline()</c> to test if the SPI port is
          *   indeed online at a given time. In case of ambiguity when looking for
-         *   a SPI port by logical name, no error is notified: the first instance
+         *   an SPI port by logical name, no error is notified: the first instance
          *   found is returned. The search is performed first by hardware name,
          *   then by logical name.
          * </para>
@@ -1769,6 +1769,50 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No SpiPort connected");
             }
             return _func.set_SS(val);
+        }
+
+        /**
+         * <summary>
+         *   Retrieves messages (both direction) in the SPI port buffer, starting at current position.
+         * <para>
+         * </para>
+         * <para>
+         *   If no message is found, the search waits for one up to the specified maximum timeout
+         *   (in milliseconds).
+         * </para>
+         * </summary>
+         * <param name="maxWait">
+         *   the maximum number of milliseconds to wait for a message if none is found
+         *   in the receive buffer.
+         * </param>
+         * <param name="maxMsg">
+         *   the maximum number of messages to be returned by the function; up to 254.
+         * </param>
+         * <returns>
+         *   an array of <c>YSpiSnoopingRecord</c> objects containing the messages found, if any.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns an empty array.
+         * </para>
+         */
+        public virtual YSpiSnoopingRecordProxy[] snoopMessagesEx(int maxWait, int maxMsg)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SpiPort connected");
+            }
+            int i;
+            int arrlen;
+            YSpiSnoopingRecord[] std_res;
+            YSpiSnoopingRecordProxy[] proxy_res;
+            std_res = _func.snoopMessagesEx(maxWait, maxMsg).ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YSpiSnoopingRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YSpiSnoopingRecordProxy(std_res[i]);
+                i = i + 1;
+            }
+            return proxy_res;
         }
 
         /**

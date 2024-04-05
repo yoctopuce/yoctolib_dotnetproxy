@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.10.58438</Version>
+    <Version>1.10.60394</Version>
     <Authors>Yoctopuce Dev Team</Authors>
     <Company>Yoctopuce</Company>
     <Product />
@@ -181,7 +181,7 @@
     <Compile Include="..\..\Sources\yocto_spisnoopingrecord_proxy.cs" Link="yocto_spisnoopingrecord_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_i2csnoopingrecord_proxy.cs" Link="yocto_i2csnoopingrecord_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_sdi12snoopingrecord_proxy.cs" Link="yocto_sdi12snoopingrecord_proxy.cs"/>
-    <Compile Include="..\..\Sources\yocto_sdi12sensor_proxy.cs" Link="yocto_sdi12sensor_proxy.cs"/>
+    <Compile Include="..\..\Sources\yocto_sdi12sensorinfo_proxy.cs" Link="yocto_sdi12sensorinfo_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_inputcapturedata_proxy.cs" Link="yocto_inputcapturedata_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_rfidtaginfo_proxy.cs" Link="yocto_rfidtaginfo_proxy.cs"/>
     <Compile Include="..\..\Sources\yocto_rfidoptions_proxy.cs" Link="yocto_rfidoptions_proxy.cs"/>

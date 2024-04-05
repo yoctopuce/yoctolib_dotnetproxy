@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 58112 2023-11-28 15:54:27Z mvuilleu $
+ * $Id: yocto_api.cs 59953 2024-03-18 09:15:08Z seb $
  *
  * High-level programming interface, common to all modules
  *
@@ -3497,7 +3497,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "1.10";
     public const int YOCTO_API_VERSION_BCD = 0x0110;
 
-    public const string YOCTO_API_BUILD_NO = "58438";
+    public const string YOCTO_API_BUILD_NO = "60394";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -7051,7 +7051,7 @@ public class YFirmwareUpdate
             this._progress = ((this._progress_c * 9) / (10));
             this._progress_msg = errmsg.ToString();
         } else {
-            if (((this._settings).Length != 0)) {
+            if (((this._settings).Length != 0) && ( this._progress_c != 101)) {
                 this._progress_msg = "restoring settings";
                 m = YModule.FindModule(this._serial + ".module");
                 if (!(m.isOnline())) {
@@ -12015,8 +12015,10 @@ public class YModule : YFunction
      * </para>
      * </summary>
      * <param name="callback">
-     *   the callback function to call, or a null pointer. The callback function should take two
-     *   arguments: the module object that emitted the log message, and the character string containing the log.
+     *   the callback function to call, or a null pointer.
+     *   The callback function should take two
+     *   arguments: the module object that emitted the log message,
+     *   and the character string containing the log.
      *   On failure, throws an exception or returns a negative error code.
      * </param>
      */
@@ -14433,7 +14435,7 @@ public class YSensor : YFunction
 
     /**
      * <summary>
-     *   Returns the sensor health state code, which is zero when there is an up-to-date measure
+     *   Returns the sensor state code, which is zero when there is an up-to-date measure
      *   available or a positive code if the sensor is not able to provide a measure right now.
      * <para>
      * </para>
@@ -14441,7 +14443,7 @@ public class YSensor : YFunction
      * </para>
      * </summary>
      * <returns>
-     *   an integer corresponding to the sensor health state code, which is zero when there is an up-to-date measure
+     *   an integer corresponding to the sensor state code, which is zero when there is an up-to-date measure
      *   available or a positive code if the sensor is not able to provide a measure right now
      * </returns>
      * <para>
@@ -14974,7 +14976,7 @@ public class YSensor : YFunction
         refValues.Clear();
         // Load function parameters if not yet loaded
         lock (_thisLock) {
-            if (this._scale == 0) {
+            if ((this._scale == 0) || (this._cacheExpiration <= YAPI.GetTickCount())) {
                 if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
                     return YAPI.DEVICE_NOT_FOUND;
                 }
@@ -15262,7 +15264,7 @@ public class YSensor : YFunction
  *   Recording can happen automatically, without requiring a permanent
  *   connection to a computer.
  *   The <c>YDataLogger</c> class controls the global parameters of the internal data
- *   logger. Recording control (start/stop) as well as data retreival is done at
+ *   logger. Recording control (start/stop) as well as data retrieval is done at
  *   sensor objects level.
  * </para>
  * <para>

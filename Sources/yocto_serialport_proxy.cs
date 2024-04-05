@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_serialport_proxy.cs 49744 2022-05-11 15:13:45Z mvuilleu $
+ *  $Id: yocto_serialport_proxy.cs 59637 2024-03-05 18:23:38Z mvuilleu $
  *
  *  Implements YSerialPortProxy, the Proxy API for SerialPort
  *
@@ -1629,6 +1629,53 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No SerialPort connected");
             }
             return _func.get_CTS();
+        }
+
+        /**
+         * <summary>
+         *   Retrieves messages (both direction) in the serial port buffer, starting at current position.
+         * <para>
+         *   This function will only compare and return printable characters in the message strings.
+         *   Binary protocols are handled as hexadecimal strings.
+         * </para>
+         * <para>
+         *   If no message is found, the search waits for one up to the specified maximum timeout
+         *   (in milliseconds).
+         * </para>
+         * </summary>
+         * <param name="maxWait">
+         *   the maximum number of milliseconds to wait for a message if none is found
+         *   in the receive buffer.
+         * </param>
+         * <param name="maxMsg">
+         *   the maximum number of messages to be returned by the function; up to 254.
+         * </param>
+         * <returns>
+         *   an array of <c>YSnoopingRecord</c> objects containing the messages found, if any.
+         *   Binary messages are converted to hexadecimal representation.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns an empty array.
+         * </para>
+         */
+        public virtual YSnoopingRecordProxy[] snoopMessagesEx(int maxWait, int maxMsg)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SerialPort connected");
+            }
+            int i;
+            int arrlen;
+            YSnoopingRecord[] std_res;
+            YSnoopingRecordProxy[] proxy_res;
+            std_res = _func.snoopMessagesEx(maxWait, maxMsg).ToArray();
+            arrlen = std_res.Length;
+            proxy_res = new YSnoopingRecordProxy[arrlen];
+            i = 0;
+            while (i < arrlen) {
+                proxy_res[i] = new YSnoopingRecordProxy(std_res[i]);
+                i = i + 1;
+            }
+            return proxy_res;
         }
 
         /**

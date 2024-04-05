@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sensor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: yocto_sensor_proxy.cs 59504 2024-02-26 11:42:03Z seb $
  *
  *  Implements YSensorProxy, the Proxy API for Sensor
  *
@@ -988,7 +988,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the sensor health state code, which is zero when there is an up-to-date measure
+         *   Returns the sensor state code, which is zero when there is an up-to-date measure
          *   available or a positive code if the sensor is not able to provide a measure right now.
          * <para>
          * </para>
@@ -996,7 +996,7 @@ namespace YoctoProxyAPI
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the sensor health state code, which is zero when there is an up-to-date measure
+         *   an integer corresponding to the sensor state code, which is zero when there is an up-to-date measure
          *   available or a positive code if the sensor is not able to provide a measure right now
          * </returns>
          * <para>

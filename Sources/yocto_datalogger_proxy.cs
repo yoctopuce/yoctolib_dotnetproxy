@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_datalogger_proxy.cs 45843 2021-08-04 07:51:59Z mvuilleu $
+ *  $Id: yocto_datalogger_proxy.cs 59504 2024-02-26 11:42:03Z seb $
  *
  *  Implements YDataLoggerProxy, the Proxy API for DataLogger
  *
@@ -100,7 +100,7 @@ namespace YoctoProxyAPI
  *   Recording can happen automatically, without requiring a permanent
  *   connection to a computer.
  *   The <c>YDataLogger</c> class controls the global parameters of the internal data
- *   logger. Recording control (start/stop) as well as data retreival is done at
+ *   logger. Recording control (start/stop) as well as data retrieval is done at
  *   sensor objects level.
  * </para>
  * <para>

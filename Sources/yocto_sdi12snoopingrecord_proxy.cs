@@ -88,6 +88,30 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
+         *   Returns the absolute position of the message end.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the absolute position of the message end.
+         * </returns>
+         */
+        public virtual int get_pos()
+        {
+            return _objref.get_pos();
+        }
+
+        // property with cached value for instant access (storage object)
+        public int Pos
+        {
+            get
+            {
+                return this.get_pos();
+            }
+        }
+
+        /**
+         * <summary>
          *   Returns the message direction (RX=0, TX=1).
          * <para>
          * </para>

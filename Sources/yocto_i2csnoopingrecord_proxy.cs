@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_i2csnoopingrecord_proxy.cs 43337 2021-01-18 10:36:22Z web $
+ *  $Id: yocto_i2csnoopingrecord_proxy.cs 58892 2024-01-11 11:11:28Z mvuilleu $
  *
  *  Implements YI2cSnoopingRecordProxy, the Proxy API for I2cSnoopingRecord
  *
@@ -83,6 +83,30 @@ namespace YoctoProxyAPI
             get
             {
                 return this.get_time();
+            }
+        }
+
+        /**
+         * <summary>
+         *   Returns the absolute position of the message end.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   the absolute position of the message end.
+         * </returns>
+         */
+        public virtual int get_pos()
+        {
+            return _objref.get_pos();
+        }
+
+        // property with cached value for instant access (storage object)
+        public int Pos
+        {
+            get
+            {
+                return this.get_pos();
             }
         }
 

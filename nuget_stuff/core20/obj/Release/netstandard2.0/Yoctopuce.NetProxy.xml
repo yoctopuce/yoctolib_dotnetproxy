@@ -2451,8 +2451,10 @@
             </para>
             </summary>
             <param name="callback">
-              the callback function to call, or a null pointer. The callback function should take two
-              arguments: the module object that emitted the log message, and the character string containing the log.
+              the callback function to call, or a null pointer.
+              The callback function should take two
+              arguments: the module object that emitted the log message,
+              and the character string containing the log.
               On failure, throws an exception or returns a negative error code.
             </param>
         </member>
@@ -3246,7 +3248,7 @@
         </member>
         <member name="M:YoctoLib.YSensor.get_sensorState">
             <summary>
-              Returns the sensor health state code, which is zero when there is an up-to-date measure
+              Returns the sensor state code, which is zero when there is an up-to-date measure
               available or a positive code if the sensor is not able to provide a measure right now.
             <para>
             </para>
@@ -3254,7 +3256,7 @@
             </para>
             </summary>
             <returns>
-              an integer corresponding to the sensor health state code, which is zero when there is an up-to-date measure
+              an integer corresponding to the sensor state code, which is zero when there is an up-to-date measure
               available or a positive code if the sensor is not able to provide a measure right now
             </returns>
             <para>
@@ -3533,7 +3535,7 @@
               Recording can happen automatically, without requiring a permanent
               connection to a computer.
               The <c>YDataLogger</c> class controls the global parameters of the internal data
-              logger. Recording control (start/stop) as well as data retreival is done at
+              logger. Recording control (start/stop) as well as data retrieval is done at
               sensor objects level.
             </para>
             <para>
@@ -13664,6 +13666,16 @@
               the elapsed time, in ms, since the beginning of the preceding message.
             </returns>
         </member>
+        <member name="M:YoctoLib.YI2cSnoopingRecord.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YI2cSnoopingRecord.get_direction">
             <summary>
               Returns the message direction (RX=0, TX=1).
@@ -14492,6 +14504,30 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YI2cPort.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the I2C port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YI2cSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
             </para>
         </member>
         <member name="M:YoctoLib.YI2cPort.snoopMessages(System.Int32)">
@@ -21733,6 +21769,45 @@
               On failure, throws an exception or returns <c>YPwmOutput.PULSEDURATION_INVALID</c>.
             </para>
         </member>
+        <member name="M:YoctoLib.YPwmOutput.get_invertedOutput">
+            <summary>
+              Returns true if the output signal is configured as inverted, and false otherwise.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YPwmOutput.INVERTEDOUTPUT_FALSE</c> or <c>YPwmOutput.INVERTEDOUTPUT_TRUE</c>, according
+              to true if the output signal is configured as inverted, and false otherwise
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPwmOutput.INVERTEDOUTPUT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPwmOutput.set_invertedOutput(System.Int32)">
+            <summary>
+              Changes the inversion mode of the output signal.
+            <para>
+              Remember to call the matching module <c>saveToFlash()</c> method if you want
+              the change to be kept after power cycle.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YPwmOutput.INVERTEDOUTPUT_FALSE</c> or <c>YPwmOutput.INVERTEDOUTPUT_TRUE</c>, according
+              to the inversion mode of the output signal
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
         <member name="M:YoctoLib.YPwmOutput.get_enabledAtPowerOn">
             <summary>
               Returns the state of the PWM at device power on.
@@ -23993,8 +24068,12 @@
         </member>
         <member name="M:YoctoLib.YRfidTagInfo.get_tagFirstBlock">
             <summary>
-              Returns the index of the first usable storage block on the RFID tag.
+              Returns the index of the block available for data storage on the RFID tag.
             <para>
+              Some tags have special block used to configure the tag behavior, these
+              blocks must be handled with precaution. However, the  block return by
+              <c>get_tagFirstBlock()</c> can be locked, use <c>get_tagLockState()</c>
+              to find out  which block are locked.
             </para>
             </summary>
             <returns>
@@ -24003,7 +24082,11 @@
         </member>
         <member name="M:YoctoLib.YRfidTagInfo.get_tagLastBlock">
             <summary>
-              Returns the index of the last usable storage block on the RFID tag.
+              Returns the index of the last last black available for data storage on the RFID tag,
+              However, this block can be locked, use <c>get_tagLockState()</c> to find out
+              which block are locked.
+            <para>
+            </para>
             <para>
             </para>
             </summary>
@@ -24012,11 +24095,18 @@
             </returns>
         </member>
         <member name="T:YoctoLib.YRfidOptions">
-            <c>YRfidOptions</c> objects are used to provide optional
-            parameters to RFID commands that interact with tags, and in
-            particular to provide security keys when required.
+            <summary>
+              The <c>YRfidOptions</c> objects are used to specify additional
+              optional parameters to RFID commands that interact with tags,
+              including security keys.
+            <para>
+              When instantiated,the parameters of
+              this object are pre-initialized to a value  which corresponds
+              to the most common usage.
+            </para>
             <para>
             </para>
+            </summary>
         </member>
         <member name="F:YoctoLib.YRfidOptions.KeyType">
             <summary>
@@ -24090,7 +24180,7 @@
               By default, the Yoctopuce
               library's read/write functions detect overruns and do not run
               commands that are likely to fail. If you nevertheless wish to
-              access more memory than the tag announces, you can try to use
+              try to access more memory than the tag announces, you can try to use
               this option.
             </para>
             </summary>
@@ -24116,6 +24206,9 @@
             This makes it possible, for example, to distinguish communication
             errors that can be recovered by an additional attempt, from
             security or other errors on the tag.
+            Combined with the <c>EnableDryRun</c> option in <c>RfidOptions</c>,
+            this structure can be used to predict which blocks will be affected
+            by a write operation.
             <para>
             </para>
         </member>
@@ -24190,9 +24283,34 @@
         </member>
         <member name="T:YoctoLib.YRfidReader">
             <summary>
-              The <c>RfidReader</c> class provides access detect,
-              read and write RFID tags.
+              The <c>YRfidReader</c> class allows you to detect RFID tags, as well as
+              read and write on these tags if the security settings allow it.
             <para>
+            </para>
+            <para>
+              Short reminder:
+            </para>
+            <para>
+            </para>
+            <para>
+              - A tag's memory is generally organized in fixed-size blocks.
+            </para>
+            <para>
+              - At tag level, each block must be read and written in its entirety.
+            </para>
+            <para>
+              - Some blocks are special configuration blocks, and may alter the tag's behaviour
+              tag behavior if they are rewritten with arbitrary data.
+            </para>
+            <para>
+              - Data blocks can be set to read-only mode, but on many tags, this operation is irreversible.
+            </para>
+            <para>
+            </para>
+            <para>
+              By default, the RfidReader class automatically manages these blocks so that
+              arbitrary size data  can be manipulated of  without risk and without knowledge of
+              tag architecture .
             </para>
             <para>
             </para>
@@ -24235,7 +24353,8 @@
               The reader will do
               its best to respect it. Note that the reader cannot detect tag arrival or removal
               while it is  communicating with a tag.  Maximum frequency is limited to 100Hz,
-              but in real life it will be difficult to do better than 50Hz.
+              but in real life it will be difficult to do better than 50Hz.  A zero value
+              will power off the device radio.
               Remember to call the <c>saveToFlash()</c> method of the module if the
               modification must be kept.
             </para>
@@ -24329,7 +24448,7 @@
             </para>
             </summary>
             <returns>
-              a list of strings, corresponding to each tag identifier.
+              a list of strings, corresponding to each tag identifier (UID).
             </returns>
             <para>
               On failure, throws an exception or returns an empty list.
@@ -24479,7 +24598,8 @@
               number of bytes is larger than the RFID tag block size. By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24519,7 +24639,8 @@
               is larger than the RFID tag block size.  By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field frrm the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24559,7 +24680,8 @@
               is larger than the RFID tag block size.  By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24599,7 +24721,8 @@
               is larger than the RFID tag block size.  By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24638,8 +24761,10 @@
               number of bytes to write is larger than the RFID tag block size.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.  If you rather want
+              to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24678,8 +24803,10 @@
               number of bytes to write is larger than the RFID tag block size.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.
+              If you rather want to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24718,8 +24845,10 @@
               number of bytes to write is larger than the RFID tag block size.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.
+              If you rather want to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24756,10 +24885,16 @@
             <para>
               The write operation may span accross multiple blocks if the
               number of bytes to write is larger than the RFID tag block size.
+              Note that only the characters présent  in  the provided string
+              will be written, there is no notion of string length. If your
+              string data have variable length, you'll have to encode the
+              string length yourself.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.
+              If you rather want to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -24772,6 +24907,170 @@
             </param>
             <param name="text">
               the text string to write
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YRfidReader.tagGetAFI(System.String,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
+            <summary>
+              Reads an RFID tag AFI byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              the AFI value (0...255)
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YRfidReader.tagSetAFI(System.String,System.Int32,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
+            <summary>
+              Change an RFID tag AFI byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="afi">
+              the AFI value to write (0...255)
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YRfidReader.tagLockAFI(System.String,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
+            <summary>
+              Locks the RFID tag AFI byte (ISO 15693 only).
+            <para>
+              This operation is definitive and irreversible.
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YRfidReader.tagGetDSFID(System.String,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
+            <summary>
+              Reads an RFID tag DSFID byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              the DSFID value (0...255)
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YRfidReader.tagSetDSFID(System.String,System.Int32,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
+            <summary>
+              Change an RFID tag DSFID byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="dsfid">
+              the DSFID value to write (0...255)
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YRfidReader.tagLockDSFID(System.String,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
+            <summary>
+              Locks the RFID tag DSFID byte (ISO 15693 only).
+            <para>
+              This operation is definitive and irreversible.
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
             </param>
             <param name="options">
               an <c>YRfidOptions</c> object with the optional
@@ -24868,6 +25167,16 @@
               the elapsed time, in ms, since the beginning of the preceding message.
             </returns>
         </member>
+        <member name="M:YoctoLib.YSdi12SnoopingRecord.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YSdi12SnoopingRecord.get_direction">
             <summary>
               Returns the message direction (RX=0, TX=1).
@@ -24888,7 +25197,17 @@
               the message content.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_sensorAddress">
+        <member name="M:YoctoLib.YSdi12SensorInfo.isValid">
+            <summary>
+              Returns the sensor state.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor state.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_sensorAddress">
             <summary>
               Returns the sensor address.
             <para>
@@ -24898,7 +25217,7 @@
               the sensor address.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_sensorProtocol">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_sensorProtocol">
             <summary>
               Returns the compatible SDI-12 version of the sensor.
             <para>
@@ -24908,7 +25227,7 @@
               the compatible SDI-12 version of the sensor.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_sensorVendor">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_sensorVendor">
             <summary>
               Returns the sensor vendor identification.
             <para>
@@ -24918,7 +25237,7 @@
               the sensor vendor identification.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_sensorModel">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_sensorModel">
             <summary>
               Returns the sensor model number.
             <para>
@@ -24928,7 +25247,7 @@
               the sensor model number.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_sensorVersion">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_sensorVersion">
             <summary>
               Returns the sensor version.
             <para>
@@ -24938,7 +25257,7 @@
               the sensor version.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_sensorSerial">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_sensorSerial">
             <summary>
               Returns the sensor serial number.
             <para>
@@ -24948,20 +25267,24 @@
               the sensor serial number.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_measureCount">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_measureCount">
             <summary>
               Returns the number of sensor measurements.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <returns>
               the number of sensor measurements.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_measureCommand(System.Int32)">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_measureCommand(System.Int32)">
             <summary>
               Returns the sensor measurement command.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -24969,12 +25292,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_measurePosition(System.Int32)">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_measurePosition(System.Int32)">
             <summary>
               Returns sensor measurement position.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -24982,12 +25308,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns 0.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_measureSymbol(System.Int32)">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_measureSymbol(System.Int32)">
             <summary>
               Returns the measured value symbol.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -24995,12 +25324,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_measureUnit(System.Int32)">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_measureUnit(System.Int32)">
             <summary>
               Returns the unit of the measured value.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -25008,12 +25340,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
-        <member name="M:YoctoLib.YSdi12Sensor.get_measureDescription(System.Int32)">
+        <member name="M:YoctoLib.YSdi12SensorInfo.get_measureDescription(System.Int32)">
             <summary>
               Returns the description of the measured value.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -25021,6 +25356,7 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
         <member name="T:YoctoLib.YSdi12Port">
@@ -25378,7 +25714,7 @@
         </member>
         <member name="M:YoctoLib.YSdi12Port.FindSdi12Port(System.String)">
             <summary>
-              Retrieves a SDI12 port for a given identifier.
+              Retrieves an SDI12 port for a given identifier.
             <para>
               The identifier can be specified using several formats:
             </para>
@@ -25406,7 +25742,7 @@
               it is invoked. The returned object is nevertheless valid.
               Use the method <c>YSdi12Port.isOnline()</c> to test if the SDI12 port is
               indeed online at a given time. In case of ambiguity when looking for
-              a SDI12 port by logical name, no error is notified: the first instance
+              an SDI12 port by logical name, no error is notified: the first instance
               found is returned. The search is performed first by hardware name,
               then by logical name.
             </para>
@@ -25849,7 +26185,7 @@
             </para>
             </summary>
             <returns>
-              the reply returned by the sensor, as a YSdi12Sensor object.
+              the reply returned by the sensor, as a YSdi12SensorInfo object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty string.
@@ -25865,7 +26201,7 @@
             </para>
             </summary>
             <returns>
-              all the information from every connected sensor, as an array of YSdi12Sensor object.
+              all the information from every connected sensor, as an array of YSdi12SensorInfo object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty string.
@@ -25912,7 +26248,7 @@
               New sensor address, as a string
             </param>
             <returns>
-              the sensor address and information , as a YSdi12Sensor object.
+              the sensor address and information , as a YSdi12SensorInfo object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty string.
@@ -25969,6 +26305,30 @@
               On failure, throws an exception or returns an empty string.
             </para>
         </member>
+        <member name="M:YoctoLib.YSdi12Port.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the SDI12 port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YSdi12SnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
         <member name="M:YoctoLib.YSdi12Port.snoopMessages(System.Int32)">
             <summary>
               Retrieves messages (both direction) in the SDI12 port buffer, starting at current position.
@@ -25995,13 +26355,13 @@
               Continues the enumeration of SDI12 ports started using <c>yFirstSdi12Port()</c>.
             <para>
               Caution: You can't make any assumption about the returned SDI12 ports order.
-              If you want to find a specific a SDI12 port, use <c>Sdi12Port.findSdi12Port()</c>
+              If you want to find a specific an SDI12 port, use <c>Sdi12Port.findSdi12Port()</c>
               and a hardwareID or a logical name.
             </para>
             </summary>
             <returns>
               a pointer to a <c>YSdi12Port</c> object, corresponding to
-              a SDI12 port currently online, or a <c>null</c> pointer
+              an SDI12 port currently online, or a <c>null</c> pointer
               if there are no more SDI12 ports to enumerate.
             </returns>
         </member>
@@ -26168,6 +26528,16 @@
             </summary>
             <returns>
               the elapsed time, in ms, since the beginning of the preceding message.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSnoopingRecord.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
             </returns>
         </member>
         <member name="M:YoctoLib.YSnoopingRecord.get_direction">
@@ -27053,6 +27423,33 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoLib.YSerialPort.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the serial port buffer, starting at current position.
+            <para>
+              This function will only compare and return printable characters in the message strings.
+              Binary protocols are handled as hexadecimal strings.
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YSnoopingRecord</c> objects containing the messages found, if any.
+              Binary messages are converted to hexadecimal representation.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
         <member name="M:YoctoLib.YSerialPort.snoopMessages(System.Int32)">
             <summary>
               Retrieves messages (both direction) in the serial port buffer, starting at current position.
@@ -27769,6 +28166,16 @@
               the elapsed time, in ms, since the beginning of the preceding message.
             </returns>
         </member>
+        <member name="M:YoctoLib.YSpiSnoopingRecord.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YSpiSnoopingRecord.get_direction">
             <summary>
               Returns the message direction (RX=0, TX=1).
@@ -28221,7 +28628,7 @@
         </member>
         <member name="M:YoctoLib.YSpiPort.FindSpiPort(System.String)">
             <summary>
-              Retrieves a SPI port for a given identifier.
+              Retrieves an SPI port for a given identifier.
             <para>
               The identifier can be specified using several formats:
             </para>
@@ -28249,7 +28656,7 @@
               it is invoked. The returned object is nevertheless valid.
               Use the method <c>YSpiPort.isOnline()</c> to test if the SPI port is
               indeed online at a given time. In case of ambiguity when looking for
-              a SPI port by logical name, no error is notified: the first instance
+              an SPI port by logical name, no error is notified: the first instance
               found is returned. The search is performed first by hardware name,
               then by logical name.
             </para>
@@ -28676,6 +29083,30 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoLib.YSpiPort.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the SPI port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YSpiSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
         <member name="M:YoctoLib.YSpiPort.snoopMessages(System.Int32)">
             <summary>
               Retrieves messages (both direction) in the SPI port buffer, starting at current position.
@@ -28702,13 +29133,13 @@
               Continues the enumeration of SPI ports started using <c>yFirstSpiPort()</c>.
             <para>
               Caution: You can't make any assumption about the returned SPI ports order.
-              If you want to find a specific a SPI port, use <c>SpiPort.findSpiPort()</c>
+              If you want to find a specific an SPI port, use <c>SpiPort.findSpiPort()</c>
               and a hardwareID or a logical name.
             </para>
             </summary>
             <returns>
               a pointer to a <c>YSpiPort</c> object, corresponding to
-              a SPI port currently online, or a <c>null</c> pointer
+              an SPI port currently online, or a <c>null</c> pointer
               if there are no more SPI ports to enumerate.
             </returns>
         </member>
@@ -34400,7 +34831,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YSensorProxy.get_sensorState">
             <summary>
-              Returns the sensor health state code, which is zero when there is an up-to-date measure
+              Returns the sensor state code, which is zero when there is an up-to-date measure
               available or a positive code if the sensor is not able to provide a measure right now.
             <para>
             </para>
@@ -34408,7 +34839,7 @@
             </para>
             </summary>
             <returns>
-              an integer corresponding to the sensor health state code, which is zero when there is an up-to-date measure
+              an integer corresponding to the sensor state code, which is zero when there is an up-to-date measure
               available or a positive code if the sensor is not able to provide a measure right now
             </returns>
             <para>
@@ -39903,7 +40334,7 @@
               Recording can happen automatically, without requiring a permanent
               connection to a computer.
               The <c>YDataLogger</c> class controls the global parameters of the internal data
-              logger. Recording control (start/stop) as well as data retreival is done at
+              logger. Recording control (start/stop) as well as data retrieval is done at
               sensor objects level.
             </para>
             <para>
@@ -43993,6 +44424,30 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YI2cPortProxy.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the I2C port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YI2cSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
             </para>
         </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.snoopMessages(System.Int32)">
@@ -50389,6 +50844,48 @@
               On failure, throws an exception or returns <c>YPwmOutput.PULSEDURATION_INVALID</c>.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YPwmOutputProxy.get_invertedOutput">
+            <summary>
+              Returns true if the output signal is configured as inverted, and false otherwise.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YPwmOutput.INVERTEDOUTPUT_FALSE</c> or <c>YPwmOutput.INVERTEDOUTPUT_TRUE</c>, according
+              to true if the output signal is configured as inverted, and false otherwise
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPwmOutput.INVERTEDOUTPUT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YPwmOutputProxy.set_invertedOutput(System.Int32)">
+            <summary>
+              Changes the inversion mode of the output signal.
+            <para>
+              Remember to call the matching module <c>saveToFlash()</c> method if you want
+              the change to be kept after power cycle.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YPwmOutput.INVERTEDOUTPUT_FALSE</c> or <c>YPwmOutput.INVERTEDOUTPUT_TRUE</c>, according
+              to the inversion mode of the output signal
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YPwmOutputProxy.InvertedOutput">
+            <value>True if the output signal is configured as inverted, and false otherwise.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YPwmOutputProxy.get_enabledAtPowerOn">
             <summary>
               Returns the state of the PWM at device power on.
@@ -52384,9 +52881,34 @@
         </member>
         <member name="T:YoctoProxyAPI.YRfidReaderProxy">
             <summary>
-              The <c>RfidReader</c> class provides access detect,
-              read and write RFID tags.
+              The <c>YRfidReader</c> class allows you to detect RFID tags, as well as
+              read and write on these tags if the security settings allow it.
             <para>
+            </para>
+            <para>
+              Short reminder:
+            </para>
+            <para>
+            </para>
+            <para>
+              - A tag's memory is generally organized in fixed-size blocks.
+            </para>
+            <para>
+              - At tag level, each block must be read and written in its entirety.
+            </para>
+            <para>
+              - Some blocks are special configuration blocks, and may alter the tag's behaviour
+              tag behavior if they are rewritten with arbitrary data.
+            </para>
+            <para>
+              - Data blocks can be set to read-only mode, but on many tags, this operation is irreversible.
+            </para>
+            <para>
+            </para>
+            <para>
+              By default, the RfidReader class automatically manages these blocks so that
+              arbitrary size data  can be manipulated of  without risk and without knowledge of
+              tag architecture .
             </para>
             <para>
             </para>
@@ -52497,7 +53019,8 @@
               The reader will do
               its best to respect it. Note that the reader cannot detect tag arrival or removal
               while it is  communicating with a tag.  Maximum frequency is limited to 100Hz,
-              but in real life it will be difficult to do better than 50Hz.
+              but in real life it will be difficult to do better than 50Hz.  A zero value
+              will power off the device radio.
               Remember to call the <c>saveToFlash()</c> method of the module if the
               modification must be kept.
             </para>
@@ -52526,7 +53049,7 @@
             </para>
             </summary>
             <returns>
-              a list of strings, corresponding to each tag identifier.
+              a list of strings, corresponding to each tag identifier (UID).
             </returns>
             <para>
               On failure, throws an exception or returns an empty list.
@@ -52676,7 +53199,8 @@
               number of bytes is larger than the RFID tag block size. By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52716,7 +53240,8 @@
               is larger than the RFID tag block size.  By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field frrm the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52756,7 +53281,8 @@
               is larger than the RFID tag block size.  By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52796,7 +53322,8 @@
               is larger than the RFID tag block size.  By default
               firstBlock cannot be a special block, and any special block encountered
               in the middle of the read operation will be skipped automatically.
-              If you rather want to read special blocks, use EnableRawAccess option.
+              If you rather want to read special blocks, use the <c>EnableRawAccess</c>
+              field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52835,8 +53362,10 @@
               number of bytes to write is larger than the RFID tag block size.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.  If you rather want
+              to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52875,8 +53404,10 @@
               number of bytes to write is larger than the RFID tag block size.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.
+              If you rather want to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52915,8 +53446,10 @@
               number of bytes to write is larger than the RFID tag block size.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.
+              If you rather want to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52953,10 +53486,16 @@
             <para>
               The write operation may span accross multiple blocks if the
               number of bytes to write is larger than the RFID tag block size.
+              Note that only the characters présent  in  the provided string
+              will be written, there is no notion of string length. If your
+              string data have variable length, you'll have to encode the
+              string length yourself.
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
-              automatically. If you rather want to rewrite special blocks as well,
-              use EnableRawAccess option.
+              automatically. The last data block affected by the operation will
+              be automatically padded with zeros if neccessary.
+              If you rather want to rewrite special blocks as well,
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
             </para>
             <para>
             </para>
@@ -52969,6 +53508,170 @@
             </param>
             <param name="text">
               the text string to write
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagGetAFI(System.String,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
+            <summary>
+              Reads an RFID tag AFI byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              the AFI value (0...255)
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagSetAFI(System.String,System.Int32,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
+            <summary>
+              Change an RFID tag AFI byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="afi">
+              the AFI value to write (0...255)
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagLockAFI(System.String,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
+            <summary>
+              Locks the RFID tag AFI byte (ISO 15693 only).
+            <para>
+              This operation is definitive and irreversible.
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagGetDSFID(System.String,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
+            <summary>
+              Reads an RFID tag DSFID byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              the DSFID value (0...255)
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagSetDSFID(System.String,System.Int32,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
+            <summary>
+              Change an RFID tag DSFID byte (ISO 15693 only).
+            <para>
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
+            </param>
+            <param name="dsfid">
+              the DSFID value to write (0...255)
+            </param>
+            <param name="options">
+              an <c>YRfidOptions</c> object with the optional
+              command execution parameters, such as security key
+              if required
+            </param>
+            <param name="status">
+              an <c>RfidStatus</c> object that will contain
+              the detailled status of the operation
+            </param>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code. When it
+              happens, you can get more information from the <c>status</c> object.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagLockDSFID(System.String,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
+            <summary>
+              Locks the RFID tag DSFID byte (ISO 15693 only).
+            <para>
+              This operation is definitive and irreversible.
+            </para>
+            </summary>
+            <param name="tagId">
+              identifier of the tag to use
             </param>
             <param name="options">
               an <c>YRfidOptions</c> object with the optional
@@ -53018,7 +53721,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YSdi12PortProxy.FindSdi12Port(System.String)">
             <summary>
-              Retrieves a SDI12 port for a given identifier.
+              Retrieves an SDI12 port for a given identifier.
             <para>
               The identifier can be specified using several formats:
             </para>
@@ -53046,7 +53749,7 @@
               it is invoked. The returned object is nevertheless valid.
               Use the method <c>YSdi12Port.isOnline()</c> to test if the SDI12 port is
               indeed online at a given time. In case of ambiguity when looking for
-              a SDI12 port by logical name, no error is notified: the first instance
+              an SDI12 port by logical name, no error is notified: the first instance
               found is returned. The search is performed first by hardware name,
               then by logical name.
             </para>
@@ -53844,7 +54547,7 @@
             </para>
             </summary>
             <returns>
-              the reply returned by the sensor, as a YSdi12Sensor object.
+              the reply returned by the sensor, as a YSdi12SensorInfo object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty string.
@@ -53860,7 +54563,7 @@
             </para>
             </summary>
             <returns>
-              all the information from every connected sensor, as an array of YSdi12Sensor object.
+              all the information from every connected sensor, as an array of YSdi12SensorInfo object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty string.
@@ -53907,7 +54610,7 @@
               New sensor address, as a string
             </param>
             <returns>
-              the sensor address and information , as a YSdi12Sensor object.
+              the sensor address and information , as a YSdi12SensorInfo object.
             </returns>
             <para>
               On failure, throws an exception or returns an empty string.
@@ -53962,6 +54665,30 @@
             </returns>
             <para>
               On failure, throws an exception or returns an empty string.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12PortProxy.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the SDI12 port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YSdi12SnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
             </para>
         </member>
         <member name="M:YoctoProxyAPI.YSdi12PortProxy.snoopMessages(System.Int32)">
@@ -54972,6 +55699,33 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YSerialPortProxy.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the serial port buffer, starting at current position.
+            <para>
+              This function will only compare and return printable characters in the message strings.
+              Binary protocols are handled as hexadecimal strings.
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YSnoopingRecord</c> objects containing the messages found, if any.
+              Binary messages are converted to hexadecimal representation.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
+            </para>
+        </member>
         <member name="M:YoctoProxyAPI.YSerialPortProxy.snoopMessages(System.Int32)">
             <summary>
               Retrieves messages (both direction) in the serial port buffer, starting at current position.
@@ -55628,7 +56382,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.FindSpiPort(System.String)">
             <summary>
-              Retrieves a SPI port for a given identifier.
+              Retrieves an SPI port for a given identifier.
             <para>
               The identifier can be specified using several formats:
             </para>
@@ -55656,7 +56410,7 @@
               it is invoked. The returned object is nevertheless valid.
               Use the method <c>YSpiPort.isOnline()</c> to test if the SPI port is
               indeed online at a given time. In case of ambiguity when looking for
-              a SPI port by logical name, no error is notified: the first instance
+              an SPI port by logical name, no error is notified: the first instance
               found is returned. The search is performed first by hardware name,
               then by logical name.
             </para>
@@ -56519,6 +57273,30 @@
             </returns>
             <para>
               On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpiPortProxy.snoopMessagesEx(System.Int32,System.Int32)">
+            <summary>
+              Retrieves messages (both direction) in the SPI port buffer, starting at current position.
+            <para>
+            </para>
+            <para>
+              If no message is found, the search waits for one up to the specified maximum timeout
+              (in milliseconds).
+            </para>
+            </summary>
+            <param name="maxWait">
+              the maximum number of milliseconds to wait for a message if none is found
+              in the receive buffer.
+            </param>
+            <param name="maxMsg">
+              the maximum number of messages to be returned by the function; up to 254.
+            </param>
+            <returns>
+              an array of <c>YSpiSnoopingRecord</c> objects containing the messages found, if any.
+            </returns>
+            <para>
+              On failure, throws an exception or returns an empty array.
             </para>
         </member>
         <member name="M:YoctoProxyAPI.YSpiPortProxy.snoopMessages(System.Int32)">
@@ -61643,6 +62421,16 @@
               the elapsed time, in ms, since the beginning of the preceding message.
             </returns>
         </member>
+        <member name="M:YoctoProxyAPI.YSnoopingRecordProxy.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
+            </returns>
+        </member>
         <member name="M:YoctoProxyAPI.YSnoopingRecordProxy.get_direction">
             <summary>
               Returns the message direction (RX=0, TX=1).
@@ -61671,6 +62459,16 @@
             </summary>
             <returns>
               the elapsed time, in ms, since the beginning of the preceding message.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpiSnoopingRecordProxy.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
             </returns>
         </member>
         <member name="M:YoctoProxyAPI.YSpiSnoopingRecordProxy.get_direction">
@@ -61703,6 +62501,16 @@
               the elapsed time, in ms, since the beginning of the preceding message.
             </returns>
         </member>
+        <member name="M:YoctoProxyAPI.YI2cSnoopingRecordProxy.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
+            </returns>
+        </member>
         <member name="M:YoctoProxyAPI.YI2cSnoopingRecordProxy.get_direction">
             <summary>
               Returns the message direction (RX=0, TX=1).
@@ -61733,6 +62541,16 @@
               the elapsed time, in ms, since the beginning of the preceding message.
             </returns>
         </member>
+        <member name="M:YoctoProxyAPI.YSdi12SnoopingRecordProxy.get_pos">
+            <summary>
+              Returns the absolute position of the message end.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the absolute position of the message end.
+            </returns>
+        </member>
         <member name="M:YoctoProxyAPI.YSdi12SnoopingRecordProxy.get_direction">
             <summary>
               Returns the message direction (RX=0, TX=1).
@@ -61753,7 +62571,17 @@
               the message content.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorAddress">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.isValid">
+            <summary>
+              Returns the sensor state.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              the sensor state.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_sensorAddress">
             <summary>
               Returns the sensor address.
             <para>
@@ -61763,7 +62591,7 @@
               the sensor address.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorProtocol">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_sensorProtocol">
             <summary>
               Returns the compatible SDI-12 version of the sensor.
             <para>
@@ -61773,7 +62601,7 @@
               the compatible SDI-12 version of the sensor.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorVendor">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_sensorVendor">
             <summary>
               Returns the sensor vendor identification.
             <para>
@@ -61783,7 +62611,7 @@
               the sensor vendor identification.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorModel">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_sensorModel">
             <summary>
               Returns the sensor model number.
             <para>
@@ -61793,7 +62621,7 @@
               the sensor model number.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorVersion">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_sensorVersion">
             <summary>
               Returns the sensor version.
             <para>
@@ -61803,7 +62631,7 @@
               the sensor version.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_sensorSerial">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_sensorSerial">
             <summary>
               Returns the sensor serial number.
             <para>
@@ -61813,20 +62641,24 @@
               the sensor serial number.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureCount">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_measureCount">
             <summary>
               Returns the number of sensor measurements.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <returns>
               the number of sensor measurements.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureCommand(System.Int32)">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_measureCommand(System.Int32)">
             <summary>
               Returns the sensor measurement command.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -61834,12 +62666,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measurePosition(System.Int32)">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_measurePosition(System.Int32)">
             <summary>
               Returns sensor measurement position.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -61847,12 +62682,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns 0.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureSymbol(System.Int32)">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_measureSymbol(System.Int32)">
             <summary>
               Returns the measured value symbol.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -61860,12 +62698,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureUnit(System.Int32)">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_measureUnit(System.Int32)">
             <summary>
               Returns the unit of the measured value.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -61873,12 +62714,15 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
-        <member name="M:YoctoProxyAPI.YSdi12SensorProxy.get_measureDescription(System.Int32)">
+        <member name="M:YoctoProxyAPI.YSdi12SensorInfoProxy.get_measureDescription(System.Int32)">
             <summary>
               Returns the description of the measured value.
             <para>
+              This function only works if the sensor is in version 1.4 SDI-12
+              and supports metadata commands.
             </para>
             </summary>
             <param name="measureIndex">
@@ -61886,6 +62730,7 @@
             </param>
             <returns>
               the sensor measurement command.
+              On failure, throws an exception or returns an empty string.
             </returns>
         </member>
         <member name="M:YoctoProxyAPI.YInputCaptureDataProxy.get_serieCount">
@@ -62134,8 +62979,12 @@
         </member>
         <member name="M:YoctoProxyAPI.YRfidTagInfoProxy.get_tagFirstBlock">
             <summary>
-              Returns the index of the first usable storage block on the RFID tag.
+              Returns the index of the block available for data storage on the RFID tag.
             <para>
+              Some tags have special block used to configure the tag behavior, these
+              blocks must be handled with precaution. However, the  block return by
+              <c>get_tagFirstBlock()</c> can be locked, use <c>get_tagLockState()</c>
+              to find out  which block are locked.
             </para>
             </summary>
             <returns>
@@ -62144,7 +62993,11 @@
         </member>
         <member name="M:YoctoProxyAPI.YRfidTagInfoProxy.get_tagLastBlock">
             <summary>
-              Returns the index of the last usable storage block on the RFID tag.
+              Returns the index of the last last black available for data storage on the RFID tag,
+              However, this block can be locked, use <c>get_tagLockState()</c> to find out
+              which block are locked.
+            <para>
+            </para>
             <para>
             </para>
             </summary>
