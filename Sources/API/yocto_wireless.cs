@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_wireless.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ * $Id: yocto_wireless.cs 63469 2024-11-25 14:01:08Z seb $
  *
  * Implements yFindWireless(), the high-level API for Wireless functions
  *
@@ -626,7 +626,7 @@ public class YWireless : YFunction
      */
     public virtual int joinNetwork(string ssid, string securityKey)
     {
-        return this.set_wlanConfig("INFRA:"+ ssid+"\\"+securityKey);
+        return this.set_wlanConfig("INFRA:"+ssid+"\\"+securityKey);
     }
 
 
@@ -664,7 +664,7 @@ public class YWireless : YFunction
      */
     public virtual int adhocNetwork(string ssid, string securityKey)
     {
-        return this.set_wlanConfig("ADHOC:"+ ssid+"\\"+securityKey);
+        return this.set_wlanConfig("ADHOC:"+ssid+"\\"+securityKey);
     }
 
 
@@ -705,7 +705,7 @@ public class YWireless : YFunction
      */
     public virtual int softAPNetwork(string ssid, string securityKey)
     {
-        return this.set_wlanConfig("SOFTAP:"+ ssid+"\\"+securityKey);
+        return this.set_wlanConfig("SOFTAP:"+ssid+"\\"+securityKey);
     }
 
 
@@ -731,14 +731,14 @@ public class YWireless : YFunction
     public virtual List<YWlanRecord> get_detectedWlans()
     {
         byte[] json = new byte[0];
-        List<string> wlanlist = new List<string>();
+        List<byte[]> wlanlist = new List<byte[]>();
         List<YWlanRecord> res = new List<YWlanRecord>();
 
         json = this._download("wlan.json?by=name");
         wlanlist = this._json_get_array(json);
         res.Clear();
         for (int ii_0 = 0; ii_0 <  wlanlist.Count; ii_0++) {
-            res.Add(new YWlanRecord(wlanlist[ii_0]));
+            res.Add(new YWlanRecord(YAPI.DefaultEncoding.GetString(wlanlist[ii_0])));
         }
         return res;
     }

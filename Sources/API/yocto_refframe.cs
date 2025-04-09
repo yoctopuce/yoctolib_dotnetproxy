@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_refframe.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindRefFrame(), the high-level API for RefFrame functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YRefFrame return codes)
 //--- (end of YRefFrame return codes)
+//--- (YRefFrame dlldef_core)
+//--- (end of YRefFrame dlldef_core)
+//--- (YRefFrame dll_core_map)
+//--- (end of YRefFrame dll_core_map)
 //--- (YRefFrame dlldef)
 //--- (end of YRefFrame dlldef)
 //--- (YRefFrame yapiwrapper)
@@ -58,7 +62,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YRefFrame class start)
 /**
  * <summary>
- *   The <c>YRefFrame</c> class is used to setup the base orientation of the Yoctopuce inertial
+ *   The <c>YRefFrame</c> class is used to set up the base orientation of the Yoctopuce inertial
  *   sensors.
  * <para>
  *   Thanks to this, orientation functions relative to the earth surface plane
@@ -199,7 +203,7 @@ public class YRefFrame : YFunction
      *   heading and the reference bearing indicated here.
      * </para>
      * <para>
-     *   For instance, if you setup as reference bearing the value of the earth
+     *   For instance, if you set up as reference bearing the value of the earth
      *   magnetic declination, the compass will provide the orientation relative
      *   to the geographic North.
      * </para>
@@ -504,7 +508,7 @@ public class YRefFrame : YFunction
         if (position < 0) {
             return MOUNTPOSITION.INVALID;
         }
-        return (MOUNTPOSITION) ((position) >> (2));
+        return (MOUNTPOSITION) (position >> 2);
     }
 
 
@@ -538,7 +542,7 @@ public class YRefFrame : YFunction
         if (position < 0) {
             return MOUNTORIENTATION.INVALID;
         }
-        return (MOUNTORIENTATION) ((position) & (3));
+        return (MOUNTORIENTATION) (position & 3);
     }
 
 
@@ -582,7 +586,7 @@ public class YRefFrame : YFunction
     public virtual int set_mountPosition(MOUNTPOSITION position, MOUNTORIENTATION orientation)
     {
         int mixedPos;
-        mixedPos = (((int)position) << (2)) + (int)orientation;
+        mixedPos = (((int)position) << 2) + (int)orientation;
         return this.set_mountPos(mixedPos);
     }
 
@@ -617,11 +621,11 @@ public class YRefFrame : YFunction
 
         calibParam = this.get_calibrationParam();
         iCalib = YAPI._decodeFloats(calibParam);
-        caltyp = ((iCalib[0]) / (1000));
+        caltyp = (iCalib[0] / 1000);
         if (caltyp != 33) {
             return YAPI.NOT_SUPPORTED;
         }
-        res = ((iCalib[1]) / (1000));
+        res = (iCalib[1] / 1000);
         return res;
     }
 
@@ -655,11 +659,11 @@ public class YRefFrame : YFunction
 
         calibParam = this.get_calibrationParam();
         iCalib = YAPI._decodeFloats(calibParam);
-        caltyp = ((iCalib[0]) / (1000));
+        caltyp = (iCalib[0] / 1000);
         if (caltyp != 33) {
             return YAPI.NOT_SUPPORTED;
         }
-        res = ((iCalib[2]) / (1000));
+        res = (iCalib[2] / 1000);
         return res;
     }
 
@@ -745,7 +749,7 @@ public class YRefFrame : YFunction
         this._calibStageProgress = 0;
         this._calibProgress = 1;
         this._calibInternalPos = 0;
-        this._calibPrevTick = (int) ((YAPI.GetTickCount()) & (0x7FFFFFFF));
+        this._calibPrevTick = (int) ((YAPI.GetTickCount()) & 0x7FFFFFFF);
         this._calibOrient.Clear();
         this._calibDataAccX.Clear();
         this._calibDataAccY.Clear();
@@ -802,14 +806,14 @@ public class YRefFrame : YFunction
             return YAPI.SUCCESS;
         }
         // make sure we leave at least 160 ms between samples
-        currTick =  (int) ((YAPI.GetTickCount()) & (0x7FFFFFFF));
-        if (((currTick - this._calibPrevTick) & (0x7FFFFFFF)) < 160) {
+        currTick =  (int) ((YAPI.GetTickCount()) & 0x7FFFFFFF);
+        if (((currTick - this._calibPrevTick) & 0x7FFFFFFF) < 160) {
             return YAPI.SUCCESS;
         }
         // load current accelerometer values, make sure we are on a straight angle
         // (default timeout to 0,5 sec without reading measure when out of range)
         this._calibStageHint = "Set down the device on a steady horizontal surface";
-        this._calibPrevTick = ((currTick + 500) & (0x7FFFFFFF));
+        this._calibPrevTick = ((currTick + 500) & 0x7FFFFFFF);
         jsonData = this._download("api/accelerometer.json");
         xVal = YAPI._atoi(this._json_get_key(jsonData, "xValue")) / 65536.0;
         yVal = YAPI._atoi(this._json_get_key(jsonData, "yValue")) / 65536.0;
@@ -893,23 +897,21 @@ public class YRefFrame : YFunction
         this._calibDataAccZ.Add(zVal);
         this._calibDataAcc.Add(norm);
         this._calibInternalPos = this._calibInternalPos + 1;
-        this._calibProgress = 1 + 16 * (this._calibStage - 1) + ((16 * this._calibInternalPos) / (this._calibCount));
+        this._calibProgress = 1 + 16 * (this._calibStage - 1) + ((16 * this._calibInternalPos) / this._calibCount);
         if (this._calibInternalPos < this._calibCount) {
-            this._calibStageProgress = 1 + ((99 * this._calibInternalPos) / (this._calibCount));
+            this._calibStageProgress = 1 + ((99 * this._calibInternalPos) / this._calibCount);
             return YAPI.SUCCESS;
         }
         // Stage done, compute preliminary result
         intpos = (this._calibStage - 1) * this._calibCount;
         this._calibSort(intpos, intpos + this._calibCount);
-        intpos = intpos + ((this._calibCount) / (2));
-        this._calibLogMsg = "Stage "+Convert.ToString( this._calibStage)+": median is "+Convert.ToString(
-        (int) Math.Round(1000*this._calibDataAccX[intpos]))+","+Convert.ToString(
-        (int) Math.Round(1000*this._calibDataAccY[intpos]))+","+Convert.ToString((int) Math.Round(1000*this._calibDataAccZ[intpos]));
+        intpos = intpos + (this._calibCount / 2);
+        this._calibLogMsg = "Stage "+Convert.ToString(this._calibStage)+": median is "+Convert.ToString((int) Math.Round(1000*this._calibDataAccX[intpos]))+","+Convert.ToString((int) Math.Round(1000*this._calibDataAccY[intpos]))+","+Convert.ToString((int) Math.Round(1000*this._calibDataAccZ[intpos]));
         // move to next stage
         this._calibStage = this._calibStage + 1;
         if (this._calibStage < 7) {
             this._calibStageHint = "Turn the device on another face";
-            this._calibPrevTick = ((currTick + 500) & (0x7FFFFFFF));
+            this._calibPrevTick = ((currTick + 500) & 0x7FFFFFFF);
             this._calibStageProgress = 0;
             this._calibInternalPos = 0;
             return YAPI.SUCCESS;
@@ -920,7 +922,7 @@ public class YRefFrame : YFunction
         zVal = 0;
         idx = 0;
         while (idx < 6) {
-            intpos = idx * this._calibCount + ((this._calibCount) / (2));
+            intpos = idx * this._calibCount + (this._calibCount / 2);
             orient = this._calibOrient[idx];
             if (orient == 0 || orient == 1) {
                 zVal = zVal + this._calibDataAccZ[intpos];
@@ -958,7 +960,7 @@ public class YRefFrame : YFunction
         zVal = 0;
         idx = 0;
         while (idx < 6) {
-            intpos = idx * this._calibCount + ((this._calibCount) / (2));
+            intpos = idx * this._calibCount + (this._calibCount / 2);
             orient = this._calibOrient[idx];
             if (orient == 0 || orient == 1) {
                 zVal = zVal + this._calibDataAcc[intpos];
@@ -999,11 +1001,11 @@ public class YRefFrame : YFunction
         }
         // make sure we don't start before previous calibration is cleared
         if (this._calibStage == 1) {
-            currTick = (int) ((YAPI.GetTickCount()) & (0x7FFFFFFF));
-            currTick = ((currTick - this._calibPrevTick) & (0x7FFFFFFF));
+            currTick = (int) ((YAPI.GetTickCount()) & 0x7FFFFFFF);
+            currTick = ((currTick - this._calibPrevTick) & 0x7FFFFFFF);
             if (currTick < 1600) {
                 this._calibStageHint = "Set down the device on a steady horizontal surface";
-                this._calibStageProgress = ((currTick) / (40));
+                this._calibStageProgress = (currTick / 40);
                 this._calibProgress = 1;
                 return YAPI.SUCCESS;
             }
@@ -1011,9 +1013,9 @@ public class YRefFrame : YFunction
 
         calibParam = this._download("api/refFrame/calibrationParam.txt");
         iCalib = YAPI._decodeFloats(YAPI.DefaultEncoding.GetString(calibParam));
-        cal3 = ((iCalib[1]) / (1000));
-        calAcc = ((cal3) / (100));
-        calMag = ((cal3) / (10)) - 10*calAcc;
+        cal3 = (iCalib[1] / 1000);
+        calAcc = (cal3 / 100);
+        calMag = (cal3 / 10) - 10*calAcc;
         calGyr = ((cal3) % (10));
         if (calGyr < 3) {
             this._calibStageHint = "Set down the device on a steady horizontal surface";
@@ -1195,9 +1197,9 @@ public class YRefFrame : YFunction
             }
         }
         if (scaleExp > 0) {
-            scaleX = ((scaleX) >> (scaleExp));
-            scaleY = ((scaleY) >> (scaleExp));
-            scaleZ = ((scaleZ) >> (scaleExp));
+            scaleX = (scaleX >> scaleExp);
+            scaleY = (scaleY >> scaleExp);
+            scaleZ = (scaleZ >> scaleExp);
         }
         if (scaleX < 0) {
             scaleX = scaleX + 1024;
@@ -1208,10 +1210,10 @@ public class YRefFrame : YFunction
         if (scaleZ < 0) {
             scaleZ = scaleZ + 1024;
         }
-        scaleLo = ((((scaleY) & (15))) << (12)) + ((scaleX) << (2)) + scaleExp;
-        scaleHi = ((scaleZ) << (6)) + ((scaleY) >> (4));
+        scaleLo = ((scaleY & 15) << 12) + (scaleX << 2) + scaleExp;
+        scaleHi = (scaleZ << 6) + (scaleY >> 4);
         // Save calibration parameters
-        newcalib = "5,"+Convert.ToString( shiftX)+","+Convert.ToString( shiftY)+","+Convert.ToString( shiftZ)+","+Convert.ToString( scaleLo)+","+Convert.ToString(scaleHi);
+        newcalib = "5,"+Convert.ToString(shiftX)+","+Convert.ToString(shiftY)+","+Convert.ToString(shiftZ)+","+Convert.ToString(scaleLo)+","+Convert.ToString(scaleHi);
         this._calibStage = 0;
         return this.set_calibrationParam(newcalib);
     }

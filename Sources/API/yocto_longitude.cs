@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_longitude.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindLongitude(), the high-level API for Longitude functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YLongitude return codes)
 //--- (end of YLongitude return codes)
+//--- (YLongitude dlldef_core)
+//--- (end of YLongitude dlldef_core)
+//--- (YLongitude dll_core_map)
+//--- (end of YLongitude dll_core_map)
 //--- (YLongitude dlldef)
 //--- (end of YLongitude dlldef)
 //--- (YLongitude yapiwrapper)

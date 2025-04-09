@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_digitalio_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YDigitalIOProxy, the Proxy API for DigitalIO
  *
@@ -94,7 +94,7 @@ namespace YoctoProxyAPI
  * <summary>
  *   The <c>YDigitalIO</c> class allows you drive a Yoctopuce digital input/output port.
  * <para>
- *   It can be used to setup the direction of each channel, to read the state of each channel
+ *   It can be used to set up the direction of each channel, to read the state of each channel
  *   and to switch the state of each channel configures as an output.
  *   You can work on all channels at once, or one by one. Most functions
  *   use a binary representation for channels where bit 0 matches channel #0 , bit 1 matches channel
@@ -373,8 +373,8 @@ namespace YoctoProxyAPI
                 return;
             }
             // Touch output bits only
-            newval = ((newval) & (_portDirection));
-            newval = ((newval) | (((_portState) & (~(_portDirection)))));
+            newval = (newval & _portDirection);
+            newval = (newval | (_portState & (~_portDirection)));
             if (newval == _portState) {
                 return;
             }
@@ -698,17 +698,17 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only).
+         *   Returns the port state diagnostics.
          * <para>
-         *   Bit 0 indicates a shortcut on
-         *   output 0, etc. Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
+         *   Bit 0 indicates a shortcut on output 0, etc.
+         *   Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
          *   During normal use, all diagnostic bits should stay clear.
          * </para>
          * <para>
          * </para>
          * </summary>
          * <returns>
-         *   an integer corresponding to the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only)
+         *   an integer corresponding to the port state diagnostics
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YDigitalIO.PORTDIAGS_INVALID</c>.

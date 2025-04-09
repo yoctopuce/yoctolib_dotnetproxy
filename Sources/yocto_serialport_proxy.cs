@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_serialport_proxy.cs 59637 2024-03-05 18:23:38Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YSerialPortProxy, the Proxy API for SerialPort
  *

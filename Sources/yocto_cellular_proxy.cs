@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_cellular_proxy.cs 50281 2022-06-30 07:21:14Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YCellularProxy, the Proxy API for Cellular
  *
@@ -1300,7 +1300,7 @@ namespace YoctoProxyAPI
         /**
          * <summary>
          *   Sends a PUK code to unlock the SIM card after three failed PIN code attempts, and
-         *   setup a new PIN into the SIM card.
+         *   set up a new PIN into the SIM card.
          * <para>
          *   Only ten consecutive tentatives are permitted:
          *   after that, the SIM card will be blocked permanently without any mean of recovery
@@ -1468,7 +1468,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the cell operator brand for a given MCC/MNC pair.
+         *   Returns the cell operator brand for a given MCC/MNC pair (DEPRECATED).
          * <para>
          * </para>
          * </summary>

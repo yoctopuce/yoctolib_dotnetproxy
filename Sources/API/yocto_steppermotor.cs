@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_steppermotor.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindStepperMotor(), the high-level API for StepperMotor functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YStepperMotor return codes)
 //--- (end of YStepperMotor return codes)
+//--- (YStepperMotor dlldef_core)
+//--- (end of YStepperMotor dlldef_core)
+//--- (YStepperMotor dll_core_map)
+//--- (end of YStepperMotor dll_core_map)
 //--- (YStepperMotor dlldef)
 //--- (end of YStepperMotor dlldef)
 //--- (YStepperMotor yapiwrapper)
@@ -258,7 +262,7 @@ public class YStepperMotor : YFunction
      * <summary>
      *   Changes the current logical motor position, measured in steps.
      * <para>
-     *   This command does not cause any motor move, as its purpose is only to setup
+     *   This command does not cause any motor move, as its purpose is only to set up
      *   the origin of the position counter. The fractional part of the position,
      *   that corresponds to the physical position of the rotor, is not changed.
      *   To trigger a motor move, use methods <c>moveTo()</c> or <c>moveRel()</c>
@@ -1022,8 +1026,8 @@ public class YStepperMotor : YFunction
         byte[] retBin = new byte[0];
         int res;
         id = this.get_functionId();
-        id = (id).Substring( 12, 1);
-        url = "cmd.txt?"+ id+"="+command;
+        id = (id).Substring(12, 1);
+        url = "cmd.txt?"+id+"="+command;
         //may throw an exception
         retBin = this._download(url);
         res = retBin[0];

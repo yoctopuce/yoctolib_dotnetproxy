@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_watchdog_proxy.cs 44548 2021-04-13 09:56:42Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YWatchdogProxy, the Proxy API for Watchdog
  *

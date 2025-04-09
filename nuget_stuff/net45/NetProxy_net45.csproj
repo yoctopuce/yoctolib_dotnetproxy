@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetProxy_net45</RootNamespace>
     <AssemblyName>Yoctopuce.NetProxy</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -88,6 +88,9 @@
     <Compile Include="..\..\Sources\API\yocto_colorledcluster.cs">
       <Link>yocto_colorledcluster.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\API\yocto_colorsensor.cs">
+      <Link>yocto_colorsensor.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\API\yocto_compass.cs">
       <Link>yocto_compass.cs</Link>
     </Compile>
@@ -156,6 +159,9 @@
     </Compile>
     <Compile Include="..\..\Sources\API\yocto_messagebox.cs">
       <Link>yocto_messagebox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\API\yocto_micropython.cs">
+      <Link>yocto_micropython.cs</Link>
     </Compile>
     <Compile Include="..\..\Sources\API\yocto_motor.cs">
       <Link>yocto_motor.cs</Link>
@@ -228,6 +234,9 @@
     </Compile>
     <Compile Include="..\..\Sources\API\yocto_servo.cs">
       <Link>yocto_servo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\API\yocto_spectralchannel.cs">
+      <Link>yocto_spectralchannel.cs</Link>
     </Compile>
     <Compile Include="..\..\Sources\API\yocto_spiport.cs">
       <Link>yocto_spiport.cs</Link>
@@ -307,6 +316,9 @@
     <Compile Include="..\..\Sources\yocto_colorledcluster_proxy.cs">
       <Link>yocto_colorledcluster_proxy.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sources\yocto_colorsensor_proxy.cs">
+      <Link>yocto_colorsensor_proxy.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sources\yocto_compass_proxy.cs">
       <Link>yocto_compass_proxy.cs</Link>
     </Compile>
@@ -378,6 +390,9 @@
     </Compile>
     <Compile Include="..\..\Sources\yocto_messagebox_proxy.cs">
       <Link>yocto_messagebox_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_micropython_proxy.cs">
+      <Link>yocto_micropython_proxy.cs</Link>
     </Compile>
     <Compile Include="..\..\Sources\yocto_motor_proxy.cs">
       <Link>yocto_motor_proxy.cs</Link>
@@ -453,6 +468,9 @@
     </Compile>
     <Compile Include="..\..\Sources\yocto_servo_proxy.cs">
       <Link>yocto_servo_proxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sources\yocto_spectralchannel_proxy.cs">
+      <Link>yocto_spectralchannel_proxy.cs</Link>
     </Compile>
     <Compile Include="..\..\Sources\yocto_spiport_proxy.cs">
       <Link>yocto_spiport_proxy.cs</Link>

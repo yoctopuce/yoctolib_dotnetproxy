@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_groundspeed.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindGroundSpeed(), the high-level API for GroundSpeed functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YGroundSpeed return codes)
 //--- (end of YGroundSpeed return codes)
+//--- (YGroundSpeed dlldef_core)
+//--- (end of YGroundSpeed dlldef_core)
+//--- (YGroundSpeed dll_core_map)
+//--- (end of YGroundSpeed dll_core_map)
 //--- (YGroundSpeed dlldef)
 //--- (end of YGroundSpeed dlldef)
 //--- (YGroundSpeed yapiwrapper)

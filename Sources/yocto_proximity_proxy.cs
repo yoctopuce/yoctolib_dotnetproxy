@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_proximity_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YProximityProxy, the Proxy API for Proximity
  *
@@ -96,7 +96,7 @@ namespace YoctoProxyAPI
  * <para>
  *   It inherits from <c>YSensor</c> class the core functions to read measurements,
  *   to register callback functions, and to access the autonomous datalogger.
- *   This class adds the ability to setup a detection threshold and to count the
+ *   This class adds the ability to set up a detection threshold and to count the
  *   number of detected state changes.
  * </para>
  * <para>

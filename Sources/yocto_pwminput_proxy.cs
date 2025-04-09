@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwminput_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YPwmInputProxy, the Proxy API for PwmInput
  *
@@ -180,6 +180,7 @@ namespace YoctoProxyAPI
         public const int _PwmReportMode_PWM_FREQ_CPM = 10;
         public const int _PwmReportMode_PWM_PERIODCOUNT = 11;
         public const int _DebouncePeriod_INVALID = -1;
+        public const double _MinFrequency_INVALID = Double.NaN;
         public const int _Bandwidth_INVALID = -1;
         public const int _EdgesPerPeriod_INVALID = -1;
 
@@ -188,6 +189,7 @@ namespace YoctoProxyAPI
         // property cache
         protected int _pwmReportMode = _PwmReportMode_INVALID;
         protected int _debouncePeriod = _DebouncePeriod_INVALID;
+        protected double _minFrequency = _MinFrequency_INVALID;
         protected int _bandwidth = _Bandwidth_INVALID;
         //--- (end of YPwmInput definitions)
 
@@ -261,6 +263,7 @@ namespace YoctoProxyAPI
             base.moduleConfigHasChanged();
             _pwmReportMode = _func.get_pwmReportMode()+1;
             _debouncePeriod = _func.get_debouncePeriod();
+            _minFrequency = _func.get_minFrequency();
             _bandwidth = _func.get_bandwidth();
         }
 
@@ -681,6 +684,107 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
+         *   Changes the minimum detected frequency, in Hz.
+         * <para>
+         *   Slower signals will be consider as zero frequency.
+         *   Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   a floating point number corresponding to the minimum detected frequency, in Hz
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_minFrequency(double newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
+            }
+            if (newval == _MinFrequency_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            return _func.set_minFrequency(newval);
+        }
+
+        /**
+         * <summary>
+         *   Returns the minimum detected frequency, in Hz.
+         * <para>
+         *   Slower signals will be consider as zero frequency.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a floating point number corresponding to the minimum detected frequency, in Hz
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YPwmInput.MINFREQUENCY_INVALID</c>.
+         * </para>
+         */
+        public double get_minFrequency()
+        {
+            double res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
+            }
+            res = _func.get_minFrequency();
+            if (res == YAPI.INVALID_DOUBLE) {
+                res = Double.NaN;
+            }
+            return res;
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Minimum detected frequency, in Hz. Slower signals will be consider as zero frequency.</value>
+        public double MinFrequency
+        {
+            get
+            {
+                if (_func == null) {
+                    return _MinFrequency_INVALID;
+                }
+                if (_online) {
+                    return _minFrequency;
+                }
+                return _MinFrequency_INVALID;
+            }
+            set
+            {
+                setprop_minFrequency(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_minFrequency(double newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _MinFrequency_INVALID) {
+                return;
+            }
+            if (newval == _minFrequency) {
+                return;
+            }
+            _func.set_minFrequency(newval);
+            _minFrequency = newval;
+        }
+
+        /**
+         * <summary>
          *   Returns the input signal sampling rate, in kHz.
          * <para>
          * </para>
@@ -813,7 +917,28 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Returns the pulse counter value as well as its timer.
+         *   Resets the periodicity detection algorithm.
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public virtual int resetPeriodDetection()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No PwmInput connected");
+            }
+            return _func.resetPeriodDetection();
+        }
+
+        /**
+         * <summary>
+         *   Resets the pulse counter value as well as its timer.
          * <para>
          * </para>
          * </summary>

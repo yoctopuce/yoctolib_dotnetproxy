@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindWakeUpMonitor(), the high-level API for WakeUpMonitor functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YWakeUpMonitor return codes)
 //--- (end of YWakeUpMonitor return codes)
+//--- (YWakeUpMonitor dlldef_core)
+//--- (end of YWakeUpMonitor dlldef_core)
+//--- (YWakeUpMonitor dll_core_map)
+//--- (end of YWakeUpMonitor dll_core_map)
 //--- (YWakeUpMonitor dlldef)
 //--- (end of YWakeUpMonitor dlldef)
 //--- (YWakeUpMonitor yapiwrapper)
@@ -82,6 +86,7 @@ public class YWakeUpMonitor : YFunction
     public const int WAKEUPREASON_EXTSIG1 = 3;
     public const int WAKEUPREASON_SCHEDULE1 = 4;
     public const int WAKEUPREASON_SCHEDULE2 = 5;
+    public const int WAKEUPREASON_SCHEDULE3 = 6;
     public const int WAKEUPREASON_INVALID = -1;
     public const int WAKEUPSTATE_SLEEPING = 0;
     public const int WAKEUPSTATE_AWAKE = 1;
@@ -327,8 +332,8 @@ public class YWakeUpMonitor : YFunction
      * <returns>
      *   a value among <c>YWakeUpMonitor.WAKEUPREASON_USBPOWER</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTPOWER</c>,
      *   <c>YWakeUpMonitor.WAKEUPREASON_ENDOFSLEEP</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTSIG1</c>,
-     *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c> and <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c>
-     *   corresponding to the latest wake up reason
+     *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c>, <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c> and
+     *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE3</c> corresponding to the latest wake up reason
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPREASON_INVALID</c>.

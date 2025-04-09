@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_carbondioxide_proxy.cs 44175 2021-03-11 11:27:12Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YCarbonDioxideProxy, the Proxy API for CarbonDioxide
  *

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_network.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindNetwork(), the high-level API for Network functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YNetwork return codes)
 //--- (end of YNetwork return codes)
+//--- (YNetwork dlldef_core)
+//--- (end of YNetwork dlldef_core)
+//--- (YNetwork dll_core_map)
+//--- (end of YNetwork dll_core_map)
 //--- (YNetwork dlldef)
 //--- (end of YNetwork dlldef)
 //--- (YNetwork yapiwrapper)
@@ -87,6 +91,12 @@ public class YNetwork : YFunction
     public const string USERPASSWORD_INVALID = YAPI.INVALID_STRING;
     public const string ADMINPASSWORD_INVALID = YAPI.INVALID_STRING;
     public const int HTTPPORT_INVALID = YAPI.INVALID_UINT;
+    public const int HTTPSPORT_INVALID = YAPI.INVALID_UINT;
+    public const int SECURITYMODE_UNDEFINED = 0;
+    public const int SECURITYMODE_LEGACY = 1;
+    public const int SECURITYMODE_MIXED = 2;
+    public const int SECURITYMODE_SECURE = 3;
+    public const int SECURITYMODE_INVALID = -1;
     public const string DEFAULTPAGE_INVALID = YAPI.INVALID_STRING;
     public const int DISCOVERABLE_FALSE = 0;
     public const int DISCOVERABLE_TRUE = 1;
@@ -133,6 +143,8 @@ public class YNetwork : YFunction
     protected string _userPassword = USERPASSWORD_INVALID;
     protected string _adminPassword = ADMINPASSWORD_INVALID;
     protected int _httpPort = HTTPPORT_INVALID;
+    protected int _httpsPort = HTTPSPORT_INVALID;
+    protected int _securityMode = SECURITYMODE_INVALID;
     protected string _defaultPage = DEFAULTPAGE_INVALID;
     protected int _discoverable = DISCOVERABLE_INVALID;
     protected int _wwwWatchdogDelay = WWWWATCHDOGDELAY_INVALID;
@@ -212,6 +224,14 @@ public class YNetwork : YFunction
         if (json_val.has("httpPort"))
         {
             _httpPort = json_val.getInt("httpPort");
+        }
+        if (json_val.has("httpsPort"))
+        {
+            _httpsPort = json_val.getInt("httpsPort");
+        }
+        if (json_val.has("securityMode"))
+        {
+            _securityMode = json_val.getInt("securityMode");
         }
         if (json_val.has("defaultPage"))
         {
@@ -474,7 +494,7 @@ public class YNetwork : YFunction
      * <para>
      * </para>
      * <para>
-     *   If the network interface is setup to use a static IP address, the string starts with "STATIC:" and
+     *   If the network interface is set up to use a static IP address, the string starts with "STATIC:" and
      *   is followed by three
      *   parameters, separated by "/". The first is the device IP address, followed by the subnet mask
      *   length, and finally the
@@ -907,6 +927,146 @@ public class YNetwork : YFunction
         lock (_thisLock) {
             rest_val = (newval).ToString();
             return _setAttr("httpPort", rest_val);
+        }
+    }
+
+
+    /**
+     * <summary>
+     *   Returns the secure TCP port used to serve the hub web UI.
+     * <para>
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   an integer corresponding to the secure TCP port used to serve the hub web UI
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YNetwork.HTTPSPORT_INVALID</c>.
+     * </para>
+     */
+    public int get_httpsPort()
+    {
+        int res;
+        lock (_thisLock) {
+            if (this._cacheExpiration <= YAPI.GetTickCount()) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return HTTPSPORT_INVALID;
+                }
+            }
+            res = this._httpsPort;
+        }
+        return res;
+    }
+
+    /**
+     * <summary>
+     *   Changes the secure TCP port used to serve the hub web UI.
+     * <para>
+     *   The default value is port 4443,
+     *   which is the default for all Web servers. When you change this parameter, remember to call the
+     *   <c>saveToFlash()</c>
+     *   method of the module if the modification must be kept.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="newval">
+     *   an integer corresponding to the secure TCP port used to serve the hub web UI
+     * </param>
+     * <para>
+     * </para>
+     * <returns>
+     *   <c>YAPI.SUCCESS</c> if the call succeeds.
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns a negative error code.
+     * </para>
+     */
+    public int set_httpsPort(int newval)
+    {
+        string rest_val;
+        lock (_thisLock) {
+            rest_val = (newval).ToString();
+            return _setAttr("httpsPort", rest_val);
+        }
+    }
+
+
+    /**
+     * <summary>
+     *   Returns the security level chosen to prevent unauthorized access to the server.
+     * <para>
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+     *   <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+     *   security level chosen to prevent unauthorized access to the server
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YNetwork.SECURITYMODE_INVALID</c>.
+     * </para>
+     */
+    public int get_securityMode()
+    {
+        int res;
+        lock (_thisLock) {
+            if (this._cacheExpiration <= YAPI.GetTickCount()) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return SECURITYMODE_INVALID;
+                }
+            }
+            res = this._securityMode;
+        }
+        return res;
+    }
+
+    /**
+     * <summary>
+     *   Changes the security level used to prevent unauthorized access to the server.
+     * <para>
+     *   The value <c>UNDEFINED</c> causes the security configuration wizard to be
+     *   displayed the next time you log on to the Web console.
+     *   The value <c>LEGACY</c> offers unencrypted HTTP access by default, and
+     *   is designed to provide compatibility with legacy applications that do not
+     *   handle password or do not support <c>HTTPS</c>. But it should
+     *   only be used when system security is guaranteed by other means, such as the
+     *   use of a firewall.
+     *   The value <c>MIXED</c> requires the configuration of passwords, and allows
+     *   access via both HTTP (unencrypted) and HTTPS (encrypted), while requiring
+     *   the Yoctopuce API to be tolerant of certificate characteristics.
+     *   The value <c>SECURE</c> requires the configuration of passwords and the
+     *   use of secure communications in all cases.
+     *   When you change this parameter, remember to call the <c>saveToFlash()</c>
+     *   method of the module if the modification must be kept.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="newval">
+     *   a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+     *   <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+     *   security level used to prevent unauthorized access to the server
+     * </param>
+     * <para>
+     * </para>
+     * <returns>
+     *   <c>YAPI.SUCCESS</c> if the call succeeds.
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns a negative error code.
+     * </para>
+     */
+    public int set_securityMode(int newval)
+    {
+        string rest_val;
+        lock (_thisLock) {
+            rest_val = (newval).ToString();
+            return _setAttr("securityMode", rest_val);
         }
     }
 
@@ -1901,7 +2061,7 @@ public class YNetwork : YFunction
      */
     public virtual int useDHCP(string fallbackIpAddr, int fallbackSubnetMaskLen, string fallbackRouter)
     {
-        return this.set_ipConfig("DHCP:"+ fallbackIpAddr+"/"+Convert.ToString( fallbackSubnetMaskLen)+"/"+fallbackRouter);
+        return this.set_ipConfig("DHCP:"+fallbackIpAddr+"/"+Convert.ToString(fallbackSubnetMaskLen)+"/"+fallbackRouter);
     }
 
 
@@ -1953,7 +2113,7 @@ public class YNetwork : YFunction
      */
     public virtual int useStaticIP(string ipAddress, int subnetMaskLen, string router)
     {
-        return this.set_ipConfig("STATIC:"+ ipAddress+"/"+Convert.ToString( subnetMaskLen)+"/"+router);
+        return this.set_ipConfig("STATIC:"+ipAddress+"/"+Convert.ToString(subnetMaskLen)+"/"+router);
     }
 
 
@@ -2009,7 +2169,7 @@ public class YNetwork : YFunction
 
     /**
      * <summary>
-     *   Setup periodic HTTP callbacks (simplified function).
+     *   Set up periodic HTTP callbacks (simplified function).
      * <para>
      * </para>
      * </summary>

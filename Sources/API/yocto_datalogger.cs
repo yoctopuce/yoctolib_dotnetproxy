@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/********************************************************************
  *
- * $Id: yocto_datalogger.cs 38514 2019-11-26 16:54:39Z seb $
+ * $Id: yocto_datalogger.cs 28120 2017-07-25 07:06:32Z seb $
  *
  * High-level programming interface, common to all modules
  *

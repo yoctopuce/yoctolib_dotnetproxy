@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_pwmpowersource.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindPwmPowerSource(), the high-level API for PwmPowerSource functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YPwmPowerSource return codes)
 //--- (end of YPwmPowerSource return codes)
+//--- (YPwmPowerSource dlldef_core)
+//--- (end of YPwmPowerSource dlldef_core)
+//--- (YPwmPowerSource dll_core_map)
+//--- (end of YPwmPowerSource dll_core_map)
 //--- (YPwmPowerSource dlldef)
 //--- (end of YPwmPowerSource dlldef)
 //--- (YPwmPowerSource yapiwrapper)

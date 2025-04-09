@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_oscontrol.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindOsControl(), the high-level API for OsControl functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YOsControl return codes)
 //--- (end of YOsControl return codes)
+//--- (YOsControl dlldef_core)
+//--- (end of YOsControl dlldef_core)
+//--- (YOsControl dll_core_map)
+//--- (end of YOsControl dll_core_map)
 //--- (YOsControl dlldef)
 //--- (end of YOsControl dlldef)
 //--- (YOsControl yapiwrapper)
@@ -74,7 +78,7 @@ public class YOsControl : YFunction
     public new delegate void ValueCallback(YOsControl func, string value);
     public new delegate void TimedReportCallback(YOsControl func, YMeasure measure);
 
-    public const int SHUTDOWNCOUNTDOWN_INVALID = YAPI.INVALID_UINT;
+    public const int SHUTDOWNCOUNTDOWN_INVALID = YAPI.INVALID_INT;
     protected int _shutdownCountdown = SHUTDOWNCOUNTDOWN_INVALID;
     protected ValueCallback _valueCallbackOsControl = null;
     //--- (end of YOsControl definitions)
@@ -272,6 +276,28 @@ public class YOsControl : YFunction
     public virtual int shutdown(int secBeforeShutDown)
     {
         return this.set_shutdownCountdown(secBeforeShutDown);
+    }
+
+
+    /**
+     * <summary>
+     *   Schedules an OS reboot after a given number of seconds.
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="secBeforeReboot">
+     *   number of seconds before reboot
+     * </param>
+     * <returns>
+     *   <c>YAPI.SUCCESS</c> when the call succeeds.
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns a negative error code.
+     * </para>
+     */
+    public virtual int reboot(int secBeforeReboot)
+    {
+        return this.set_shutdownCountdown(0 - secBeforeReboot);
     }
 
     /**

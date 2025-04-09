@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_genericsensor_proxy.cs 49903 2022-05-25 14:18:36Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YGenericSensorProxy, the Proxy API for GenericSensor
  *
@@ -578,7 +578,7 @@ namespace YoctoProxyAPI
          * <summary>
          *   Changes the electric signal bias for zero shift adjustment.
          * <para>
-         *   If your electric signal reads positive when it should be zero, setup
+         *   If your electric signal reads positive when it should be zero, set up
          *   a positive signalBias of the same value to fix the zero shift.
          *   Remember to call the <c>saveToFlash()</c>
          *   method of the module if the modification must be kept.

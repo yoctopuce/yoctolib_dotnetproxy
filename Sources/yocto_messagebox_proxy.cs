@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_messagebox_proxy.cs 55576 2023-07-25 06:26:34Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YMessageBoxProxy, the Proxy API for MessageBox
  *

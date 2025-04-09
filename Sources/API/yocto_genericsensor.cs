@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_genericsensor.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindGenericSensor(), the high-level API for GenericSensor functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YGenericSensor return codes)
 //--- (end of YGenericSensor return codes)
+//--- (YGenericSensor dlldef_core)
+//--- (end of YGenericSensor dlldef_core)
+//--- (YGenericSensor dll_core_map)
+//--- (end of YGenericSensor dll_core_map)
 //--- (YGenericSensor dlldef)
 //--- (end of YGenericSensor dlldef)
 //--- (YGenericSensor yapiwrapper)
@@ -382,7 +386,7 @@ public class YGenericSensor : YSensor
      * <summary>
      *   Changes the electric signal bias for zero shift adjustment.
      * <para>
-     *   If your electric signal reads positive when it should be zero, setup
+     *   If your electric signal reads positive when it should be zero, set up
      *   a positive signalBias of the same value to fix the zero shift.
      *   Remember to call the <c>saveToFlash()</c>
      *   method of the module if the modification must be kept.

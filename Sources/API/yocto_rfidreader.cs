@@ -350,12 +350,12 @@ public class YRfidOptions
 
     /**
      * <summary>
-     *   Force the use of single-block commands to access RFID tag memory blocks.
+     *   Forces the use of single-block commands to access RFID tag memory blocks.
      * <para>
      *   By default, the Yoctopuce library uses the most efficient access strategy
      *   generally available for each tag type, but you can force the use of
      *   single-block commands if the RFID tags you are using do not support
-     *   multi-block commands. If opération speed is not a priority, choose
+     *   multi-block commands. If operation speed is not a priority, choose
      *   single-block mode as it will work with any mode.
      * </para>
      * </summary>
@@ -364,7 +364,7 @@ public class YRfidOptions
 
     /**
      * <summary>
-     *   Force the use of multi-block commands to access RFID tag memory blocks.
+     *   Forces the use of multi-block commands to access RFID tag memory blocks.
      * <para>
      *   By default, the Yoctopuce library uses the most efficient access strategy
      *   generally available for each tag type, but you can force the use of
@@ -372,7 +372,7 @@ public class YRfidOptions
      *   do support multi-block commands. Be  aware that even if a tag allows multi-block
      *   operations, the maximum number of blocks that can be written or read at the same
      *   time can be (very) limited. If the tag does not support multi-block mode
-     *   for the wanted opération, the option will be ignored.
+     *   for the wanted operation, the option will be ignored.
      * </para>
      * </summary>
      */
@@ -380,7 +380,7 @@ public class YRfidOptions
 
     /**
      * <summary>
-     *   Enable direct access to RFID tag control blocks.
+     *   Enables direct access to RFID tag control blocks.
      * <para>
      *   By default, Yoctopuce library read and write functions only work
      *   on data blocks and automatically skip special blocks, as specific functions are provided
@@ -410,7 +410,7 @@ public class YRfidOptions
 
     /**
      * <summary>
-     *   Enable simulation mode to check the affected block range as well
+     *   Enables simulation mode to check the affected block range as well
      *   as access rights.
      * <para>
      *   When this option is active, the operation is
@@ -445,20 +445,20 @@ public class YRfidOptions
             opt = 0;
         }
         if (this.ForceMultiBlockAccess) {
-            opt = ((opt) | (2));
+            opt = (opt | 2);
         }
         if (this.EnableRawAccess) {
-            opt = ((opt) | (4));
+            opt = (opt | 4);
         }
         if (this.DisableBoundaryChecks) {
-            opt = ((opt) | (8));
+            opt = (opt | 8);
         }
         if (this.EnableDryRun) {
-            opt = ((opt) | (16));
+            opt = (opt | 16);
         }
         res = "&o="+Convert.ToString(opt);
         if (this.KeyType != 0) {
-            res = ""+ res+"&k="+String.Format("{0:x02}", this.KeyType)+":"+this.HexKey;
+            res = ""+res+"&k="+String.Format("{0:x02}",this.KeyType)+":"+this.HexKey;
         }
         return res;
     }
@@ -1070,7 +1070,7 @@ public class YRfidStatus
                 errMsg = "Radio is OFF (refreshRate=0).";
             }
             if (errBlk >= 0) {
-                errMsg = ""+ errMsg+" (block "+Convert.ToString(errBlk)+")";
+                errMsg = ""+errMsg+" (block "+Convert.ToString(errBlk)+")";
             }
         }
         this._tagId = tagId;
@@ -1116,8 +1116,8 @@ public class YRfidStatus
  *   - At tag level, each block must be read and written in its entirety.
  * </para>
  * <para>
- *   - Some blocks are special configuration blocks, and may alter the tag's behaviour
- *   tag behavior if they are rewritten with arbitrary data.
+ *   - Some blocks are special configuration blocks, and may alter the tag's behavior
+ *   if they are rewritten with arbitrary data.
  * </para>
  * <para>
  *   - Data blocks can be set to read-only mode, but on many tags, this operation is irreversible.
@@ -1127,7 +1127,7 @@ public class YRfidStatus
  * <para>
  *   By default, the RfidReader class automatically manages these blocks so that
  *   arbitrary size data  can be manipulated of  without risk and without knowledge of
- *   tag architecture .
+ *   tag architecture.
  * </para>
  * <para>
  * </para>
@@ -1455,7 +1455,7 @@ public class YRfidReader : YFunction
     public virtual List<string> get_tagIdList()
     {
         byte[] json = new byte[0];
-        List<string> jsonList = new List<string>();
+        List<byte[]> jsonList = new List<byte[]>();
         List<string> taglist = new List<string>();
 
         json = this._download("rfid.json?a=list");
@@ -1463,7 +1463,7 @@ public class YRfidReader : YFunction
         if ((json).Length > 3) {
             jsonList = this._json_get_array(json);
             for (int ii_0 = 0; ii_0 <  jsonList.Count; ii_0++) {
-                taglist.Add(this._json_get_string(YAPI.DefaultEncoding.GetBytes(jsonList[ii_0])));
+                taglist.Add(this._json_get_string(jsonList[ii_0]));
             }
         }
         return taglist;
@@ -1472,9 +1472,9 @@ public class YRfidReader : YFunction
 
     /**
      * <summary>
-     *   Retourne la description des propriétés d'un tag RFID présent.
+     *   Returns a description of the properties of an existing RFID tag.
      * <para>
-     *   Cette fonction peut causer des communications avec le tag.
+     *   This function can cause communications with the tag.
      * </para>
      * <para>
      * </para>
@@ -1523,7 +1523,7 @@ public class YRfidReader : YFunction
 
     /**
      * <summary>
-     *   Change an RFID tag configuration to prevents any further write to
+     *   Changes an RFID tag configuration to prevents any further write to
      *   the selected blocks.
      * <para>
      *   This operation is definitive and irreversible.
@@ -1630,8 +1630,8 @@ public class YRfidReader : YFunction
         binRes = YAPI._hexStrToBin(this._json_get_key(json, "bitmap"));
         idx = 0;
         while (idx < nBlocks) {
-            val = binRes[((idx) >> (3))];
-            isLocked = (((val) & (((1) << (((idx) & (7)))))) != 0);
+            val = binRes[(idx >> 3)];
+            isLocked = ((val & (1 << (idx & 7))) != 0);
             res.Add(isLocked);
             idx = idx + 1;
         }
@@ -1697,8 +1697,8 @@ public class YRfidReader : YFunction
         binRes = YAPI._hexStrToBin(this._json_get_key(json, "bitmap"));
         idx = 0;
         while (idx < nBlocks) {
-            val = binRes[((idx) >> (3))];
-            isLocked = (((val) & (((1) << (((idx) & (7)))))) != 0);
+            val = binRes[(idx >> 3)];
+            isLocked = ((val & (1 << (idx & 7))) != 0);
             res.Add(isLocked);
             idx = idx + 1;
         }
@@ -2095,7 +2095,7 @@ public class YRfidReader : YFunction
         int idx;
         int hexb;
         bufflen = (hexString).Length;
-        bufflen = ((bufflen) >> (1));
+        bufflen = (bufflen >> 1);
         if (bufflen <= 16) {
             // short data, use an URL-based command
             optstr = options.imm_getParams();
@@ -2107,7 +2107,7 @@ public class YRfidReader : YFunction
             buff = new byte[bufflen];
             idx = 0;
             while (idx < bufflen) {
-                hexb = YAPI._hexStrToInt((hexString).Substring( 2 * idx, 2));
+                hexb = YAPI._hexStrToInt((hexString).Substring(2 * idx, 2));
                 buff[idx] = (byte)(hexb & 0xff);
                 idx = idx + 1;
             }
@@ -2122,16 +2122,24 @@ public class YRfidReader : YFunction
      * <para>
      *   The write operation may span accross multiple blocks if the
      *   number of bytes to write is larger than the RFID tag block size.
-     *   Note that only the characters présent  in  the provided string
+     *   Note that only the characters present in the provided string
      *   will be written, there is no notion of string length. If your
      *   string data have variable length, you'll have to encode the
-     *   string length yourself.
+     *   string length yourself, with a terminal zero for instannce.
+     * </para>
+     * <para>
+     *   This function only works with ISO-latin characters, if you wish to
+     *   write strings encoded with alternate character sets, you'll have to
+     *   use tagWriteBin() function.
+     * </para>
+     * <para>
      *   By default firstBlock cannot be a special block, and any special block
      *   encountered in the middle of the write operation will be skipped
      *   automatically. The last data block affected by the operation will
      *   be automatically padded with zeros if neccessary.
      *   If you rather want to rewrite special blocks as well,
-     *   use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
+     *   use the <c>EnableRawAccess</c> field from the <c>options</c> parameter
+     *   (definitely not recommanded).
      * </para>
      * <para>
      * </para>
@@ -2219,7 +2227,7 @@ public class YRfidReader : YFunction
 
     /**
      * <summary>
-     *   Change an RFID tag AFI byte (ISO 15693 only).
+     *   Changes an RFID tag AFI byte (ISO 15693 only).
      * <para>
      * </para>
      * </summary>
@@ -2347,7 +2355,7 @@ public class YRfidReader : YFunction
 
     /**
      * <summary>
-     *   Change an RFID tag DSFID byte (ISO 15693 only).
+     *   Changes an RFID tag DSFID byte (ISO 15693 only).
      * <para>
      * </para>
      * </summary>
@@ -2512,8 +2520,8 @@ public class YRfidReader : YFunction
         string evtData;
         // detect possible power cycle of the reader to clear event pointer
         cbPos = YAPI._atoi(cbVal);
-        cbPos = ((cbPos) / (1000));
-        cbDPos = ((cbPos - this._prevCbPos) & (0x7ffff));
+        cbPos = (cbPos / 1000);
+        cbDPos = ((cbPos - this._prevCbPos) & 0x7ffff);
         this._prevCbPos = cbPos;
         if (cbDPos > 16384) {
             this._eventPos = 0;
@@ -2537,7 +2545,7 @@ public class YRfidReader : YFunction
             // first element of array is the new position preceeded by '@'
             arrPos = 1;
             lenStr = eventArr[0];
-            lenStr = (lenStr).Substring( 1, (lenStr).Length-1);
+            lenStr = (lenStr).Substring(1, (lenStr).Length-1);
             // update processed event position pointer
             this._eventPos = YAPI._atoi(lenStr);
         } else {
@@ -2555,7 +2563,7 @@ public class YRfidReader : YFunction
             arrPos = 0;
             arrLen = arrLen - 1;
             lenStr = eventArr[arrLen];
-            lenStr = (lenStr).Substring( 1, (lenStr).Length-1);
+            lenStr = (lenStr).Substring(1, (lenStr).Length-1);
             // update processed event position pointer
             this._eventPos = YAPI._atoi(lenStr);
         }
@@ -2565,18 +2573,18 @@ public class YRfidReader : YFunction
             eventLen = (eventStr).Length;
             typePos = (eventStr).IndexOf(":")+1;
             if ((eventLen >= 14) && (typePos > 10)) {
-                hexStamp = (eventStr).Substring( 0, 8);
+                hexStamp = (eventStr).Substring(0, 8);
                 intStamp = YAPI._hexStrToInt(hexStamp);
                 if (intStamp >= this._eventStamp) {
                     this._eventStamp = intStamp;
-                    binMStamp = YAPI.DefaultEncoding.GetBytes((eventStr).Substring( 8, 2));
+                    binMStamp = YAPI.DefaultEncoding.GetBytes((eventStr).Substring(8, 2));
                     msStamp = (binMStamp[0]-64) * 32 + binMStamp[1];
                     evtStamp = intStamp + (0.001 * msStamp);
                     dataPos = (eventStr).IndexOf("=")+1;
-                    evtType = (eventStr).Substring( typePos, 1);
+                    evtType = (eventStr).Substring(typePos, 1);
                     evtData = "";
                     if (dataPos > 10) {
-                        evtData = (eventStr).Substring( dataPos, eventLen-dataPos);
+                        evtData = (eventStr).Substring(dataPos, eventLen-dataPos);
                     }
                     if (this._eventCallback != null) {
                         this._eventCallback(this, evtStamp, evtType, evtData);

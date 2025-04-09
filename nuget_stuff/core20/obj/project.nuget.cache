@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Z78CG2245qObhOzN0aMuh0UF+Dib/o3T52E1I+LDdu4LQ4dysEUCWxJNKfMRt/34TT/TtWcus66wqGv3tY/+Hw==",
+  "dgSpecHash": "XQ3TDKhtUvMQvYou19zZTTb3qaRJZ3c5ehXdiuelKz8xjvnaIXiU0eTSC/sdrROuS712NpJXzFKe3uxxMpAYhQ==",
   "success": true,
-  "projectFilePath": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v1.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
+  "projectFilePath": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v2.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\yocto\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\yocto\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"

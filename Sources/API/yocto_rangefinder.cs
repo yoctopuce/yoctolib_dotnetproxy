@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_rangefinder.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindRangeFinder(), the high-level API for RangeFinder functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YRangeFinder return codes)
 //--- (end of YRangeFinder return codes)
+//--- (YRangeFinder dlldef_core)
+//--- (end of YRangeFinder dlldef_core)
+//--- (YRangeFinder dll_core_map)
+//--- (end of YRangeFinder dll_core_map)
 //--- (YRangeFinder dlldef)
 //--- (end of YRangeFinder dlldef)
 //--- (YRangeFinder yapiwrapper)
@@ -601,7 +605,7 @@ public class YRangeFinder : YSensor
      *   That
      *   calibration process needs no physical interaction with the sensor. It is performed
      *   automatically at device startup, but it is recommended to start it again when the
-     *   temperature delta since the latest calibration exceeds 8°C.
+     *   temperature delta since the latest calibration exceeds 8 degrees Celsius.
      * </para>
      * </summary>
      * <returns>

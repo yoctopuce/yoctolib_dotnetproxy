@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_multiaxiscontroller.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindMultiAxisController(), the high-level API for MultiAxisController functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YMultiAxisController return codes)
 //--- (end of YMultiAxisController return codes)
+//--- (YMultiAxisController dlldef_core)
+//--- (end of YMultiAxisController dlldef_core)
+//--- (YMultiAxisController dll_core_map)
+//--- (end of YMultiAxisController dll_core_map)
 //--- (YMultiAxisController dlldef)
 //--- (end of YMultiAxisController dlldef)
 //--- (YMultiAxisController yapiwrapper)
@@ -409,7 +413,7 @@ public class YMultiAxisController : YFunction
         cmd = "H"+Convert.ToString((int) Math.Round(1000*speed[0]));
         i = 1;
         while (i < ndim) {
-            cmd = ""+ cmd+","+Convert.ToString((int) Math.Round(1000*speed[i]));
+            cmd = ""+cmd+","+Convert.ToString((int) Math.Round(1000*speed[i]));
             i = i + 1;
         }
         return this.sendCommand(cmd);
@@ -442,7 +446,7 @@ public class YMultiAxisController : YFunction
         cmd = "M"+Convert.ToString((int) Math.Round(16*absPos[0]));
         i = 1;
         while (i < ndim) {
-            cmd = ""+ cmd+","+Convert.ToString((int) Math.Round(16*absPos[i]));
+            cmd = ""+cmd+","+Convert.ToString((int) Math.Round(16*absPos[i]));
             i = i + 1;
         }
         return this.sendCommand(cmd);
@@ -475,7 +479,7 @@ public class YMultiAxisController : YFunction
         cmd = "m"+Convert.ToString((int) Math.Round(16*relPos[0]));
         i = 1;
         while (i < ndim) {
-            cmd = ""+ cmd+","+Convert.ToString((int) Math.Round(16*relPos[i]));
+            cmd = ""+cmd+","+Convert.ToString((int) Math.Round(16*relPos[i]));
             i = i + 1;
         }
         return this.sendCommand(cmd);

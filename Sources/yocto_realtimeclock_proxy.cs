@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_realtimeclock_proxy.cs 53863 2023-04-04 16:20:17Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YRealTimeClockProxy, the Proxy API for RealTimeClock
  *

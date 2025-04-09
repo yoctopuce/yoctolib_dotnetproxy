@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_watchdog.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindWatchdog(), the high-level API for Watchdog functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YWatchdog return codes)
 //--- (end of YWatchdog return codes)
+//--- (YWatchdog dlldef_core)
+//--- (end of YWatchdog dlldef_core)
+//--- (YWatchdog dll_core_map)
+//--- (end of YWatchdog dll_core_map)
 //--- (YWatchdog dlldef)
 //--- (end of YWatchdog dlldef)
 //--- (YWatchdog yapiwrapper)

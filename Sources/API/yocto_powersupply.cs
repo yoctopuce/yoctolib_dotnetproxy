@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_powersupply.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindPowerSupply(), the high-level API for PowerSupply functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YPowerSupply return codes)
 //--- (end of YPowerSupply return codes)
+//--- (YPowerSupply dlldef_core)
+//--- (end of YPowerSupply dlldef_core)
+//--- (YPowerSupply dll_core_map)
+//--- (end of YPowerSupply dll_core_map)
 //--- (YPowerSupply dlldef)
 //--- (end of YPowerSupply dlldef)
 //--- (YPowerSupply yapiwrapper)
@@ -803,7 +807,7 @@ public class YPowerSupply : YFunction
         if (V_target < 0.0) {
             V_target  = 0.0;
         }
-        newval = ""+Convert.ToString( (int) Math.Round(V_target*65536))+":"+Convert.ToString(ms_duration);
+        newval = ""+Convert.ToString((int) Math.Round(V_target*65536))+":"+Convert.ToString(ms_duration);
 
         return this.set_voltageTransition(newval);
     }

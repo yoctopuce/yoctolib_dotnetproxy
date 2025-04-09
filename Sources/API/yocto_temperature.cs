@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_temperature.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindTemperature(), the high-level API for Temperature functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YTemperature return codes)
 //--- (end of YTemperature return codes)
+//--- (YTemperature dlldef_core)
+//--- (end of YTemperature dlldef_core)
+//--- (YTemperature dll_core_map)
+//--- (end of YTemperature dll_core_map)
 //--- (YTemperature dlldef)
 //--- (end of YTemperature dlldef)
 //--- (YTemperature yapiwrapper)
@@ -614,7 +618,7 @@ public class YTemperature : YSensor
                 idx = idx + 1;
             }
             if (found > 0) {
-                res = this.set_command("m"+Convert.ToString( (int) Math.Round(1000*curr))+":"+Convert.ToString((int) Math.Round(1000*currTemp)));
+                res = this.set_command("m"+Convert.ToString((int) Math.Round(1000*curr))+":"+Convert.ToString((int) Math.Round(1000*currTemp)));
                 if (!(res==YAPI.SUCCESS)) {
                     this._throw(YAPI.IO_ERROR, "unable to reset thermistor parameters");
                     return YAPI.IO_ERROR;
@@ -658,7 +662,7 @@ public class YTemperature : YSensor
     {
         string id;
         byte[] bin_json = new byte[0];
-        List<string> paramlist = new List<string>();
+        List<byte[]> paramlist = new List<byte[]>();
         List<double> templist = new List<double>();
         int siz;
         int idx;
@@ -671,18 +675,18 @@ public class YTemperature : YSensor
         resValues.Clear();
 
         id = this.get_functionId();
-        id = (id).Substring( 11, (id).Length - 11);
+        id = (id).Substring(11, (id).Length - 11);
         if (id == "") {
             id = "1";
         }
         bin_json = this._download("extra.json?page="+id);
         paramlist = this._json_get_array(bin_json);
         // first convert all temperatures to float
-        siz = ((paramlist.Count) >> (1));
+        siz = (paramlist.Count >> 1);
         templist.Clear();
         idx = 0;
         while (idx < siz) {
-            temp = YAPI._atof(paramlist[2*idx+1])/1000.0;
+            temp = YAPI._atof(YAPI.DefaultEncoding.GetString(paramlist[2*idx+1]))/1000.0;
             templist.Add(temp);
             idx = idx + 1;
         }
@@ -700,7 +704,7 @@ public class YTemperature : YSensor
                 temp = templist[idx];
                 if ((temp > prev) && (temp < curr)) {
                     curr = temp;
-                    currRes = YAPI._atof(paramlist[2*idx])/1000.0;
+                    currRes = YAPI._atof(YAPI.DefaultEncoding.GetString(paramlist[2*idx]))/1000.0;
                     found = 1;
                 }
                 idx = idx + 1;

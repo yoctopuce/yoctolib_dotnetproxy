@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_steppermotor_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YStepperMotorProxy, the Proxy API for StepperMotor
  *
@@ -318,7 +318,7 @@ namespace YoctoProxyAPI
          * <summary>
          *   Changes the current logical motor position, measured in steps.
          * <para>
-         *   This command does not cause any motor move, as its purpose is only to setup
+         *   This command does not cause any motor move, as its purpose is only to set up
          *   the origin of the position counter. The fractional part of the position,
          *   that corresponds to the physical position of the rotor, is not changed.
          *   To trigger a motor move, use methods <c>moveTo()</c> or <c>moveRel()</c>

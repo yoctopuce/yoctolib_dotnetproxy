@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_servo.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindServo(), the high-level API for Servo functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YServo return codes)
 //--- (end of YServo return codes)
+//--- (YServo dlldef_core)
+//--- (end of YServo dlldef_core)
+//--- (YServo dll_core_map)
+//--- (end of YServo dll_core_map)
 //--- (YServo dlldef)
 //--- (end of YServo dlldef)
 //--- (YServo yapiwrapper)

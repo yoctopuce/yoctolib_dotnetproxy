@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_audioin.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindAudioIn(), the high-level API for AudioIn functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YAudioIn return codes)
 //--- (end of YAudioIn return codes)
+//--- (YAudioIn dlldef_core)
+//--- (end of YAudioIn dlldef_core)
+//--- (YAudioIn dll_core_map)
+//--- (end of YAudioIn dll_core_map)
 //--- (YAudioIn dlldef)
 //--- (end of YAudioIn dlldef)
 //--- (YAudioIn yapiwrapper)

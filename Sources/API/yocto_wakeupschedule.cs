@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_wakeupschedule.cs 56230 2023-08-21 15:20:59Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindWakeUpSchedule(), the high-level API for WakeUpSchedule functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YWakeUpSchedule return codes)
 //--- (end of YWakeUpSchedule return codes)
+//--- (YWakeUpSchedule dlldef_core)
+//--- (end of YWakeUpSchedule dlldef_core)
+//--- (YWakeUpSchedule dll_core_map)
+//--- (end of YWakeUpSchedule dll_core_map)
 //--- (YWakeUpSchedule dlldef)
 //--- (end of YWakeUpSchedule dlldef)
 //--- (YWakeUpSchedule yapiwrapper)
@@ -728,7 +732,7 @@ public class YWakeUpSchedule : YFunction
         long res;
 
         res = this.get_minutesB();
-        res = ((res) << (30));
+        res = (res << 30);
         res = res + this.get_minutesA();
         return res;
     }
@@ -752,9 +756,9 @@ public class YWakeUpSchedule : YFunction
      */
     public virtual int set_minutes(long bitmap)
     {
-        this.set_minutesA((int)(((bitmap) & (0x3fffffff))));
-        bitmap = ((bitmap) >> (30));
-        return this.set_minutesB((int)(((bitmap) & (0x3fffffff))));
+        this.set_minutesA((int)((bitmap & 0x3fffffff)));
+        bitmap = (bitmap >> 30);
+        return this.set_minutesB((int)((bitmap & 0x3fffffff)));
     }
 
     /**

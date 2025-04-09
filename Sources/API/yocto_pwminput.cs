@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_pwminput.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindPwmInput(), the high-level API for PwmInput functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YPwmInput return codes)
 //--- (end of YPwmInput return codes)
+//--- (YPwmInput dlldef_core)
+//--- (end of YPwmInput dlldef_core)
+//--- (YPwmInput dll_core_map)
+//--- (end of YPwmInput dll_core_map)
 //--- (YPwmInput dlldef)
 //--- (end of YPwmInput dlldef)
 //--- (YPwmInput yapiwrapper)
@@ -95,6 +99,7 @@ public class YPwmInput : YSensor
     public const int PWMREPORTMODE_PWM_PERIODCOUNT = 10;
     public const int PWMREPORTMODE_INVALID = -1;
     public const int DEBOUNCEPERIOD_INVALID = YAPI.INVALID_UINT;
+    public const double MINFREQUENCY_INVALID = YAPI.INVALID_DOUBLE;
     public const int BANDWIDTH_INVALID = YAPI.INVALID_UINT;
     public const int EDGESPERPERIOD_INVALID = YAPI.INVALID_UINT;
     protected double _dutyCycle = DUTYCYCLE_INVALID;
@@ -105,6 +110,7 @@ public class YPwmInput : YSensor
     protected long _pulseTimer = PULSETIMER_INVALID;
     protected int _pwmReportMode = PWMREPORTMODE_INVALID;
     protected int _debouncePeriod = DEBOUNCEPERIOD_INVALID;
+    protected double _minFrequency = MINFREQUENCY_INVALID;
     protected int _bandwidth = BANDWIDTH_INVALID;
     protected int _edgesPerPeriod = EDGESPERPERIOD_INVALID;
     protected ValueCallback _valueCallbackPwmInput = null;
@@ -154,6 +160,10 @@ public class YPwmInput : YSensor
         if (json_val.has("debouncePeriod"))
         {
             _debouncePeriod = json_val.getInt("debouncePeriod");
+        }
+        if (json_val.has("minFrequency"))
+        {
+            _minFrequency = Math.Round(json_val.getDouble("minFrequency") / 65.536) / 1000.0;
         }
         if (json_val.has("bandwidth"))
         {
@@ -529,6 +539,68 @@ public class YPwmInput : YSensor
         }
     }
 
+    /**
+     * <summary>
+     *   Changes the minimum detected frequency, in Hz.
+     * <para>
+     *   Slower signals will be consider as zero frequency.
+     *   Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <param name="newval">
+     *   a floating point number corresponding to the minimum detected frequency, in Hz
+     * </param>
+     * <para>
+     * </para>
+     * <returns>
+     *   <c>YAPI.SUCCESS</c> if the call succeeds.
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns a negative error code.
+     * </para>
+     */
+    public int set_minFrequency(double newval)
+    {
+        string rest_val;
+        lock (_thisLock) {
+            rest_val = Math.Round(newval * 65536.0).ToString();
+            return _setAttr("minFrequency", rest_val);
+        }
+    }
+
+
+    /**
+     * <summary>
+     *   Returns the minimum detected frequency, in Hz.
+     * <para>
+     *   Slower signals will be consider as zero frequency.
+     * </para>
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   a floating point number corresponding to the minimum detected frequency, in Hz
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns <c>YPwmInput.MINFREQUENCY_INVALID</c>.
+     * </para>
+     */
+    public double get_minFrequency()
+    {
+        double res;
+        lock (_thisLock) {
+            if (this._cacheExpiration <= YAPI.GetTickCount()) {
+                if (this.load(YAPI._yapiContext.GetCacheValidity()) != YAPI.SUCCESS) {
+                    return MINFREQUENCY_INVALID;
+                }
+            }
+            res = this._minFrequency;
+        }
+        return res;
+    }
+
 
     /**
      * <summary>
@@ -783,7 +855,26 @@ public class YPwmInput : YSensor
 
     /**
      * <summary>
-     *   Returns the pulse counter value as well as its timer.
+     *   Resets the periodicity detection algorithm.
+     * <para>
+     * </para>
+     * </summary>
+     * <returns>
+     *   <c>YAPI.SUCCESS</c> if the call succeeds.
+     * </returns>
+     * <para>
+     *   On failure, throws an exception or returns a negative error code.
+     * </para>
+     */
+    public virtual int resetPeriodDetection()
+    {
+        return this.set_bandwidth(this.get_bandwidth());
+    }
+
+
+    /**
+     * <summary>
+     *   Resets the pulse counter value as well as its timer.
      * <para>
      * </para>
      * </summary>

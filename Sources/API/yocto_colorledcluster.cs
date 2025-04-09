@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_colorledcluster.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindColorLedCluster(), the high-level API for ColorLedCluster functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YColorLedCluster return codes)
 //--- (end of YColorLedCluster return codes)
+//--- (YColorLedCluster dlldef_core)
+//--- (end of YColorLedCluster dlldef_core)
+//--- (YColorLedCluster dll_core_map)
+//--- (end of YColorLedCluster dll_core_map)
 //--- (YColorLedCluster dlldef)
 //--- (end of YColorLedCluster dlldef)
 //--- (YColorLedCluster yapiwrapper)
@@ -690,9 +694,9 @@ public class YColorLedCluster : YFunction
      *   autonomous manner.
      * <para>
      *   The transition is performed in the HSL space. In HSL, hue is a circular
-     *   value (0..360°). There are always two paths to perform the transition: by increasing
+     *   value (0..360 deg). There are always two paths to perform the transition: by increasing
      *   or by decreasing the hue. The module selects the shortest transition.
-     *   If the difference is exactly 180°, the module selects the transition which increases
+     *   If the difference is exactly 180 deg, the module selects the transition which increases
      *   the hue.
      * </para>
      * </summary>
@@ -1235,9 +1239,9 @@ public class YColorLedCluster : YFunction
         idx = 0;
         while (idx < listlen) {
             rgb = rgbList[idx];
-            buff[3*idx] = (byte)(((((rgb) >> (16))) & (255)) & 0xff);
-            buff[3*idx+1] = (byte)(((((rgb) >> (8))) & (255)) & 0xff);
-            buff[3*idx+2] = (byte)(((rgb) & (255)) & 0xff);
+            buff[3*idx] = (byte)(((rgb >> 16) & 255) & 0xff);
+            buff[3*idx+1] = (byte)(((rgb >> 8) & 255) & 0xff);
+            buff[3*idx+2] = (byte)((rgb & 255) & 0xff);
             idx = idx + 1;
         }
 
@@ -1283,9 +1287,9 @@ public class YColorLedCluster : YFunction
         idx = 0;
         while (idx < listlen) {
             rgb = rgbList[idx];
-            buff[3*idx] = (byte)(((((rgb) >> (16))) & (255)) & 0xff);
-            buff[3*idx+1] = (byte)(((((rgb) >> (8))) & (255)) & 0xff);
-            buff[3*idx+2] = (byte)(((rgb) & (255)) & 0xff);
+            buff[3*idx] = (byte)(((rgb >> 16) & 255) & 0xff);
+            buff[3*idx+1] = (byte)(((rgb >> 8) & 255) & 0xff);
+            buff[3*idx+2] = (byte)((rgb & 255) & 0xff);
             idx = idx + 1;
         }
 
@@ -1385,9 +1389,9 @@ public class YColorLedCluster : YFunction
         idx = 0;
         while (idx < listlen) {
             hsl = hslList[idx];
-            buff[3*idx] = (byte)(((((hsl) >> (16))) & (255)) & 0xff);
-            buff[3*idx+1] = (byte)(((((hsl) >> (8))) & (255)) & 0xff);
-            buff[3*idx+2] = (byte)(((hsl) & (255)) & 0xff);
+            buff[3*idx] = (byte)(((hsl >> 16) & 255) & 0xff);
+            buff[3*idx+1] = (byte)(((hsl >> 8) & 255) & 0xff);
+            buff[3*idx+2] = (byte)((hsl & 255) & 0xff);
             idx = idx + 1;
         }
 
@@ -1464,9 +1468,9 @@ public class YColorLedCluster : YFunction
         idx = 0;
         while (idx < listlen) {
             hsl = hslList[idx];
-            buff[3*idx] = (byte)(((((hsl) >> (16))) & (255)) & 0xff);
-            buff[3*idx+1] = (byte)(((((hsl) >> (8))) & (255)) & 0xff);
-            buff[3*idx+2] = (byte)(((hsl) & (255)) & 0xff);
+            buff[3*idx] = (byte)(((hsl >> 16) & 255) & 0xff);
+            buff[3*idx+1] = (byte)(((hsl >> 8) & 255) & 0xff);
+            buff[3*idx+2] = (byte)((hsl & 255) & 0xff);
             idx = idx + 1;
         }
 
@@ -1671,7 +1675,7 @@ public class YColorLedCluster : YFunction
             hl = buff[4*idx+1];
             lh = buff[4*idx+2];
             ll = buff[4*idx+3];
-            res.Add(((hh) << (24))+((hl) << (16))+((lh) << (8))+ll);
+            res.Add((hh << 24)+(hl << 16)+(lh << 8)+ll);
             idx = idx + 1;
         }
         return res;
@@ -1711,7 +1715,7 @@ public class YColorLedCluster : YFunction
         while (idx < count) {
             lh = buff[2*idx];
             ll = buff[2*idx+1];
-            res.Add(((lh) << (8))+ll);
+            res.Add((lh << 8)+ll);
             idx = idx + 1;
         }
         return res;
@@ -1797,15 +1801,15 @@ public class YColorLedCluster : YFunction
     public virtual int hsl2rgbInt(int temp1, int temp2, int temp3)
     {
         if (temp3 >= 170) {
-            return (((temp1 + 127)) / (255));
+            return ((temp1 + 127) / 255);
         }
         if (temp3 > 42) {
             if (temp3 <= 127) {
-                return (((temp2 + 127)) / (255));
+                return ((temp2 + 127) / 255);
             }
             temp3 = 170 - temp3;
         }
-        return (((temp1*255 + (temp2-temp1) * (6 * temp3) + 32512)) / (65025));
+        return ((temp1*255 + (temp2-temp1) * (6 * temp3) + 32512) / 65025);
     }
 
 
@@ -1821,11 +1825,11 @@ public class YColorLedCluster : YFunction
         int temp2;
         int temp3;
         int res;
-        L = ((hslValue) & (0xff));
-        S = ((((hslValue) >> (8))) & (0xff));
-        H = ((((hslValue) >> (16))) & (0xff));
+        L = (hslValue & 0xff);
+        S = ((hslValue >> 8) & 0xff);
+        H = ((hslValue >> 16) & 0xff);
         if (S==0) {
-            res = ((L) << (16))+((L) << (8))+L;
+            res = (L << 16)+(L << 8)+L;
             return res;
         }
         if (L<=127) {
@@ -1863,7 +1867,7 @@ public class YColorLedCluster : YFunction
         if (B>255) {
             B=255;
         }
-        res = ((R) << (16))+((G) << (8))+B;
+        res = (R << 16)+(G << 8)+B;
         return res;
     }
 

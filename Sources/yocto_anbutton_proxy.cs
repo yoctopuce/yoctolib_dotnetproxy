@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_anbutton_proxy.cs 56268 2023-08-25 17:43:56Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YAnButtonProxy, the Proxy API for AnButton
  *

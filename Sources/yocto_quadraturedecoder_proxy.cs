@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_quadraturedecoder_proxy.cs 45843 2021-08-04 07:51:59Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YQuadratureDecoderProxy, the Proxy API for QuadratureDecoder
  *

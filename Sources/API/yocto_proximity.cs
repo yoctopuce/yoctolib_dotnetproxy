@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_proximity.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindProximity(), the high-level API for Proximity functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YProximity return codes)
 //--- (end of YProximity return codes)
+//--- (YProximity dlldef_core)
+//--- (end of YProximity dlldef_core)
+//--- (YProximity dll_core_map)
+//--- (end of YProximity dll_core_map)
 //--- (YProximity dlldef)
 //--- (end of YProximity dlldef)
 //--- (YProximity yapiwrapper)
@@ -62,7 +66,7 @@ using YFUN_DESCR = System.Int32;
  * <para>
  *   It inherits from <c>YSensor</c> class the core functions to read measurements,
  *   to register callback functions, and to access the autonomous datalogger.
- *   This class adds the ability to setup a detection threshold and to count the
+ *   This class adds the ability to set up a detection threshold and to count the
  *   number of detected state changes.
  * </para>
  * <para>

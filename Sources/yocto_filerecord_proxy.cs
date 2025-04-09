@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_filerecord_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YFileRecordProxy, the Proxy API for FileRecord
  *

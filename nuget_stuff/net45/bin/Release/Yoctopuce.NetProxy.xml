@@ -64,7 +64,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YAPIProxy.RegisterHub(System.String)">
             <summary>
-              Setup the Yoctopuce library to use modules connected on a given machine.
+              Set up the Yoctopuce library to use modules connected on a given machine.
             <para>
               Idealy this
               call will be made once at the begining of your application.  The
@@ -85,7 +85,7 @@
               computer, use the IP address 127.0.0.1. If the given IP is unresponsive, <c>yRegisterHub</c>
               will not return until a time-out defined by <c>ySetNetworkTimeout</c> has elapsed.
               However, it is possible to preventively test a connection  with <c>yTestHub</c>.
-              If you cannot afford a network time-out, you can use the non blocking <c>yPregisterHub</c>
+              If you cannot afford a network time-out, you can use the non-blocking <c>yPregisterHub</c>
               function that will establish the connection as soon as it is available.
             </para>
             <para>
@@ -103,7 +103,7 @@
               while trying to access the USB modules. In particular, this means
               that you must stop the VirtualHub software before starting
               an application that uses direct USB access. The workaround
-              for this limitation is to setup the library to use the VirtualHub
+              for this limitation is to set up the library to use the VirtualHub
               rather than direct USB access.
             </para>
             <para>
@@ -213,7 +213,7 @@
             <para>
               From an operating system standpoint, it is generally not required to call
               this function since the OS will automatically free allocated resources
-              once your program is completed. However there are two situations when
+              once your program is completed. However, there are two situations when
               you may really want to use that function:
             </para>
             <para>
@@ -237,7 +237,7 @@
             <para>
               This delay impacts only the YoctoHubs and VirtualHub
               which are accessible through the network. By default, this delay is of 20000 milliseconds,
-              but depending or you network you may want to change this delay,
+              but depending on your network you may want to change this delay,
               gor example if your network infrastructure is based on a GSM connection.
             </para>
             <para>
@@ -254,7 +254,7 @@
             <para>
               This delay impacts only the YoctoHubs and VirtualHub
               which are accessible through the network. By default, this delay is of 20000 milliseconds,
-              but depending or you network you may want to change this delay,
+              but depending on your network you may want to change this delay,
               for example if your network infrastructure is based on a GSM connection.
             </para>
             </summary>
@@ -308,9 +308,8 @@
         </member>
         <member name="M:YoctoProxyAPI.YModuleProxy.GetSimilarFunctions">
             <summary>
-              Enumère toutes les fonctions de type Module.
-            <para>
               Returns an array of strings representing hardware identifiers for all Module functions presently connected.
+            <para>
             </para>
             </summary>
         </member>
@@ -844,7 +843,7 @@
               Returns the icon of the module.
             <para>
               The icon is a PNG image and does not
-              exceeds 1536 bytes.
+              exceed 1536 bytes.
             </para>
             <para>
             </para>
@@ -931,7 +930,7 @@
               It can be
               used to read the current value and unit of any sensor, read the min/max
               value, configure autonomous recording frequency and access recorded data.
-              It also provide a function to register a callback invoked each time the
+              It also provides a function to register a callback invoked each time the
               observed value changes, or at a predefined interval. Using this class rather
               than a specific subclass makes it possible to create generic applications
               that work with any Yoctopuce sensor, even those that do not yet exist.
@@ -4643,7 +4642,7 @@
         <member name="M:YoctoProxyAPI.YCellularProxy.sendPUK(System.String,System.String)">
             <summary>
               Sends a PUK code to unlock the SIM card after three failed PIN code attempts, and
-              setup a new PIN into the SIM card.
+              set up a new PIN into the SIM card.
             <para>
               Only ten consecutive tentatives are permitted:
               after that, the SIM card will be blocked permanently without any mean of recovery
@@ -4751,7 +4750,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YCellularProxy.decodePLMN(System.String)">
             <summary>
-              Returns the cell operator brand for a given MCC/MNC pair.
+              Returns the cell operator brand for a given MCC/MNC pair (DEPRECATED).
             <para>
             </para>
             </summary>
@@ -4997,8 +4996,9 @@
             <summary>
               Changes the color that the LED displays by default when the module is turned on.
             <para>
-              Remember to call the <c>saveToFlash()</c>
-              method of the module if the modification must be kept.
+              Remember to call the <c>saveLedsConfigAtPowerOn()</c> method of the module if the modification must be kept.
+              Note: for the original modules Yocto-Color (version 1) et Yocto-PowerColor, the  <c>saveToFlash()</c>
+              method must be used instead.
             </para>
             <para>
             </para>
@@ -5141,6 +5141,19 @@
               <c>0</c> if the call succeeds.
               On failure, throws an exception or returns a negative error code.
             </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorLedProxy.saveLedsConfigAtPowerOn">
+            <summary>
+              Saves the LEDs power-on configuration.
+            <para>
+              Warning: this method is not supported by
+              Yocto-Color (version 1) and Yocto-PowerColor modules. For these devices, the <c>saveToFlash()</c>
+              method of the module must be used instead.
+            </para>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+            </summary>
         </member>
         <member name="T:YoctoProxyAPI.YColorLedClusterProxy">
             <summary>
@@ -5505,9 +5518,9 @@
               autonomous manner.
             <para>
               The transition is performed in the HSL space. In HSL, hue is a circular
-              value (0..360°). There are always two paths to perform the transition: by increasing
+              value (0..360 deg). There are always two paths to perform the transition: by increasing
               or by decreasing the hue. The module selects the shortest transition.
-              If the difference is exactly 180°, the module selects the transition which increases
+              If the difference is exactly 180 deg, the module selects the transition which increases
               the hue.
             </para>
             </summary>
@@ -6223,6 +6236,530 @@
             <para>
               On failure, throws an exception or returns an empty array.
             </para>
+        </member>
+        <member name="T:YoctoProxyAPI.YColorSensorProxy">
+            <summary>
+              The <c>YColorSensor</c> class allows you to read and configure Yoctopuce color sensors.
+            <para>
+              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              to register callback functions, and to access the autonomous datalogger.
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.FindColorSensor(System.String)">
+            <summary>
+              Retrieves a color sensor for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the color sensor is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YColorSensor.isOnline()</c> to test if the color sensor is
+              indeed online at a given time. In case of ambiguity when looking for
+              a color sensor by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the color sensor, for instance
+              <c>MyDevice.colorSensor</c>.
+            </param>
+            <returns>
+              a <c>YColorSensor</c> object allowing you to drive the color sensor.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.GetSimilarFunctions">
+            <summary>
+              Enumerates all functions of type ColorSensor available on the devices
+              currently reachable by the library, and returns their unique hardware ID.
+            <para>
+              Each of these IDs can be provided as argument to the method
+              <c>YColorSensor.FindColorSensor</c> to obtain an object that can control the
+              corresponding device.
+            </para>
+            </summary>
+            <returns>
+              an array of strings, each string containing the unique hardwareId
+              of a device function currently connected.
+            </returns>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.EstimatedRGB">
+            <value>Estimated color in the RGB (0xRRGGBB) format.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.EstimatedHSL">
+            <value>Estimated color in the HSL (0xHHSSLL) format.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.NearSimpleColorIndex">
+            <value>Nearest simple color index.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.Saturation">
+            <value>Sensor saturation diagnostic bits.</value>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.LedCurrent">
+            <value>Current poweing the reflection LEDs.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_estimationModel">
+            <summary>
+              Returns the model for color estimation.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YColorSensor.ESTIMATIONMODEL_REFLECTION</c> or <c>YColorSensor.ESTIMATIONMODEL_EMISSION</c>,
+              according to the model for color estimation
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATIONMODEL_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.set_estimationModel(System.Int32)">
+            <summary>
+              Changes the model for color estimation.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YColorSensor.ESTIMATIONMODEL_REFLECTION</c> or <c>YColorSensor.ESTIMATIONMODEL_EMISSION</c>,
+              according to the model for color estimation
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.EstimationModel">
+            <value>Model for color estimation.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_workingMode">
+            <summary>
+              Returns the active working mode.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YColorSensor.WORKINGMODE_AUTO</c> or <c>YColorSensor.WORKINGMODE_EXPERT</c>, according to
+              the active working mode
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.WORKINGMODE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.set_workingMode(System.Int32)">
+            <summary>
+              Changes the operating mode.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YColorSensor.WORKINGMODE_AUTO</c> or <c>YColorSensor.WORKINGMODE_EXPERT</c>, according to
+              the operating mode
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.WorkingMode">
+            <value>Active working mode.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_saturation">
+            <summary>
+              Returns the current saturation of the sensor.
+            <para>
+              This function updates the sensor's saturation value.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current saturation of the sensor
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.SATURATION_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_ledCurrent">
+            <summary>
+              Returns the current value of the LED.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current value of the LED
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.LEDCURRENT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.set_ledCurrent(System.Int32)">
+            <summary>
+              Changes the luminosity of the module leds.
+            <para>
+              The parameter is a
+              value between 0 and 254.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the luminosity of the module leds
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_ledCalibration">
+            <summary>
+              Returns the LED current at calibration.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the LED current at calibration
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.LEDCALIBRATION_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.set_ledCalibration(System.Int32)">
+            <summary>
+              Sets the LED current for calibration.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.LedCalibration">
+            <value>LED current at calibration.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_integrationTime">
+            <summary>
+              Returns the current integration time.
+            <para>
+              This method retrieves the integration time value
+              used for data processing and returns it as an integer or an object.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current integration time
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.INTEGRATIONTIME_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.set_integrationTime(System.Int32)">
+            <summary>
+              Changes the integration time for data processing.
+            <para>
+              This method takes a parameter and assigns it
+              as the new integration time. This affects the duration
+              for which data is integrated before being processed.
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the integration time for data processing
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.IntegrationTime">
+            <value>Current integration time.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_gain">
+            <summary>
+              Returns the current gain.
+            <para>
+              This method updates the gain value.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current gain
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.GAIN_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.set_gain(System.Int32)">
+            <summary>
+              Changes the gain for signal processing.
+            <para>
+              This method takes a parameter and assigns it
+              as the new gain. This affects the sensitivity and
+              intensity of the processed signal.
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the gain for signal processing
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YColorSensorProxy.Gain">
+            <value>Current gain.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_estimatedRGB">
+            <summary>
+              Returns the estimated color in RGB format (0xRRGGBB).
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the estimated color in RGB format (0xRRGGBB)
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDRGB_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_estimatedHSL">
+            <summary>
+              Returns the estimated color in HSL (Hue, Saturation, Lightness) format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the estimated color in HSL (Hue, Saturation, Lightness) format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDHSL_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_estimatedXYZ">
+            <summary>
+              Returns the estimated color in XYZ format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in XYZ format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDXYZ_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_estimatedOkLab">
+            <summary>
+              Returns the estimated color in OkLab format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in OkLab format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDOKLAB_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_nearRAL1">
+            <summary>
+              Returns the estimated color in RAL format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in RAL format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARRAL1_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_nearRAL2">
+            <summary>
+              Returns the estimated color in RAL format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in RAL format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARRAL2_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_nearRAL3">
+            <summary>
+              Returns the estimated color in RAL format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in RAL format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARRAL3_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_nearHTMLColor">
+            <summary>
+              Returns the estimated HTML color .
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated HTML color
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARHTMLCOLOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_nearSimpleColor">
+            <summary>
+              Returns the estimated color .
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARSIMPLECOLOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.get_nearSimpleColorIndex">
+            <summary>
+              Returns the estimated color as an index.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YColorSensor.NEARSIMPLECOLORINDEX_BROWN</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_RED</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_ORANGE</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_YELLOW</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_WHITE</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_GRAY</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_BLACK</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_GREEN</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_BLUE</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_PURPLE</c> and <c>YColorSensor.NEARSIMPLECOLORINDEX_PINK</c>
+              corresponding to the estimated color as an index
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARSIMPLECOLORINDEX_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.turnLedOn">
+            <summary>
+              Turns on the LEDs at the current used during calibration.
+            <para>
+              On failure, throws an exception or returns colorsensor._Data_INVALID.
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YColorSensorProxy.turnLedOff">
+            <summary>
+              Turns off the LEDs.
+            <para>
+              On failure, throws an exception or returns colorsensor._Data_INVALID.
+            </para>
+            </summary>
         </member>
         <member name="T:YoctoProxyAPI.YCompassProxy">
             <summary>
@@ -7140,7 +7677,7 @@
             <summary>
               The <c>YDigitalIO</c> class allows you drive a Yoctopuce digital input/output port.
             <para>
-              It can be used to setup the direction of each channel, to read the state of each channel
+              It can be used to set up the direction of each channel, to read the state of each channel
               and to switch the state of each channel configures as an output.
               You can work on all channels at once, or one by one. Most functions
               use a binary representation for channels where bit 0 matches channel #0 , bit 1 matches channel
@@ -7404,17 +7941,17 @@
         </member>
         <member name="M:YoctoProxyAPI.YDigitalIOProxy.get_portDiags">
             <summary>
-              Returns the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only).
+              Returns the port state diagnostics.
             <para>
-              Bit 0 indicates a shortcut on
-              output 0, etc. Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
+              Bit 0 indicates a shortcut on output 0, etc.
+              Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
               During normal use, all diagnostic bits should stay clear.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              an integer corresponding to the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only)
+              an integer corresponding to the port state diagnostics
             </returns>
             <para>
               On failure, throws an exception or returns <c>YDigitalIO.PORTDIAGS_INVALID</c>.
@@ -8874,7 +9411,7 @@
             <summary>
               Changes the electric signal bias for zero shift adjustment.
             <para>
-              If your electric signal reads positive when it should be zero, setup
+              If your electric signal reads positive when it should be zero, set up
               a positive signalBias of the same value to fix the zero shift.
               Remember to call the <c>saveToFlash()</c>
               method of the module if the modification must be kept.
@@ -10830,8 +11367,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YI2cPortProxy.writeLine(System.String)">
             <summary>
-              Sends a text-encoded I2C code stream to the I2C bus, and terminate
-              the message en relâchant le bus.
+              Sends a text-encoded I2C code stream to the I2C bus, and release the bus.
             <para>
               An I2C code stream is a string made of hexadecimal data bytes,
               but that may also include the I2C state transitions code:
@@ -11036,12 +11572,18 @@
         </member>
         <member name="M:YoctoProxyAPI.YInputCaptureProxy.GetSimilarFunctions">
             <summary>
-              Enumère toutes les fonctions de type InputCapture.
+              Enumerates all functions of type InputCapture available on the devices
+              currently reachable by the library, and returns their unique hardware ID.
             <para>
-              Returns an array of strings representing hardware identifiers for all InputCapture functions
-              presently connected.
+              Each of these IDs can be provided as argument to the method
+              <c>YInputCapture.FindInputCapture</c> to obtain an object that can control the
+              corresponding device.
             </para>
             </summary>
+            <returns>
+              an array of strings, each string containing the unique hardwareId
+              of a device function currently connected.
+            </returns>
         </member>
         <member name="M:YoctoProxyAPI.YInputCaptureProxy.get_lastCaptureTime">
             <summary>
@@ -11820,7 +12362,7 @@
             <summary>
               Resets the application watchdog countdown.
             <para>
-              If you have setup a non-zero <c>watchdogPeriod</c>, you should
+              If you have set up a non-zero <c>watchdogPeriod</c>, you should
               call this function on a regular basis to prevent the application
               inactivity error to be triggered.
             </para>
@@ -12359,7 +12901,7 @@
               It can be
               used to read the current value and unit of any sensor, read the min/max
               value, configure autonomous recording frequency and access recorded data.
-              It also provide a function to register a callback invoked each time the
+              It also provides a function to register a callback invoked each time the
               observed value changes, or at a predefined interval. Using this class rather
               than a specific subclass makes it possible to create generic applications
               that work with any Yoctopuce sensor, even those that do not yet exist.
@@ -12848,6 +13390,307 @@
             <para>
               On failure, throws an exception or returns an empty list.
             </para>
+        </member>
+        <member name="T:YoctoProxyAPI.YMicroPythonProxy">
+            <summary>
+              The <c>YMicroPython</c> class provides control of the MicroPython interpreter
+              that can be found on some Yoctopuce devices.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.FindMicroPython(System.String)">
+            <summary>
+              Retrieves a MicroPython interpreter for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the MicroPython interpreter is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YMicroPython.isOnline()</c> to test if the MicroPython interpreter is
+              indeed online at a given time. In case of ambiguity when looking for
+              a MicroPython interpreter by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the MicroPython interpreter, for instance
+              <c>MyDevice.microPython</c>.
+            </param>
+            <returns>
+              a <c>YMicroPython</c> object allowing you to drive the MicroPython interpreter.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.GetSimilarFunctions">
+            <summary>
+              Enumerates all functions of type MicroPython available on the devices
+              currently reachable by the library, and returns their unique hardware ID.
+            <para>
+              Each of these IDs can be provided as argument to the method
+              <c>YMicroPython.FindMicroPython</c> to obtain an object that can control the
+              corresponding device.
+            </para>
+            </summary>
+            <returns>
+              an array of strings, each string containing the unique hardwareId
+              of a device function currently connected.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.get_lastMsg">
+            <summary>
+              Returns the last message produced by a python script.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the last message produced by a python script
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.LASTMSG_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.get_heapUsage">
+            <summary>
+              Returns the percentage of micropython main memory in use,
+              as observed at the end of the last garbage collection.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the percentage of micropython main memory in use,
+              as observed at the end of the last garbage collection
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.HEAPUSAGE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.get_xheapUsage">
+            <summary>
+              Returns the percentage of micropython external memory in use,
+              as observed at the end of the last garbage collection.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the percentage of micropython external memory in use,
+              as observed at the end of the last garbage collection
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.XHEAPUSAGE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.get_currentScript">
+            <summary>
+              Returns the name of currently active script, if any.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the name of currently active script, if any
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.CURRENTSCRIPT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.set_currentScript(System.String)">
+            <summary>
+              Stops current running script, and/or selects a script to run immediately in a
+              fresh new environment.
+            <para>
+              If the MicroPython interpreter is busy running a script,
+              this function will abort it immediately and reset the execution environment.
+              If a non-empty string is given as argument, the new script will be started.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a string
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.get_startupScript">
+            <summary>
+              Returns the name of the script to run when the device is powered on.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the name of the script to run when the device is powered on
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.STARTUPSCRIPT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.set_startupScript(System.String)">
+            <summary>
+              Changes the script to run when the device is powered on.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a string corresponding to the script to run when the device is powered on
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YMicroPythonProxy.StartupScript">
+            <value>Name of the script to run when the device is powered on.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.get_debugMode">
+            <summary>
+              Returns the activation state of micropython debugging interface.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YMicroPython.DEBUGMODE_OFF</c> or <c>YMicroPython.DEBUGMODE_ON</c>, according to the
+              activation state of micropython debugging interface
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.DEBUGMODE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.set_debugMode(System.Int32)">
+            <summary>
+              Changes the activation state of micropython debugging interface.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YMicroPython.DEBUGMODE_OFF</c> or <c>YMicroPython.DEBUGMODE_ON</c>, according to the
+              activation state of micropython debugging interface
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.eval(System.String,System.String)">
+            <summary>
+              Submit MicroPython code for execution in the interpreter.
+            <para>
+              If the MicroPython interpreter is busy, this function will
+              block until it becomes available. The code is then uploaded,
+              compiled and executed on the fly, without beeing stored on the device filesystem.
+            </para>
+            <para>
+              There is no implicit reset of the MicroPython interpreter with
+              this function. Use method <c>reset()</c> if you need to start
+              from a fresh environment to run your code.
+            </para>
+            <para>
+              Note that although MicroPython is mostly compatible with recent Python 3.x
+              interpreters, the limited ressources on the device impose some restrictions,
+              in particular regarding the libraries that can be used. Please refer to
+              the documentation for more details.
+            </para>
+            </summary>
+            <param name="codeName">
+              name of the code file (used for error reporting only)
+            </param>
+            <param name="mpyCode">
+              MicroPython code to compile and execute
+            </param>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.reset">
+            <summary>
+              Stops current execution, and reset the MicroPython interpreter to initial state.
+            <para>
+              All global variables are cleared, and all imports are forgotten.
+            </para>
+            </summary>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YMicroPythonProxy.get_lastLogs">
+            <summary>
+              Returns a string with last logs of the MicroPython interpreter.
+            <para>
+              This method return only logs that are still in the module.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string with last MicroPython logs.
+              On failure, throws an exception or returns  <c>YAPI.INVALID_STRING</c>.
+            </returns>
         </member>
         <member name="T:YoctoProxyAPI.YMotorProxy">
             <summary>
@@ -14022,7 +14865,7 @@
         </member>
         <member name="T:YoctoProxyAPI.YMultiSensControllerProxy">
             <summary>
-              The <c>YMultiSensController</c> class allows you to setup a customized
+              The <c>YMultiSensController</c> class allows you to set up a customized
               sensor chain on devices featuring that functionality.
             <para>
             </para>
@@ -14443,7 +15286,7 @@
             <para>
             </para>
             <para>
-              If the network interface is setup to use a static IP address, the string starts with "STATIC:" and
+              If the network interface is set up to use a static IP address, the string starts with "STATIC:" and
               is followed by three
               parameters, separated by "/". The first is the device IP address, followed by the subnet mask
               length, and finally the
@@ -14719,6 +15562,104 @@
         </member>
         <member name="P:YoctoProxyAPI.YNetworkProxy.HttpPort">
             <value>TCP port used to serve the hub web UI.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YNetworkProxy.get_httpsPort">
+            <summary>
+              Returns the secure TCP port used to serve the hub web UI.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the secure TCP port used to serve the hub web UI
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.HTTPSPORT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YNetworkProxy.set_httpsPort(System.Int32)">
+            <summary>
+              Changes the secure TCP port used to serve the hub web UI.
+            <para>
+              The default value is port 4443,
+              which is the default for all Web servers. When you change this parameter, remember to call the
+              <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the secure TCP port used to serve the hub web UI
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.HttpsPort">
+            <value>Secure TCP port used to serve the hub web UI.</value>
+        </member>
+        <member name="M:YoctoProxyAPI.YNetworkProxy.get_securityMode">
+            <summary>
+              Returns the security level chosen to prevent unauthorized access to the server.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+              <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+              security level chosen to prevent unauthorized access to the server
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.SECURITYMODE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YNetworkProxy.set_securityMode(System.Int32)">
+            <summary>
+              Changes the security level used to prevent unauthorized access to the server.
+            <para>
+              The value <c>UNDEFINED</c> causes the security configuration wizard to be
+              displayed the next time you log on to the Web console.
+              The value <c>LEGACY</c> offers unencrypted HTTP access by default, and
+              is designed to provide compatibility with legacy applications that do not
+              handle password or do not support <c>HTTPS</c>. But it should
+              only be used when system security is guaranteed by other means, such as the
+              use of a firewall.
+              The value <c>MIXED</c> requires the configuration of passwords, and allows
+              access via both HTTP (unencrypted) and HTTPS (encrypted), while requiring
+              the Yoctopuce API to be tolerant of certificate characteristics.
+              The value <c>SECURE</c> requires the configuration of passwords and the
+              use of secure communications in all cases.
+              When you change this parameter, remember to call the <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+              <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+              security level used to prevent unauthorized access to the server
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YNetworkProxy.SecurityMode">
+            <value>Security level chosen to prevent unauthorized access to the server.</value>
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.get_defaultPage">
             <summary>
@@ -15398,7 +16339,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YNetworkProxy.set_periodicCallbackSchedule(System.String,System.Int32)">
             <summary>
-              Setup periodic HTTP callbacks (simplified function).
+              Set up periodic HTTP callbacks (simplified function).
             <para>
             </para>
             </summary>
@@ -15519,6 +16460,22 @@
             </summary>
             <param name="secBeforeShutDown">
               number of seconds before shutdown
+            </param>
+            <returns>
+              <c>0</c> when the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YOsControlProxy.reboot(System.Int32)">
+            <summary>
+              Schedules an OS reboot after a given number of seconds.
+            <para>
+            </para>
+            </summary>
+            <param name="secBeforeReboot">
+              number of seconds before reboot
             </param>
             <returns>
               <c>0</c> when the call succeeds.
@@ -16298,7 +17255,7 @@
             <para>
               It inherits from <c>YSensor</c> class the core functions to read measurements,
               to register callback functions, and to access the autonomous datalogger.
-              This class adds the ability to setup a detection threshold and to count the
+              This class adds the ability to set up a detection threshold and to count the
               number of detected state changes.
             </para>
             <para>
@@ -16996,6 +17953,47 @@
         <member name="P:YoctoProxyAPI.YPwmInputProxy.DebouncePeriod">
             <value>Shortest expected pulse duration, in ms. Any shorter pulse will be automatically ignored (debounce).</value>
         </member>
+        <member name="M:YoctoProxyAPI.YPwmInputProxy.set_minFrequency(System.Double)">
+            <summary>
+              Changes the minimum detected frequency, in Hz.
+            <para>
+              Slower signals will be consider as zero frequency.
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to the minimum detected frequency, in Hz
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YPwmInputProxy.get_minFrequency">
+            <summary>
+              Returns the minimum detected frequency, in Hz.
+            <para>
+              Slower signals will be consider as zero frequency.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the minimum detected frequency, in Hz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPwmInput.MINFREQUENCY_INVALID</c>.
+            </para>
+        </member>
+        <member name="P:YoctoProxyAPI.YPwmInputProxy.MinFrequency">
+            <value>Minimum detected frequency, in Hz. Slower signals will be consider as zero frequency.</value>
+        </member>
         <member name="M:YoctoProxyAPI.YPwmInputProxy.get_bandwidth">
             <summary>
               Returns the input signal sampling rate, in kHz.
@@ -17055,9 +18053,22 @@
               On failure, throws an exception or returns <c>YPwmInput.EDGESPERPERIOD_INVALID</c>.
             </para>
         </member>
+        <member name="M:YoctoProxyAPI.YPwmInputProxy.resetPeriodDetection">
+            <summary>
+              Resets the periodicity detection algorithm.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              <c>0</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
         <member name="M:YoctoProxyAPI.YPwmInputProxy.resetCounter">
             <summary>
-              Returns the pulse counter value as well as its timer.
+              Resets the pulse counter value as well as its timer.
             <para>
             </para>
             </summary>
@@ -17072,7 +18083,7 @@
             <summary>
               The <c>YPwmOutput</c> class allows you to drive a pulse-width modulated output (PWM).
             <para>
-              You can configure the frequency as well as the duty cycle, and setup progressive
+              You can configure the frequency as well as the duty cycle, and set up progressive
               transitions.
             </para>
             <para>
@@ -18266,7 +19277,7 @@
               That
               calibration process needs no physical interaction with the sensor. It is performed
               automatically at device startup, but it is recommended to start it again when the
-              temperature delta since the latest calibration exceeds 8°C.
+              temperature delta since the latest calibration exceeds 8 degrees Celsius.
             </para>
             </summary>
             <returns>
@@ -18574,7 +19585,7 @@
         </member>
         <member name="T:YoctoProxyAPI.YRefFrameProxy">
             <summary>
-              The <c>YRefFrame</c> class is used to setup the base orientation of the Yoctopuce inertial
+              The <c>YRefFrame</c> class is used to set up the base orientation of the Yoctopuce inertial
               sensors.
             <para>
               Thanks to this, orientation functions relative to the earth surface plane
@@ -18660,7 +19671,7 @@
               heading and the reference bearing indicated here.
             </para>
             <para>
-              For instance, if you setup as reference bearing the value of the earth
+              For instance, if you set up as reference bearing the value of the earth
               magnetic declination, the compass will provide the orientation relative
               to the geographic North.
             </para>
@@ -19398,8 +20409,8 @@
               - At tag level, each block must be read and written in its entirety.
             </para>
             <para>
-              - Some blocks are special configuration blocks, and may alter the tag's behaviour
-              tag behavior if they are rewritten with arbitrary data.
+              - Some blocks are special configuration blocks, and may alter the tag's behavior
+              if they are rewritten with arbitrary data.
             </para>
             <para>
               - Data blocks can be set to read-only mode, but on many tags, this operation is irreversible.
@@ -19409,7 +20420,7 @@
             <para>
               By default, the RfidReader class automatically manages these blocks so that
               arbitrary size data  can be manipulated of  without risk and without knowledge of
-              tag architecture .
+              tag architecture.
             </para>
             <para>
             </para>
@@ -19558,9 +20569,9 @@
         </member>
         <member name="M:YoctoProxyAPI.YRfidReaderProxy.get_tagInfo(System.String,YoctoProxyAPI.YRfidStatusProxy@)">
             <summary>
-              Retourne la description des propriétés d'un tag RFID présent.
+              Returns a description of the properties of an existing RFID tag.
             <para>
-              Cette fonction peut causer des communications avec le tag.
+              This function can cause communications with the tag.
             </para>
             <para>
             </para>
@@ -19582,7 +20593,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagLockBlocks(System.String,System.Int32,System.Int32,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
             <summary>
-              Change an RFID tag configuration to prevents any further write to
+              Changes an RFID tag configuration to prevents any further write to
               the selected blocks.
             <para>
               This operation is definitive and irreversible.
@@ -19987,16 +20998,24 @@
             <para>
               The write operation may span accross multiple blocks if the
               number of bytes to write is larger than the RFID tag block size.
-              Note that only the characters présent  in  the provided string
+              Note that only the characters present in the provided string
               will be written, there is no notion of string length. If your
               string data have variable length, you'll have to encode the
-              string length yourself.
+              string length yourself, with a terminal zero for instannce.
+            </para>
+            <para>
+              This function only works with ISO-latin characters, if you wish to
+              write strings encoded with alternate character sets, you'll have to
+              use tagWriteBin() function.
+            </para>
+            <para>
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
               automatically. The last data block affected by the operation will
               be automatically padded with zeros if neccessary.
               If you rather want to rewrite special blocks as well,
-              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter
+              (definitely not recommanded).
             </para>
             <para>
             </para>
@@ -20055,7 +21074,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagSetAFI(System.String,System.Int32,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
             <summary>
-              Change an RFID tag AFI byte (ISO 15693 only).
+              Changes an RFID tag AFI byte (ISO 15693 only).
             <para>
             </para>
             </summary>
@@ -20137,7 +21156,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YRfidReaderProxy.tagSetDSFID(System.String,System.Int32,YoctoProxyAPI.YRfidOptionsProxy,YoctoProxyAPI.YRfidStatusProxy@)">
             <summary>
-              Change an RFID tag DSFID byte (ISO 15693 only).
+              Changes an RFID tag DSFID byte (ISO 15693 only).
             <para>
             </para>
             </summary>
@@ -22868,6 +23887,99 @@
         <member name="P:YoctoProxyAPI.YServoProxy.EnabledAtPowerOn">
             <value>Servo signal generator state at power up.</value>
         </member>
+        <member name="T:YoctoProxyAPI.YSpectralChannelProxy">
+            <summary>
+              The <c>YSpectralChannel</c> class allows you to read and configure Yoctopuce spectral analysis channels.
+            <para>
+              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              to register callback functions, and to access the autonomous datalogger.
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpectralChannelProxy.FindSpectralChannel(System.String)">
+            <summary>
+              Retrieves a spectral analysis channel for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the spectral analysis channel is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YSpectralChannel.isOnline()</c> to test if the spectral analysis channel is
+              indeed online at a given time. In case of ambiguity when looking for
+              a spectral analysis channel by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the spectral analysis channel, for instance
+              <c>MyDevice.spectralChannel1</c>.
+            </param>
+            <returns>
+              a <c>YSpectralChannel</c> object allowing you to drive the spectral analysis channel.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpectralChannelProxy.GetSimilarFunctions">
+            <summary>
+              Enumerates all functions of type SpectralChannel available on the devices
+              currently reachable by the library, and returns their unique hardware ID.
+            <para>
+              Each of these IDs can be provided as argument to the method
+              <c>YSpectralChannel.FindSpectralChannel</c> to obtain an object that can control the
+              corresponding device.
+            </para>
+            </summary>
+            <returns>
+              an array of strings, each string containing the unique hardwareId
+              of a device function currently connected.
+            </returns>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpectralChannelProxy.get_rawCount">
+            <summary>
+              Retrieves the raw count of data samples.
+            <para>
+              This method returns the current value of rawCount, representing the total number of samples collected
+              by the sensor.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YSpectralChannel.RAWCOUNT_INVALID</c>.
+            </para>
+        </member>
         <member name="T:YoctoProxyAPI.YSpiPortProxy">
             <summary>
               The <c>YSpiPort</c> class allows you to fully drive a Yoctopuce SPI port.
@@ -23932,7 +25044,7 @@
             <summary>
               Changes the current logical motor position, measured in steps.
             <para>
-              This command does not cause any motor move, as its purpose is only to setup
+              This command does not cause any motor move, as its purpose is only to set up
               the origin of the position counter. The fractional part of the position,
               that corresponds to the physical position of the rotor, is not changed.
               To trigger a motor move, use methods <c>moveTo()</c> or <c>moveRel()</c>
@@ -24894,7 +26006,7 @@
               It can be
               used to read the current value and unit of any sensor, read the min/max
               value, configure autonomous recording frequency and access recorded data.
-              It also provide a function to register a callback invoked each time the
+              It also provides a function to register a callback invoked each time the
               observed value changes, or at a predefined interval. Using this class rather
               than a specific subclass makes it possible to create generic applications
               that work with any Yoctopuce sensor, even those that do not yet exist.
@@ -25687,8 +26799,8 @@
             <returns>
               a value among <c>YWakeUpMonitor.WAKEUPREASON_USBPOWER</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTPOWER</c>,
               <c>YWakeUpMonitor.WAKEUPREASON_ENDOFSLEEP</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTSIG1</c>,
-              <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c> and <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c>
-              corresponding to the latest wake up reason
+              <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c>, <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c> and
+              <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE3</c> corresponding to the latest wake up reason
             </returns>
             <para>
               On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPREASON_INVALID</c>.
@@ -27720,9 +28832,8 @@
         </member>
         <member name="M:YoctoProxyAPI.YFunctionProxy.GetSimilarFunctions">
             <summary>
-              Enumère toutes les fonctions de type Function.
-            <para>
               Returns an array of strings representing hardware identifiers for all Function functions presently connected.
+            <para>
             </para>
             </summary>
         </member>
@@ -27930,7 +29041,7 @@
             <para>
               The default value is inherited from <c>ySetNetworkTimeout</c>
               at the time when the hub is registered, but it can be updated
-              afterwards for each specific hub if necessary.
+              afterward for each specific hub if necessary.
             </para>
             <para>
             </para>
@@ -27946,7 +29057,7 @@
             <para>
               The default value is inherited from <c>ySetNetworkTimeout</c>
               at the time when the hub is registered, but it can be updated
-              afterwards for each specific hub if necessary.
+              afterward for each specific hub if necessary.
             </para>
             </summary>
             <returns>
@@ -29718,7 +30829,7 @@
             <para>
               From an operating system standpoint, it is generally not required to call
               this function since the OS will automatically free allocated resources
-              once your program is completed. However there are two situations when
+              once your program is completed. However, there are two situations when
               you may really want to use that function:
             </para>
             <para>
@@ -29738,7 +30849,7 @@
         </member>
         <member name="M:YoctoLib.YAPI.RegisterHub(System.String,System.String@)">
             <summary>
-              Setup the Yoctopuce library to use modules connected on a given machine.
+              Set up the Yoctopuce library to use modules connected on a given machine.
             <para>
               Idealy this
               call will be made once at the begining of your application.  The
@@ -29759,7 +30870,7 @@
               computer, use the IP address 127.0.0.1. If the given IP is unresponsive, <c>yRegisterHub</c>
               will not return until a time-out defined by <c>ySetNetworkTimeout</c> has elapsed.
               However, it is possible to preventively test a connection  with <c>yTestHub</c>.
-              If you cannot afford a network time-out, you can use the non blocking <c>yPregisterHub</c>
+              If you cannot afford a network time-out, you can use the non-blocking <c>yPregisterHub</c>
               function that will establish the connection as soon as it is available.
             </para>
             <para>
@@ -29777,7 +30888,7 @@
               while trying to access the USB modules. In particular, this means
               that you must stop the VirtualHub software before starting
               an application that uses direct USB access. The workaround
-              for this limitation is to setup the library to use the VirtualHub
+              for this limitation is to set up the library to use the VirtualHub
               rather than direct USB access.
             </para>
             <para>
@@ -29868,7 +30979,7 @@
         </member>
         <member name="M:YoctoLib.YAPI.UnregisterHub(System.String)">
             <summary>
-              Setup the Yoctopuce library to no more use modules connected on a previously
+              Set up the Yoctopuce library to no more use modules connected on a previously
               registered machine with RegisterHub.
             <para>
             </para>
@@ -29989,7 +31100,7 @@
               Checks if a given string is valid as logical name for a module or a function.
             <para>
               A valid logical name has a maximum of 19 characters, all among
-              <c>A..Z</c>, <c>a..z</c>, <c>0..9</c>, <c>_</c>, and <c>-</c>.
+              <c>A...Z</c>, <c>a...z</c>, <c>0...9</c>, <c>_</c>, and <c>-</c>.
               If you try to configure a logical name with an incorrect string,
               the invalid characters are ignored.
             </para>
@@ -30031,6 +31142,20 @@
               the number of seconds between each enumeration.
             </returns>
         </member>
+        <member name="M:YoctoLib.YAPI.GetYAPISharedLibraryPath">
+            <summary>
+              Returns the path to the dynamic YAPI library.
+            <para>
+              This function is useful for debugging problems loading the
+              dynamic library YAPI. This function is supported by the C#, Python and VB languages. The other
+              libraries return an
+              empty string.
+            </para>
+            </summary>
+            <returns>
+              a string containing the path of the YAPI dynamic library.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YAPI.AddUdevRule(System.Boolean)">
             <summary>
               Adds a UDEV rule which authorizes all users to access Yoctopuce modules
@@ -30050,13 +31175,83 @@
               On failure, returns a string that starts with "error:".
             </para>
         </member>
+        <member name="M:YoctoLib.YAPI.DownloadHostCertificate(System.String,System.UInt64)">
+            <summary>
+              Download the TLS/SSL certificate from the hub.
+            <para>
+              This function allows to download a TLS/SSL certificate to add it
+              to the list of trusted certificates using the AddTrustedCertificates method.
+            </para>
+            </summary>
+            <param name="url">
+              the root URL of the VirtualHub V2 or HTTP server.
+            </param>
+            <param name="mstimeout">
+              the number of milliseconds available to download the certificate.
+            </param>
+            <returns>
+              a string containing the certificate. In case of error, returns a string starting with "error:".
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YAPI.AddTrustedCertificates(System.String)">
+            <summary>
+              Adds a TLS/SSL certificate to the list of trusted certificates.
+            <para>
+              By default, the library
+              library will reject TLS/SSL connections to servers whose certificate is not known. This function
+              function allows to add a list of known certificates. It is also possible to disable the verification
+              using the SetNetworkSecurityOptions method.
+            </para>
+            </summary>
+            <param name="certificate">
+              a string containing one or more certificates.
+            </param>
+            <returns>
+              an empty string if the certificate has been added correctly.
+              In case of error, returns a string starting with "error:".
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YAPI.SetTrustedCertificatesList(System.String)">
+            <summary>
+              Set the path of Certificate Authority file on local filesystem.
+            <para>
+              This method takes as a parameter the path of a file containing all certificates in PEM format.
+              For technical reasons, only one file can be specified. So if you need to connect to several Hubs
+              instances with self-signed certificates, you'll need to use
+              a single file containing all the certificates end-to-end. Passing a empty string will restore the
+              default settings. This option is only supported by PHP library.
+            </para>
+            </summary>
+            <param name="certificatePath">
+              the path of the file containing all certificates in PEM format.
+            </param>
+            <returns>
+              an empty string if the certificate has been added correctly.
+              In case of error, returns a string starting with "error:".
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YAPI.SetNetworkSecurityOptions(System.Int32)">
+            <summary>
+              Enables or disables certain TLS/SSL certificate checks.
+            <para>
+            </para>
+            </summary>
+            <param name="opts">
+              The options are <c>YAPI.NO_TRUSTED_CA_CHECK</c>,
+              <c>YAPI.NO_EXPIRATION_CHECK</c>, <c>YAPI.NO_HOSTNAME_CHECK</c>.
+            </param>
+            <returns>
+              an empty string if the options are taken into account.
+              On error, returns a string beginning with "error:".
+            </returns>
+        </member>
         <member name="M:YoctoLib.YAPI.SetNetworkTimeout(System.Int32)">
             <summary>
               Modifies the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
             <para>
               This delay impacts only the YoctoHubs and VirtualHub
               which are accessible through the network. By default, this delay is of 20000 milliseconds,
-              but depending or you network you may want to change this delay,
+              but depending on your network you may want to change this delay,
               gor example if your network infrastructure is based on a GSM connection.
             </para>
             <para>
@@ -30073,7 +31268,7 @@
             <para>
               This delay impacts only the YoctoHubs and VirtualHub
               which are accessible through the network. By default, this delay is of 20000 milliseconds,
-              but depending or you network you may want to change this delay,
+              but depending on your network you may want to change this delay,
               for example if your network infrastructure is based on a GSM connection.
             </para>
             </summary>
@@ -30143,6 +31338,20 @@
               the number of seconds between each enumeration.
             </returns>
         </member>
+        <member name="M:YoctoLib.YAPIContext.GetYAPISharedLibraryPath">
+            <summary>
+              Returns the path to the dynamic YAPI library.
+            <para>
+              This function is useful for debugging problems loading the
+              dynamic library YAPI. This function is supported by the C#, Python and VB languages. The other
+              libraries return an
+              empty string.
+            </para>
+            </summary>
+            <returns>
+              a string containing the path of the YAPI dynamic library.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YAPIContext.AddUdevRule(System.Boolean)">
             <summary>
               Adds a UDEV rule which authorizes all users to access Yoctopuce modules
@@ -30162,13 +31371,83 @@
               On failure, returns a string that starts with "error:".
             </para>
         </member>
+        <member name="M:YoctoLib.YAPIContext.DownloadHostCertificate(System.String,System.UInt64)">
+            <summary>
+              Download the TLS/SSL certificate from the hub.
+            <para>
+              This function allows to download a TLS/SSL certificate to add it
+              to the list of trusted certificates using the AddTrustedCertificates method.
+            </para>
+            </summary>
+            <param name="url">
+              the root URL of the VirtualHub V2 or HTTP server.
+            </param>
+            <param name="mstimeout">
+              the number of milliseconds available to download the certificate.
+            </param>
+            <returns>
+              a string containing the certificate. In case of error, returns a string starting with "error:".
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YAPIContext.AddTrustedCertificates(System.String)">
+            <summary>
+              Adds a TLS/SSL certificate to the list of trusted certificates.
+            <para>
+              By default, the library
+              library will reject TLS/SSL connections to servers whose certificate is not known. This function
+              function allows to add a list of known certificates. It is also possible to disable the verification
+              using the SetNetworkSecurityOptions method.
+            </para>
+            </summary>
+            <param name="certificate">
+              a string containing one or more certificates.
+            </param>
+            <returns>
+              an empty string if the certificate has been added correctly.
+              In case of error, returns a string starting with "error:".
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YAPIContext.SetTrustedCertificatesList(System.String)">
+            <summary>
+              Set the path of Certificate Authority file on local filesystem.
+            <para>
+              This method takes as a parameter the path of a file containing all certificates in PEM format.
+              For technical reasons, only one file can be specified. So if you need to connect to several Hubs
+              instances with self-signed certificates, you'll need to use
+              a single file containing all the certificates end-to-end. Passing a empty string will restore the
+              default settings. This option is only supported by PHP library.
+            </para>
+            </summary>
+            <param name="certificatePath">
+              the path of the file containing all certificates in PEM format.
+            </param>
+            <returns>
+              an empty string if the certificate has been added correctly.
+              In case of error, returns a string starting with "error:".
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YAPIContext.SetNetworkSecurityOptions(System.Int32)">
+            <summary>
+              Enables or disables certain TLS/SSL certificate checks.
+            <para>
+            </para>
+            </summary>
+            <param name="opts">
+              The options are <c>YAPI.NO_TRUSTED_CA_CHECK</c>,
+              <c>YAPI.NO_EXPIRATION_CHECK</c>, <c>YAPI.NO_HOSTNAME_CHECK</c>.
+            </param>
+            <returns>
+              an empty string if the options are taken into account.
+              On error, returns a string beginning with "error:".
+            </returns>
+        </member>
         <member name="M:YoctoLib.YAPIContext.SetNetworkTimeout(System.Int32)">
             <summary>
               Modifies the network connection delay for <c>yRegisterHub()</c> and <c>yUpdateDeviceList()</c>.
             <para>
               This delay impacts only the YoctoHubs and VirtualHub
               which are accessible through the network. By default, this delay is of 20000 milliseconds,
-              but depending or you network you may want to change this delay,
+              but depending on your network you may want to change this delay,
               gor example if your network infrastructure is based on a GSM connection.
             </para>
             <para>
@@ -30185,7 +31464,7 @@
             <para>
               This delay impacts only the YoctoHubs and VirtualHub
               which are accessible through the network. By default, this delay is of 20000 milliseconds,
-              but depending or you network you may want to change this delay,
+              but depending on your network you may want to change this delay,
               for example if your network infrastructure is based on a GSM connection.
             </para>
             </summary>
@@ -31073,7 +32352,7 @@
             <para>
               The default value is inherited from <c>ySetNetworkTimeout</c>
               at the time when the hub is registered, but it can be updated
-              afterwards for each specific hub if necessary.
+              afterward for each specific hub if necessary.
             </para>
             <para>
             </para>
@@ -31089,7 +32368,7 @@
             <para>
               The default value is inherited from <c>ySetNetworkTimeout</c>
               at the time when the hub is registered, but it can be updated
-              afterwards for each specific hub if necessary.
+              afterward for each specific hub if necessary.
             </para>
             </summary>
             <returns>
@@ -32273,7 +33552,7 @@
               Returns the icon of the module.
             <para>
               The icon is a PNG image and does not
-              exceeds 1536 bytes.
+              exceed 1536 bytes.
             </para>
             <para>
             </para>
@@ -32504,7 +33783,7 @@
               It can be
               used to read the current value and unit of any sensor, read the min/max
               value, configure autonomous recording frequency and access recorded data.
-              It also provide a function to register a callback invoked each time the
+              It also provides a function to register a callback invoked each time the
               observed value changes, or at a predefined interval. Using this class rather
               than a specific subclass makes it possible to create generic applications
               that work with any Yoctopuce sensor, even those that do not yet exist.
@@ -36744,7 +38023,7 @@
         <member name="M:YoctoLib.YCellular.sendPUK(System.String,System.String)">
             <summary>
               Sends a PUK code to unlock the SIM card after three failed PIN code attempts, and
-              setup a new PIN into the SIM card.
+              set up a new PIN into the SIM card.
             <para>
               Only ten consecutive tentatives are permitted:
               after that, the SIM card will be blocked permanently without any mean of recovery
@@ -36852,7 +38131,7 @@
         </member>
         <member name="M:YoctoLib.YCellular.decodePLMN(System.String)">
             <summary>
-              Returns the cell operator brand for a given MCC/MNC pair.
+              Returns the cell operator brand for a given MCC/MNC pair (DEPRECATED).
             <para>
             </para>
             </summary>
@@ -37056,8 +38335,9 @@
             <summary>
               Changes the color that the LED displays by default when the module is turned on.
             <para>
-              Remember to call the <c>saveToFlash()</c>
-              method of the module if the modification must be kept.
+              Remember to call the <c>saveLedsConfigAtPowerOn()</c> method of the module if the modification must be kept.
+              Note: for the original modules Yocto-Color (version 1) et Yocto-PowerColor, the  <c>saveToFlash()</c>
+              method must be used instead.
             </para>
             <para>
             </para>
@@ -37262,6 +38542,19 @@
               <c>YAPI.SUCCESS</c> if the call succeeds.
               On failure, throws an exception or returns a negative error code.
             </returns>
+        </member>
+        <member name="M:YoctoLib.YColorLed.saveLedsConfigAtPowerOn">
+            <summary>
+              Saves the LEDs power-on configuration.
+            <para>
+              Warning: this method is not supported by
+              Yocto-Color (version 1) and Yocto-PowerColor modules. For these devices, the <c>saveToFlash()</c>
+              method of the module must be used instead.
+            </para>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+            </summary>
         </member>
         <member name="M:YoctoLib.YColorLed.nextColorLed">
             <summary>
@@ -37640,9 +38933,9 @@
               autonomous manner.
             <para>
               The transition is performed in the HSL space. In HSL, hue is a circular
-              value (0..360°). There are always two paths to perform the transition: by increasing
+              value (0..360 deg). There are always two paths to perform the transition: by increasing
               or by decreasing the hue. The module selects the shortest transition.
-              If the difference is exactly 180°, the module selects the transition which increases
+              If the difference is exactly 180 deg, the module selects the transition which increases
               the hue.
             </para>
             </summary>
@@ -38385,6 +39678,532 @@
             <returns>
               a pointer to a <c>YColorLedCluster</c> object, corresponding to
               the first RGB LED cluster currently online, or a <c>null</c> pointer
+              if there are none.
+            </returns>
+        </member>
+        <member name="T:YoctoLib.YColorSensor">
+            <summary>
+              The <c>YColorSensor</c> class allows you to read and configure Yoctopuce color sensors.
+            <para>
+              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              to register callback functions, and to access the autonomous datalogger.
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_estimationModel">
+            <summary>
+              Returns the model for color estimation.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YColorSensor.ESTIMATIONMODEL_REFLECTION</c> or <c>YColorSensor.ESTIMATIONMODEL_EMISSION</c>,
+              according to the model for color estimation
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATIONMODEL_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.set_estimationModel(System.Int32)">
+            <summary>
+              Changes the model for color estimation.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YColorSensor.ESTIMATIONMODEL_REFLECTION</c> or <c>YColorSensor.ESTIMATIONMODEL_EMISSION</c>,
+              according to the model for color estimation
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_workingMode">
+            <summary>
+              Returns the active working mode.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YColorSensor.WORKINGMODE_AUTO</c> or <c>YColorSensor.WORKINGMODE_EXPERT</c>, according to
+              the active working mode
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.WORKINGMODE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.set_workingMode(System.Int32)">
+            <summary>
+              Changes the operating mode.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YColorSensor.WORKINGMODE_AUTO</c> or <c>YColorSensor.WORKINGMODE_EXPERT</c>, according to
+              the operating mode
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_saturation">
+            <summary>
+              Returns the current saturation of the sensor.
+            <para>
+              This function updates the sensor's saturation value.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current saturation of the sensor
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.SATURATION_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_ledCurrent">
+            <summary>
+              Returns the current value of the LED.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current value of the LED
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.LEDCURRENT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.set_ledCurrent(System.Int32)">
+            <summary>
+              Changes the luminosity of the module leds.
+            <para>
+              The parameter is a
+              value between 0 and 254.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the luminosity of the module leds
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_ledCalibration">
+            <summary>
+              Returns the LED current at calibration.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the LED current at calibration
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.LEDCALIBRATION_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.set_ledCalibration(System.Int32)">
+            <summary>
+              Sets the LED current for calibration.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_integrationTime">
+            <summary>
+              Returns the current integration time.
+            <para>
+              This method retrieves the integration time value
+              used for data processing and returns it as an integer or an object.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current integration time
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.INTEGRATIONTIME_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.set_integrationTime(System.Int32)">
+            <summary>
+              Changes the integration time for data processing.
+            <para>
+              This method takes a parameter and assigns it
+              as the new integration time. This affects the duration
+              for which data is integrated before being processed.
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the integration time for data processing
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_gain">
+            <summary>
+              Returns the current gain.
+            <para>
+              This method updates the gain value.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the current gain
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.GAIN_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.set_gain(System.Int32)">
+            <summary>
+              Changes the gain for signal processing.
+            <para>
+              This method takes a parameter and assigns it
+              as the new gain. This affects the sensitivity and
+              intensity of the processed signal.
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the gain for signal processing
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_estimatedRGB">
+            <summary>
+              Returns the estimated color in RGB format (0xRRGGBB).
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the estimated color in RGB format (0xRRGGBB)
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDRGB_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_estimatedHSL">
+            <summary>
+              Returns the estimated color in HSL (Hue, Saturation, Lightness) format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the estimated color in HSL (Hue, Saturation, Lightness) format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDHSL_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_estimatedXYZ">
+            <summary>
+              Returns the estimated color in XYZ format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in XYZ format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDXYZ_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_estimatedOkLab">
+            <summary>
+              Returns the estimated color in OkLab format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in OkLab format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.ESTIMATEDOKLAB_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_nearRAL1">
+            <summary>
+              Returns the estimated color in RAL format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in RAL format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARRAL1_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_nearRAL2">
+            <summary>
+              Returns the estimated color in RAL format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in RAL format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARRAL2_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_nearRAL3">
+            <summary>
+              Returns the estimated color in RAL format.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color in RAL format
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARRAL3_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_nearHTMLColor">
+            <summary>
+              Returns the estimated HTML color .
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated HTML color
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARHTMLCOLOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_nearSimpleColor">
+            <summary>
+              Returns the estimated color .
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the estimated color
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARSIMPLECOLOR_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.get_nearSimpleColorIndex">
+            <summary>
+              Returns the estimated color as an index.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YColorSensor.NEARSIMPLECOLORINDEX_BROWN</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_RED</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_ORANGE</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_YELLOW</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_WHITE</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_GRAY</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_BLACK</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_GREEN</c>, <c>YColorSensor.NEARSIMPLECOLORINDEX_BLUE</c>,
+              <c>YColorSensor.NEARSIMPLECOLORINDEX_PURPLE</c> and <c>YColorSensor.NEARSIMPLECOLORINDEX_PINK</c>
+              corresponding to the estimated color as an index
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YColorSensor.NEARSIMPLECOLORINDEX_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.FindColorSensor(System.String)">
+            <summary>
+              Retrieves a color sensor for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the color sensor is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YColorSensor.isOnline()</c> to test if the color sensor is
+              indeed online at a given time. In case of ambiguity when looking for
+              a color sensor by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the color sensor, for instance
+              <c>MyDevice.colorSensor</c>.
+            </param>
+            <returns>
+              a <c>YColorSensor</c> object allowing you to drive the color sensor.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.registerValueCallback(YoctoLib.YColorSensor.ValueCallback)">
+            <summary>
+              Registers the callback function that is invoked on every change of advertised value.
+            <para>
+              The callback is invoked only during the execution of <c>ySleep</c> or <c>yHandleEvents</c>.
+              This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+              one of these two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer. The callback function should take two
+              arguments: the function object of which the value has changed, and the character string describing
+              the new advertised value.
+            @noreturn
+            </param>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.turnLedOn">
+            <summary>
+              Turns on the LEDs at the current used during calibration.
+            <para>
+              On failure, throws an exception or returns YColorSensor.DATA_INVALID.
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.turnLedOff">
+            <summary>
+              Turns off the LEDs.
+            <para>
+              On failure, throws an exception or returns YColorSensor.DATA_INVALID.
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.nextColorSensor">
+            <summary>
+              Continues the enumeration of color sensors started using <c>yFirstColorSensor()</c>.
+            <para>
+              Caution: You can't make any assumption about the returned color sensors order.
+              If you want to find a specific a color sensor, use <c>ColorSensor.findColorSensor()</c>
+              and a hardwareID or a logical name.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YColorSensor</c> object, corresponding to
+              a color sensor currently online, or a <c>null</c> pointer
+              if there are no more color sensors to enumerate.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YColorSensor.FirstColorSensor">
+            <summary>
+              Starts the enumeration of color sensors currently accessible.
+            <para>
+              Use the method <c>YColorSensor.nextColorSensor()</c> to iterate on
+              next color sensors.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YColorSensor</c> object, corresponding to
+              the first color sensor currently online, or a <c>null</c> pointer
               if there are none.
             </returns>
         </member>
@@ -39141,7 +40960,7 @@
             <summary>
               The <c>YDigitalIO</c> class allows you drive a Yoctopuce digital input/output port.
             <para>
-              It can be used to setup the direction of each channel, to read the state of each channel
+              It can be used to set up the direction of each channel, to read the state of each channel
               and to switch the state of each channel configures as an output.
               You can work on all channels at once, or one by one. Most functions
               use a binary representation for channels where bit 0 matches channel #0 , bit 1 matches channel
@@ -39328,17 +41147,17 @@
         </member>
         <member name="M:YoctoLib.YDigitalIO.get_portDiags">
             <summary>
-              Returns the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only).
+              Returns the port state diagnostics.
             <para>
-              Bit 0 indicates a shortcut on
-              output 0, etc. Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
+              Bit 0 indicates a shortcut on output 0, etc.
+              Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
               During normal use, all diagnostic bits should stay clear.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              an integer corresponding to the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only)
+              an integer corresponding to the port state diagnostics
             </returns>
             <para>
               On failure, throws an exception or returns <c>YDigitalIO.PORTDIAGS_INVALID</c>.
@@ -41524,7 +43343,7 @@
             <summary>
               Changes the electric signal bias for zero shift adjustment.
             <para>
-              If your electric signal reads positive when it should be zero, setup
+              If your electric signal reads positive when it should be zero, set up
               a positive signalBias of the same value to fix the zero shift.
               Remember to call the <c>saveToFlash()</c>
               method of the module if the modification must be kept.
@@ -43980,8 +45799,7 @@
         </member>
         <member name="M:YoctoLib.YI2cPort.writeLine(System.String)">
             <summary>
-              Sends a text-encoded I2C code stream to the I2C bus, and terminate
-              the message en relâchant le bus.
+              Sends a text-encoded I2C code stream to the I2C bus, and release the bus.
             <para>
               An I2C code stream is a string made of hexadecimal data bytes,
               but that may also include the I2C state transitions code:
@@ -44763,19 +46581,32 @@
         </member>
         <member name="M:YoctoLib.YInputCapture.nextInputCapture">
             <summary>
-              c
+              Continues the enumeration of instant snapshot triggers started using <c>yFirstInputCapture()</c>.
             <para>
-              omment from .yc definition
+              Caution: You can't make any assumption about the returned instant snapshot triggers order.
+              If you want to find a specific an instant snapshot trigger, use <c>InputCapture.findInputCapture()</c>
+              and a hardwareID or a logical name.
             </para>
             </summary>
+            <returns>
+              a pointer to a <c>YInputCapture</c> object, corresponding to
+              an instant snapshot trigger currently online, or a <c>null</c> pointer
+              if there are no more instant snapshot triggers to enumerate.
+            </returns>
         </member>
         <member name="M:YoctoLib.YInputCapture.FirstInputCapture">
             <summary>
-              c
+              Starts the enumeration of instant snapshot triggers currently accessible.
             <para>
-              omment from .yc definition
+              Use the method <c>YInputCapture.nextInputCapture()</c> to iterate on
+              next instant snapshot triggers.
             </para>
             </summary>
+            <returns>
+              a pointer to a <c>YInputCapture</c> object, corresponding to
+              the first instant snapshot trigger currently online, or a <c>null</c> pointer
+              if there are none.
+            </returns>
         </member>
         <member name="T:YoctoLib.YInputChain">
             <summary>
@@ -45189,7 +47020,7 @@
             <summary>
               Resets the application watchdog countdown.
             <para>
-              If you have setup a non-zero <c>watchdogPeriod</c>, you should
+              If you have set up a non-zero <c>watchdogPeriod</c>, you should
               call this function on a regular basis to prevent the application
               inactivity error to be triggered.
             </para>
@@ -45949,7 +47780,7 @@
               It can be
               used to read the current value and unit of any sensor, read the min/max
               value, configure autonomous recording frequency and access recorded data.
-              It also provide a function to register a callback invoked each time the
+              It also provides a function to register a callback invoked each time the
               observed value changes, or at a predefined interval. Using this class rather
               than a specific subclass makes it possible to create generic applications
               that work with any Yoctopuce sensor, even those that do not yet exist.
@@ -46580,6 +48411,354 @@
             <returns>
               a pointer to a <c>YMessageBox</c> object, corresponding to
               the first SMS message box interface currently online, or a <c>null</c> pointer
+              if there are none.
+            </returns>
+        </member>
+        <member name="T:YoctoLib.YMicroPython">
+            <summary>
+              The <c>YMicroPython</c> class provides control of the MicroPython interpreter
+              that can be found on some Yoctopuce devices.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.get_lastMsg">
+            <summary>
+              Returns the last message produced by a python script.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the last message produced by a python script
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.LASTMSG_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.get_heapUsage">
+            <summary>
+              Returns the percentage of micropython main memory in use,
+              as observed at the end of the last garbage collection.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the percentage of micropython main memory in use,
+              as observed at the end of the last garbage collection
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.HEAPUSAGE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.get_xheapUsage">
+            <summary>
+              Returns the percentage of micropython external memory in use,
+              as observed at the end of the last garbage collection.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the percentage of micropython external memory in use,
+              as observed at the end of the last garbage collection
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.XHEAPUSAGE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.get_currentScript">
+            <summary>
+              Returns the name of currently active script, if any.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the name of currently active script, if any
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.CURRENTSCRIPT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.set_currentScript(System.String)">
+            <summary>
+              Stops current running script, and/or selects a script to run immediately in a
+              fresh new environment.
+            <para>
+              If the MicroPython interpreter is busy running a script,
+              this function will abort it immediately and reset the execution environment.
+              If a non-empty string is given as argument, the new script will be started.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a string
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.get_startupScript">
+            <summary>
+              Returns the name of the script to run when the device is powered on.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the name of the script to run when the device is powered on
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.STARTUPSCRIPT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.set_startupScript(System.String)">
+            <summary>
+              Changes the script to run when the device is powered on.
+            <para>
+              Remember to call the <c>saveToFlash()</c> method of the module if the
+              modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a string corresponding to the script to run when the device is powered on
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.get_debugMode">
+            <summary>
+              Returns the activation state of micropython debugging interface.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              either <c>YMicroPython.DEBUGMODE_OFF</c> or <c>YMicroPython.DEBUGMODE_ON</c>, according to the
+              activation state of micropython debugging interface
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YMicroPython.DEBUGMODE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.set_debugMode(System.Int32)">
+            <summary>
+              Changes the activation state of micropython debugging interface.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              either <c>YMicroPython.DEBUGMODE_OFF</c> or <c>YMicroPython.DEBUGMODE_ON</c>, according to the
+              activation state of micropython debugging interface
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.FindMicroPython(System.String)">
+            <summary>
+              Retrieves a MicroPython interpreter for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the MicroPython interpreter is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YMicroPython.isOnline()</c> to test if the MicroPython interpreter is
+              indeed online at a given time. In case of ambiguity when looking for
+              a MicroPython interpreter by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the MicroPython interpreter, for instance
+              <c>MyDevice.microPython</c>.
+            </param>
+            <returns>
+              a <c>YMicroPython</c> object allowing you to drive the MicroPython interpreter.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.registerValueCallback(YoctoLib.YMicroPython.ValueCallback)">
+            <summary>
+              Registers the callback function that is invoked on every change of advertised value.
+            <para>
+              The callback is invoked only during the execution of <c>ySleep</c> or <c>yHandleEvents</c>.
+              This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+              one of these two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer. The callback function should take two
+              arguments: the function object of which the value has changed, and the character string describing
+              the new advertised value.
+            @noreturn
+            </param>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.eval(System.String,System.String)">
+            <summary>
+              Submit MicroPython code for execution in the interpreter.
+            <para>
+              If the MicroPython interpreter is busy, this function will
+              block until it becomes available. The code is then uploaded,
+              compiled and executed on the fly, without beeing stored on the device filesystem.
+            </para>
+            <para>
+              There is no implicit reset of the MicroPython interpreter with
+              this function. Use method <c>reset()</c> if you need to start
+              from a fresh environment to run your code.
+            </para>
+            <para>
+              Note that although MicroPython is mostly compatible with recent Python 3.x
+              interpreters, the limited ressources on the device impose some restrictions,
+              in particular regarding the libraries that can be used. Please refer to
+              the documentation for more details.
+            </para>
+            </summary>
+            <param name="codeName">
+              name of the code file (used for error reporting only)
+            </param>
+            <param name="mpyCode">
+              MicroPython code to compile and execute
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.reset">
+            <summary>
+              Stops current execution, and reset the MicroPython interpreter to initial state.
+            <para>
+              All global variables are cleared, and all imports are forgotten.
+            </para>
+            </summary>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.get_lastLogs">
+            <summary>
+              Returns a string with last logs of the MicroPython interpreter.
+            <para>
+              This method return only logs that are still in the module.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string with last MicroPython logs.
+              On failure, throws an exception or returns  <c>YAPI.INVALID_STRING</c>.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.registerLogCallback(YoctoLib.YMicroPython.YMicroPythonLogCallback)">
+            <summary>
+              Registers a device log callback function.
+            <para>
+              This callback will be called each time
+              microPython sends a new log message.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to invoke, or a null pointer.
+              The callback function should take two arguments:
+              the module object that emitted the log message,
+              and the character string containing the log.
+              On failure, throws an exception or returns a negative error code.
+            </param>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.nextMicroPython">
+            <summary>
+              Continues the enumeration of MicroPython interpreters started using <c>yFirstMicroPython()</c>.
+            <para>
+              Caution: You can't make any assumption about the returned MicroPython interpreters order.
+              If you want to find a specific a MicroPython interpreter, use <c>MicroPython.findMicroPython()</c>
+              and a hardwareID or a logical name.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YMicroPython</c> object, corresponding to
+              a MicroPython interpreter currently online, or a <c>null</c> pointer
+              if there are no more MicroPython interpreters to enumerate.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YMicroPython.FirstMicroPython">
+            <summary>
+              Starts the enumeration of MicroPython interpreters currently accessible.
+            <para>
+              Use the method <c>YMicroPython.nextMicroPython()</c> to iterate on
+              next MicroPython interpreters.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YMicroPython</c> object, corresponding to
+              the first MicroPython interpreter currently online, or a <c>null</c> pointer
               if there are none.
             </returns>
         </member>
@@ -47835,7 +50014,7 @@
         </member>
         <member name="T:YoctoLib.YMultiSensController">
             <summary>
-              The <c>YMultiSensController</c> class allows you to setup a customized
+              The <c>YMultiSensController</c> class allows you to set up a customized
               sensor chain on devices featuring that functionality.
             <para>
             </para>
@@ -48212,7 +50391,7 @@
             <para>
             </para>
             <para>
-              If the network interface is setup to use a static IP address, the string starts with "STATIC:" and
+              If the network interface is set up to use a static IP address, the string starts with "STATIC:" and
               is followed by three
               parameters, separated by "/". The first is the device IP address, followed by the subnet mask
               length, and finally the
@@ -48461,6 +50640,98 @@
             </summary>
             <param name="newval">
               an integer corresponding to the the TCP port used to serve the hub web UI
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YNetwork.get_httpsPort">
+            <summary>
+              Returns the secure TCP port used to serve the hub web UI.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the secure TCP port used to serve the hub web UI
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.HTTPSPORT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YNetwork.set_httpsPort(System.Int32)">
+            <summary>
+              Changes the secure TCP port used to serve the hub web UI.
+            <para>
+              The default value is port 4443,
+              which is the default for all Web servers. When you change this parameter, remember to call the
+              <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              an integer corresponding to the secure TCP port used to serve the hub web UI
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YNetwork.get_securityMode">
+            <summary>
+              Returns the security level chosen to prevent unauthorized access to the server.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+              <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+              security level chosen to prevent unauthorized access to the server
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YNetwork.SECURITYMODE_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YNetwork.set_securityMode(System.Int32)">
+            <summary>
+              Changes the security level used to prevent unauthorized access to the server.
+            <para>
+              The value <c>UNDEFINED</c> causes the security configuration wizard to be
+              displayed the next time you log on to the Web console.
+              The value <c>LEGACY</c> offers unencrypted HTTP access by default, and
+              is designed to provide compatibility with legacy applications that do not
+              handle password or do not support <c>HTTPS</c>. But it should
+              only be used when system security is guaranteed by other means, such as the
+              use of a firewall.
+              The value <c>MIXED</c> requires the configuration of passwords, and allows
+              access via both HTTP (unencrypted) and HTTPS (encrypted), while requiring
+              the Yoctopuce API to be tolerant of certificate characteristics.
+              The value <c>SECURE</c> requires the configuration of passwords and the
+              use of secure communications in all cases.
+              When you change this parameter, remember to call the <c>saveToFlash()</c>
+              method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+              <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+              security level used to prevent unauthorized access to the server
             </param>
             <para>
             </para>
@@ -49181,7 +51452,7 @@
         </member>
         <member name="M:YoctoLib.YNetwork.set_periodicCallbackSchedule(System.String,System.Int32)">
             <summary>
-              Setup periodic HTTP callbacks (simplified function).
+              Set up periodic HTTP callbacks (simplified function).
             <para>
             </para>
             </summary>
@@ -49334,6 +51605,22 @@
             </summary>
             <param name="secBeforeShutDown">
               number of seconds before shutdown
+            </param>
+            <returns>
+              <c>YAPI.SUCCESS</c> when the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YOsControl.reboot(System.Int32)">
+            <summary>
+              Schedules an OS reboot after a given number of seconds.
+            <para>
+            </para>
+            </summary>
+            <param name="secBeforeReboot">
+              number of seconds before reboot
             </param>
             <returns>
               <c>YAPI.SUCCESS</c> when the call succeeds.
@@ -50294,7 +52581,7 @@
             <para>
               It inherits from <c>YSensor</c> class the core functions to read measurements,
               to register callback functions, and to access the autonomous datalogger.
-              This class adds the ability to setup a detection threshold and to count the
+              This class adds the ability to set up a detection threshold and to count the
               number of detected state changes.
             </para>
             <para>
@@ -50956,6 +53243,44 @@
               On failure, throws an exception or returns a negative error code.
             </para>
         </member>
+        <member name="M:YoctoLib.YPwmInput.set_minFrequency(System.Double)">
+            <summary>
+              Changes the minimum detected frequency, in Hz.
+            <para>
+              Slower signals will be consider as zero frequency.
+              Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="newval">
+              a floating point number corresponding to the minimum detected frequency, in Hz
+            </param>
+            <para>
+            </para>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YPwmInput.get_minFrequency">
+            <summary>
+              Returns the minimum detected frequency, in Hz.
+            <para>
+              Slower signals will be consider as zero frequency.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a floating point number corresponding to the minimum detected frequency, in Hz
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YPwmInput.MINFREQUENCY_INVALID</c>.
+            </para>
+        </member>
         <member name="M:YoctoLib.YPwmInput.get_bandwidth">
             <summary>
               Returns the input signal sampling rate, in kHz.
@@ -51098,9 +53423,22 @@
             @noreturn
             </param>
         </member>
+        <member name="M:YoctoLib.YPwmInput.resetPeriodDetection">
+            <summary>
+              Resets the periodicity detection algorithm.
+            <para>
+            </para>
+            </summary>
+            <returns>
+              <c>YAPI.SUCCESS</c> if the call succeeds.
+            </returns>
+            <para>
+              On failure, throws an exception or returns a negative error code.
+            </para>
+        </member>
         <member name="M:YoctoLib.YPwmInput.resetCounter">
             <summary>
-              Returns the pulse counter value as well as its timer.
+              Resets the pulse counter value as well as its timer.
             <para>
             </para>
             </summary>
@@ -51144,7 +53482,7 @@
             <summary>
               The <c>YPwmOutput</c> class allows you to drive a pulse-width modulated output (PWM).
             <para>
-              You can configure the frequency as well as the duty cycle, and setup progressive
+              You can configure the frequency as well as the duty cycle, and set up progressive
               transitions.
             </para>
             <para>
@@ -52354,7 +54692,7 @@
               That
               calibration process needs no physical interaction with the sensor. It is performed
               automatically at device startup, but it is recommended to start it again when the
-              temperature delta since the latest calibration exceeds 8°C.
+              temperature delta since the latest calibration exceeds 8 degrees Celsius.
             </para>
             </summary>
             <returns>
@@ -52717,7 +55055,7 @@
         </member>
         <member name="T:YoctoLib.YRefFrame">
             <summary>
-              The <c>YRefFrame</c> class is used to setup the base orientation of the Yoctopuce inertial
+              The <c>YRefFrame</c> class is used to set up the base orientation of the Yoctopuce inertial
               sensors.
             <para>
               Thanks to this, orientation functions relative to the earth surface plane
@@ -52738,7 +55076,7 @@
               heading and the reference bearing indicated here.
             </para>
             <para>
-              For instance, if you setup as reference bearing the value of the earth
+              For instance, if you set up as reference bearing the value of the earth
               magnetic declination, the compass will provide the orientation relative
               to the geographic North.
             </para>
@@ -53706,19 +56044,19 @@
         </member>
         <member name="F:YoctoLib.YRfidOptions.ForceSingleBlockAccess">
             <summary>
-              Force the use of single-block commands to access RFID tag memory blocks.
+              Forces the use of single-block commands to access RFID tag memory blocks.
             <para>
               By default, the Yoctopuce library uses the most efficient access strategy
               generally available for each tag type, but you can force the use of
               single-block commands if the RFID tags you are using do not support
-              multi-block commands. If opération speed is not a priority, choose
+              multi-block commands. If operation speed is not a priority, choose
               single-block mode as it will work with any mode.
             </para>
             </summary>
         </member>
         <member name="F:YoctoLib.YRfidOptions.ForceMultiBlockAccess">
             <summary>
-              Force the use of multi-block commands to access RFID tag memory blocks.
+              Forces the use of multi-block commands to access RFID tag memory blocks.
             <para>
               By default, the Yoctopuce library uses the most efficient access strategy
               generally available for each tag type, but you can force the use of
@@ -53726,13 +56064,13 @@
               do support multi-block commands. Be  aware that even if a tag allows multi-block
               operations, the maximum number of blocks that can be written or read at the same
               time can be (very) limited. If the tag does not support multi-block mode
-              for the wanted opération, the option will be ignored.
+              for the wanted operation, the option will be ignored.
             </para>
             </summary>
         </member>
         <member name="F:YoctoLib.YRfidOptions.EnableRawAccess">
             <summary>
-              Enable direct access to RFID tag control blocks.
+              Enables direct access to RFID tag control blocks.
             <para>
               By default, Yoctopuce library read and write functions only work
               on data blocks and automatically skip special blocks, as specific functions are provided
@@ -53758,7 +56096,7 @@
         </member>
         <member name="F:YoctoLib.YRfidOptions.EnableDryRun">
             <summary>
-              Enable simulation mode to check the affected block range as well
+              Enables simulation mode to check the affected block range as well
               as access rights.
             <para>
               When this option is active, the operation is
@@ -53870,8 +56208,8 @@
               - At tag level, each block must be read and written in its entirety.
             </para>
             <para>
-              - Some blocks are special configuration blocks, and may alter the tag's behaviour
-              tag behavior if they are rewritten with arbitrary data.
+              - Some blocks are special configuration blocks, and may alter the tag's behavior
+              if they are rewritten with arbitrary data.
             </para>
             <para>
               - Data blocks can be set to read-only mode, but on many tags, this operation is irreversible.
@@ -53881,7 +56219,7 @@
             <para>
               By default, the RfidReader class automatically manages these blocks so that
               arbitrary size data  can be manipulated of  without risk and without knowledge of
-              tag architecture .
+              tag architecture.
             </para>
             <para>
             </para>
@@ -54027,9 +56365,9 @@
         </member>
         <member name="M:YoctoLib.YRfidReader.get_tagInfo(System.String,YoctoLib.YRfidStatus@)">
             <summary>
-              Retourne la description des propriétés d'un tag RFID présent.
+              Returns a description of the properties of an existing RFID tag.
             <para>
-              Cette fonction peut causer des communications avec le tag.
+              This function can cause communications with the tag.
             </para>
             <para>
             </para>
@@ -54051,7 +56389,7 @@
         </member>
         <member name="M:YoctoLib.YRfidReader.tagLockBlocks(System.String,System.Int32,System.Int32,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
             <summary>
-              Change an RFID tag configuration to prevents any further write to
+              Changes an RFID tag configuration to prevents any further write to
               the selected blocks.
             <para>
               This operation is definitive and irreversible.
@@ -54456,16 +56794,24 @@
             <para>
               The write operation may span accross multiple blocks if the
               number of bytes to write is larger than the RFID tag block size.
-              Note that only the characters présent  in  the provided string
+              Note that only the characters present in the provided string
               will be written, there is no notion of string length. If your
               string data have variable length, you'll have to encode the
-              string length yourself.
+              string length yourself, with a terminal zero for instannce.
+            </para>
+            <para>
+              This function only works with ISO-latin characters, if you wish to
+              write strings encoded with alternate character sets, you'll have to
+              use tagWriteBin() function.
+            </para>
+            <para>
               By default firstBlock cannot be a special block, and any special block
               encountered in the middle of the write operation will be skipped
               automatically. The last data block affected by the operation will
               be automatically padded with zeros if neccessary.
               If you rather want to rewrite special blocks as well,
-              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter.
+              use the <c>EnableRawAccess</c> field from the <c>options</c> parameter
+              (definitely not recommanded).
             </para>
             <para>
             </para>
@@ -54524,7 +56870,7 @@
         </member>
         <member name="M:YoctoLib.YRfidReader.tagSetAFI(System.String,System.Int32,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
             <summary>
-              Change an RFID tag AFI byte (ISO 15693 only).
+              Changes an RFID tag AFI byte (ISO 15693 only).
             <para>
             </para>
             </summary>
@@ -54606,7 +56952,7 @@
         </member>
         <member name="M:YoctoLib.YRfidReader.tagSetDSFID(System.String,System.Int32,YoctoLib.YRfidOptions,YoctoLib.YRfidStatus@)">
             <summary>
-              Change an RFID tag DSFID byte (ISO 15693 only).
+              Changes an RFID tag DSFID byte (ISO 15693 only).
             <para>
             </para>
             </summary>
@@ -57727,6 +60073,149 @@
               if there are none.
             </returns>
         </member>
+        <member name="T:YoctoLib.YSpectralChannel">
+            <summary>
+              The <c>YSpectralChannel</c> class allows you to read and configure Yoctopuce spectral analysis channels.
+            <para>
+              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              to register callback functions, and to access the autonomous datalogger.
+            </para>
+            <para>
+            </para>
+            </summary>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.get_rawCount">
+            <summary>
+              Retrieves the raw count of data samples.
+            <para>
+              This method returns the current value of rawCount, representing the total number of samples collected
+              by the sensor.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YSpectralChannel.RAWCOUNT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.FindSpectralChannel(System.String)">
+            <summary>
+              Retrieves a spectral analysis channel for a given identifier.
+            <para>
+              The identifier can be specified using several formats:
+            </para>
+            <para>
+            </para>
+            <para>
+              - FunctionLogicalName
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleSerialNumber.FunctionLogicalName
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionIdentifier
+            </para>
+            <para>
+              - ModuleLogicalName.FunctionLogicalName
+            </para>
+            <para>
+            </para>
+            <para>
+              This function does not require that the spectral analysis channel is online at the time
+              it is invoked. The returned object is nevertheless valid.
+              Use the method <c>YSpectralChannel.isOnline()</c> to test if the spectral analysis channel is
+              indeed online at a given time. In case of ambiguity when looking for
+              a spectral analysis channel by logical name, no error is notified: the first instance
+              found is returned. The search is performed first by hardware name,
+              then by logical name.
+            </para>
+            <para>
+              If a call to this object's is_online() method returns FALSE although
+              you are certain that the matching device is plugged, make sure that you did
+              call registerHub() at application initialization time.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="func">
+              a string that uniquely characterizes the spectral analysis channel, for instance
+              <c>MyDevice.spectralChannel1</c>.
+            </param>
+            <returns>
+              a <c>YSpectralChannel</c> object allowing you to drive the spectral analysis channel.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.registerValueCallback(YoctoLib.YSpectralChannel.ValueCallback)">
+            <summary>
+              Registers the callback function that is invoked on every change of advertised value.
+            <para>
+              The callback is invoked only during the execution of <c>ySleep</c> or <c>yHandleEvents</c>.
+              This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+              one of these two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer. The callback function should take two
+              arguments: the function object of which the value has changed, and the character string describing
+              the new advertised value.
+            @noreturn
+            </param>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.registerTimedReportCallback(YoctoLib.YSpectralChannel.TimedReportCallback)">
+            <summary>
+              Registers the callback function that is invoked on every periodic timed notification.
+            <para>
+              The callback is invoked only during the execution of <c>ySleep</c> or <c>yHandleEvents</c>.
+              This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+              one of these two functions periodically. To unregister a callback, pass a null pointer as argument.
+            </para>
+            <para>
+            </para>
+            </summary>
+            <param name="callback">
+              the callback function to call, or a null pointer. The callback function should take two
+              arguments: the function object of which the value has changed, and an <c>YMeasure</c> object describing
+              the new advertised value.
+            @noreturn
+            </param>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.nextSpectralChannel">
+            <summary>
+              Continues the enumeration of spectral analysis channels started using <c>yFirstSpectralChannel()</c>.
+            <para>
+              Caution: You can't make any assumption about the returned spectral analysis channels order.
+              If you want to find a specific a spectral analysis channel, use <c>SpectralChannel.findSpectralChannel()</c>
+              and a hardwareID or a logical name.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YSpectralChannel</c> object, corresponding to
+              a spectral analysis channel currently online, or a <c>null</c> pointer
+              if there are no more spectral analysis channels to enumerate.
+            </returns>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.FirstSpectralChannel">
+            <summary>
+              Starts the enumeration of spectral analysis channels currently accessible.
+            <para>
+              Use the method <c>YSpectralChannel.nextSpectralChannel()</c> to iterate on
+              next spectral analysis channels.
+            </para>
+            </summary>
+            <returns>
+              a pointer to a <c>YSpectralChannel</c> object, corresponding to
+              the first spectral analysis channel currently online, or a <c>null</c> pointer
+              if there are none.
+            </returns>
+        </member>
         <member name="M:YoctoLib.YSpiSnoopingRecord.get_time">
             <summary>
               Returns the elapsed time, in ms, since the beginning of the preceding message.
@@ -58774,7 +61263,7 @@
             <summary>
               Changes the current logical motor position, measured in steps.
             <para>
-              This command does not cause any motor move, as its purpose is only to setup
+              This command does not cause any motor move, as its purpose is only to set up
               the origin of the position counter. The fractional part of the position,
               that corresponds to the physical position of the rotor, is not changed.
               To trigger a motor move, use methods <c>moveTo()</c> or <c>moveRel()</c>
@@ -59928,7 +62417,7 @@
               It can be
               used to read the current value and unit of any sensor, read the min/max
               value, configure autonomous recording frequency and access recorded data.
-              It also provide a function to register a callback invoked each time the
+              It also provides a function to register a callback invoked each time the
               observed value changes, or at a predefined interval. Using this class rather
               than a specific subclass makes it possible to create generic applications
               that work with any Yoctopuce sensor, even those that do not yet exist.
@@ -60870,8 +63359,8 @@
             <returns>
               a value among <c>YWakeUpMonitor.WAKEUPREASON_USBPOWER</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTPOWER</c>,
               <c>YWakeUpMonitor.WAKEUPREASON_ENDOFSLEEP</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTSIG1</c>,
-              <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c> and <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c>
-              corresponding to the latest wake up reason
+              <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c>, <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c> and
+              <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE3</c> corresponding to the latest wake up reason
             </returns>
             <para>
               On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPREASON_INVALID</c>.

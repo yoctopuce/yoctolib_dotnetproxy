@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sensor_proxy.cs 59504 2024-02-26 11:42:03Z seb $
+ *  $Id: yocto_sensor_proxy.cs 62273 2024-08-23 07:20:59Z seb $
  *
  *  Implements YSensorProxy, the Proxy API for Sensor
  *
@@ -97,7 +97,7 @@ namespace YoctoProxyAPI
  *   It can be
  *   used to read the current value and unit of any sensor, read the min/max
  *   value, configure autonomous recording frequency and access recorded data.
- *   It also provide a function to register a callback invoked each time the
+ *   It also provides a function to register a callback invoked each time the
  *   observed value changes, or at a predefined interval. Using this class rather
  *   than a specific subclass makes it possible to create generic applications
  *   that work with any Yoctopuce sensor, even those that do not yet exist.

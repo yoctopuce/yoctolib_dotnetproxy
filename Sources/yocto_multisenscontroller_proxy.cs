@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_multisenscontroller_proxy.cs 49501 2022-04-21 07:09:25Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YMultiSensControllerProxy, the Proxy API for MultiSensController
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The <c>YMultiSensController</c> class allows you to setup a customized
+ *   The <c>YMultiSensController</c> class allows you to set up a customized
  *   sensor chain on devices featuring that functionality.
  * <para>
  * </para>

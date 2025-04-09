@@ -184,13 +184,13 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.10.60394",
+    "version": "2.1.654",
     "restore": {
-      "projectUniqueName": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v1.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
+      "projectUniqueName": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v2.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
       "projectName": "Yoctopuce.NetProxy",
-      "projectPath": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v1.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
+      "projectPath": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v2.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
       "packagesPath": "C:\\Users\\yocto\\.nuget\\packages\\",
-      "outputPath": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v1.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\obj\\",
+      "outputPath": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v2.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

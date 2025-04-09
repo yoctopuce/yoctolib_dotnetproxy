@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_led.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindLed(), the high-level API for Led functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YLed return codes)
 //--- (end of YLed return codes)
+//--- (YLed dlldef_core)
+//--- (end of YLed dlldef_core)
+//--- (YLed dll_core_map)
+//--- (end of YLed dll_core_map)
 //--- (YLed dlldef)
 //--- (end of YLed dlldef)
 //--- (YLed yapiwrapper)

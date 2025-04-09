@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_multisenscontroller.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindMultiSensController(), the high-level API for MultiSensController functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YMultiSensController return codes)
 //--- (end of YMultiSensController return codes)
+//--- (YMultiSensController dlldef_core)
+//--- (end of YMultiSensController dlldef_core)
+//--- (YMultiSensController dll_core_map)
+//--- (end of YMultiSensController dll_core_map)
 //--- (YMultiSensController dlldef)
 //--- (end of YMultiSensController dlldef)
 //--- (YMultiSensController yapiwrapper)
@@ -58,7 +62,7 @@ using YFUN_DESCR = System.Int32;
 //--- (YMultiSensController class start)
 /**
  * <summary>
- *   The <c>YMultiSensController</c> class allows you to setup a customized
+ *   The <c>YMultiSensController</c> class allows you to set up a customized
  *   sensor chain on devices featuring that functionality.
  * <para>
  * </para>

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_colorled.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindColorLed(), the high-level API for ColorLed functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YColorLed return codes)
 //--- (end of YColorLed return codes)
+//--- (YColorLed dlldef_core)
+//--- (end of YColorLed dlldef_core)
+//--- (YColorLed dll_core_map)
+//--- (end of YColorLed dll_core_map)
 //--- (YColorLed dlldef)
 //--- (end of YColorLed dlldef)
 //--- (YColorLed yapiwrapper)
@@ -436,8 +440,9 @@ public class YColorLed : YFunction
      * <summary>
      *   Changes the color that the LED displays by default when the module is turned on.
      * <para>
-     *   Remember to call the <c>saveToFlash()</c>
-     *   method of the module if the modification must be kept.
+     *   Remember to call the <c>saveLedsConfigAtPowerOn()</c> method of the module if the modification must be kept.
+     *   Note: for the original modules Yocto-Color (version 1) et Yocto-PowerColor, the  <c>saveToFlash()</c>
+     *   method must be used instead.
      * </para>
      * <para>
      * </para>
@@ -800,6 +805,25 @@ public class YColorLed : YFunction
     public virtual int resetBlinkSeq()
     {
         return this.sendCommand("Z");
+    }
+
+
+    /**
+     * <summary>
+     *   Saves the LEDs power-on configuration.
+     * <para>
+     *   Warning: this method is not supported by
+     *   Yocto-Color (version 1) and Yocto-PowerColor modules. For these devices, the <c>saveToFlash()</c>
+     *   method of the module must be used instead.
+     * </para>
+     * <para>
+     *   On failure, throws an exception or returns a negative error code.
+     * </para>
+     * </summary>
+     */
+    public virtual int saveLedsConfigAtPowerOn()
+    {
+        return this.sendCommand("W");
     }
 
     /**

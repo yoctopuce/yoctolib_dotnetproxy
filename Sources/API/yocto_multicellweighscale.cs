@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_multicellweighscale.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindMultiCellWeighScale(), the high-level API for MultiCellWeighScale functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YMultiCellWeighScale return codes)
 //--- (end of YMultiCellWeighScale return codes)
+//--- (YMultiCellWeighScale dlldef_core)
+//--- (end of YMultiCellWeighScale dlldef_core)
+//--- (YMultiCellWeighScale dll_core_map)
+//--- (end of YMultiCellWeighScale dll_core_map)
 //--- (YMultiCellWeighScale dlldef)
 //--- (end of YMultiCellWeighScale dlldef)
 //--- (YMultiCellWeighScale yapiwrapper)
@@ -903,7 +907,7 @@ public class YMultiCellWeighScale : YSensor
      */
     public virtual int setupSpan(double currWeight, double maxWeight)
     {
-        return this.set_command("S"+Convert.ToString( (int) Math.Round(1000*currWeight))+":"+Convert.ToString((int) Math.Round(1000*maxWeight)));
+        return this.set_command("S"+Convert.ToString((int) Math.Round(1000*currWeight))+":"+Convert.ToString((int) Math.Round(1000*maxWeight)));
     }
 
     /**

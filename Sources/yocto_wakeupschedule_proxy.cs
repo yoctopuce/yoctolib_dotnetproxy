@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupschedule_proxy.cs 56230 2023-08-21 15:20:59Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YWakeUpScheduleProxy, the Proxy API for WakeUpSchedule
  *

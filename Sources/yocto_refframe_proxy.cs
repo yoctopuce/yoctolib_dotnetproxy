@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_refframe_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YRefFrameProxy, the Proxy API for RefFrame
  *
@@ -92,7 +92,7 @@ namespace YoctoProxyAPI
 
 /**
  * <summary>
- *   The <c>YRefFrame</c> class is used to setup the base orientation of the Yoctopuce inertial
+ *   The <c>YRefFrame</c> class is used to set up the base orientation of the Yoctopuce inertial
  *   sensors.
  * <para>
  *   Thanks to this, orientation functions relative to the earth surface plane
@@ -351,7 +351,7 @@ namespace YoctoProxyAPI
          *   heading and the reference bearing indicated here.
          * </para>
          * <para>
-         *   For instance, if you setup as reference bearing the value of the earth
+         *   For instance, if you set up as reference bearing the value of the earth
          *   magnetic declination, the compass will provide the orientation relative
          *   to the geographic North.
          * </para>

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_motor.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindMotor(), the high-level API for Motor functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YMotor return codes)
 //--- (end of YMotor return codes)
+//--- (YMotor dlldef_core)
+//--- (end of YMotor dlldef_core)
+//--- (YMotor dll_core_map)
+//--- (end of YMotor dll_core_map)
 //--- (YMotor dlldef)
 //--- (end of YMotor dlldef)
 //--- (YMotor yapiwrapper)

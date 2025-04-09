@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_display_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YDisplayProxy, the Proxy API for Display
  *

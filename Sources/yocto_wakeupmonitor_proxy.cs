@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wakeupmonitor_proxy.cs 48183 2022-01-20 10:26:11Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YWakeUpMonitorProxy, the Proxy API for WakeUpMonitor
  *
@@ -168,6 +168,7 @@ namespace YoctoProxyAPI
         public const int _WakeUpReason_EXTSIG1 = 4;
         public const int _WakeUpReason_SCHEDULE1 = 5;
         public const int _WakeUpReason_SCHEDULE2 = 6;
+        public const int _WakeUpReason_SCHEDULE3 = 7;
         public const int _WakeUpState_INVALID = 0;
         public const int _WakeUpState_SLEEPING = 1;
         public const int _WakeUpState_AWAKE = 2;
@@ -525,8 +526,8 @@ namespace YoctoProxyAPI
          * <returns>
          *   a value among <c>YWakeUpMonitor.WAKEUPREASON_USBPOWER</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTPOWER</c>,
          *   <c>YWakeUpMonitor.WAKEUPREASON_ENDOFSLEEP</c>, <c>YWakeUpMonitor.WAKEUPREASON_EXTSIG1</c>,
-         *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c> and <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c>
-         *   corresponding to the latest wake up reason
+         *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE1</c>, <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE2</c> and
+         *   <c>YWakeUpMonitor.WAKEUPREASON_SCHEDULE3</c> corresponding to the latest wake up reason
          * </returns>
          * <para>
          *   On failure, throws an exception or returns <c>YWakeUpMonitor.WAKEUPREASON_INVALID</c>.

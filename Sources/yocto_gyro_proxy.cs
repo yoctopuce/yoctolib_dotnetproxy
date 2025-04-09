@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_gyro_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YGyroProxy, the Proxy API for Gyro
  *

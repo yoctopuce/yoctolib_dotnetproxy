@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_voltageoutput.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindVoltageOutput(), the high-level API for VoltageOutput functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YVoltageOutput return codes)
 //--- (end of YVoltageOutput return codes)
+//--- (YVoltageOutput dlldef_core)
+//--- (end of YVoltageOutput dlldef_core)
+//--- (YVoltageOutput dll_core_map)
+//--- (end of YVoltageOutput dll_core_map)
 //--- (YVoltageOutput dlldef)
 //--- (end of YVoltageOutput dlldef)
 //--- (YVoltageOutput yapiwrapper)
@@ -395,7 +399,7 @@ public class YVoltageOutput : YFunction
         if (V_target > 10.0) {
             V_target = 10.0;
         }
-        newval = ""+Convert.ToString( (int) Math.Round(V_target*65536))+":"+Convert.ToString(ms_duration);
+        newval = ""+Convert.ToString((int) Math.Round(V_target*65536))+":"+Convert.ToString(ms_duration);
 
         return this.set_voltageTransition(newval);
     }

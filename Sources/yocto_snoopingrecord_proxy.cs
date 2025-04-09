@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_snoopingrecord_proxy.cs 58892 2024-01-11 11:11:28Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YSnoopingRecordProxy, the Proxy API for SnoopingRecord
  *

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_servo_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YServoProxy, the Proxy API for Servo
  *

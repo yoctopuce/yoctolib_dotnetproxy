@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_powersupply_proxy.cs 55576 2023-07-25 06:26:34Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YPowerSupplyProxy, the Proxy API for PowerSupply
  *

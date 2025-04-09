@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_digitalio.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindDigitalIO(), the high-level API for DigitalIO functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YDigitalIO return codes)
 //--- (end of YDigitalIO return codes)
+//--- (YDigitalIO dlldef_core)
+//--- (end of YDigitalIO dlldef_core)
+//--- (YDigitalIO dll_core_map)
+//--- (end of YDigitalIO dll_core_map)
 //--- (YDigitalIO dlldef)
 //--- (end of YDigitalIO dlldef)
 //--- (YDigitalIO yapiwrapper)
@@ -60,7 +64,7 @@ using YFUN_DESCR = System.Int32;
  * <summary>
  *   The <c>YDigitalIO</c> class allows you drive a Yoctopuce digital input/output port.
  * <para>
- *   It can be used to setup the direction of each channel, to read the state of each channel
+ *   It can be used to set up the direction of each channel, to read the state of each channel
  *   and to switch the state of each channel configures as an output.
  *   You can work on all channels at once, or one by one. Most functions
  *   use a binary representation for channels where bit 0 matches channel #0 , bit 1 matches channel
@@ -420,17 +424,17 @@ public class YDigitalIO : YFunction
 
     /**
      * <summary>
-     *   Returns the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only).
+     *   Returns the port state diagnostics.
      * <para>
-     *   Bit 0 indicates a shortcut on
-     *   output 0, etc. Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
+     *   Bit 0 indicates a shortcut on output 0, etc.
+     *   Bit 8 indicates a power failure, and bit 9 signals overheating (overcurrent).
      *   During normal use, all diagnostic bits should stay clear.
      * </para>
      * <para>
      * </para>
      * </summary>
      * <returns>
-     *   an integer corresponding to the port state diagnostics (Yocto-IO and Yocto-MaxiIO-V2 only)
+     *   an integer corresponding to the port state diagnostics
      * </returns>
      * <para>
      *   On failure, throws an exception or returns <c>YDigitalIO.PORTDIAGS_INVALID</c>.
@@ -736,7 +740,7 @@ public class YDigitalIO : YFunction
     {
         int portVal;
         portVal = this.get_portState();
-        return ((((portVal) >> (bitno))) & (1));
+        return ((portVal >> bitno) & 1);
     }
 
 
@@ -819,7 +823,7 @@ public class YDigitalIO : YFunction
     {
         int portDir;
         portDir = this.get_portDirection();
-        return ((((portDir) >> (bitno))) & (1));
+        return ((portDir >> bitno) & 1);
     }
 
 
@@ -877,7 +881,7 @@ public class YDigitalIO : YFunction
     {
         int portPol;
         portPol = this.get_portPolarity();
-        return ((((portPol) >> (bitno))) & (1));
+        return ((portPol >> bitno) & 1);
     }
 
 
@@ -938,7 +942,7 @@ public class YDigitalIO : YFunction
     {
         int portOpenDrain;
         portOpenDrain = this.get_portOpenDrain();
-        return ((((portOpenDrain) >> (bitno))) & (1));
+        return ((portOpenDrain >> bitno) & 1);
     }
 
 
@@ -966,7 +970,7 @@ public class YDigitalIO : YFunction
      */
     public virtual int pulse(int bitno, int ms_duration)
     {
-        return this.set_command("Z"+Convert.ToString( bitno)+",0,"+Convert.ToString(ms_duration));
+        return this.set_command("Z"+Convert.ToString(bitno)+",0,"+Convert.ToString(ms_duration));
     }
 
 

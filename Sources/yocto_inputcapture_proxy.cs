@@ -255,12 +255,18 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Enumère toutes les fonctions de type InputCapture.
+         *   Enumerates all functions of type InputCapture available on the devices
+         *   currently reachable by the library, and returns their unique hardware ID.
          * <para>
-         *   Returns an array of strings representing hardware identifiers for all InputCapture functions
-         *   presently connected.
+         *   Each of these IDs can be provided as argument to the method
+         *   <c>YInputCapture.FindInputCapture</c> to obtain an object that can control the
+         *   corresponding device.
          * </para>
          * </summary>
+         * <returns>
+         *   an array of strings, each string containing the unique hardwareId
+         *   of a device function currently connected.
+         * </returns>
          */
         public static new string[] GetSimilarFunctions()
         {

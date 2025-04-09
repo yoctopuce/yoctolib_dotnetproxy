@@ -208,24 +208,24 @@ public class YInputCaptureData
         this._trigUTC = this._trigUTC + (ms / 1000.0);
         recOfs = 24;
         while (sdata[recOfs] >= 32) {
-            this._var1unit = ""+ this._var1unit+""+((char)(sdata[recOfs])).ToString();
+            this._var1unit = ""+this._var1unit+""+((char)(sdata[recOfs])).ToString();
             recOfs = recOfs + 1;
         }
         if (this._var2size > 0) {
             recOfs = recOfs + 1;
             while (sdata[recOfs] >= 32) {
-                this._var2unit = ""+ this._var2unit+""+((char)(sdata[recOfs])).ToString();
+                this._var2unit = ""+this._var2unit+""+((char)(sdata[recOfs])).ToString();
                 recOfs = recOfs + 1;
             }
         }
         if (this._var3size > 0) {
             recOfs = recOfs + 1;
             while (sdata[recOfs] >= 32) {
-                this._var3unit = ""+ this._var3unit+""+((char)(sdata[recOfs])).ToString();
+                this._var3unit = ""+this._var3unit+""+((char)(sdata[recOfs])).ToString();
                 recOfs = recOfs + 1;
             }
         }
-        if (((recOfs) & (1)) == 1) {
+        if ((recOfs & 1) == 1) {
             // align to next word
             recOfs = recOfs + 1;
         }
@@ -1335,8 +1335,8 @@ public class YInputCapture : YFunction
         if (msDuration > 1000) {
             msDuration = 1000;
         }
-        snapStart = ((-msDuration) / (2));
-        snapUrl = "snap.bin?t="+Convert.ToString( snapStart)+"&d="+Convert.ToString(msDuration);
+        snapStart = ((-msDuration) / 2);
+        snapUrl = "snap.bin?t="+Convert.ToString(snapStart)+"&d="+Convert.ToString(msDuration);
 
         snapData = this._download(snapUrl);
         return new YInputCaptureData(this, snapData);
@@ -1344,11 +1344,18 @@ public class YInputCapture : YFunction
 
     /**
      * <summary>
-     *   c
+     *   Continues the enumeration of instant snapshot triggers started using <c>yFirstInputCapture()</c>.
      * <para>
-     *   omment from .yc definition
+     *   Caution: You can't make any assumption about the returned instant snapshot triggers order.
+     *   If you want to find a specific an instant snapshot trigger, use <c>InputCapture.findInputCapture()</c>
+     *   and a hardwareID or a logical name.
      * </para>
      * </summary>
+     * <returns>
+     *   a pointer to a <c>YInputCapture</c> object, corresponding to
+     *   an instant snapshot trigger currently online, or a <c>null</c> pointer
+     *   if there are no more instant snapshot triggers to enumerate.
+     * </returns>
      */
     public YInputCapture nextInputCapture()
     {
@@ -1366,11 +1373,17 @@ public class YInputCapture : YFunction
 
     /**
      * <summary>
-     *   c
+     *   Starts the enumeration of instant snapshot triggers currently accessible.
      * <para>
-     *   omment from .yc definition
+     *   Use the method <c>YInputCapture.nextInputCapture()</c> to iterate on
+     *   next instant snapshot triggers.
      * </para>
      * </summary>
+     * <returns>
+     *   a pointer to a <c>YInputCapture</c> object, corresponding to
+     *   the first instant snapshot trigger currently online, or a <c>null</c> pointer
+     *   if there are none.
+     * </returns>
      */
     public static YInputCapture FirstInputCapture()
     {

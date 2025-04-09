@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_humidity.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindHumidity(), the high-level API for Humidity functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YHumidity return codes)
 //--- (end of YHumidity return codes)
+//--- (YHumidity dlldef_core)
+//--- (end of YHumidity dlldef_core)
+//--- (YHumidity dll_core_map)
+//--- (end of YHumidity dll_core_map)
 //--- (YHumidity dlldef)
 //--- (end of YHumidity dlldef)
 //--- (YHumidity yapiwrapper)

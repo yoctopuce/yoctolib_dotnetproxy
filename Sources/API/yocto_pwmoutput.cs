@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_pwmoutput.cs 58892 2024-01-11 11:11:28Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindPwmOutput(), the high-level API for PwmOutput functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YPwmOutput return codes)
 //--- (end of YPwmOutput return codes)
+//--- (YPwmOutput dlldef_core)
+//--- (end of YPwmOutput dlldef_core)
+//--- (YPwmOutput dll_core_map)
+//--- (end of YPwmOutput dll_core_map)
 //--- (YPwmOutput dlldef)
 //--- (end of YPwmOutput dlldef)
 //--- (YPwmOutput yapiwrapper)
@@ -60,7 +64,7 @@ using YFUN_DESCR = System.Int32;
  * <summary>
  *   The <c>YPwmOutput</c> class allows you to drive a pulse-width modulated output (PWM).
  * <para>
- *   You can configure the frequency as well as the duty cycle, and setup progressive
+ *   You can configure the frequency as well as the duty cycle, and set up progressive
  *   transitions.
  * </para>
  * <para>
@@ -814,7 +818,7 @@ public class YPwmOutput : YFunction
         if (ms_target < 0.0) {
             ms_target = 0.0;
         }
-        newval = ""+Convert.ToString( (int) Math.Round(ms_target*65536))+"ms:"+Convert.ToString(ms_duration);
+        newval = ""+Convert.ToString((int) Math.Round(ms_target*65536))+"ms:"+Convert.ToString(ms_duration);
         return this.set_pwmTransition(newval);
     }
 
@@ -849,7 +853,7 @@ public class YPwmOutput : YFunction
         if (target > 100.0) {
             target = 100.0;
         }
-        newval = ""+Convert.ToString( (int) Math.Round(target*65536))+":"+Convert.ToString(ms_duration);
+        newval = ""+Convert.ToString((int) Math.Round(target*65536))+":"+Convert.ToString(ms_duration);
         return this.set_pwmTransition(newval);
     }
 
@@ -880,7 +884,7 @@ public class YPwmOutput : YFunction
         if (target < 0.001) {
             target = 0.001;
         }
-        newval = ""+YAPI._floatToStr( target)+"Hz:"+Convert.ToString(ms_duration);
+        newval = ""+YAPI._floatToStr(target)+"Hz:"+Convert.ToString(ms_duration);
         return this.set_pwmTransition(newval);
     }
 
@@ -912,7 +916,7 @@ public class YPwmOutput : YFunction
     public virtual int phaseMove(double target, int ms_duration)
     {
         string newval;
-        newval = ""+YAPI._floatToStr( target)+"ps:"+Convert.ToString(ms_duration);
+        newval = ""+YAPI._floatToStr(target)+"ps:"+Convert.ToString(ms_duration);
         return this.set_pwmTransition(newval);
     }
 
@@ -944,7 +948,7 @@ public class YPwmOutput : YFunction
         if (ms_target < 0.0) {
             ms_target = 0.0;
         }
-        newval = ""+Convert.ToString( (int) Math.Round(ms_target*65536))+"ms*"+Convert.ToString(n_pulses);
+        newval = ""+Convert.ToString((int) Math.Round(ms_target*65536))+"ms*"+Convert.ToString(n_pulses);
         return this.set_pwmTransition(newval);
     }
 
@@ -979,7 +983,7 @@ public class YPwmOutput : YFunction
         if (target > 100.0) {
             target = 100.0;
         }
-        newval = ""+Convert.ToString( (int) Math.Round(target*65536))+"*"+Convert.ToString(n_pulses);
+        newval = ""+Convert.ToString((int) Math.Round(target*65536))+"*"+Convert.ToString(n_pulses);
         return this.set_pwmTransition(newval);
     }
 
@@ -1010,7 +1014,7 @@ public class YPwmOutput : YFunction
         if (target < 0.001) {
             target = 0.001;
         }
-        newval = ""+YAPI._floatToStr( target)+"Hz*"+Convert.ToString(n_pulses);
+        newval = ""+YAPI._floatToStr(target)+"Hz*"+Convert.ToString(n_pulses);
         return this.set_pwmTransition(newval);
     }
 

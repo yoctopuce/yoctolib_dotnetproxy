@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_i2cport_proxy.cs 59637 2024-03-05 18:23:38Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YI2cPortProxy, the Proxy API for I2cPort
  *
@@ -1403,8 +1403,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Sends a text-encoded I2C code stream to the I2C bus, and terminate
-         *   the message en relâchant le bus.
+         *   Sends a text-encoded I2C code stream to the I2C bus, and release the bus.
          * <para>
          *   An I2C code stream is a string made of hexadecimal data bytes,
          *   but that may also include the I2C state transitions code:

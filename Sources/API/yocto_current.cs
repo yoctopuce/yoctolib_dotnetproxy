@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_current.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindCurrent(), the high-level API for Current functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YCurrent return codes)
 //--- (end of YCurrent return codes)
+//--- (YCurrent dlldef_core)
+//--- (end of YCurrent dlldef_core)
+//--- (YCurrent dll_core_map)
+//--- (end of YCurrent dll_core_map)
 //--- (YCurrent dlldef)
 //--- (end of YCurrent dlldef)
 //--- (YCurrent yapiwrapper)

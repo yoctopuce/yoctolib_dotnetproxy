@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sms_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YSmsProxy, the Proxy API for Sms
  *

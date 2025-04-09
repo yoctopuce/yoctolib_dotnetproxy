@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_rangefinder_proxy.cs 52848 2023-01-20 15:49:48Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YRangeFinderProxy, the Proxy API for RangeFinder
  *
@@ -610,7 +610,7 @@ namespace YoctoProxyAPI
          *   That
          *   calibration process needs no physical interaction with the sensor. It is performed
          *   automatically at device startup, but it is recommended to start it again when the
-         *   temperature delta since the latest calibration exceeds 8°C.
+         *   temperature delta since the latest calibration exceeds 8 degrees Celsius.
          * </para>
          * </summary>
          * <returns>

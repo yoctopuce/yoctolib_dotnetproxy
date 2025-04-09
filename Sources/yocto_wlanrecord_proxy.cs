@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_wlanrecord_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YWlanRecordProxy, the Proxy API for WlanRecord
  *

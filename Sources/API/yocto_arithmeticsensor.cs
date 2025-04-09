@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_arithmeticsensor.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindArithmeticSensor(), the high-level API for ArithmeticSensor functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YArithmeticSensor return codes)
 //--- (end of YArithmeticSensor return codes)
+//--- (YArithmeticSensor dlldef_core)
+//--- (end of YArithmeticSensor dlldef_core)
+//--- (YArithmeticSensor dll_core_map)
+//--- (end of YArithmeticSensor dll_core_map)
 //--- (YArithmeticSensor dlldef)
 //--- (end of YArithmeticSensor dlldef)
 //--- (YArithmeticSensor yapiwrapper)
@@ -380,17 +384,17 @@ public class YArithmeticSensor : YSensor
         string diags;
         double resval;
         id = this.get_functionId();
-        id = (id).Substring( 16, (id).Length - 16);
+        id = (id).Substring(16, (id).Length - 16);
         fname = "arithmExpr"+id+".txt";
 
-        content = "// "+ descr+"\n"+expr;
+        content = "// "+descr+"\n"+expr;
         data = this._uploadEx(fname, YAPI.DefaultEncoding.GetBytes(content));
         diags = YAPI.DefaultEncoding.GetString(data);
         if (!((diags).Substring(0, 8) == "Result: ")) {
             this._throw(YAPI.INVALID_ARGUMENT, diags);
             return YAPI.INVALID_DOUBLE;
         }
-        resval = YAPI._atof((diags).Substring( 8, (diags).Length-8));
+        resval = YAPI._atof((diags).Substring(8, (diags).Length-8));
         return resval;
     }
 
@@ -416,13 +420,13 @@ public class YArithmeticSensor : YSensor
         string content;
         int idx;
         id = this.get_functionId();
-        id = (id).Substring( 16, (id).Length - 16);
+        id = (id).Substring(16, (id).Length - 16);
         fname = "arithmExpr"+id+".txt";
 
         content = YAPI.DefaultEncoding.GetString(this._download(fname));
         idx = (content).IndexOf("\n");
         if (idx > 0) {
-            content = (content).Substring( idx+1, (content).Length-(idx+1));
+            content = (content).Substring(idx+1, (content).Length-(idx+1));
         }
         return content;
     }
@@ -479,7 +483,7 @@ public class YArithmeticSensor : YSensor
         while (idx < siz) {
             inputVal = inputValues[idx];
             outputVal = outputValues[idx];
-            defstr = ""+ defstr+""+YAPI._floatToStr( inputVal)+":"+YAPI._floatToStr(outputVal)+"\n";
+            defstr = ""+defstr+""+YAPI._floatToStr(inputVal)+":"+YAPI._floatToStr(outputVal)+"\n";
             idx = idx + 1;
         }
         fname = "userMap"+name+".txt";

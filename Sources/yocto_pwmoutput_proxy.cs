@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_pwmoutput_proxy.cs 58892 2024-01-11 11:11:28Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YPwmOutputProxy, the Proxy API for PwmOutput
  *
@@ -94,7 +94,7 @@ namespace YoctoProxyAPI
  * <summary>
  *   The <c>YPwmOutput</c> class allows you to drive a pulse-width modulated output (PWM).
  * <para>
- *   You can configure the frequency as well as the duty cycle, and setup progressive
+ *   You can configure the frequency as well as the duty cycle, and set up progressive
  *   transitions.
  * </para>
  * <para>

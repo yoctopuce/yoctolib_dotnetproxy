@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_voc.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindVoc(), the high-level API for Voc functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YVoc return codes)
 //--- (end of YVoc return codes)
+//--- (YVoc dlldef_core)
+//--- (end of YVoc dlldef_core)
+//--- (YVoc dll_core_map)
+//--- (end of YVoc dll_core_map)
 //--- (YVoc dlldef)
 //--- (end of YVoc dlldef)
 //--- (YVoc yapiwrapper)

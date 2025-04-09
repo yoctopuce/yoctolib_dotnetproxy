@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_spiport_proxy.cs 59637 2024-03-05 18:23:38Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YSpiPortProxy, the Proxy API for SpiPort
  *

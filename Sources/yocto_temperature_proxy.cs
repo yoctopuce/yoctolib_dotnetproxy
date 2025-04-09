@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_temperature_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YTemperatureProxy, the Proxy API for Temperature
  *

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_groundspeed_proxy.cs 39658 2020-03-12 15:36:29Z seb $
+ *  $Id: svn_id $
  *
  *  Implements YGroundSpeedProxy, the Proxy API for GroundSpeed
  *

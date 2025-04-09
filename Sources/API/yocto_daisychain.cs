@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_daisychain.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindDaisyChain(), the high-level API for DaisyChain functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YDaisyChain return codes)
 //--- (end of YDaisyChain return codes)
+//--- (YDaisyChain dlldef_core)
+//--- (end of YDaisyChain dlldef_core)
+//--- (YDaisyChain dll_core_map)
+//--- (end of YDaisyChain dll_core_map)
 //--- (YDaisyChain dlldef)
 //--- (end of YDaisyChain dlldef)
 //--- (YDaisyChain yapiwrapper)

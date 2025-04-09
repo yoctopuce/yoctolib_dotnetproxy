@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_accelerometer.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindAccelerometer(), the high-level API for Accelerometer functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YAccelerometer return codes)
 //--- (end of YAccelerometer return codes)
+//--- (YAccelerometer dlldef_core)
+//--- (end of YAccelerometer dlldef_core)
+//--- (YAccelerometer dll_core_map)
+//--- (end of YAccelerometer dll_core_map)
 //--- (YAccelerometer dlldef)
 //--- (end of YAccelerometer dlldef)
 //--- (YAccelerometer yapiwrapper)

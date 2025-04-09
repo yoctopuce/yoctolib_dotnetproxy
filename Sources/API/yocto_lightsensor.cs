@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_lightsensor.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindLightSensor(), the high-level API for LightSensor functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YLightSensor return codes)
 //--- (end of YLightSensor return codes)
+//--- (YLightSensor dlldef_core)
+//--- (end of YLightSensor dlldef_core)
+//--- (YLightSensor dll_core_map)
+//--- (end of YLightSensor dll_core_map)
 //--- (YLightSensor dlldef)
 //--- (end of YLightSensor dlldef)
 //--- (YLightSensor yapiwrapper)

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_realtimeclock.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindRealTimeClock(), the high-level API for RealTimeClock functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YRealTimeClock return codes)
 //--- (end of YRealTimeClock return codes)
+//--- (YRealTimeClock dlldef_core)
+//--- (end of YRealTimeClock dlldef_core)
+//--- (YRealTimeClock dll_core_map)
+//--- (end of YRealTimeClock dll_core_map)
 //--- (YRealTimeClock dlldef)
 //--- (end of YRealTimeClock dlldef)
 //--- (YRealTimeClock yapiwrapper)

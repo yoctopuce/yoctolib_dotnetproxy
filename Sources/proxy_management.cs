@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -386,7 +386,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Setup the Yoctopuce library to use modules connected on a given machine.
+         *   Set up the Yoctopuce library to use modules connected on a given machine.
          * <para>
          *   Idealy this
          *   call will be made once at the begining of your application.  The
@@ -407,7 +407,7 @@ namespace YoctoProxyAPI
          *   computer, use the IP address 127.0.0.1. If the given IP is unresponsive, <c>yRegisterHub</c>
          *   will not return until a time-out defined by <c>ySetNetworkTimeout</c> has elapsed.
          *   However, it is possible to preventively test a connection  with <c>yTestHub</c>.
-         *   If you cannot afford a network time-out, you can use the non blocking <c>yPregisterHub</c>
+         *   If you cannot afford a network time-out, you can use the non-blocking <c>yPregisterHub</c>
          *   function that will establish the connection as soon as it is available.
          * </para>
          * <para>
@@ -425,7 +425,7 @@ namespace YoctoProxyAPI
          *   while trying to access the USB modules. In particular, this means
          *   that you must stop the VirtualHub software before starting
          *   an application that uses direct USB access. The workaround
-         *   for this limitation is to setup the library to use the VirtualHub
+         *   for this limitation is to set up the library to use the VirtualHub
          *   rather than direct USB access.
          * </para>
          * <para>
@@ -555,7 +555,7 @@ namespace YoctoProxyAPI
          * <para>
          *   From an operating system standpoint, it is generally not required to call
          *   this function since the OS will automatically free allocated resources
-         *   once your program is completed. However there are two situations when
+         *   once your program is completed. However, there are two situations when
          *   you may really want to use that function:
          * </para>
          * <para>
@@ -584,7 +584,7 @@ namespace YoctoProxyAPI
          * <para>
          *   This delay impacts only the YoctoHubs and VirtualHub
          *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
-         *   but depending or you network you may want to change this delay,
+         *   but depending on your network you may want to change this delay,
          *   gor example if your network infrastructure is based on a GSM connection.
          * </para>
          * <para>
@@ -606,7 +606,7 @@ namespace YoctoProxyAPI
          * <para>
          *   This delay impacts only the YoctoHubs and VirtualHub
          *   which are accessible through the network. By default, this delay is of 20000 milliseconds,
-         *   but depending or you network you may want to change this delay,
+         *   but depending on your network you may want to change this delay,
          *   for example if your network infrastructure is based on a GSM connection.
          * </para>
          * </summary>
@@ -666,7 +666,7 @@ namespace YoctoProxyAPI
         string version = default(string);
         string date = default(string);
         YAPI.apiGetAPIVersion(ref version, ref date);
-        return "PATCH_WITH_BUILD (" + version + ")";
+        return "PATCH_WITH_VERSION (" + version + ")";
       }
     }
 

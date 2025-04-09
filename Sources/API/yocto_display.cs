@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_display.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ * $Id: yocto_display.cs 56107 2023-08-16 09:15:27Z seb $
  *
  * Implements yFindDisplay(), the high-level API for Display functions
  *

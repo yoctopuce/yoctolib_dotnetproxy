@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_lightsensor_proxy.cs 45292 2021-05-25 23:27:54Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YLightSensorProxy, the Proxy API for LightSensor
  *

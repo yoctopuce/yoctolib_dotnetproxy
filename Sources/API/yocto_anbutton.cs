@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_anbutton.cs 56268 2023-08-25 17:43:56Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindAnButton(), the high-level API for AnButton functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YAnButton return codes)
 //--- (end of YAnButton return codes)
+//--- (YAnButton dlldef_core)
+//--- (end of YAnButton dlldef_core)
+//--- (YAnButton dll_core_map)
+//--- (end of YAnButton dll_core_map)
 //--- (YAnButton dlldef)
 //--- (end of YAnButton dlldef)
 //--- (YAnButton yapiwrapper)

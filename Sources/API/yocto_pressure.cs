@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_pressure.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindPressure(), the high-level API for Pressure functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YPressure return codes)
 //--- (end of YPressure return codes)
+//--- (YPressure dlldef_core)
+//--- (end of YPressure dlldef_core)
+//--- (YPressure dll_core_map)
+//--- (end of YPressure dll_core_map)
 //--- (YPressure dlldef)
 //--- (end of YPressure dlldef)
 //--- (YPressure yapiwrapper)

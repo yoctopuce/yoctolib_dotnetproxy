@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_files_proxy.cs 51903 2022-11-29 17:25:59Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YFilesProxy, the Proxy API for Files
  *

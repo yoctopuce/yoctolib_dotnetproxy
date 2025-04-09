@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_buzzer.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindBuzzer(), the high-level API for Buzzer functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YBuzzer return codes)
 //--- (end of YBuzzer return codes)
+//--- (YBuzzer dlldef_core)
+//--- (end of YBuzzer dlldef_core)
+//--- (YBuzzer dll_core_map)
+//--- (end of YBuzzer dll_core_map)
 //--- (YBuzzer dlldef)
 //--- (end of YBuzzer dlldef)
 //--- (YBuzzer yapiwrapper)
@@ -687,7 +691,7 @@ public class YBuzzer : YFunction
             }
             if (ch == 46) {
                 // . (duration modifier)
-                num = ((num * 2) / (3));
+                num = ((num * 2) / 3);
             }
             if (((ch == 32) || (i+1 == notesLen)) && ((note > -99) || (typ != 3))) {
                 if (num == 0) {
@@ -708,7 +712,7 @@ public class YBuzzer : YFunction
                     }
                     pitch = prevPitch + dNote;
                     freq = (int) Math.Round(440 * Math.Exp(pitch * 0.05776226504666));
-                    ms16 = ((ms) >> (4));
+                    ms16 = (ms >> 4);
                     rest = 0;
                     if (typ == 3) {
                         rest = 2 * ms16;

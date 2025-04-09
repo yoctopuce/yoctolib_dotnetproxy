@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_poweroutput.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindPowerOutput(), the high-level API for PowerOutput functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YPowerOutput return codes)
 //--- (end of YPowerOutput return codes)
+//--- (YPowerOutput dlldef_core)
+//--- (end of YPowerOutput dlldef_core)
+//--- (YPowerOutput dll_core_map)
+//--- (end of YPowerOutput dll_core_map)
 //--- (YPowerOutput dlldef)
 //--- (end of YPowerOutput dlldef)
 //--- (YPowerOutput yapiwrapper)

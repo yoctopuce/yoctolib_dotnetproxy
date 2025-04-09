@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_power_proxy.cs 53420 2023-03-06 10:38:51Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YPowerProxy, the Proxy API for Power
  *

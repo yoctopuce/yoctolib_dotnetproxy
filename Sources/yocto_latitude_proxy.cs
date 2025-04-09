@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_latitude_proxy.cs 39658 2020-03-12 15:36:29Z seb $
+ *  $Id: svn_id $
  *
  *  Implements YLatitudeProxy, the Proxy API for Latitude
  *

@@ -923,7 +923,7 @@ namespace YoctoProxyAPI
          * <summary>
          *   Resets the application watchdog countdown.
          * <para>
-         *   If you have setup a non-zero <c>watchdogPeriod</c>, you should
+         *   If you have set up a non-zero <c>watchdogPeriod</c>, you should
          *   call this function on a regular basis to prevent the application
          *   inactivity error to be triggered.
          * </para>

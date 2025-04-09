@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_currentloopoutput.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindCurrentLoopOutput(), the high-level API for CurrentLoopOutput functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YCurrentLoopOutput return codes)
 //--- (end of YCurrentLoopOutput return codes)
+//--- (YCurrentLoopOutput dlldef_core)
+//--- (end of YCurrentLoopOutput dlldef_core)
+//--- (YCurrentLoopOutput dll_core_map)
+//--- (end of YCurrentLoopOutput dll_core_map)
 //--- (YCurrentLoopOutput dlldef)
 //--- (end of YCurrentLoopOutput dlldef)
 //--- (YCurrentLoopOutput yapiwrapper)
@@ -442,7 +446,7 @@ public class YCurrentLoopOutput : YFunction
         if (mA_target > 21.0) {
             mA_target = 21.0;
         }
-        newval = ""+Convert.ToString( (int) Math.Round(mA_target*65536))+":"+Convert.ToString(ms_duration);
+        newval = ""+Convert.ToString((int) Math.Round(mA_target*65536))+":"+Convert.ToString(ms_duration);
 
         return this.set_currentTransition(newval);
     }

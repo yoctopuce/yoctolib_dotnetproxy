@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorled_proxy.cs 56017 2023-08-14 08:47:38Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YColorLedProxy, the Proxy API for ColorLed
  *
@@ -551,8 +551,9 @@ namespace YoctoProxyAPI
          * <summary>
          *   Changes the color that the LED displays by default when the module is turned on.
          * <para>
-         *   Remember to call the <c>saveToFlash()</c>
-         *   method of the module if the modification must be kept.
+         *   Remember to call the <c>saveLedsConfigAtPowerOn()</c> method of the module if the modification must be kept.
+         *   Note: for the original modules Yocto-Color (version 1) et Yocto-PowerColor, the  <c>saveToFlash()</c>
+         *   method must be used instead.
          * </para>
          * <para>
          * </para>
@@ -833,6 +834,27 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No ColorLed connected");
             }
             return _func.resetBlinkSeq();
+        }
+
+        /**
+         * <summary>
+         *   Saves the LEDs power-on configuration.
+         * <para>
+         *   Warning: this method is not supported by
+         *   Yocto-Color (version 1) and Yocto-PowerColor modules. For these devices, the <c>saveToFlash()</c>
+         *   method of the module must be used instead.
+         * </para>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         * </summary>
+         */
+        public virtual int saveLedsConfigAtPowerOn()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No ColorLed connected");
+            }
+            return _func.saveLedsConfigAtPowerOn();
         }
     }
     //--- (end of YColorLed implementation)

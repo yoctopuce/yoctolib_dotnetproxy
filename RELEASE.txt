@@ -1,8 +1,3 @@
-DotNetProxy v1.10.60394
+DotNetProxy v2.1.654
 
-- Add support for Yocto-RFID
-- Add position indicator in SnoopingRecords
-- Add snoopMessagesEx function to serial communication classes
-- Fix warning about malformed XML comment
-- Fix cache latency on method YSensor.loadCalibrationPoints()
-- Fix handling of long strings in many parse situations (including json_get_key)
+- test build version

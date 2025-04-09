@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_latitude.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindLatitude(), the high-level API for Latitude functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YLatitude return codes)
 //--- (end of YLatitude return codes)
+//--- (YLatitude dlldef_core)
+//--- (end of YLatitude dlldef_core)
+//--- (YLatitude dll_core_map)
+//--- (end of YLatitude dll_core_map)
 //--- (YLatitude dlldef)
 //--- (end of YLatitude dlldef)
 //--- (YLatitude yapiwrapper)

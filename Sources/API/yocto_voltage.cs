@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_voltage.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindVoltage(), the high-level API for Voltage functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YVoltage return codes)
 //--- (end of YVoltage return codes)
+//--- (YVoltage dlldef_core)
+//--- (end of YVoltage dlldef_core)
+//--- (YVoltage dll_core_map)
+//--- (end of YVoltage dll_core_map)
 //--- (YVoltage dlldef)
 //--- (end of YVoltage dlldef)
 //--- (YVoltage yapiwrapper)

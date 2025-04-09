@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_dualpower.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindDualPower(), the high-level API for DualPower functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YDualPower return codes)
 //--- (end of YDualPower return codes)
+//--- (YDualPower dlldef_core)
+//--- (end of YDualPower dlldef_core)
+//--- (YDualPower dll_core_map)
+//--- (end of YDualPower dll_core_map)
 //--- (YDualPower dlldef)
 //--- (end of YDualPower dlldef)
 //--- (YDualPower yapiwrapper)

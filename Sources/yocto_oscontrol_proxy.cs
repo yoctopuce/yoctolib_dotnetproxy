@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_oscontrol_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YOsControlProxy, the Proxy API for OsControl
  *
@@ -159,7 +159,7 @@ namespace YoctoProxyAPI
         }
         //--- (end of YOsControl class start)
         //--- (YOsControl definitions)
-        public const int _ShutdownCountdown_INVALID = -1;
+        public const int _ShutdownCountdown_INVALID = YAPI.INVALID_INT;
 
         // reference to real YoctoAPI object
         protected new YOsControl _func;
@@ -255,15 +255,10 @@ namespace YoctoProxyAPI
          */
         public int get_shutdownCountdown()
         {
-            int res;
             if (_func == null) {
                 throw new YoctoApiProxyException("No OsControl connected");
             }
-            res = _func.get_shutdownCountdown();
-            if (res == YAPI.INVALID_INT) {
-                res = _ShutdownCountdown_INVALID;
-            }
-            return res;
+            return _func.get_shutdownCountdown();
         }
 
         /**
@@ -288,6 +283,30 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No OsControl connected");
             }
             return _func.shutdown(secBeforeShutDown);
+        }
+
+        /**
+         * <summary>
+         *   Schedules an OS reboot after a given number of seconds.
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="secBeforeReboot">
+         *   number of seconds before reboot
+         * </param>
+         * <returns>
+         *   <c>0</c> when the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public virtual int reboot(int secBeforeReboot)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No OsControl connected");
+            }
+            return _func.reboot(secBeforeReboot);
         }
     }
     //--- (end of YOsControl implementation)

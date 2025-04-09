@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_altitude.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindAltitude(), the high-level API for Altitude functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YAltitude return codes)
 //--- (end of YAltitude return codes)
+//--- (YAltitude dlldef_core)
+//--- (end of YAltitude dlldef_core)
+//--- (YAltitude dll_core_map)
+//--- (end of YAltitude dll_core_map)
 //--- (YAltitude dlldef)
 //--- (end of YAltitude dlldef)
 //--- (YAltitude yapiwrapper)

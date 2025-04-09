@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_function_proxy.cs 53689 2023-03-22 11:17:15Z mvuilleu $
+ *  $Id: yocto_function_proxy.cs 64097 2025-01-08 10:59:01Z seb $
  *
  *  Implements YFunctionProxy, the Proxy API for Function
  *
@@ -611,9 +611,8 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Enumère toutes les fonctions de type Function.
-         * <para>
          *   Returns an array of strings representing hardware identifiers for all Function functions presently connected.
+         * <para>
          * </para>
          * </summary>
          */

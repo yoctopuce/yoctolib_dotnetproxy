@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_firmwareupdate_proxy.cs 49750 2022-05-13 07:10:42Z seb $
+ *  $Id: svn_id $
  *
  *  Implements YFirmwareUpdateProxy, the Proxy API for FirmwareUpdate
  *

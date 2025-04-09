@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_compass_proxy.cs 43619 2021-01-29 09:14:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YCompassProxy, the Proxy API for Compass
  *

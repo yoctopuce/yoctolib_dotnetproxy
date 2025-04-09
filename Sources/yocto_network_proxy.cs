@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_network_proxy.cs 53886 2023-04-05 08:06:39Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YNetworkProxy, the Proxy API for Network
  *
@@ -172,6 +172,12 @@ namespace YoctoProxyAPI
         public const string _UserPassword_INVALID = YAPI.INVALID_STRING;
         public const string _AdminPassword_INVALID = YAPI.INVALID_STRING;
         public const int _HttpPort_INVALID = -1;
+        public const int _HttpsPort_INVALID = -1;
+        public const int _SecurityMode_INVALID = 0;
+        public const int _SecurityMode_UNDEFINED = 1;
+        public const int _SecurityMode_LEGACY = 2;
+        public const int _SecurityMode_MIXED = 3;
+        public const int _SecurityMode_SECURE = 4;
         public const string _DefaultPage_INVALID = YAPI.INVALID_STRING;
         public const int _Discoverable_INVALID = 0;
         public const int _Discoverable_FALSE = 1;
@@ -217,6 +223,8 @@ namespace YoctoProxyAPI
         protected string _userPassword = _UserPassword_INVALID;
         protected string _adminPassword = _AdminPassword_INVALID;
         protected int _httpPort = _HttpPort_INVALID;
+        protected int _httpsPort = _HttpsPort_INVALID;
+        protected int _securityMode = _SecurityMode_INVALID;
         protected string _defaultPage = _DefaultPage_INVALID;
         protected int _discoverable = _Discoverable_INVALID;
         protected int _wwwWatchdogDelay = _WwwWatchdogDelay_INVALID;
@@ -308,6 +316,8 @@ namespace YoctoProxyAPI
             _userPassword = _func.get_userPassword();
             _adminPassword = _func.get_adminPassword();
             _httpPort = _func.get_httpPort();
+            _httpsPort = _func.get_httpsPort();
+            _securityMode = _func.get_securityMode()+1;
             _defaultPage = _func.get_defaultPage();
             _discoverable = _func.get_discoverable()+1;
             _wwwWatchdogDelay = _func.get_wwwWatchdogDelay();
@@ -555,7 +565,7 @@ namespace YoctoProxyAPI
          * <para>
          * </para>
          * <para>
-         *   If the network interface is setup to use a static IP address, the string starts with "STATIC:" and
+         *   If the network interface is set up to use a static IP address, the string starts with "STATIC:" and
          *   is followed by three
          *   parameters, separated by "/". The first is the device IP address, followed by the subnet mask
          *   length, and finally the
@@ -1173,6 +1183,222 @@ namespace YoctoProxyAPI
             }
             _func.set_httpPort(newval);
             _httpPort = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the secure TCP port used to serve the hub web UI.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the secure TCP port used to serve the hub web UI
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YNetwork.HTTPSPORT_INVALID</c>.
+         * </para>
+         */
+        public int get_httpsPort()
+        {
+            int res;
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
+            }
+            res = _func.get_httpsPort();
+            if (res == YAPI.INVALID_INT) {
+                res = _HttpsPort_INVALID;
+            }
+            return res;
+        }
+
+        /**
+         * <summary>
+         *   Changes the secure TCP port used to serve the hub web UI.
+         * <para>
+         *   The default value is port 4443,
+         *   which is the default for all Web servers. When you change this parameter, remember to call the
+         *   <c>saveToFlash()</c>
+         *   method of the module if the modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   an integer corresponding to the secure TCP port used to serve the hub web UI
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_httpsPort(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
+            }
+            if (newval == _HttpsPort_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            return _func.set_httpsPort(newval);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Secure TCP port used to serve the hub web UI.</value>
+        public int HttpsPort
+        {
+            get
+            {
+                if (_func == null) {
+                    return _HttpsPort_INVALID;
+                }
+                if (_online) {
+                    return _httpsPort;
+                }
+                return _HttpsPort_INVALID;
+            }
+            set
+            {
+                setprop_httpsPort(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_httpsPort(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _HttpsPort_INVALID) {
+                return;
+            }
+            if (newval == _httpsPort) {
+                return;
+            }
+            _func.set_httpsPort(newval);
+            _httpsPort = newval;
+        }
+
+        /**
+         * <summary>
+         *   Returns the security level chosen to prevent unauthorized access to the server.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+         *   <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+         *   security level chosen to prevent unauthorized access to the server
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YNetwork.SECURITYMODE_INVALID</c>.
+         * </para>
+         */
+        public int get_securityMode()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.get_securityMode()+1;
+        }
+
+        /**
+         * <summary>
+         *   Changes the security level used to prevent unauthorized access to the server.
+         * <para>
+         *   The value <c>UNDEFINED</c> causes the security configuration wizard to be
+         *   displayed the next time you log on to the Web console.
+         *   The value <c>LEGACY</c> offers unencrypted HTTP access by default, and
+         *   is designed to provide compatibility with legacy applications that do not
+         *   handle password or do not support <c>HTTPS</c>. But it should
+         *   only be used when system security is guaranteed by other means, such as the
+         *   use of a firewall.
+         *   The value <c>MIXED</c> requires the configuration of passwords, and allows
+         *   access via both HTTP (unencrypted) and HTTPS (encrypted), while requiring
+         *   the Yoctopuce API to be tolerant of certificate characteristics.
+         *   The value <c>SECURE</c> requires the configuration of passwords and the
+         *   use of secure communications in all cases.
+         *   When you change this parameter, remember to call the <c>saveToFlash()</c>
+         *   method of the module if the modification must be kept.
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <param name="newval">
+         *   a value among <c>YNetwork.SECURITYMODE_UNDEFINED</c>, <c>YNetwork.SECURITYMODE_LEGACY</c>,
+         *   <c>YNetwork.SECURITYMODE_MIXED</c> and <c>YNetwork.SECURITYMODE_SECURE</c> corresponding to the
+         *   security level used to prevent unauthorized access to the server
+         * </param>
+         * <para>
+         * </para>
+         * <returns>
+         *   <c>0</c> if the call succeeds.
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns a negative error code.
+         * </para>
+         */
+        public int set_securityMode(int newval)
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No Network connected");
+            }
+            if (newval == _SecurityMode_INVALID) {
+                return YAPI.SUCCESS;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            return _func.set_securityMode(newval-1);
+        }
+
+        // property with cached value for instant access (configuration)
+        /// <value>Security level chosen to prevent unauthorized access to the server.</value>
+        public int SecurityMode
+        {
+            get
+            {
+                if (_func == null) {
+                    return _SecurityMode_INVALID;
+                }
+                if (_online) {
+                    return _securityMode;
+                }
+                return _SecurityMode_INVALID;
+            }
+            set
+            {
+                setprop_securityMode(value);
+            }
+        }
+
+        // private helper for magic property
+        private void setprop_securityMode(int newval)
+        {
+            if (_func == null) {
+                return;
+            }
+            if (!(_online)) {
+                return;
+            }
+            if (newval == _SecurityMode_INVALID) {
+                return;
+            }
+            if (newval == _securityMode) {
+                return;
+            }
+            // our enums start at 0 instead of the 'usual' -1 for invalid
+            _func.set_securityMode(newval-1);
+            _securityMode = newval;
         }
 
         /**
@@ -2606,7 +2832,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Setup periodic HTTP callbacks (simplified function).
+         *   Set up periodic HTTP callbacks (simplified function).
          * <para>
          * </para>
          * </summary>

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_qt_proxy.cs 40190 2020-04-29 13:16:45Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YQtProxy, the Proxy API for Qt
  *

@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_colorledcluster_proxy.cs 50281 2022-06-30 07:21:14Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YColorLedClusterProxy, the Proxy API for ColorLedCluster
  *
@@ -806,9 +806,9 @@ namespace YoctoProxyAPI
          *   autonomous manner.
          * <para>
          *   The transition is performed in the HSL space. In HSL, hue is a circular
-         *   value (0..360°). There are always two paths to perform the transition: by increasing
+         *   value (0..360 deg). There are always two paths to perform the transition: by increasing
          *   or by decreasing the hue. The module selects the shortest transition.
-         *   If the difference is exactly 180°, the module selects the transition which increases
+         *   If the difference is exactly 180 deg, the module selects the transition which increases
          *   the hue.
          * </para>
          * </summary>

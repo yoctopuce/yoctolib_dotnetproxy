@@ -165,7 +165,7 @@ namespace YoctoProxyAPI
          * <para>
          *   The default value is inherited from <c>ySetNetworkTimeout</c>
          *   at the time when the hub is registered, but it can be updated
-         *   afterwards for each specific hub if necessary.
+         *   afterward for each specific hub if necessary.
          * </para>
          * <para>
          * </para>
@@ -186,7 +186,7 @@ namespace YoctoProxyAPI
          * <para>
          *   The default value is inherited from <c>ySetNetworkTimeout</c>
          *   at the time when the hub is registered, but it can be updated
-         *   afterwards for each specific hub if necessary.
+         *   afterward for each specific hub if necessary.
          * </para>
          * </summary>
          * <returns>

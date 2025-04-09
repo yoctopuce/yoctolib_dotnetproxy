@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_tvoc_proxy.cs 38913 2019-12-20 18:59:49Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements YTvocProxy, the Proxy API for Tvoc
  *

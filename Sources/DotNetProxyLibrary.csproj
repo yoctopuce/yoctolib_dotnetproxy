@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YoctoProxyAPI</RootNamespace>
     <AssemblyName>DotNetProxyLibrary</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -60,6 +60,7 @@
     <Compile Include="API\yocto_cellular.cs"/>
     <Compile Include="API\yocto_colorled.cs"/>
     <Compile Include="API\yocto_colorledcluster.cs"/>
+    <Compile Include="API\yocto_colorsensor.cs"/>
     <Compile Include="API\yocto_compass.cs"/>
     <Compile Include="API\yocto_current.cs"/>
     <Compile Include="API\yocto_currentloopoutput.cs"/>
@@ -83,6 +84,7 @@
     <Compile Include="API\yocto_longitude.cs"/>
     <Compile Include="API\yocto_magnetometer.cs"/>
     <Compile Include="API\yocto_messagebox.cs"/>
+    <Compile Include="API\yocto_micropython.cs"/>
     <Compile Include="API\yocto_motor.cs"/>
     <Compile Include="API\yocto_multiaxiscontroller.cs"/>
     <Compile Include="API\yocto_multicellweighscale.cs"/>
@@ -107,6 +109,7 @@
     <Compile Include="API\yocto_segmenteddisplay.cs"/>
     <Compile Include="API\yocto_serialport.cs"/>
     <Compile Include="API\yocto_servo.cs"/>
+    <Compile Include="API\yocto_spectralchannel.cs"/>
     <Compile Include="API\yocto_spiport.cs"/>
     <Compile Include="API\yocto_steppermotor.cs"/>
     <Compile Include="API\yocto_temperature.cs"/>
@@ -133,6 +136,7 @@
     <Compile Include="yocto_cellular_proxy.cs"/>
     <Compile Include="yocto_colorled_proxy.cs"/>
     <Compile Include="yocto_colorledcluster_proxy.cs"/>
+    <Compile Include="yocto_colorsensor_proxy.cs"/>
     <Compile Include="yocto_compass_proxy.cs"/>
     <Compile Include="yocto_current_proxy.cs"/>
     <Compile Include="yocto_currentloopoutput_proxy.cs"/>
@@ -157,6 +161,7 @@
     <Compile Include="yocto_longitude_proxy.cs"/>
     <Compile Include="yocto_magnetometer_proxy.cs"/>
     <Compile Include="yocto_messagebox_proxy.cs"/>
+    <Compile Include="yocto_micropython_proxy.cs"/>
     <Compile Include="yocto_motor_proxy.cs"/>
     <Compile Include="yocto_multiaxiscontroller_proxy.cs"/>
     <Compile Include="yocto_multicellweighscale_proxy.cs"/>
@@ -182,6 +187,7 @@
     <Compile Include="yocto_segmenteddisplay_proxy.cs"/>
     <Compile Include="yocto_serialport_proxy.cs"/>
     <Compile Include="yocto_servo_proxy.cs"/>
+    <Compile Include="yocto_spectralchannel_proxy.cs"/>
     <Compile Include="yocto_spiport_proxy.cs"/>
     <Compile Include="yocto_steppermotor_proxy.cs"/>
     <Compile Include="yocto_temperature_proxy.cs"/>
@@ -220,6 +226,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="amd64\yapi.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="arm64\yapi.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_tilt.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindTilt(), the high-level API for Tilt functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YTilt return codes)
 //--- (end of YTilt return codes)
+//--- (YTilt dlldef_core)
+//--- (end of YTilt dlldef_core)
+//--- (YTilt dll_core_map)
+//--- (end of YTilt dll_core_map)
 //--- (YTilt dlldef)
 //--- (end of YTilt dlldef)
 //--- (YTilt yapiwrapper)
@@ -63,7 +67,7 @@ using YFUN_DESCR = System.Int32;
  *   It can be
  *   used to read the current value and unit of any sensor, read the min/max
  *   value, configure autonomous recording frequency and access recorded data.
- *   It also provide a function to register a callback invoked each time the
+ *   It also provides a function to register a callback invoked each time the
  *   observed value changes, or at a predefined interval. Using this class rather
  *   than a specific subclass makes it possible to create generic applications
  *   that work with any Yoctopuce sensor, even those that do not yet exist.

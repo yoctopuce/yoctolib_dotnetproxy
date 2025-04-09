@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- *  $Id: yocto_gps.cs 56058 2023-08-15 07:38:35Z mvuilleu $
+ *  $Id: svn_id $
  *
  *  Implements yFindGps(), the high-level API for Gps functions
  *
@@ -51,6 +51,10 @@ using YFUN_DESCR = System.Int32;
 #pragma warning disable 1591
 //--- (YGps return codes)
 //--- (end of YGps return codes)
+//--- (YGps dlldef_core)
+//--- (end of YGps dlldef_core)
+//--- (YGps dll_core_map)
+//--- (end of YGps dll_core_map)
 //--- (YGps dlldef)
 //--- (end of YGps dlldef)
 //--- (YGps yapiwrapper)

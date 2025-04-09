@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_module_proxy.cs 51265 2022-10-10 07:03:22Z seb $
+ *  $Id: yocto_module_proxy.cs 64097 2025-01-08 10:59:01Z seb $
  *
  *  Implements YModuleProxy, the Proxy API for Module
  *
@@ -253,9 +253,8 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Enumère toutes les fonctions de type Module.
-         * <para>
          *   Returns an array of strings representing hardware identifiers for all Module functions presently connected.
+         * <para>
          * </para>
          * </summary>
          */
@@ -1178,7 +1177,7 @@ namespace YoctoProxyAPI
          *   Returns the icon of the module.
          * <para>
          *   The icon is a PNG image and does not
-         *   exceeds 1536 bytes.
+         *   exceed 1536 bytes.
          * </para>
          * <para>
          * </para>
