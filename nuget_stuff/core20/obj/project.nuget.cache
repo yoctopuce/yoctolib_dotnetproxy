@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XQ3TDKhtUvMQvYou19zZTTb3qaRJZ3c5ehXdiuelKz8xjvnaIXiU0eTSC/sdrROuS712NpJXzFKe3uxxMpAYhQ==",
+  "dgSpecHash": "Q2QeocKOLMw9soYxn2Pp9S3JNyV5Qzg1AA8cHQ15jVsnuBSC7vaHUN5/4Z93EJuOw5sIvTxub1iRoRkzh2r1lg==",
   "success": true,
   "projectFilePath": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v2.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
   "expectedPackageFiles": [
