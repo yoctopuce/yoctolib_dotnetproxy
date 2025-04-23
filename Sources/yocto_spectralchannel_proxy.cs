@@ -94,7 +94,7 @@ namespace YoctoProxyAPI
  * <summary>
  *   The <c>YSpectralChannel</c> class allows you to read and configure Yoctopuce spectral analysis channels.
  * <para>
- *   It inherits from <c>YSensor</c> class the core functions to read measurements,
+ *   It inherits from <c>YSensor</c> class the core functions to read measures,
  *   to register callback functions, and to access the autonomous datalogger.
  * </para>
  * <para>
@@ -160,6 +160,8 @@ namespace YoctoProxyAPI
         //--- (end of YSpectralChannel class start)
         //--- (YSpectralChannel definitions)
         public const int _RawCount_INVALID = YAPI.INVALID_INT;
+        public const string _ChannelName_INVALID = YAPI.INVALID_STRING;
+        public const int _PeakWavelength_INVALID = YAPI.INVALID_INT;
 
         // reference to real YoctoAPI object
         protected new YSpectralChannel _func;
@@ -238,7 +240,7 @@ namespace YoctoProxyAPI
 
         /**
          * <summary>
-         *   Retrieves the raw cspectral intensity value as measured by the sensor, without any scaling or calibration.
+         *   Retrieves the raw spectral intensity value as measured by the sensor, without any scaling or calibration.
          * <para>
          * </para>
          * <para>
@@ -257,6 +259,52 @@ namespace YoctoProxyAPI
                 throw new YoctoApiProxyException("No SpectralChannel connected");
             }
             return _func.get_rawCount();
+        }
+
+        /**
+         * <summary>
+         *   Returns the target spectral band name.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   a string corresponding to the target spectral band name
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YSpectralChannel.CHANNELNAME_INVALID</c>.
+         * </para>
+         */
+        public string get_channelName()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SpectralChannel connected");
+            }
+            return _func.get_channelName();
+        }
+
+        /**
+         * <summary>
+         *   Returns the target spectral band peak wavelenght, in nm.
+         * <para>
+         * </para>
+         * <para>
+         * </para>
+         * </summary>
+         * <returns>
+         *   an integer corresponding to the target spectral band peak wavelenght, in nm
+         * </returns>
+         * <para>
+         *   On failure, throws an exception or returns <c>YSpectralChannel.PEAKWAVELENGTH_INVALID</c>.
+         * </para>
+         */
+        public int get_peakWavelength()
+        {
+            if (_func == null) {
+                throw new YoctoApiProxyException("No SpectralChannel connected");
+            }
+            return _func.get_peakWavelength();
         }
     }
     //--- (end of YSpectralChannel implementation)

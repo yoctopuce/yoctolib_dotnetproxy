@@ -1,4 +1,4 @@
-DotNetProxy v2.1.5866
+DotNetProxy v2.1.5996
 
 - Bump minor version number to work around Windows limitation
 - Add ColorSensor class

@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Yoctopuce.NetProxy/2.1.5866": {
+      "Yoctopuce.NetProxy/2.1.5996": {
         "dependencies": {
           "NETStandard.Library": "2.0.3"
         },
@@ -24,7 +24,7 @@
     }
   },
   "libraries": {
-    "Yoctopuce.NetProxy/2.1.5866": {
+    "Yoctopuce.NetProxy/2.1.5996": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

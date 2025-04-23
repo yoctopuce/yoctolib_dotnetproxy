@@ -1,7 +1,7 @@
 namespace YoctoLib 
 {/*********************************************************************
  *
- * $Id: yocto_api.cs 65865 2025-04-15 06:42:38Z seb $
+ * $Id: yocto_api.cs 65973 2025-04-22 09:50:13Z seb $
  *
  * High-level programming interface, common to all modules
  *
@@ -4564,7 +4564,7 @@ public class YAPI
     public const string YOCTO_API_VERSION_STR = "2.1";
     public const int YOCTO_API_VERSION_BCD = 0x0200;
 
-    public const string YOCTO_API_BUILD_NO = "65866";
+    public const string YOCTO_API_BUILD_NO = "65996";
     public const int YOCTO_DEFAULT_PORT = 4444;
     public const int YOCTO_VENDORID = 0x24e0;
     public const int YOCTO_DEVID_FACTORYBOOT = 1;
@@ -6850,7 +6850,7 @@ public class YAPI
             }
             throw;
         }
-        return  "2.1.5866 (" + version + ")";
+        return  "2.1.5996 (" + version + ")";
     }
 
     /**
@@ -15380,7 +15380,7 @@ public class YSensor : YFunction
      * <para>
      *   Note that a get_currentValue() call will *not* start a measure in the device, it
      *   will just return the last measure that occurred in the device. Indeed, internally, each Yoctopuce
-     *   devices is continuously making measurements at a hardware specific frequency.
+     *   devices is continuously making measures at a hardware specific frequency.
      * </para>
      * <para>
      *   If continuously calling  get_currentValue() leads you to performances issues, then

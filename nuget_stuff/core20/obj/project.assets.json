@@ -184,7 +184,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "2.1.5866",
+    "version": "2.1.5996",
     "restore": {
       "projectUniqueName": "c:\\tmp\\tmp_build\\yoctoprod\\yoctolib\\v2.0\\Public\\DotNetProxy\\nuget_stuff\\core20\\Yoctopuce.NetProxy.csproj",
       "projectName": "Yoctopuce.NetProxy",

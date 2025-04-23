@@ -3133,7 +3133,7 @@
             <para>
               Note that a get_currentValue() call will *not* start a measure in the device, it
               will just return the last measure that occurred in the device. Indeed, internally, each Yoctopuce
-              devices is continuously making measurements at a hardware specific frequency.
+              devices is continuously making measures at a hardware specific frequency.
             </para>
             <para>
               If continuously calling  get_currentValue() leads you to performances issues, then
@@ -4243,7 +4243,7 @@
             <summary>
               The <c>YAltitude</c> class allows you to read and configure Yoctopuce altimeters.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to configure the barometric pressure adjusted to
               sea level (QNH) for barometric sensors.
@@ -6448,7 +6448,7 @@
             <summary>
               The <c>YCarbonDioxide</c> class allows you to read and configure Yoctopuce CO2 sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to perform manual calibration if required.
             </para>
@@ -9026,7 +9026,7 @@
         </member>
         <member name="M:YoctoLib.YColorSensor.set_estimationModel(System.Int32)">
             <summary>
-              Changes the mpredictive model to be used for color estimation (reflective or emissive).
+              Changes the predictive model to be used for color estimation (reflective or emissive).
             <para>
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
@@ -9035,7 +9035,7 @@
             </summary>
             <param name="newval">
               either <c>YColorSensor.ESTIMATIONMODEL_REFLECTION</c> or <c>YColorSensor.ESTIMATIONMODEL_EMISSION</c>,
-              according to the mpredictive model to be used for color estimation (reflective or emissive)
+              according to the predictive model to be used for color estimation (reflective or emissive)
             </param>
             <para>
             </para>
@@ -9090,7 +9090,7 @@
         </member>
         <member name="M:YoctoLib.YColorSensor.get_ledCurrent">
             <summary>
-              Returns the amount of current sent to the illumination LEDs, for reflection measurements.
+              Returns the amount of current sent to the illumination LEDs, for reflection measures.
             <para>
               The value is an integer ranging from 0 (LEDs off) to 254 (LEDs at maximum intensity).
             </para>
@@ -9098,7 +9098,7 @@
             </para>
             </summary>
             <returns>
-              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measurements
+              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measures
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorSensor.LEDCURRENT_INVALID</c>.
@@ -9106,7 +9106,7 @@
         </member>
         <member name="M:YoctoLib.YColorSensor.set_ledCurrent(System.Int32)">
             <summary>
-              Changes the amount of current sent to the illumination LEDs, for reflection measurements.
+              Changes the amount of current sent to the illumination LEDs, for reflection measures.
             <para>
               The value is an integer ranging from 0 (LEDs off) to 254 (LEDs at maximum intensity).
             </para>
@@ -9114,7 +9114,7 @@
             </para>
             </summary>
             <param name="newval">
-              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measurements
+              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measures
             </param>
             <para>
             </para>
@@ -9127,14 +9127,14 @@
         </member>
         <member name="M:YoctoLib.YColorSensor.get_ledCalibration">
             <summary>
-              Returns the current sent to the illumination LEDs during the last calibration.
+              Returns the current sent to the illumination LEDs during the latest calibration.
             <para>
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              an integer corresponding to the current sent to the illumination LEDs during the last calibration
+              an integer corresponding to the current sent to the illumination LEDs during the latest calibration
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorSensor.LEDCALIBRATION_INVALID</c>.
@@ -9144,7 +9144,7 @@
             <summary>
               Remember the LED current sent to the illumination LEDs during a calibration.
             <para>
-              Thanks to this, the device will be able to use the same current during measurements.
+              Thanks to this, the device is able to use the same current when taking measures.
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
@@ -9164,16 +9164,16 @@
         </member>
         <member name="M:YoctoLib.YColorSensor.get_integrationTime">
             <summary>
-              Returns the current integration time for spectral measurement, in milliseconds.
+              Returns the current integration time for spectral measure, in milliseconds.
             <para>
               A longer integration time increase the sensitivity for low light conditions,
-              but reduces the measurement rate and may lead to saturation for lighter colors.
+              but reduces the measure taking rate and may lead to saturation for lighter colors.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              an integer corresponding to the current integration time for spectral measurement, in milliseconds
+              an integer corresponding to the current integration time for spectral measure, in milliseconds
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorSensor.INTEGRATIONTIME_INVALID</c>.
@@ -9181,19 +9181,19 @@
         </member>
         <member name="M:YoctoLib.YColorSensor.set_integrationTime(System.Int32)">
             <summary>
-              Changes the integration time for spectral measurement, in milliseconds.
+              Changes the integration time for spectral measure, in milliseconds.
             <para>
               A longer integration time increase the sensitivity for low light conditions,
-              but reduces the measurement rate and may lead to saturation for lighter colors.
+              but reduces the measure taking rate and may lead to saturation for lighter colors.
               This method can only be used when the sensor is configured in expert mode;
-              when running in auto mode, the change will be ignored.
+              when running in auto mode, the change is ignored.
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
             </para>
             </summary>
             <param name="newval">
-              an integer corresponding to the integration time for spectral measurement, in milliseconds
+              an integer corresponding to the integration time for spectral measure, in milliseconds
             </param>
             <para>
             </para>
@@ -9228,7 +9228,7 @@
               For a value <c>n</c> ranging from 0 to 12, the applied gain is 2^(n-1).
               0 corresponds to a gain of 0.5, and 12 corresponds to a gain of 2048.
               This method can only be used when the sensor is configured in expert mode;
-              when running in auto mode, the change will be ignored.
+              when running in auto mode, the change is ignored.
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
@@ -9272,13 +9272,13 @@
               The RGB color model describes each color using a combination of 3 components:
             </para>
             <para>
-              - Red (R): the intensity of red, in thee range 0...255
+              - Red (R): the intensity of red, in the 0...255 range
             </para>
             <para>
-              - Green (G): the intensity of green, in thee range 0...255
+              - Green (G): the intensity of green, in the 0...255 range
             </para>
             <para>
-              - Blue (B): the intensity of blue, in thee range 0...255
+              - Blue (B): the intensity of blue, in the 0...255 range
             </para>
             <para>
             </para>
@@ -9346,15 +9346,14 @@
               Returns the estimated color according to the OkLab color model.
             <para>
               OkLab is a perceptual color model that aims to align human color perception with numerical
-              values, so that visually near colors are also numerically near. Colors are represented using three components:
+              values, so that colors that are visually near are also numerically near. Colors are represented
+              using three components:
             </para>
             <para>
               - L: lightness, a real number between 0 and 1
-              -
             </para>
             <para>
               - a: color variations between green and red, between -0.5 and 0.5
-              -
             </para>
             <para>
               - b: color variations between blue and yellow, between -0.5 and 0.5.
@@ -9569,7 +9568,7 @@
         </member>
         <member name="M:YoctoLib.YColorSensor.turnLedOn">
             <summary>
-              Turns on the built-in illumination LEDs using the same current as used during last calibration.
+              Turns on the built-in illumination LEDs using the same current as used during the latest calibration.
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
@@ -9796,7 +9795,7 @@
             <summary>
               The <c>YCurrent</c> class allows you to read and configure Yoctopuce current sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -9823,8 +9822,8 @@
             <summary>
               Changes the activation state of this voltage input.
             <para>
-              When AC measurements are disabled,
-              the device will always assume a DC signal, and vice-versa. When both AC and DC measurements
+              When AC measures are disabled,
+              the device will always assume a DC signal, and vice-versa. When both AC and DC measures
               are active, the device switches between AC and DC mode based on the relative amplitude
               of variations compared to the average value.
               Remember to call the <c>saveToFlash()</c>
@@ -12590,7 +12589,7 @@
               The <c>YGenericSensor</c> class allows you to read and configure Yoctopuce signal
               transducers.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, to access the autonomous datalogger.
               This class adds the ability to configure the automatic conversion between the
               measured signal and the corresponding engineering unit.
@@ -13446,7 +13445,7 @@
             <summary>
               The <c>YGroundSpeed</c> class allows you to read and configure Yoctopuce ground speed sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -14271,7 +14270,7 @@
             <summary>
               The <c>YHumidity</c> class allows you to read and configure Yoctopuce humidity sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -16510,7 +16509,7 @@
             <summary>
               The <c>YLatitude</c> class allows you to read and configure Yoctopuce latitude sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -16855,7 +16854,7 @@
             <summary>
               The <c>YLightSensor</c> class allows you to read and configure Yoctopuce light sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to easily perform a one-point linear calibration
               to compensate the effect of a glass or filter placed in front of the sensor.
@@ -17056,7 +17055,7 @@
             <summary>
               The <c>YLongitude</c> class allows you to read and configure Yoctopuce longitude sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -21067,7 +21066,7 @@
             <summary>
               The <c>YPower</c> class allows you to read and configure Yoctopuce electrical power sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to access the energy counter and the power factor.
             </para>
@@ -21858,7 +21857,7 @@
             <summary>
               The <c>YPressure</c> class allows you to read and configure Yoctopuce pressure sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -21984,7 +21983,7 @@
             <summary>
               The <c>YProximity</c> class allows you to read and configure Yoctopuce proximity sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to set up a detection threshold and to count the
               number of detected state changes.
@@ -22432,7 +22431,7 @@
             <summary>
               The <c>YPwmInput</c> class allows you to read and configure Yoctopuce PWM inputs.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to configure the signal parameter used to transmit
               information: the duty cycle, the frequency or the pulse width.
@@ -23601,7 +23600,7 @@
             <summary>
               The <c>YQuadratureDecoder</c> class allows you to read and configure Yoctopuce quadrature decoders.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -23839,7 +23838,7 @@
             <summary>
               The <c>YRangeFinder</c> class allows you to read and configure Yoctopuce range finders.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to easily perform a one-point linear calibration
               to compensate the effect of a glass or filter placed in front of the sensor.
@@ -29482,7 +29481,7 @@
             <summary>
               The <c>YSpectralChannel</c> class allows you to read and configure Yoctopuce spectral analysis channels.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -29491,7 +29490,7 @@
         </member>
         <member name="M:YoctoLib.YSpectralChannel.get_rawCount">
             <summary>
-              Retrieves the raw cspectral intensity value as measured by the sensor, without any scaling or calibration.
+              Retrieves the raw spectral intensity value as measured by the sensor, without any scaling or calibration.
             <para>
             </para>
             <para>
@@ -29502,6 +29501,36 @@
             </returns>
             <para>
               On failure, throws an exception or returns <c>YSpectralChannel.RAWCOUNT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.get_channelName">
+            <summary>
+              Returns the target spectral band name.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the target spectral band name
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YSpectralChannel.CHANNELNAME_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoLib.YSpectralChannel.get_peakWavelength">
+            <summary>
+              Returns the target spectral band peak wavelenght, in nm.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the target spectral band peak wavelenght, in nm
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YSpectralChannel.PEAKWAVELENGTH_INVALID</c>.
             </para>
         </member>
         <member name="M:YoctoLib.YSpectralChannel.FindSpectralChannel(System.String)">
@@ -31279,7 +31308,7 @@
             <summary>
               The <c>YTemperature</c> class allows you to read and configure Yoctopuce temperature sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to configure some specific parameters
               for some sensors (connection type, temperature mapping table).
@@ -32019,7 +32048,7 @@
             <summary>
               The <c>YTvoc</c> class allows you to read and configure Yoctopuce Total Volatile Organic Compound sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -32145,7 +32174,7 @@
             <summary>
               The <c>YVoc</c> class allows you to read and configure Yoctopuce Volatile Organic Compound sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -32271,7 +32300,7 @@
             <summary>
               The <c>YVoltage</c> class allows you to read and configure Yoctopuce voltage sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -32298,8 +32327,8 @@
             <summary>
               Changes the activation state of this voltage input.
             <para>
-              When AC measurements are disabled,
-              the device will always assume a DC signal, and vice-versa. When both AC and DC measurements
+              When AC measures are disabled,
+              the device will always assume a DC signal, and vice-versa. When both AC and DC measures
               are active, the device switches between AC and DC mode based on the relative amplitude
               of variations compared to the average value.
               Remember to call the <c>saveToFlash()</c>
@@ -35998,7 +36027,7 @@
             <para>
               Note that a get_currentValue() call will *not* start a measure in the device, it
               will just return the last measure that occurred in the device. Indeed, internally, each Yoctopuce
-              devices is continuously making measurements at a hardware specific frequency.
+              devices is continuously making measures at a hardware specific frequency.
             </para>
             <para>
               If continuously calling  get_currentValue() leads you to performances issues, then
@@ -36838,7 +36867,7 @@
             <summary>
               The <c>YAltitude</c> class allows you to read and configure Yoctopuce altimeters.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to configure the barometric pressure adjusted to
               sea level (QNH) for barometric sensors.
@@ -38824,7 +38853,7 @@
             <summary>
               The <c>YCarbonDioxide</c> class allows you to read and configure Yoctopuce CO2 sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to perform manual calibration if required.
             </para>
@@ -41309,7 +41338,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.set_estimationModel(System.Int32)">
             <summary>
-              Changes the mpredictive model to be used for color estimation (reflective or emissive).
+              Changes the predictive model to be used for color estimation (reflective or emissive).
             <para>
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
@@ -41318,7 +41347,7 @@
             </summary>
             <param name="newval">
               either <c>YColorSensor.ESTIMATIONMODEL_REFLECTION</c> or <c>YColorSensor.ESTIMATIONMODEL_EMISSION</c>,
-              according to the mpredictive model to be used for color estimation (reflective or emissive)
+              according to the predictive model to be used for color estimation (reflective or emissive)
             </param>
             <para>
             </para>
@@ -41379,7 +41408,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.get_ledCurrent">
             <summary>
-              Returns the amount of current sent to the illumination LEDs, for reflection measurements.
+              Returns the amount of current sent to the illumination LEDs, for reflection measures.
             <para>
               The value is an integer ranging from 0 (LEDs off) to 254 (LEDs at maximum intensity).
             </para>
@@ -41387,7 +41416,7 @@
             </para>
             </summary>
             <returns>
-              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measurements
+              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measures
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorSensor.LEDCURRENT_INVALID</c>.
@@ -41395,7 +41424,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.set_ledCurrent(System.Int32)">
             <summary>
-              Changes the amount of current sent to the illumination LEDs, for reflection measurements.
+              Changes the amount of current sent to the illumination LEDs, for reflection measures.
             <para>
               The value is an integer ranging from 0 (LEDs off) to 254 (LEDs at maximum intensity).
             </para>
@@ -41403,7 +41432,7 @@
             </para>
             </summary>
             <param name="newval">
-              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measurements
+              an integer corresponding to the amount of current sent to the illumination LEDs, for reflection measures
             </param>
             <para>
             </para>
@@ -41416,14 +41445,14 @@
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.get_ledCalibration">
             <summary>
-              Returns the current sent to the illumination LEDs during the last calibration.
+              Returns the current sent to the illumination LEDs during the latest calibration.
             <para>
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              an integer corresponding to the current sent to the illumination LEDs during the last calibration
+              an integer corresponding to the current sent to the illumination LEDs during the latest calibration
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorSensor.LEDCALIBRATION_INVALID</c>.
@@ -41433,7 +41462,7 @@
             <summary>
               Remember the LED current sent to the illumination LEDs during a calibration.
             <para>
-              Thanks to this, the device will be able to use the same current during measurements.
+              Thanks to this, the device is able to use the same current when taking measures.
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
@@ -41452,20 +41481,20 @@
             </para>
         </member>
         <member name="P:YoctoProxyAPI.YColorSensorProxy.LedCalibration">
-            <value>Current sent to the illumination LEDs during the last calibration.</value>
+            <value>Current sent to the illumination LEDs during the latest calibration.</value>
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.get_integrationTime">
             <summary>
-              Returns the current integration time for spectral measurement, in milliseconds.
+              Returns the current integration time for spectral measure, in milliseconds.
             <para>
               A longer integration time increase the sensitivity for low light conditions,
-              but reduces the measurement rate and may lead to saturation for lighter colors.
+              but reduces the measure taking rate and may lead to saturation for lighter colors.
             </para>
             <para>
             </para>
             </summary>
             <returns>
-              an integer corresponding to the current integration time for spectral measurement, in milliseconds
+              an integer corresponding to the current integration time for spectral measure, in milliseconds
             </returns>
             <para>
               On failure, throws an exception or returns <c>YColorSensor.INTEGRATIONTIME_INVALID</c>.
@@ -41473,19 +41502,19 @@
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.set_integrationTime(System.Int32)">
             <summary>
-              Changes the integration time for spectral measurement, in milliseconds.
+              Changes the integration time for spectral measure, in milliseconds.
             <para>
               A longer integration time increase the sensitivity for low light conditions,
-              but reduces the measurement rate and may lead to saturation for lighter colors.
+              but reduces the measure taking rate and may lead to saturation for lighter colors.
               This method can only be used when the sensor is configured in expert mode;
-              when running in auto mode, the change will be ignored.
+              when running in auto mode, the change is ignored.
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
             </para>
             </summary>
             <param name="newval">
-              an integer corresponding to the integration time for spectral measurement, in milliseconds
+              an integer corresponding to the integration time for spectral measure, in milliseconds
             </param>
             <para>
             </para>
@@ -41497,7 +41526,7 @@
             </para>
         </member>
         <member name="P:YoctoProxyAPI.YColorSensorProxy.IntegrationTime">
-            <value>Current integration time for spectral measurement, in milliseconds.</value>
+            <value>Current integration time for spectral measure, in milliseconds.</value>
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.get_gain">
             <summary>
@@ -41523,7 +41552,7 @@
               For a value <c>n</c> ranging from 0 to 12, the applied gain is 2^(n-1).
               0 corresponds to a gain of 0.5, and 12 corresponds to a gain of 2048.
               This method can only be used when the sensor is configured in expert mode;
-              when running in auto mode, the change will be ignored.
+              when running in auto mode, the change is ignored.
               Remember to call the <c>saveToFlash()</c> method of the module if the modification must be kept.
             </para>
             <para>
@@ -41570,13 +41599,13 @@
               The RGB color model describes each color using a combination of 3 components:
             </para>
             <para>
-              - Red (R): the intensity of red, in thee range 0...255
+              - Red (R): the intensity of red, in the 0...255 range
             </para>
             <para>
-              - Green (G): the intensity of green, in thee range 0...255
+              - Green (G): the intensity of green, in the 0...255 range
             </para>
             <para>
-              - Blue (B): the intensity of blue, in thee range 0...255
+              - Blue (B): the intensity of blue, in the 0...255 range
             </para>
             <para>
             </para>
@@ -41644,15 +41673,14 @@
               Returns the estimated color according to the OkLab color model.
             <para>
               OkLab is a perceptual color model that aims to align human color perception with numerical
-              values, so that visually near colors are also numerically near. Colors are represented using three components:
+              values, so that colors that are visually near are also numerically near. Colors are represented
+              using three components:
             </para>
             <para>
               - L: lightness, a real number between 0 and 1
-              -
             </para>
             <para>
               - a: color variations between green and red, between -0.5 and 0.5
-              -
             </para>
             <para>
               - b: color variations between blue and yellow, between -0.5 and 0.5.
@@ -41799,7 +41827,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YColorSensorProxy.turnLedOn">
             <summary>
-              Turns on the built-in illumination LEDs using the same current as used during last calibration.
+              Turns on the built-in illumination LEDs using the same current as used during the latest calibration.
             <para>
               On failure, throws an exception or returns a negative error code.
             </para>
@@ -41950,7 +41978,7 @@
             <summary>
               The <c>YCurrent</c> class allows you to read and configure Yoctopuce current sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -42042,8 +42070,8 @@
             <summary>
               Changes the activation state of this voltage input.
             <para>
-              When AC measurements are disabled,
-              the device will always assume a DC signal, and vice-versa. When both AC and DC measurements
+              When AC measures are disabled,
+              the device will always assume a DC signal, and vice-versa. When both AC and DC measures
               are active, the device switches between AC and DC mode based on the relative amplitude
               of variations compared to the average value.
               Remember to call the <c>saveToFlash()</c>
@@ -44231,7 +44259,7 @@
               The <c>YGenericSensor</c> class allows you to read and configure Yoctopuce signal
               transducers.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, to access the autonomous datalogger.
               This class adds the ability to configure the automatic conversion between the
               measured signal and the corresponding engineering unit.
@@ -45035,7 +45063,7 @@
             <summary>
               The <c>YGroundSpeed</c> class allows you to read and configure Yoctopuce ground speed sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -45561,7 +45589,7 @@
             <summary>
               The <c>YHumidity</c> class allows you to read and configure Yoctopuce humidity sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -47448,7 +47476,7 @@
             <summary>
               The <c>YLatitude</c> class allows you to read and configure Yoctopuce latitude sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -47720,7 +47748,7 @@
             <summary>
               The <c>YLightSensor</c> class allows you to read and configure Yoctopuce light sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to easily perform a one-point linear calibration
               to compensate the effect of a glass or filter placed in front of the sensor.
@@ -47874,7 +47902,7 @@
             <summary>
               The <c>YLongitude</c> class allows you to read and configure Yoctopuce longitude sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -51540,7 +51568,7 @@
             <summary>
               The <c>YPower</c> class allows you to read and configure Yoctopuce electrical power sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to access the energy counter and the power factor.
             </para>
@@ -52229,7 +52257,7 @@
             <summary>
               The <c>YPressure</c> class allows you to read and configure Yoctopuce pressure sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -52305,7 +52333,7 @@
             <summary>
               The <c>YProximity</c> class allows you to read and configure Yoctopuce proximity sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to set up a detection threshold and to count the
               number of detected state changes.
@@ -52718,7 +52746,7 @@
             <summary>
               The <c>YPwmInput</c> class allows you to read and configure Yoctopuce PWM inputs.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to configure the signal parameter used to transmit
               information: the duty cycle, the frequency or the pulse width.
@@ -53889,7 +53917,7 @@
             <summary>
               The <c>YQuadratureDecoder</c> class allows you to read and configure Yoctopuce quadrature decoders.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -54083,7 +54111,7 @@
             <summary>
               The <c>YRangeFinder</c> class allows you to read and configure Yoctopuce range finders.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to easily perform a one-point linear calibration
               to compensate the effect of a glass or filter placed in front of the sensor.
@@ -58943,7 +58971,7 @@
             <summary>
               The <c>YSpectralChannel</c> class allows you to read and configure Yoctopuce spectral analysis channels.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -59017,7 +59045,7 @@
         </member>
         <member name="M:YoctoProxyAPI.YSpectralChannelProxy.get_rawCount">
             <summary>
-              Retrieves the raw cspectral intensity value as measured by the sensor, without any scaling or calibration.
+              Retrieves the raw spectral intensity value as measured by the sensor, without any scaling or calibration.
             <para>
             </para>
             <para>
@@ -59028,6 +59056,36 @@
             </returns>
             <para>
               On failure, throws an exception or returns <c>YSpectralChannel.RAWCOUNT_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpectralChannelProxy.get_channelName">
+            <summary>
+              Returns the target spectral band name.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              a string corresponding to the target spectral band name
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YSpectralChannel.CHANNELNAME_INVALID</c>.
+            </para>
+        </member>
+        <member name="M:YoctoProxyAPI.YSpectralChannelProxy.get_peakWavelength">
+            <summary>
+              Returns the target spectral band peak wavelenght, in nm.
+            <para>
+            </para>
+            <para>
+            </para>
+            </summary>
+            <returns>
+              an integer corresponding to the target spectral band peak wavelenght, in nm
+            </returns>
+            <para>
+              On failure, throws an exception or returns <c>YSpectralChannel.PEAKWAVELENGTH_INVALID</c>.
             </para>
         </member>
         <member name="T:YoctoProxyAPI.YSpiPortProxy">
@@ -60610,7 +60668,7 @@
             <summary>
               The <c>YTemperature</c> class allows you to read and configure Yoctopuce temperature sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
               This class adds the ability to configure some specific parameters
               for some sensors (connection type, temperature mapping table).
@@ -61208,7 +61266,7 @@
             <summary>
               The <c>YTvoc</c> class allows you to read and configure Yoctopuce Total Volatile Organic Compound sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -61284,7 +61342,7 @@
             <summary>
               The <c>YVoc</c> class allows you to read and configure Yoctopuce Volatile Organic Compound sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -61360,7 +61418,7 @@
             <summary>
               The <c>YVoltage</c> class allows you to read and configure Yoctopuce voltage sensors.
             <para>
-              It inherits from <c>YSensor</c> class the core functions to read measurements,
+              It inherits from <c>YSensor</c> class the core functions to read measures,
               to register callback functions, and to access the autonomous datalogger.
             </para>
             <para>
@@ -61452,8 +61510,8 @@
             <summary>
               Changes the activation state of this voltage input.
             <para>
-              When AC measurements are disabled,
-              the device will always assume a DC signal, and vice-versa. When both AC and DC measurements
+              When AC measures are disabled,
+              the device will always assume a DC signal, and vice-versa. When both AC and DC measures
               are active, the device switches between AC and DC mode based on the relative amplitude
               of variations compared to the average value.
               Remember to call the <c>saveToFlash()</c>

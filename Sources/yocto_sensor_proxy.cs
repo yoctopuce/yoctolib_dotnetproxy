@@ -1,6 +1,6 @@
 /*********************************************************************
  *
- *  $Id: yocto_sensor_proxy.cs 62273 2024-08-23 07:20:59Z seb $
+ *  $Id: yocto_sensor_proxy.cs 65973 2025-04-22 09:50:13Z seb $
  *
  *  Implements YSensorProxy, the Proxy API for Sensor
  *
@@ -391,7 +391,7 @@ namespace YoctoProxyAPI
          * <para>
          *   Note that a get_currentValue() call will *not* start a measure in the device, it
          *   will just return the last measure that occurred in the device. Indeed, internally, each Yoctopuce
-         *   devices is continuously making measurements at a hardware specific frequency.
+         *   devices is continuously making measures at a hardware specific frequency.
          * </para>
          * <para>
          *   If continuously calling  get_currentValue() leads you to performances issues, then
